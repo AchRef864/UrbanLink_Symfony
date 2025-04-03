@@ -94,26 +94,38 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
         yield from $this->unwrap()->yieldBlock('stylesheets', $context, $blocks);
         // line 25
         yield "
+ <!-- Add custom CSS to hide the date picker icon -->
+        <style>
+            /* Hide the date picker icon */
+            input[type=\"date\"].datepicker::-webkit-calendar-picker-indicator {
+                display: none;
+            }
 
+            input[type=\"date\"].datepicker {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+            }
+        </style>
 
     <script src=\"";
-        // line 28
+        // line 40
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/js/plugins/chartjs.min.js"), "html", null, true);
         yield "\" async></script>
     <!-- plugin for scrollbar  -->
     <script src=\"";
-        // line 30
+        // line 42
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/js/plugins/perfect-scrollbar.min.js"), "html", null, true);
         yield "\" async></script>
     <!-- main script file  -->
     <script src=\"";
-        // line 32
+        // line 44
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/js/argon-dashboard-tailwind.js?v=1.0.1"), "html", null, true);
         yield "\" async></script>
         ";
-        // line 33
+        // line 45
         yield from $this->unwrap()->yieldBlock('javascripts', $context, $blocks);
-        // line 35
+        // line 47
         yield "    </head>
     <body>
     <div>
@@ -122,11 +134,11 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
           <i class=\"absolute top-0 right-0 p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden\" sidenav-close></i>
           <a class=\"block px-8 py-6 m-0 text-sm whitespace-nowrap text-slate-700\" href=\"https://demos.creative-tim.com/argon-dashboard-tailwind/pages/dashboard.html\" target=\"_blank\">
             <img src=\"";
-        // line 42
+        // line 54
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/img/logo-ct-dark.png"), "html", null, true);
         yield "\" class=\"inline h-full max-w-full transition-all duration-200 dark:hidden ease-nav-brand max-h-8\" alt=\"main_logo\" />
             <img src=\"";
-        // line 43
+        // line 55
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/img/logo-ct.png"), "html", null, true);
         yield "\" class=\"hidden h-full max-w-full transition-all duration-200 dark:inline ease-nav-brand max-h-8\" alt=\"main_logo\" />
             <span class=\"ml-1 font-semibold transition-all duration-200 ease-nav-brand\">Argon Dashboard 2</span>
@@ -136,20 +148,20 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
         <hr class=\"h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent\" />
 
         ";
-        // line 50
+        // line 62
         yield from $this->unwrap()->yieldBlock('sidebar', $context, $blocks);
-        // line 149
+        // line 161
         yield "        
         ";
-        // line 150
-        if (( !array_key_exists("show_docs", $context) || (isset($context["show_docs"]) || array_key_exists("show_docs", $context) ? $context["show_docs"] : (function () { throw new RuntimeError('Variable "show_docs" does not exist.', 150, $this->source); })()))) {
-            // line 151
+        // line 162
+        if (( !array_key_exists("show_docs", $context) || (isset($context["show_docs"]) || array_key_exists("show_docs", $context) ? $context["show_docs"] : (function () { throw new RuntimeError('Variable "show_docs" does not exist.', 162, $this->source); })()))) {
+            // line 163
             yield "        <div class=\"mx-4\">
           <!-- load phantom colors for card after: -->
           <p class=\"invisible hidden text-gray-800 text-red-500 text-red-600 text-blue-500 bg-gray-500/30 bg-cyan-500/30 bg-emerald-500/30 bg-orange-500/30 bg-red-500/30 after:bg-gradient-to-tl after:from-zinc-800 after:to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850 after:from-blue-700 after:to-cyan-500 after:from-orange-500 after:to-yellow-500 after:from-green-600 after:to-lime-400 after:from-red-600 after:to-orange-600 after:from-slate-600 after:to-slate-300 text-emerald-500 text-cyan-500 text-slate-400\"></p>
           <div class=\"relative flex flex-col min-w-0 break-words bg-transparent border-0 shadow-none rounded-2xl bg-clip-border\" sidenav-card>
             <img class=\"w-1/2 mx-auto\" src=\"";
-            // line 155
+            // line 167
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/img/illustrations/icon-documentation.svg"), "html", null, true);
             yield "\" alt=\"sidebar illustrations\" />
             <div class=\"flex-auto w-full p-4 pt-0 text-center\">
@@ -165,13 +177,13 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
         </div>
         ";
         }
-        // line 168
+        // line 180
         yield "      </aside>
       <main>
           ";
-        // line 170
+        // line 182
         yield from $this->unwrap()->yieldBlock('body', $context, $blocks);
-        // line 171
+        // line 183
         yield "      </main>
     </div>
     </body>
@@ -210,7 +222,7 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
         yield from [];
     }
 
-    // line 33
+    // line 45
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -223,7 +235,7 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
 
-        // line 34
+        // line 46
         yield "        ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
@@ -234,7 +246,7 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
         yield from [];
     }
 
-    // line 50
+    // line 62
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -247,16 +259,16 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "sidebar"));
 
-        // line 51
+        // line 63
         yield "        <div class=\"items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full\">
           <ul class=\"flex flex-col pl-0 mb-0\">
           ";
-        // line 53
-        if (( !array_key_exists("show_dashboard", $context) || (isset($context["show_dashboard"]) || array_key_exists("show_dashboard", $context) ? $context["show_dashboard"] : (function () { throw new RuntimeError('Variable "show_dashboard" does not exist.', 53, $this->source); })()))) {
-            // line 54
+        // line 65
+        if (( !array_key_exists("show_dashboard", $context) || (isset($context["show_dashboard"]) || array_key_exists("show_dashboard", $context) ? $context["show_dashboard"] : (function () { throw new RuntimeError('Variable "show_dashboard" does not exist.', 65, $this->source); })()))) {
+            // line 66
             yield "            <li class=\"mt-0.5 w-full\">
               <a class=\"py-2.7 bg-blue-500/13 dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors\" href=\"";
-            // line 55
+            // line 67
             yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("dashboard");
             yield "\">
                 <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
@@ -267,15 +279,15 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
             </li>
             ";
         }
-        // line 63
+        // line 75
         yield "
             ";
-        // line 64
-        if (( !array_key_exists("show_maintenance", $context) || (isset($context["show_maintenance"]) || array_key_exists("show_maintenance", $context) ? $context["show_maintenance"] : (function () { throw new RuntimeError('Variable "show_maintenance" does not exist.', 64, $this->source); })()))) {
-            // line 65
+        // line 76
+        if (( !array_key_exists("show_maintenance", $context) || (isset($context["show_maintenance"]) || array_key_exists("show_maintenance", $context) ? $context["show_maintenance"] : (function () { throw new RuntimeError('Variable "show_maintenance" does not exist.', 76, $this->source); })()))) {
+            // line 77
             yield "            <li class=\"mt-0.5 w-full\">
               <a class=\" dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"";
-            // line 66
+            // line 78
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("pages/tables.html"), "html", null, true);
             yield "\">
                 <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
@@ -286,15 +298,15 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
             </li>
             ";
         }
-        // line 74
+        // line 86
         yield "
             ";
-        // line 75
-        if (( !array_key_exists("show_billing", $context) || (isset($context["show_billing"]) || array_key_exists("show_billing", $context) ? $context["show_billing"] : (function () { throw new RuntimeError('Variable "show_billing" does not exist.', 75, $this->source); })()))) {
-            // line 76
+        // line 87
+        if (( !array_key_exists("show_billing", $context) || (isset($context["show_billing"]) || array_key_exists("show_billing", $context) ? $context["show_billing"] : (function () { throw new RuntimeError('Variable "show_billing" does not exist.', 87, $this->source); })()))) {
+            // line 88
             yield "            <li class=\"mt-0.5 w-full\">
               <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"";
-            // line 77
+            // line 89
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("pages/billing.html"), "html", null, true);
             yield "\">
                 <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5\">
@@ -305,15 +317,15 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
             </li>
             ";
         }
-        // line 85
+        // line 97
         yield "
             ";
-        // line 86
-        if (( !array_key_exists("show_vr", $context) || (isset($context["show_vr"]) || array_key_exists("show_vr", $context) ? $context["show_vr"] : (function () { throw new RuntimeError('Variable "show_vr" does not exist.', 86, $this->source); })()))) {
-            // line 87
+        // line 98
+        if (( !array_key_exists("show_vr", $context) || (isset($context["show_vr"]) || array_key_exists("show_vr", $context) ? $context["show_vr"] : (function () { throw new RuntimeError('Variable "show_vr" does not exist.', 98, $this->source); })()))) {
+            // line 99
             yield "            <li class=\"mt-0.5 w-full\">
               <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"";
-            // line 88
+            // line 100
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("pages/virtual-reality.html"), "html", null, true);
             yield "\">
                 <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
@@ -324,15 +336,15 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
             </li>
             ";
         }
-        // line 96
+        // line 108
         yield "
             ";
-        // line 97
-        if (( !array_key_exists("show_RTL", $context) || (isset($context["show_RTL"]) || array_key_exists("show_RTL", $context) ? $context["show_RTL"] : (function () { throw new RuntimeError('Variable "show_RTL" does not exist.', 97, $this->source); })()))) {
-            // line 98
+        // line 109
+        if (( !array_key_exists("show_RTL", $context) || (isset($context["show_RTL"]) || array_key_exists("show_RTL", $context) ? $context["show_RTL"] : (function () { throw new RuntimeError('Variable "show_RTL" does not exist.', 109, $this->source); })()))) {
+            // line 110
             yield "            <li class=\"mt-0.5 w-full\">
               <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"";
-            // line 99
+            // line 111
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("pages/rtl.html"), "html", null, true);
             yield "\">
                 <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
@@ -343,26 +355,26 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
             </li>
             ";
         }
-        // line 107
+        // line 119
         yield "
             ";
-        // line 108
-        if (( !array_key_exists("show_account", $context) || (isset($context["show_account"]) || array_key_exists("show_account", $context) ? $context["show_account"] : (function () { throw new RuntimeError('Variable "show_account" does not exist.', 108, $this->source); })()))) {
-            // line 109
+        // line 120
+        if (( !array_key_exists("show_account", $context) || (isset($context["show_account"]) || array_key_exists("show_account", $context) ? $context["show_account"] : (function () { throw new RuntimeError('Variable "show_account" does not exist.', 120, $this->source); })()))) {
+            // line 121
             yield "            <li class=\"w-full mt-4\">
               <h6 class=\"pl-6 ml-2 text-xs font-bold leading-tight uppercase opacity-60\">Account pages</h6>
             </li>
             ";
         }
-        // line 113
+        // line 125
         yield "
             ";
-        // line 114
-        if (( !array_key_exists("show_profile", $context) || (isset($context["show_profile"]) || array_key_exists("show_profile", $context) ? $context["show_profile"] : (function () { throw new RuntimeError('Variable "show_profile" does not exist.', 114, $this->source); })()))) {
-            // line 115
+        // line 126
+        if (( !array_key_exists("show_profile", $context) || (isset($context["show_profile"]) || array_key_exists("show_profile", $context) ? $context["show_profile"] : (function () { throw new RuntimeError('Variable "show_profile" does not exist.', 126, $this->source); })()))) {
+            // line 127
             yield "            <li class=\"mt-0.5 w-full\">
               <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"";
-            // line 116
+            // line 128
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("pages/profile.html"), "html", null, true);
             yield "\">
                 <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
@@ -373,15 +385,15 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
             </li>
             ";
         }
-        // line 124
+        // line 136
         yield "
             ";
-        // line 125
-        if (( !array_key_exists("show_signIn", $context) || (isset($context["show_signIn"]) || array_key_exists("show_signIn", $context) ? $context["show_signIn"] : (function () { throw new RuntimeError('Variable "show_signIn" does not exist.', 125, $this->source); })()))) {
-            // line 126
+        // line 137
+        if (( !array_key_exists("show_signIn", $context) || (isset($context["show_signIn"]) || array_key_exists("show_signIn", $context) ? $context["show_signIn"] : (function () { throw new RuntimeError('Variable "show_signIn" does not exist.', 137, $this->source); })()))) {
+            // line 138
             yield "            <li class=\"mt-0.5 w-full\">
               <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"";
-            // line 127
+            // line 139
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("pages/sign-in.html"), "html", null, true);
             yield "\">
                 <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
@@ -392,15 +404,15 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
             </li>
             ";
         }
-        // line 135
+        // line 147
         yield "
             ";
-        // line 136
-        if (( !array_key_exists("show_signUp", $context) || (isset($context["show_signUp"]) || array_key_exists("show_signUp", $context) ? $context["show_signUp"] : (function () { throw new RuntimeError('Variable "show_signUp" does not exist.', 136, $this->source); })()))) {
-            // line 137
+        // line 148
+        if (( !array_key_exists("show_signUp", $context) || (isset($context["show_signUp"]) || array_key_exists("show_signUp", $context) ? $context["show_signUp"] : (function () { throw new RuntimeError('Variable "show_signUp" does not exist.', 148, $this->source); })()))) {
+            // line 149
             yield "            <li class=\"mt-0.5 w-full\">
               <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"";
-            // line 138
+            // line 150
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("pages/sign-up.html"), "html", null, true);
             yield "\">
                 <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
@@ -411,7 +423,7 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
             </li>
             ";
         }
-        // line 146
+        // line 158
         yield "          </ul>
         </div>
         ";
@@ -424,7 +436,7 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
         yield from [];
     }
 
-    // line 170
+    // line 182
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -467,7 +479,7 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  428 => 170,  415 => 146,  404 => 138,  401 => 137,  399 => 136,  396 => 135,  385 => 127,  382 => 126,  380 => 125,  377 => 124,  366 => 116,  363 => 115,  361 => 114,  358 => 113,  352 => 109,  350 => 108,  347 => 107,  336 => 99,  333 => 98,  331 => 97,  328 => 96,  317 => 88,  314 => 87,  312 => 86,  309 => 85,  298 => 77,  295 => 76,  293 => 75,  290 => 74,  279 => 66,  276 => 65,  274 => 64,  271 => 63,  260 => 55,  257 => 54,  255 => 53,  251 => 51,  238 => 50,  227 => 34,  214 => 33,  203 => 24,  190 => 23,  175 => 171,  173 => 170,  169 => 168,  153 => 155,  147 => 151,  145 => 150,  142 => 149,  140 => 50,  130 => 43,  126 => 42,  117 => 35,  115 => 33,  111 => 32,  106 => 30,  101 => 28,  96 => 25,  94 => 23,  89 => 21,  85 => 20,  78 => 16,  74 => 15,  64 => 8,  60 => 7,  52 => 1,);
+        return array (  440 => 182,  427 => 158,  416 => 150,  413 => 149,  411 => 148,  408 => 147,  397 => 139,  394 => 138,  392 => 137,  389 => 136,  378 => 128,  375 => 127,  373 => 126,  370 => 125,  364 => 121,  362 => 120,  359 => 119,  348 => 111,  345 => 110,  343 => 109,  340 => 108,  329 => 100,  326 => 99,  324 => 98,  321 => 97,  310 => 89,  307 => 88,  305 => 87,  302 => 86,  291 => 78,  288 => 77,  286 => 76,  283 => 75,  272 => 67,  269 => 66,  267 => 65,  263 => 63,  250 => 62,  239 => 46,  226 => 45,  215 => 24,  202 => 23,  187 => 183,  185 => 182,  181 => 180,  165 => 167,  159 => 163,  157 => 162,  154 => 161,  152 => 62,  142 => 55,  138 => 54,  129 => 47,  127 => 45,  123 => 44,  118 => 42,  113 => 40,  96 => 25,  94 => 23,  89 => 21,  85 => 20,  78 => 16,  74 => 15,  64 => 8,  60 => 7,  52 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -497,7 +509,19 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
         {% block stylesheets %}
         {% endblock %}
 
+ <!-- Add custom CSS to hide the date picker icon -->
+        <style>
+            /* Hide the date picker icon */
+            input[type=\"date\"].datepicker::-webkit-calendar-picker-indicator {
+                display: none;
+            }
 
+            input[type=\"date\"].datepicker {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+            }
+        </style>
 
     <script src=\"{{asset('assets/js/plugins/chartjs.min.js')}}\" async></script>
     <!-- plugin for scrollbar  -->
@@ -646,6 +670,6 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
     </div>
     </body>
 </html>
-", "base.html.twig", "D:\\GitHub\\WebApp\\UrbanLink\\UrbanLink_Symfony_Fork\\templates\\base.html.twig");
+", "base.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\base.html.twig");
     }
 }

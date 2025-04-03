@@ -24,8 +24,8 @@
                 <td>{{ avi.dateAvis ? avi.dateAvis|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>User_id</th>
-                <td>{{ avi.userId }}</td>
+                <th>User</th>
+                <td>{{ avi.user ? avi.user.username : 'No user' }}</td>
             </tr>
         </tbody>
     </table>

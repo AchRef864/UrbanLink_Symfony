@@ -156,6 +156,6 @@ class __TwigTemplate_7cb7d912d87fc72238eb6edde5958288 extends Template
         <h1>Dashboard</h1>
         <p>Welcome to the dashboard!</p>
     </div>
-{% endblock %}", "dashboard/index.html.twig", "D:\\GitHub\\WebApp\\UrbanLink\\UrbanLink_Symfony_Fork\\templates\\dashboard\\index.html.twig");
+{% endblock %}", "dashboard/index.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\dashboard\\index.html.twig");
     }
 }

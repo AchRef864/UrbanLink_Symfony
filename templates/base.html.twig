@@ -23,7 +23,19 @@
         {% block stylesheets %}
         {% endblock %}
 
+ <!-- Add custom CSS to hide the date picker icon -->
+        <style>
+            /* Hide the date picker icon */
+            input[type="date"].datepicker::-webkit-calendar-picker-indicator {
+                display: none;
+            }
 
+            input[type="date"].datepicker {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+            }
+        </style>
 
     <script src="{{asset('assets/js/plugins/chartjs.min.js')}}" async></script>
     <!-- plugin for scrollbar  -->

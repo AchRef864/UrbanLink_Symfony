@@ -20,9 +20,13 @@ class Avis
     #[ORM\Column(length: 255)]
     private ?string $commentaire = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: "date")]
     private ?\DateTimeInterface $date_avis = null;
 
+    public function __construct()
+    {
+        $this->date_avis = new \DateTime(); // Automatically set to current date
+    }
     #[ORM\Column]
     private ?int $user_id = null;
 

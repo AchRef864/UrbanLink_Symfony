@@ -170,6 +170,6 @@ class __TwigTemplate_4291e98db37f936bc241cfbaa0eb7d9e extends Template
     </ul>
 </div>
 {% endblock %}
-", "hello/index.html.twig", "C:\\Users\\skonb\\Desktop\\symfony\\my_project_directory\\templates\\hello\\index.html.twig");
+", "hello/index.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\hello\\index.html.twig");
     }
 }
