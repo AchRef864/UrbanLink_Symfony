@@ -166,7 +166,7 @@
     "PHPUnit.Main.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/sbiss/OneDrive - ESPRIT/Documents/urbanlink_Sy/templates/dashboard",
+    "last_opened_file_path": "C:/Users/sbiss/OneDrive - ESPRIT/Documents/urbanlink_Sy/public/assets",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -179,11 +179,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\sbiss\OneDrive - ESPRIT\Documents\urbanlink_Sy\public\assets" />
+      <recent name="C:\Users\sbiss\OneDrive - ESPRIT\Documents\urbanlink_Sy\templates\assets\img" />
+      <recent name="C:\Users\sbiss\OneDrive - ESPRIT\Documents\urbanlink_Sy\templates" />
       <recent name="C:\Users\sbiss\OneDrive - ESPRIT\Documents\urbanlink_Sy\templates\dashboard" />
       <recent name="C:\Users\sbiss\OneDrive - ESPRIT\Documents\urbanlink_Sy\templates\auth" />
-      <recent name="C:\Users\sbiss\OneDrive - ESPRIT\Documents\urbanlink_Sy\templates\user" />
-      <recent name="C:\Users\sbiss\OneDrive - ESPRIT\Documents\urbanlink_Sy\templates\profile" />
-      <recent name="C:\Users\sbiss\OneDrive - ESPRIT\Documents\urbanlink_Sy\templates\user\client" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\sbiss\OneDrive - ESPRIT\Documents\urbanlink_Sy\templates\dashboard" />
@@ -231,6 +231,7 @@
       <workItem from="1743507814551" duration="7200000" />
       <workItem from="1743594931622" duration="23759000" />
       <workItem from="1743679302831" duration="25980000" />
+      <workItem from="1743857518991" duration="13981000" />
     </task>
     <servers />
   </component>
