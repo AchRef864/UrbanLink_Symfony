@@ -1,0 +1,39 @@
+{# templates/dashboard/client.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Client Dashboard{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Welcome to Your Client Dashboard</h2>
+                    </div>
+                    <div class="card-body">
+                        {% if is_granted('ROLE_CLIENT') %}
+                            <p class="lead">Hello {{ user.name }}! You have successfully logged in as a client.</p>
+
+                            <div class="mt-4">
+                                <h4>Your Account Details:</h4>
+                                <ul class="list-group">
+                                    <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
+                                    <li class="list-group-item"><strong>Phone:</strong> {{ user.phone }}</li>
+                                    <li class="list-group-item">
+                                        <strong>Status:</strong>
+                                        <span class="badge bg-success">Active</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-warning">
+                                You don't have proper client privileges.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

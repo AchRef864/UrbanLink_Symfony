@@ -1,0 +1,47 @@
+{# templates/home/index.html.twig #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}UrbanLink - Home{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}" />
+
+    <!-- Update all asset paths to use Symfony's asset() function -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/argon-dashboard-tailwind.css') }}" rel="stylesheet" />
+</head>
+
+<body class="m-0 font-sans antialiased font-normal bg-white text-start text-base leading-default text-slate-500">
+<!-- Your existing HTML content here -->
+
+<!-- Update navigation links to use Symfony paths -->
+<ul class="flex flex-col pl-0 mx-auto mb-0 list-none lg-max:py-2 lg:flex-row xl:ml-auto">
+    <li>
+        <a href="{{ path('app_home') }}" class="flex items-center px-4 py-2 mr-2 font-normal text-white transition-all ease-in-out duration-250 lg-max:opacity-0 lg-max:text-slate-700 text-sm lg:px-2 lg:hover:text-white/75">
+            <i class="mr-1 text-white lg-max:text-slate-700 fa fa-chart-pie opacity-60"></i>
+            Home
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('app_register') }}" class="block px-4 py-2 mr-2 font-normal text-white transition-all ease-in-out duration-250 lg-max:opacity-0 lg-max:text-slate-700 text-sm lg:px-2 lg:hover:text-white/75">
+            <i class="mr-1 text-white lg-max:text-slate-700 fas fa-user-circle opacity-60"></i>
+            Sign Up
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('app_login') }}" class="block px-4 py-2 mr-2 font-normal text-white transition-all ease-in-out duration-250 lg-max:opacity-0 lg-max:text-slate-700 text-sm lg:px-2 lg:hover:text-white/75">
+            <i class="mr-1 text-white lg-max:text-slate-700 fas fa-key opacity-60"></i>
+            Sign In
+        </a>
+    </li>
+</ul>
+
+<!-- Update script paths -->
+<script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+<script src="{{ asset('assets/js/argon-dashboard-tailwind.js') }}"></script>
+</body>
+</html>

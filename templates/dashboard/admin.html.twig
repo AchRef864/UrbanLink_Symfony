@@ -1,0 +1,45 @@
+{# templates/dashboard/admin.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Welcome, Admin!</h5>
+                        <p class="card-text">You have access to the administration panel.</p>
+
+                        <!-- back to login -->
+                        <a href="{{ path('app_login') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Login
+                        </a>
+             <!-- manage users -->
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="{{ path('admin_user_manage') }}" class="btn btn-primary">
+                                    <i class="fas fa-user-cog"></i> Manage Users (Block/Unblock)
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{{ path('admin_user_delete') }}" class="btn btn-danger">
+                                    <i class="fas fa-user-edit"></i> Edit/Delete User Profiles
+                                </a>
+                            </li>
+                        </ul>
+
+                        <!-- logout -->
+                        <form method="post" action="{{ path('app_logout') }}" class="mt-3">
+                            <button class="btn btn-danger" type="submit">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

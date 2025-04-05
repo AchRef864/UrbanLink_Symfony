@@ -1,0 +1,33 @@
+{# templates/auth/reset_password/request.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset Password Request{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="h3 mb-0">Reset your password</h1>
+                    </div>
+                    <div class="card-body">
+                        {% for flash_error in app.flashes('error') %}
+                            <div class="alert alert-danger">{{ flash_error }}</div>
+                        {% endfor %}
+
+                        {{ form_start(requestForm) }}
+                        {{ form_row(requestForm.email) }}
+
+                        <div class="form-group mt-4">
+                            <button class="btn btn-primary" type="submit">
+                                Send password reset email
+                            </button>
+                        </div>
+                        {{ form_end(requestForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

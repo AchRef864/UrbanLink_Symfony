@@ -1,0 +1,31 @@
+{# templates/auth/reset_password/verify_code.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Verify Reset Code{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Verify Reset Code</h2>
+                    </div>
+                    <div class="card-body">
+                        {% for flash_error in app.flashes('error') %}
+                            <div class="alert alert-danger">{{ flash_error }}</div>
+                        {% endfor %}
+
+                        <form method="post">
+                            <div class="mb-3">
+                                <label for="code" class="form-label">Enter 6-digit code sent to your email</label>
+                                <input type="text" class="form-control" id="code" name="code" required maxlength="6">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Verify Code</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
