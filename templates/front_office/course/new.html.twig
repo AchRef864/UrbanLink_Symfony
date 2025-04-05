@@ -1,0 +1,47 @@
+
+{% block title %}Réserver une Course{% endblock %}
+
+{% block body %}
+    <h1>Réserver une Course</h1>
+    {{ form_start(form) }}
+        {{ form_row(form.taxi) }}
+        {{ form_row(form.dateCourse) }}
+        {{ form_row(form.villeDepart) }}
+        {{ form_row(form.villeArrivee) }}
+        {{ form_row(form.distanceKm) }}
+        {{ form_row(form.montant) }}
+        {# Le champ statut peut être masqué dans le front office si nécessaire #}
+        {% if form.statut is defined %}
+            {{ form_row(form.statut) }}
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Réserver</button>
+    {{ form_end(form) }}
+    <a href="{{ path('user_courses') }}">Retour à la liste de mes courses</a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Récupérer les éléments du formulaire via leur id généré par Symfony
+            const distanceInput = document.getElementById('{{ form.distanceKm.vars.id }}');
+            const montantInput  = document.getElementById('{{ form.montant.vars.id }}');
+            const taxiSelect    = document.getElementById('{{ form.taxi.vars.id }}');
+
+            // Fonction de mise à jour du montant
+            function updateMontant() {
+                const distance = parseFloat(distanceInput.value) || 0;
+                // Récupérer l'option sélectionnée et son attribut data-tarif
+                const selectedOption = taxiSelect.options[taxiSelect.selectedIndex];
+                const tarifStr = selectedOption.getAttribute('data-tarif') || '0';
+                const tarif = parseFloat(tarifStr.replace(',', '.'));
+                const montant = distance * tarif;
+                montantInput.value = montant.toFixed(2);
+            }
+
+            // Écouter l'événement "input" sur la distance et le changement du taxi
+            distanceInput.addEventListener('input', updateMontant);
+            taxiSelect.addEventListener('change', updateMontant);
+
+            // Calcul initial au chargement de la page
+            updateMontant();
+        });
+    </script>
+{% endblock %}

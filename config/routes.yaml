@@ -1,0 +1,54 @@
+controllers:
+    resource: ../src/Controller/
+    type: annotation
+# Route pour la page de connexion
+app_login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+
+# Route pour la déconnexion
+app_logout:
+    path: /logout
+    controller: App\Controller\SecurityController::logout
+
+# Route pour le dashboard du back-office
+back_office_dashboard:
+    path: /admin
+    controller: App\Controller\BackOfficeController::dashboard
+
+# Routes pour la gestion des taxis
+taxi_index:
+    path: /admin/taxi
+    controller: App\Controller\TaxiController::index
+
+taxi_new:
+    path: /admin/taxi/new
+    controller: App\Controller\TaxiController::new
+
+taxi_edit:
+    path: /admin/taxi/{id}/edit
+    controller: App\Controller\TaxiController::edit
+
+taxi_delete:
+    path: /admin/taxi/{id}/delete
+    controller: App\Controller\TaxiController::delete
+
+# Routes pour la gestion des courses
+course_index:
+    path: /admin/course
+    controller: App\Controller\CourseController::index
+
+course_new:
+    path: /admin/course/new
+    controller: App\Controller\CourseController::new
+
+course_edit:
+    path: /admin/course/{id}/edit
+    controller: App\Controller\CourseController::edit
+
+course_delete:
+    path: /admin/course/{id}/delete
+    controller: App\Controller\CourseController::delete
+
+# Routes pour la gestion des utilisateurs
+

@@ -1,0 +1,56 @@
+
+{% block title %}Tableau de bord Taxiste{% endblock %}
+
+{% block body %}
+  <h1>Bienvenue, {{ app.user.Email }}</h1>
+  
+  <h2>Votre Taxi</h2>
+  <p>
+    {{ taxi.marque }} {{ taxi.modele }} - {{ taxi.immatriculation }}<br>
+    Statut : {{ taxi.statut }}
+  </p>
+  <form action="{{ path('taxiste_taxi_change_status', {'id': taxi.id}) }}" method="post" style="display:inline">
+    <button class="btn btn-warning btn-sm">
+      {% if taxi.statut == 'Disponible' %}
+        Passer en Occupé
+      {% else %}
+        Passer en Disponible
+      {% endif %}
+    </button>
+  </form>
+  
+  <h2>Vos Courses</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Client</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for course in courses %}
+        <tr>
+          <td>{{ course.dateCourse|date('d/m/Y H:i') }}</td>
+          <td>{{ course.user.Email }}</td>
+          <td>{{ course.statut }}</td>
+          <td>
+            {% if course.statut == 'En attente' %}
+              <form action="{{ path('taxiste_course_accept', {'id': course.id}) }}" method="post" style="display:inline">
+                <button class="btn btn-success btn-sm">Accepter</button>
+              </form>
+              <form action="{{ path('taxiste_course_refuse', {'id': course.id}) }}" method="post" style="display:inline" onsubmit="return confirm('Refuser cette course ?');">
+                <button class="btn btn-danger btn-sm">Refuser</button>
+              </form>
+            {% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="4">Aucune course en attente.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

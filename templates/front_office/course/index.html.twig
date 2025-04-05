@@ -1,0 +1,46 @@
+
+{% block title %}Mes Courses{% endblock %}
+
+{% block body %}
+  <h1>Mes Courses</h1>
+  <a href="{{ path('user_course_new') }}" class="btn btn-primary mb-3">Réserver une Nouvelle Course</a>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Taxi</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for course in courses %}
+        <tr>
+          <td>{{ course.dateCourse|date('d/m/Y H:i') }}</td>
+          <td>
+            {% if course.taxi %}
+              {{ course.taxi.marque }} {{ course.taxi.modele }}
+            {% else %}
+              Aucun taxi
+            {% endif %}
+          </td>
+          <td>{{ course.statut }}</td>
+          <td>
+            {% if course.statut == 'En attente' %}
+              <form action="{{ path('user_course_cancel', {'id': course.id}) }}" method="post" onsubmit="return confirm('Annuler cette course ?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ course.id) }}">
+                <button class="btn btn-danger btn-sm">Annuler</button>
+              </form>
+            {% else %}
+              ---
+            {% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="4">Aucune course trouvée.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

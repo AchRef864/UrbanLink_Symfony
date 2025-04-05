@@ -1,0 +1,45 @@
+{% extends 'back_office/base.html.twig' %}
+
+{% block title %}Gestion des Courses{% endblock %}
+
+{% block body %}
+  <h1 class="text-2xl font-bold mb-4">Liste des Courses</h1>
+  <a href="{{ path('course_new') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Ajouter Course</a>
+  
+  <table class="min-w-full mt-4 border">
+    <thead>
+      <tr class="bg-gray-200">
+        <th class="p-2 border">Date Course</th>
+        <th class="p-2 border">Ville Départ</th>
+        <th class="p-2 border">Ville Arrivée</th>
+        <th class="p-2 border">Distance (km)</th>
+        <th class="p-2 border">Montant</th>
+        <th class="p-2 border">Statut</th>
+        <th class="p-2 border">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for course in courses %}
+        <tr class="text-center">
+          <td class="p-2 border">{{ course.dateCourse|date('d/m/Y H:i') }}</td>
+          <td class="p-2 border">{{ course.villeDepart }}</td>
+          <td class="p-2 border">{{ course.villeArrivee }}</td>
+          <td class="p-2 border">{{ course.distanceKm }}</td>
+          <td class="p-2 border">{{ course.montant }}</td>
+          <td class="p-2 border">{{ course.statut }}</td>
+          <td class="p-2 border">
+            <a href="{{ path('course_edit', {'id': course.id}) }}" class="text-blue-500 hover:underline">Modifier</a>
+            <form method="post" action="{{ path('course_delete', {'id': course.id}) }}" style="display:inline" onsubmit="return confirm('Confirmer la suppression ?');">
+              <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ course.id) }}">
+              <button type="submit" class="text-red-500 hover:underline">Supprimer</button>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td class="p-2 border text-center" colspan="7">Aucune course trouvée.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

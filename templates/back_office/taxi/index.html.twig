@@ -1,0 +1,45 @@
+
+{% block title %}Gestion des Taxis{% endblock %}
+
+{% block body %}
+  <h1 class="text-2xl font-bold mb-4">Liste des Taxis</h1>
+  <a href="{{ path('taxi_new') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Ajouter Taxi</a>
+  <table class="min-w-full mt-4 border">
+    <thead>
+      <tr class="bg-gray-200">
+        <th class="p-2 border">Immatriculation</th>
+        <th class="p-2 border">Marque</th>
+        <th class="p-2 border">Modèle</th>
+        <th class="p-2 border">Année</th>
+        <th class="p-2 border">Capacité</th>
+        <th class="p-2 border">Zone</th>
+        <th class="p-2 border">Statut</th>
+        <th class="p-2 border">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for taxi in taxis %}
+        <tr class="text-center">
+          <td class="p-2 border">{{ taxi.immatriculation }}</td>
+          <td class="p-2 border">{{ taxi.marque }}</td>
+          <td class="p-2 border">{{ taxi.modele }}</td>
+          <td class="p-2 border">{{ taxi.anneeFabrication }}</td>
+          <td class="p-2 border">{{ taxi.capacite }}</td>
+          <td class="p-2 border">{{ taxi.zoneDesserte }}</td>
+          <td class="p-2 border">{{ taxi.statut }}</td>
+          <td class="p-2 border">
+            <a href="{{ path('taxi_edit', {'id': taxi.id}) }}" class="text-blue-500">Modifier</a>
+            <form method="post" action="{{ path('taxi_delete', {'id': taxi.id}) }}" style="display:inline" onsubmit="return confirm('Confirmer la suppression ?');">
+              <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ taxi.id) }}">
+              <button type="submit" class="text-red-500">Supprimer</button>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td class="p-2 border text-center" colspan="8">Aucun taxi trouvé.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

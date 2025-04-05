@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Noter le Taxiste{% endblock %}
+
+{% block body %}
+  <h1>Noter le Taxiste</h1>
+
+  <p>
+    Taxi : {{ taxi.marque }} {{ taxi.modele }} - {{ taxi.immatriculation }}
+  </p>
+
+  {% if totalRatings > 0 %}
+    <p>
+      Note moyenne : {{ avgRating|number_format(1) }} / 10 ({{ totalRatings }} avis)
+    </p>
+  {% else %}
+    <p>Aucun avis pour le moment.</p>
+  {% endif %}
+
+  <form action="{{ path('taxi_rate', {'id': taxi.id}) }}" method="post">
+    <div class="form-group">
+      <label for="note">Votre note (1 à 10)</label>
+      <input type="number" id="note" name="note" min="1" max="10" class="form-control" value="{{ rating.note|default('') }}" required>
+    </div>
+    <div class="form-group">
+      <label for="commentaire">Votre commentaire (optionnel)</label>
+      <textarea id="commentaire" name="commentaire" class="form-control">{{ rating.commentaire|default('') }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-success">Envoyer votre évaluation</button>
+  </form>
+{% endblock %}

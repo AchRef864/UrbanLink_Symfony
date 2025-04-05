@@ -1,0 +1,42 @@
+{% block title %}Modifier la Course{% endblock %}
+
+{% block body %}
+    <h1>Modifier la Course</h1>
+    {{ form_start(form) }}
+        {{ form_row(form.taxi) }}
+        {{ form_row(form.dateCourse) }}
+        {{ form_row(form.villeDepart) }}
+        {{ form_row(form.villeArrivee) }}
+        {{ form_row(form.distanceKm) }}
+        {{ form_row(form.montant) }}
+        {% if form.statut is defined %}
+            {{ form_row(form.statut) }}
+        {% endif %}
+        <button type="submit">Mettre à jour</button>
+    {{ form_end(form) }}
+    <a href="{{ path('course_index') }}">Retour à la liste</a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const distanceInput = document.getElementById('{{ form.distanceKm.vars.id }}');
+            const montantInput  = document.getElementById('{{ form.montant.vars.id }}');
+            const taxiSelect    = document.getElementById('{{ form.taxi.vars.id }}');
+
+            function updateMontant() {
+                const distance = parseFloat(distanceInput.value) || 0;
+                const selectedOption = taxiSelect.options[taxiSelect.selectedIndex];
+                const tarifStr = selectedOption.getAttribute('data-tarif') || '0';
+                const tarif = parseFloat(tarifStr.replace(',', '.'));
+                console.log('Distance :', distance, 'Tarif :', tarif);
+                const montant = distance * tarif;
+                montantInput.value = montant.toFixed(2);
+                console.log('Montant calculé :', montantInput.value);
+            }
+
+            distanceInput.addEventListener('input', updateMontant);
+            taxiSelect.addEventListener('change', updateMontant);
+
+            updateMontant();
+        });
+    </script>
+{% endblock %}
