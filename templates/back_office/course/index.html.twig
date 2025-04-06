@@ -2,44 +2,62 @@
 
 {% block title %}Gestion des Courses{% endblock %}
 
+{% block page_title %}Courses{% endblock %}
+
 {% block body %}
-  <h1 class="text-2xl font-bold mb-4">Liste des Courses</h1>
-  <a href="{{ path('course_new') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Ajouter Course</a>
-  
-  <table class="min-w-full mt-4 border">
-    <thead>
-      <tr class="bg-gray-200">
-        <th class="p-2 border">Date Course</th>
-        <th class="p-2 border">Ville Départ</th>
-        <th class="p-2 border">Ville Arrivée</th>
-        <th class="p-2 border">Distance (km)</th>
-        <th class="p-2 border">Montant</th>
-        <th class="p-2 border">Statut</th>
-        <th class="p-2 border">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for course in courses %}
-        <tr class="text-center">
-          <td class="p-2 border">{{ course.dateCourse|date('d/m/Y H:i') }}</td>
-          <td class="p-2 border">{{ course.villeDepart }}</td>
-          <td class="p-2 border">{{ course.villeArrivee }}</td>
-          <td class="p-2 border">{{ course.distanceKm }}</td>
-          <td class="p-2 border">{{ course.montant }}</td>
-          <td class="p-2 border">{{ course.statut }}</td>
-          <td class="p-2 border">
-            <a href="{{ path('course_edit', {'id': course.id}) }}" class="text-blue-500 hover:underline">Modifier</a>
-            <form method="post" action="{{ path('course_delete', {'id': course.id}) }}" style="display:inline" onsubmit="return confirm('Confirmer la suppression ?');">
-              <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ course.id) }}">
-              <button type="submit" class="text-red-500 hover:underline">Supprimer</button>
-            </form>
-          </td>
-        </tr>
-      {% else %}
+<div class="bg-white shadow-md rounded-2xl p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-xl font-semibold text-slate-700">Liste des Courses</h1>
+    <a href="{{ path('course_new') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition">
+      + Ajouter une Course
+    </a>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full text-sm text-left text-slate-600">
+      <thead class="text-xs uppercase bg-gray-100 text-slate-600">
         <tr>
-          <td class="p-2 border text-center" colspan="7">Aucune course trouvée.</td>
+          <th class="px-4 py-3">Date</th>
+          <th class="px-4 py-3">Départ</th>
+          <th class="px-4 py-3">Arrivée</th>
+          <th class="px-4 py-3">Distance</th>
+          <th class="px-4 py-3">Montant</th>
+          <th class="px-4 py-3">Statut</th>
+          <th class="px-4 py-3">Actions</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-100">
+        {% for course in courses %}
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">{{ course.dateCourse ? course.dateCourse|date('d/m/Y H:i') : '—' }}</td>
+            <td class="px-4 py-3">{{ course.villeDepart }}</td>
+            <td class="px-4 py-3">{{ course.villeArrivee }}</td>
+            <td class="px-4 py-3">{{ course.distanceKm }} km</td>
+            <td class="px-4 py-3">€{{ course.montant }}</td>
+            <td class="px-4 py-3">
+              {% if course.statut == 'Acceptée' %}
+                <span class="text-green-600 font-semibold">Acceptée</span>
+              {% elseif course.statut == 'Refusée' %}
+                <span class="text-red-500 font-semibold">Refusée</span>
+              {% else %}
+                <span class="text-yellow-500 font-semibold">En attente</span>
+              {% endif %}
+            </td>
+            <td class="px-4 py-3 space-x-2">
+              <a href="{{ path('course_edit', {'id': course.id}) }}" class="text-blue-500 hover:underline">Modifier</a>
+              <form method="post" action="{{ path('course_delete', {'id': course.id}) }}" class="inline" onsubmit="return confirm('Confirmer la suppression ?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ course.id) }}">
+                <button type="submit" class="text-red-500 hover:underline">Supprimer</button>
+              </form>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="7" class="px-4 py-3 text-center text-slate-400">Aucune course trouvée.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}

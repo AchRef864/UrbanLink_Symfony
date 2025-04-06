@@ -1,65 +1,104 @@
-{# filepath: templates/back_office/base.html.twig #}
+{# templates/back_office/base.html.twig #}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Course & Taxi - Backoffice{% endblock %}</title>
+    
+    <!-- Assets Argon Dashboard -->
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/img/apple-icon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
-    <title>{% block title %}Back Office{% endblock %}</title>
-
-    <!-- Fonts and icons -->
+    
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-
-    <!-- Nucleo Icons -->
+    
+    <!-- Styles Argon -->
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet">
-
-    <!-- Main Styling -->
-    <link href="{{ asset('assets/css/argon-dashboard-tailwind.css?v=1.0.1') }}" rel="stylesheet">
-
+    <link href="{{ asset('assets/css/argon-dashboard-tailwind.css') }}" rel="stylesheet">
+    
     {% block stylesheets %}{% endblock %}
 </head>
-<body class="bg-gray-100 text-gray-800">
-    <div class="min-h-screen flex">
-        {% if app.user %}
-            <aside class="w-64 bg-gray-800 text-white fixed h-full">
-                <div class="p-4 text-lg font-bold">
-                    Back Office
-                </div>
+
+<body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
+    <div class="absolute w-full bg-blue-500 dark:hidden min-h-75"></div>
+
+    <!-- Sidebar -->
+    <aside class="fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0">
+        <div class="h-19">
+            <a class="block px-8 py-6 m-0 text-sm whitespace-nowrap dark:text-white text-slate-700" href="{{ path('back_office_dashboard') }}">
+                <img src="{{ asset('assets/img/logo-ct-dark.png') }}" class="inline h-full max-w-full transition-all duration-200 dark:hidden ease-nav-brand max-h-8" alt="logo">
+                <span class="ml-1 font-semibold transition-all duration-200 ease-nav-brand">Course & Taxi</span>
+            </a>
+        </div>
+
+        <hr class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent">
+
+        <!-- Menu -->
+        <div class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
+            <ul class="flex flex-col pl-0 mb-0">
+                <li class="mt-0.5 w-full">
+                    <a href="{{ path('taxi_index') }}" class="{% if app.request.attributes.get('_route') starts with 'taxi_' %}bg-blue-500/13{% endif %} dark:text-white py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors">
+                        <i class="ni ni-bus-front-12 mr-2"></i>
+                        <span class="ml-1">Gestion Taxis</span>
+                    </a>
+                </li>
+                
+                <li class="mt-0.5 w-full">
+                    <a href="{{ path('course_index') }}" class="{% if app.request.attributes.get('_route') starts with 'course_' %}bg-blue-500/13{% endif %} dark:text-white py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors">
+                        <i class="ni ni-delivery-fast mr-2"></i>
+                        <span class="ml-1">Gestion Courses</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
+        <!-- Navbar -->
+        <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start">
+            <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
                 <nav>
-                    <ul>
-                        <li class="p-2 hover:bg-gray-700">
-                            <a href="{{ path('back_office_dashboard') }}" class="block">Dashboard</a>
-                        </li>
-                        <li class="p-2 hover:bg-gray-700">
-                            <a href="{{ path('taxi_index') }}" class="block">Gérer Taxis</a>
-                        </li>
-                        <li class="p-2 hover:bg-gray-700">
-                            <a href="{{ path('course_index') }}" class="block">Gérer Courses</a>
-                        </li>
-                        <li class="p-2 hover:bg-gray-700">
-                            <a href="{{ path('app_logout') }}" class="block text-red-500">Déconnexion</a>
-                        </li>
-                    </ul>
+                    <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
+                        {% block breadcrumb %}
+                            <li class="text-sm leading-normal">
+                                <a class="text-white opacity-50" href="{{ path('back_office_dashboard') }}">Dashboard</a>
+                            </li>
+                        {% endblock %}
+                    </ol>
+                    <h6 class="mb-0 font-bold text-white capitalize">{% block page_title %}{% endblock %}</h6>
                 </nav>
-            </aside>
-        {% endif %}
+            </div>
+        </nav>
 
-        <main class="{% if app.user %}ml-64{% endif %} p-6 w-full">
-            <header class="mb-4">
-                <h1 class="text-2xl font-bold">{% block header %}Bienvenue{% endblock %}</h1>
-            </header>
-            <section>
-                {% block body %}{% endblock %}
-            </section>
-        </main>
-    </div>
+        <!-- Content -->
+        <div class="w-full px-6 py-6 mx-auto">
+            {% block body %}{% endblock %}
+        </div>
 
-    <script src="{{ asset('assets/js/plugins/chartjs.min.js') }}" async></script>
-    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}" async></script>
-    <script src="{{ asset('assets/js/argon-dashboard-tailwind.js?v=1.0.1') }}" async></script>
+        <!-- Footer -->
+        <footer class="pt-4">
+            <div class="w-full px-6 mx-auto">
+                <div class="flex flex-wrap items-center -mx-3 lg:justify-between">
+                    <div class="w-full max-w-full px-3 mt-0 mb-6 shrink-0 lg:mb-0 lg:w-1/2 lg:flex-none">
+                        <div class="text-sm leading-normal text-center text-slate-500 lg:text-left">
+                            © {{ "now"|date("Y") }} Course & Taxi - Tous droits réservés
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Scripts -->
+    <script src="{{ asset('assets/js/plugins/chartjs.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/js/argon-dashboard-tailwind.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     {% block javascripts %}{% endblock %}
 </body>
 </html>

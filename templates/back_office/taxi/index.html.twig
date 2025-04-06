@@ -1,45 +1,66 @@
+{# templates/back_office/taxi/index.html.twig #}
+{% extends 'back_office/base.html.twig' %}
 
 {% block title %}Gestion des Taxis{% endblock %}
 
+{% block page_title %}Taxis{% endblock %}
+
 {% block body %}
-  <h1 class="text-2xl font-bold mb-4">Liste des Taxis</h1>
-  <a href="{{ path('taxi_new') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Ajouter Taxi</a>
-  <table class="min-w-full mt-4 border">
-    <thead>
-      <tr class="bg-gray-200">
-        <th class="p-2 border">Immatriculation</th>
-        <th class="p-2 border">Marque</th>
-        <th class="p-2 border">Modèle</th>
-        <th class="p-2 border">Année</th>
-        <th class="p-2 border">Capacité</th>
-        <th class="p-2 border">Zone</th>
-        <th class="p-2 border">Statut</th>
-        <th class="p-2 border">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for taxi in taxis %}
-        <tr class="text-center">
-          <td class="p-2 border">{{ taxi.immatriculation }}</td>
-          <td class="p-2 border">{{ taxi.marque }}</td>
-          <td class="p-2 border">{{ taxi.modele }}</td>
-          <td class="p-2 border">{{ taxi.anneeFabrication }}</td>
-          <td class="p-2 border">{{ taxi.capacite }}</td>
-          <td class="p-2 border">{{ taxi.zoneDesserte }}</td>
-          <td class="p-2 border">{{ taxi.statut }}</td>
-          <td class="p-2 border">
-            <a href="{{ path('taxi_edit', {'id': taxi.id}) }}" class="text-blue-500">Modifier</a>
-            <form method="post" action="{{ path('taxi_delete', {'id': taxi.id}) }}" style="display:inline" onsubmit="return confirm('Confirmer la suppression ?');">
-              <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ taxi.id) }}">
-              <button type="submit" class="text-red-500">Supprimer</button>
-            </form>
-          </td>
-        </tr>
-      {% else %}
+<div class="bg-white shadow-md rounded-2xl p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-xl font-semibold text-slate-700">Liste des Taxis</h1>
+    <a href="{{ path('taxi_new') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition">
+      + Ajouter un Taxi
+    </a>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full text-sm text-left text-slate-600">
+      <thead class="text-xs uppercase bg-gray-100 text-slate-600">
         <tr>
-          <td class="p-2 border text-center" colspan="8">Aucun taxi trouvé.</td>
+          <th class="px-4 py-3">Immatriculation</th>
+          <th class="px-4 py-3">Marque</th>
+          <th class="px-4 py-3">Modèle</th>
+          <th class="px-4 py-3">Année</th>
+          <th class="px-4 py-3">Capacité</th>
+          <th class="px-4 py-3">Zone</th>
+          <th class="px-4 py-3">Statut</th>
+          <th class="px-4 py-3">Actions</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-100">
+        {% for taxi in taxis %}
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">{{ taxi.immatriculation }}</td>
+            <td class="px-4 py-3">{{ taxi.marque }}</td>
+            <td class="px-4 py-3">{{ taxi.modele }}</td>
+            <td class="px-4 py-3">{{ taxi.anneeFabrication }}</td>
+            <td class="px-4 py-3">{{ taxi.capacite }}</td>
+            <td class="px-4 py-3">{{ taxi.zoneDesserte }}</td>
+            <td class="px-4 py-3">
+              {% if taxi.statut == 'Disponible' %}
+                <span class="text-green-600 font-semibold">Disponible</span>
+              {% elseif taxi.statut == 'Occupé' %}
+                <span class="text-yellow-500 font-semibold">Occupé</span>
+              {% else %}
+                <span class="text-red-500 font-semibold">Indisponible</span>
+              {% endif %}
+            </td>
+            <td class="px-4 py-3 space-x-2">
+              <a href="{{ path('taxi_edit', {'id': taxi.id}) }}" class="text-blue-500 hover:underline">Modifier</a>
+              <form method="post" action="{{ path('taxi_delete', {'id': taxi.id}) }}" class="inline" onsubmit="return confirm('Confirmer la suppression ?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ taxi.id) }}">
+                <button type="submit" class="text-red-500 hover:underline">Supprimer</button>
+              </form>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="8" class="px-4 py-3 text-center text-slate-400">Aucun taxi trouvé.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}

@@ -1,43 +1,54 @@
+{% extends 'back_office/base.html.twig' %}
+
 {% block title %}Ajouter une Course{% endblock %}
 
+{% block page_title %}Ajouter une Course{% endblock %}
+
 {% block body %}
-    <h1>Ajouter une Course</h1>
-    {{ form_start(form) }}
-        {{ form_row(form.taxi) }}
-        {{ form_row(form.dateCourse) }}
-        {{ form_row(form.villeDepart) }}
-        {{ form_row(form.villeArrivee) }}
-        {{ form_row(form.distanceKm) }}
-        {{ form_row(form.montant) }}
-        {% if form.statut is defined %}
-            {{ form_row(form.statut) }}
-        {% endif %}
-        <button type="submit">Réserver</button>
-    {{ form_end(form) }}
-    <a href="{{ path('course_index') }}">Retour à la liste</a>
+<div class="bg-white shadow-md rounded-2xl p-6 max-w-3xl mx-auto">
+  <h1 class="text-xl font-semibold text-slate-700 mb-6">Ajouter une Course</h1>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const distanceInput = document.getElementById('{{ form.distanceKm.vars.id }}');
-            const montantInput  = document.getElementById('{{ form.montant.vars.id }}');
-            const taxiSelect    = document.getElementById('{{ form.taxi.vars.id }}');
+  {{ form_start(form) }}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {{ form_row(form.taxi, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+      {{ form_row(form.dateCourse, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+      {{ form_row(form.villeDepart, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+      {{ form_row(form.villeArrivee, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+      {{ form_row(form.distanceKm, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+      {{ form_row(form.montant, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+      {% if form.statut is defined %}
+        {{ form_row(form.statut, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+      {% endif %}
+    </div>
 
-            function updateMontant() {
-                const distance = parseFloat(distanceInput.value) || 0;
-                const selectedOption = taxiSelect.options[taxiSelect.selectedIndex];
-                // Récupération du tarif avec le bon format
-                const tarifStr = selectedOption.getAttribute('data-tarif') || '0';
-                const tarif = parseFloat(tarifStr.replace(',', '.'));
-                console.log('Distance :', distance, 'Tarif :', tarif);
-                const montant = distance * tarif;
-                montantInput.value = montant.toFixed(2);
-                console.log('Montant calculé :', montantInput.value);
-            }
+    <div class="mt-6 flex justify-between items-center">
+      <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition">
+        Réserver
+      </button>
+      <a href="{{ path('course_index') }}" class="text-sm text-slate-500 hover:underline">← Retour à la liste</a>
+    </div>
+  {{ form_end(form) }}
+</div>
 
-            distanceInput.addEventListener('input', updateMontant);
-            taxiSelect.addEventListener('change', updateMontant);
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const distanceInput = document.getElementById('{{ form.distanceKm.vars.id }}');
+    const montantInput  = document.getElementById('{{ form.montant.vars.id }}');
+    const taxiSelect    = document.getElementById('{{ form.taxi.vars.id }}');
 
-            updateMontant();
-        });
-    </script>
+    function updateMontant() {
+      const distance = parseFloat(distanceInput.value) || 0;
+      const selectedOption = taxiSelect.options[taxiSelect.selectedIndex];
+      const tarifStr = selectedOption.getAttribute('data-tarif') || '0';
+      const tarif = parseFloat(tarifStr.replace(',', '.'));
+      const montant = distance * tarif;
+      montantInput.value = montant.toFixed(2);
+    }
+
+    distanceInput.addEventListener('input', updateMontant);
+    taxiSelect.addEventListener('change', updateMontant);
+
+    updateMontant();
+  });
+</script>
 {% endblock %}

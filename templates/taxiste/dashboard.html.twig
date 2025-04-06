@@ -1,56 +1,76 @@
+{% extends 'back_office/base.html.twig' %}
 
 {% block title %}Tableau de bord Taxiste{% endblock %}
 
 {% block body %}
-  <h1>Bienvenue, {{ app.user.Email }}</h1>
-  
-  <h2>Votre Taxi</h2>
-  <p>
-    {{ taxi.marque }} {{ taxi.modele }} - {{ taxi.immatriculation }}<br>
-    Statut : {{ taxi.statut }}
-  </p>
-  <form action="{{ path('taxiste_taxi_change_status', {'id': taxi.id}) }}" method="post" style="display:inline">
-    <button class="btn btn-warning btn-sm">
-      {% if taxi.statut == 'Disponible' %}
-        Passer en Occupé
-      {% else %}
-        Passer en Disponible
-      {% endif %}
-    </button>
-  </form>
-  
-  <h2>Vos Courses</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Client</th>
-        <th>Statut</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for course in courses %}
-        <tr>
-          <td>{{ course.dateCourse|date('d/m/Y H:i') }}</td>
-          <td>{{ course.user.Email }}</td>
-          <td>{{ course.statut }}</td>
-          <td>
-            {% if course.statut == 'En attente' %}
-              <form action="{{ path('taxiste_course_accept', {'id': course.id}) }}" method="post" style="display:inline">
-                <button class="btn btn-success btn-sm">Accepter</button>
-              </form>
-              <form action="{{ path('taxiste_course_refuse', {'id': course.id}) }}" method="post" style="display:inline" onsubmit="return confirm('Refuser cette course ?');">
-                <button class="btn btn-danger btn-sm">Refuser</button>
-              </form>
-            {% endif %}
-          </td>
+<div class="bg-white shadow-md rounded-2xl max-w-3xl mx-auto border border-gray-200">
+  <!-- Section Titre -->
+  <div class="px-6 py-3 rounded-t-2xl" style="background-color: #3B82F6 !important;">
+    <h1 class="text-xl font-bold" style="color: #ffffff !important;">Tableau de bord du Taxi</h1>
+  </div>
+
+  <div class="p-6">
+    <h2 class="text-lg font-semibold">Votre Taxi</h2>
+    <p class="mb-4">
+      {{ taxi.marque }} {{ taxi.modele }} - {{ taxi.immatriculation }}<br>
+      Statut : {{ taxi.statut }}
+    </p>
+
+    {# Bouton de changement de statut avec gestion de plusieurs états #}
+    <form action="{{ path('taxiste_taxi_change_status', {'id': taxi.id}) }}" method="post" class="mb-6 inline-block">
+      <button type="submit" style="background-color: #3B82F6 !important; color: #ffffff !important;" class="font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 w-full sm:w-auto">
+        {% if taxi.statut|lower == 'disponible' %}
+          Passer en en course
+        {% elseif taxi.statut|lower == 'en course' %}
+          Passer en indisponible
+        {% elseif taxi.statut|lower == 'indisponible' %}
+          Passer en disponible
+        {% else %} 
+          Changer le statut
+        {% endif %}
+      </button>
+    </form>
+
+    <h2 class="text-lg font-semibold mb-2">Vos Courses</h2>
+    <table class="w-full mt-2 border-collapse">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="py-2 px-4 border">Date</th>
+          <th class="py-2 px-4 border">Client</th>
+          <th class="py-2 px-4 border">Statut</th>
+          <th class="py-2 px-4 border">Actions</th>
         </tr>
-      {% else %}
-        <tr>
-          <td colspan="4">Aucune course en attente.</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {% for course in courses %}
+          <tr class="hover:bg-gray-50">
+            <td class="py-2 px-4 border">{{ course.dateCourse|date('d/m/Y H:i') }}</td>
+            <td class="py-2 px-4 border">{{ course.user.Email }}</td>
+            <td class="py-2 px-4 border">{{ course.statut }}</td>
+            <td class="py-2 px-4 border space-x-2">
+              {% if course.statut|lower == 'en attente' %}
+                <form action="{{ path('taxiste_course_accept', {'id': course.id}) }}" method="post" class="inline-block">
+                  <button type="submit" style="background-color: #10B981 !important; color: #ffffff !important;" class="font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 w-full sm:w-auto">
+                    Accepter
+                  </button>
+                </form>
+                <form action="{{ path('taxiste_course_refuse', {'id': course.id}) }}" method="post" class="inline-block" onsubmit="return confirm('Refuser cette course ?');">
+                  <button type="submit" style="background-color: #EF4444 !important; color: #ffffff !important;" class="font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 w-full sm:w-auto">
+                    Refuser
+                  </button>
+                </form>
+              {% else %} 
+                <span class="text-sm text-gray-600">Aucune action</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="4" class="py-2 px-4 border text-center">Aucune course en attente.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}

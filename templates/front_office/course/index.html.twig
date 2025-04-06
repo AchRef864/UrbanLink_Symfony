@@ -1,4 +1,16 @@
+{% extends 'back_office/base.html.twig' %}
 
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('css/course.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+  <script src="{{ asset('js/course.js') }}"></script>
+{% endblock %}
+
+{% block header %}
+  <h1>Mes Courses</h1>
+{% endblock %}
 {% block title %}Mes Courses{% endblock %}
 
 {% block body %}

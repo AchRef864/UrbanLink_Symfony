@@ -22,7 +22,7 @@ class Rating
     private ?User $user = null;
 
     #[ORM\Column(type:"integer")]
-    private int $note; // Note sur 10
+    private int $note =0; // Note sur 10
 
     #[ORM\Column(type:"text", nullable:true)]
     private ?string $commentaire = null;

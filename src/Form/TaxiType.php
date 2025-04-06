@@ -39,7 +39,7 @@ class TaxiType extends AbstractType
                 'placeholder' => 'Choisissez d\'abord une marque',
             ])
             ->add('anneeFabrication', IntegerType::class, [
-                'attr' => ['min' => 1900, 'max' => date('Y')],
+                'attr' => ['min' => 2014, 'max' => date('Y')],
             ])
             ->add('capacite', IntegerType::class, [
                 'attr' => ['min' => 1, 'max' => 9],
@@ -56,9 +56,12 @@ class TaxiType extends AbstractType
             ])
             ->add('statut', ChoiceType::class, [
                 'choices' => [
-                    'Disponible' => 'Disponible',
-                    'En service' => 'En service',
-                    'En réservation' => 'En réservation',
+                    'Disponible'      => 'Disponible',
+                    'En course'       => 'En course',
+                    'Indisponible'    => 'Indisponible',
+                    'En maintenance'  => 'En maintenance',
+                    'Hors service'    => 'Hors service',
+
                 ],
                 'placeholder' => 'Choisissez un statut',
             ])

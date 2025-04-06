@@ -1,97 +1,141 @@
+{% extends 'back_office/base.html.twig' %}
+
 {% block title %}Ajouter Taxi{% endblock %}
 
 {% block body %}
-  <h1 class="text-2xl font-bold mb-4">Ajouter un nouveau Taxi</h1>
+<div class="bg-white shadow-md rounded-2xl max-w-3xl mx-auto border border-yellow-300">
+  <!-- Section titre avec fond jaune -->
+  <div class="px-6 py-3 rounded-t-2xl" style="background-color: #FFEB3B;">
+    <h1 class="text-xl font-bold" style="color: #FF9800;">Ajouter un nouveau Taxi</h1>
+  </div>
 
-  {{ form_start(form) }}
-    <div class="mb-4">
-      {{ form_label(form.immatriculation) }}
-      {{ form_widget(form.immatriculation, {'attr': {'class': 'border p-2 w-full'}}) }}
-      {{ form_errors(form.immatriculation) }}
-    </div>
-    <div class="mb-4">
-      {{ form_label(form.marque) }}
-      {{ form_widget(form.marque, {'attr': {'class': 'border p-2 w-full'}}) }}
-      {{ form_errors(form.marque) }}
-    </div>
-    <div class="mb-4">
-      {{ form_label(form.modele) }}
-      {{ form_widget(form.modele, {'attr': {'class': 'border p-2 w-full'}}) }}
-      {{ form_errors(form.modele) }}
-    </div>
-    <div class="mb-4">
-      {{ form_label(form.anneeFabrication) }}
-      {{ form_widget(form.anneeFabrication, {'attr': {'class': 'border p-2 w-full'}}) }}
-      {{ form_errors(form.anneeFabrication) }}
-    </div>
-    <div class="mb-4">
-      {{ form_label(form.capacite) }}
-      {{ form_widget(form.capacite, {'attr': {'class': 'border p-2 w-full'}}) }}
-      {{ form_errors(form.capacite) }}
-    </div>
-    <div class="mb-4">
-      {{ form_label(form.zoneDesserte) }}
-      {{ form_widget(form.zoneDesserte, {'attr': {'class': 'border p-2 w-full'}}) }}
-      {{ form_errors(form.zoneDesserte) }}
-    </div>
-    <div class="mb-4">
-      {{ form_label(form.statut) }}
-      {{ form_widget(form.statut, {'attr': {'class': 'border p-2 w-full'}}) }}
-      {{ form_errors(form.statut) }}
-    </div>
-    <div class="mb-4">
-      {{ form_label(form.licenceNumero) }}
-      {{ form_widget(form.licenceNumero, {'attr': {'class': 'border p-2 w-full'}}) }}
-      {{ form_errors(form.licenceNumero) }}
-    </div>
-    <div class="mb-4">
-      {{ form_label(form.licenceDateObtention) }}
-      {{ form_widget(form.licenceDateObtention, {'attr': {'class': 'border p-2 w-full'}}) }}
-      {{ form_errors(form.licenceDateObtention) }}
-    </div>
-    <div class="mb-4">
-      {{ form_label(form.tarifBase) }}
-      {{ form_widget(form.tarifBase, {'attr': {'class': 'border p-2 w-full'}}) }}
-      {{ form_errors(form.tarifBase) }}
-    </div>
+  <div class="p-6">
+    {{ form_start(form) }}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-    <!-- Bouton Ajouter Taxi -->
-    <div class="mt-6">
-      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Ajouter Taxi
-      </button>
-    </div>
-  {{ form_end(form) }}
+        <div class="mb-4">
+          {{ form_label(form.immatriculation) }}
+          {{ form_widget(form.immatriculation, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+          <div class="text-red-500 text-sm mt-1">
+            {{ form_errors(form.immatriculation) }}
+          </div>
+        </div>
 
-  <!-- Script pour la mise à jour dynamique -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-      $(document).ready(function () {
-          $('#taxi_marque').change(function () {
-              const marque = $(this).val();
-              const modeleField = $('#taxi_modele');
+        <div class="mb-4">
+          {{ form_label(form.marque) }}
+          {{ form_widget(form.marque, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+          <div class="text-red-500 text-sm mt-1">
+            {{ form_errors(form.marque) }}
+          </div>
+        </div>
 
-              if (marque) {
-                  $.ajax({
-                      url: '{{ path("get_models") }}',
-                      method: 'POST',
-                      data: { marque: marque },
-                      success: function (data) {
-                          modeleField.empty();
-                          modeleField.append('<option value="">Choisissez un modèle</option>');
-                          data.forEach(function (model) {
-                              modeleField.append('<option value="' + model + '">' + model + '</option>');
-                          });
-                      },
-                      error: function () {
-                          alert('Une erreur est survenue lors du chargement des modèles.');
-                      }
-                  });
-              } else {
-                  modeleField.empty();
-                  modeleField.append('<option value="">Choisissez d\'abord une marque</option>');
-              }
-          });
-      });
-  </script>
+        <div class="mb-4">
+          {{ form_label(form.modele) }}
+          {{ form_widget(form.modele, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+          <div class="text-red-500 text-sm mt-1">
+            {{ form_errors(form.modele) }}
+          </div>
+        </div>
+
+        <div class="mb-4">
+          {{ form_label(form.anneeFabrication) }}
+          {{ form_widget(form.anneeFabrication, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+          <div class="text-red-500 text-sm mt-1">
+            {{ form_errors(form.anneeFabrication) }}
+          </div>
+        </div>
+
+        <div class="mb-4">
+          {{ form_label(form.capacite) }}
+          {{ form_widget(form.capacite, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+          <div class="text-red-500 text-sm mt-1">
+            {{ form_errors(form.capacite) }}
+          </div>
+        </div>
+
+        <div class="mb-4">
+          {{ form_label(form.zoneDesserte) }}
+          {{ form_widget(form.zoneDesserte, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+          <div class="text-red-500 text-sm mt-1">
+            {{ form_errors(form.zoneDesserte) }}
+          </div>
+        </div>
+
+        <div class="mb-4">
+          {{ form_label(form.statut) }}
+          {{ form_widget(form.statut, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+          <div class="text-red-500 text-sm mt-1">
+            {{ form_errors(form.statut) }}
+          </div>
+        </div>
+
+        <div class="mb-4">
+          {{ form_label(form.licenceNumero) }}
+          {{ form_widget(form.licenceNumero, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+          <div class="text-red-500 text-sm mt-1">
+            {{ form_errors(form.licenceNumero) }}
+          </div>
+        </div>
+
+        <div class="mb-4">
+          {{ form_label(form.licenceDateObtention) }}
+          {{ form_widget(form.licenceDateObtention, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+          <div class="text-red-500 text-sm mt-1">
+            {{ form_errors(form.licenceDateObtention) }}
+          </div>
+        </div>
+
+        <div class="mb-4">
+          {{ form_label(form.tarifBase) }}
+          {{ form_widget(form.tarifBase, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+          <div class="text-red-500 text-sm mt-1">
+            {{ form_errors(form.tarifBase) }}
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mt-6 flex justify-between items-center">
+        <!-- Bouton Ajouter Taxi -->
+        <button type="submit" class="bg-[#FFEB3B] hover:bg-[#FF9800] text-white font-bold py-2 px-6 rounded-lg shadow-md transition" style="background-color: #FFEB3B; color: #FFFFFF;">
+          Ajouter Taxi
+        </button>
+        <a href="{{ path('taxi_index') }}" class="text-sm text-slate-500 hover:underline">← Retour à la liste</a>
+      </div>
+    {{ form_end(form) }}
+  </div>
+</div>
+
+<!-- Script pour la mise à jour dynamique -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#{{ form.marque.vars.id }}').change(function () {
+      const marque = $(this).val();
+      const modeleField = $('#{{ form.modele.vars.id }}');
+
+      if (marque) {
+        $.ajax({
+          url: '{{ path("get_models") }}',
+          method: 'POST',
+          data: { marque: marque },
+          success: function (data) {
+            modeleField.empty();
+            modeleField.append('<option value="">Choisissez un modèle</option>');
+            data.forEach(function (model) {
+              modeleField.append('<option value="' + model + '">' + model + '</option>');
+            });
+          },
+          error: function () {
+            alert('Une erreur est survenue lors du chargement des modèles.');
+          }
+        });
+      } else {
+        modeleField.empty();
+        modeleField.append('<option value="">Choisissez d\'abord une marque</option>');
+      }
+    });
+  });
+</script>
+
 {% endblock %}
