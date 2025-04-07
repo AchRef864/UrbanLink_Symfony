@@ -9,19 +9,31 @@ use App\Entity\Avis;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AvisType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('note', IntegerType::class)
+            ->add('note', ChoiceType::class, [
+            'choices' => [
+                '1' => 1,
+                '2' => 2,
+                '3' => 3,
+                '4' => 4,
+                '5' => 5,
+            ],
+            'placeholder' => 'Please rate our service', // Optional: adds a placeholder
+            'required' => true,
+        ])
             ->add('commentaire', TextareaType::class)
-            ->add('user_id', IntegerType::class
+           // ->add('user_id', IntegerType::class
             //HiddenType::class, [
               //  'mapped' => false, // Prevents errors since user_id is normally set in the controller
-            //
-            );
+            //])
+            //)
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

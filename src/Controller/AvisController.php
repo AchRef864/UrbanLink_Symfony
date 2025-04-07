@@ -21,7 +21,7 @@ final class AvisController extends AbstractController
             'avis' => $avisRepository->findAll(),
         ]);
     }
-
+/*
     #[Route('/new', name: 'app_avis_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -41,7 +41,32 @@ final class AvisController extends AbstractController
             'form' => $form,
         ]);
     }
-    
+*/
+// user id fixed to "1" since no login yet
+#[Route('/new', name: 'app_avis_new', methods: ['GET', 'POST'])]
+public function new(Request $request, EntityManagerInterface $entityManager): Response
+{
+    $avi = new Avis(); // ⚡ No need to setDateAvis here: it's already done in Avis __construct()
+
+    $form = $this->createForm(AvisType::class, $avi);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        // ⚡ Set user ID manually until login is added
+        $avi->setUserId(1); // <--- hardcode user id
+
+        $entityManager->persist($avi);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_avis_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    return $this->render('avis/new.html.twig', [
+        'avi' => $avi,
+        'form' => $form,
+    ]);
+}
+
 
     #[Route('/{id}', name: 'app_avis_show', methods: ['GET'])]
     public function show(Avis $avi): Response

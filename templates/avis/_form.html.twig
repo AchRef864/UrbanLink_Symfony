@@ -1,8 +1,42 @@
-{{ form_start(form) }}
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
 
-    {{ form_row(form.note) }}
-    {{ form_row(form.commentaire) }}
+<div class="card shadow-sm p-4 mb-4 rounded-4">
+    <h2 class="mb-4 text-center">📝 Leave a Review</h2>
 
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <!-- Rating Section -->
+    <div class="mb-4">
+        {{ form_label(form.note, 'Rating', {'label_attr': {'class': 'form-label'}}) }}
+        <div>
+            {{ form_widget(form.note, {
+                'attr': {
+                    'class': 'form-select',
+                    'aria-label': 'Select rating'
+                }
+            }) }}
+        </div>
+        {{ form_errors(form.note) }}
+    </div>
+
+    <!-- Comment Section -->
+    <div class="mb-4">
+        {{ form_label(form.commentaire, 'Your Comment', {'label_attr': {'class': 'form-label'}}) }}
+        <div>
+            {{ form_widget(form.commentaire, {
+                'attr': {
+                    'class': 'form-control',
+                    'aria-label': 'Enter your review here'
+                }
+            }) }}
+        </div>
+        {{ form_errors(form.commentaire) }}
+    </div>
+
+    <!-- Submit Button -->
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5">
+            {{ button_label|default('Submit 🚀') }}
+        </button>
+    </div>
+</div>
 
 {{ form_end(form) }}
