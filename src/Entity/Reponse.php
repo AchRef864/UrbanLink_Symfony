@@ -26,6 +26,11 @@ class Reponse
     #[ORM\Column]
     private ?int $user_id = null;
 
+    public function __construct()
+    {
+        $this->date_reponse = new \DateTime(); // Automatically set the current date
+    }
+
     public function getId(): ?int
     {
         return $this->id;

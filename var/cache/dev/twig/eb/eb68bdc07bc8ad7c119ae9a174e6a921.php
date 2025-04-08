@@ -130,10 +130,10 @@ class __TwigTemplate_8d1f5700177605afaf3e51fc60a93c7a extends Template
         yield "</td>
             </tr>
             <tr>
-                <th>User_id</th>
+                <th>User</th>
                 <td>";
         // line 28
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["avi"]) || array_key_exists("avi", $context) ? $context["avi"] : (function () { throw new RuntimeError('Variable "avi" does not exist.', 28, $this->source); })()), "userId", [], "any", false, false, false, 28), "html", null, true);
+        yield ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["avi"]) || array_key_exists("avi", $context) ? $context["avi"] : (function () { throw new RuntimeError('Variable "avi" does not exist.', 28, $this->source); })()), "user", [], "any", false, false, false, 28)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["avi"]) || array_key_exists("avi", $context) ? $context["avi"] : (function () { throw new RuntimeError('Variable "avi" does not exist.', 28, $this->source); })()), "user", [], "any", false, false, false, 28), "username", [], "any", false, false, false, 28), "html", null, true)) : ("No user"));
         yield "</td>
             </tr>
         </tbody>
@@ -215,8 +215,8 @@ class __TwigTemplate_8d1f5700177605afaf3e51fc60a93c7a extends Template
                 <td>{{ avi.dateAvis ? avi.dateAvis|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>User_id</th>
-                <td>{{ avi.userId }}</td>
+                <th>User</th>
+                <td>{{ avi.user ? avi.user.username : 'No user' }}</td>
             </tr>
         </tbody>
     </table>

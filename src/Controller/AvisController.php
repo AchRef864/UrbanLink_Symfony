@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Repository\ReponseRepository;
+
 
 #[Route('/avis')]
 final class AvisController extends AbstractController
@@ -104,4 +106,16 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
 
         return $this->redirectToRoute('app_avis_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{id}/reponses', name: 'app_avis_reponses', methods: ['GET'])]
+public function viewReponses(int $id, ReponseRepository $reponseRepository): Response
+{
+    $reponses = $reponseRepository->findBy(['avis_id' => $id]);
+
+    return $this->render('avis/reponses.html.twig', [
+        'reponses' => $reponses,
+        'avis_id' => $id,
+    ]);
+}
+
 }

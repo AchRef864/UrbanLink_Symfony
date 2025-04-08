@@ -156,14 +156,18 @@ class __TwigTemplate_dcf1140d25d6518581716a9f513f890d extends Template
             // line 43
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_edit", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 43)]), "html", null, true);
             yield "\" class=\"text-xs font-semibold text-slate-400 dark:text-white dark:opacity-80\">Edit</a>
+                                                <a href=\"";
+            // line 44
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_reponses", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 44)]), "html", null, true);
+            yield "\" class=\"text-xs font-semibold text-blue-600 dark:text-blue-400\">View Responses</a>
                                             </td>
                                         </tr>
                                     ";
             $context['_iterated'] = true;
         }
-        // line 46
+        // line 47
         if (!$context['_iterated']) {
-            // line 47
+            // line 48
             yield "                                        <tr>
                                             <td colspan=\"4\" class=\"text-center p-4\">No records found</td>
                                         </tr>
@@ -172,14 +176,14 @@ class __TwigTemplate_dcf1140d25d6518581716a9f513f890d extends Template
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['avi'], $context['_parent'], $context['_iterated']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 51
+        // line 52
         yield "                                </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
                 <a href=\"";
-        // line 56
+        // line 57
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_new");
         yield "\" class=\"text-sm text-blue-600 dark:text-blue-400\">Create New</a>
             </div>
@@ -216,7 +220,7 @@ class __TwigTemplate_dcf1140d25d6518581716a9f513f890d extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  183 => 56,  176 => 51,  167 => 47,  165 => 46,  157 => 43,  153 => 42,  147 => 39,  142 => 37,  138 => 36,  135 => 35,  130 => 34,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
+        return array (  187 => 57,  180 => 52,  171 => 48,  169 => 47,  161 => 44,  157 => 43,  153 => 42,  147 => 39,  142 => 37,  138 => 36,  135 => 35,  130 => 34,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -264,6 +268,7 @@ class __TwigTemplate_dcf1140d25d6518581716a9f513f890d extends Template
                                             <td class=\"p-2 align-middle bg-transparent border-b dark:border-white/40 shadow-transparent\">
                                                 <a href=\"{{ path('app_avis_show', {'id': avi.id}) }}\" class=\"text-xs font-semibold text-slate-400 dark:text-white dark:opacity-80\">Show</a>
                                                 <a href=\"{{ path('app_avis_edit', {'id': avi.id}) }}\" class=\"text-xs font-semibold text-slate-400 dark:text-white dark:opacity-80\">Edit</a>
+                                                <a href=\"{{ path('app_avis_reponses', {'id': avi.id}) }}\" class=\"text-xs font-semibold text-blue-600 dark:text-blue-400\">View Responses</a>
                                             </td>
                                         </tr>
                                     {% else %}
