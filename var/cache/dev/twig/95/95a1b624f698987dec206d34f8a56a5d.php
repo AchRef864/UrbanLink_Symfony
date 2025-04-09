@@ -32,10 +32,10 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
         $this->parent = false;
 
         $this->blocks = [
+            'title' => [$this, 'block_title'],
             'stylesheets' => [$this, 'block_stylesheets'],
-            'javascripts' => [$this, 'block_javascripts'],
-            'sidebar' => [$this, 'block_sidebar'],
             'body' => [$this, 'block_body'],
+            'javascripts' => [$this, 'block_javascripts'],
         ];
     }
 
@@ -50,145 +50,46 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
 
         // line 1
         yield "<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset=\"UTF-8\" />
-    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />
+<html lang=\"en\">
+<head>
+  <meta charset=\"UTF-8\">
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+  <title>";
+        // line 6
+        yield from $this->unwrap()->yieldBlock('title', $context, $blocks);
+        yield "</title>
 
-    <link rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"";
-        // line 7
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/img/apple-icon.png"), "html", null, true);
-        yield "\" />
-    <link rel=\"icon\" type=\"image/png\" href=\"";
-        // line 8
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/img/favicon.png"), "html", null, true);
-        yield "\" />
-    <title>Argon Dashboard 2 Tailwind by Creative Tim</title>
-    <!--     Fonts and icons     -->
-    <link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700\" rel=\"stylesheet\" />
-    <!-- Font Awesome Icons -->
-    <script src=\"https://kit.fontawesome.com/42d5adcbca.js\" crossorigin=\"anonymous\"></script>
-    <!-- Nucleo Icons -->
-    <link href=\"";
-        // line 15
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/css/nucleo-icons.css"), "html", null, true);
-        yield "\" rel=\"stylesheet\" />
-    <link href=\"";
-        // line 16
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/css/nucleo-svg.css"), "html", null, true);
-        yield "\" rel=\"stylesheet\" />
-    <!-- Popper -->
-    <script src=\"https://unpkg.com/@popperjs/core@2\"></script>
-    <!-- Main Styling -->
-    <link rel=\"stylesheet\" href=\"";
-        // line 20
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("build/app.css"), "html", null, true);
-        yield "\">
-    <link href=\"";
-        // line 21
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/css/argon-dashboard-tailwind.css?v=1.0.1"), "html", null, true);
-        yield "\" rel=\"stylesheet\" />
+  <!-- Common CSS -->
+  <link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700\" rel=\"stylesheet\">
+  <script src=\"https://kit.fontawesome.com/42d5adcbca.js\" crossorigin=\"anonymous\"></script>
 
-        ";
-        // line 23
+  ";
+        // line 12
         yield from $this->unwrap()->yieldBlock('stylesheets', $context, $blocks);
-        // line 25
-        yield "
- <!-- Add custom CSS to hide the date picker icon -->
-        <style>
-            /* Hide the date picker icon */
-            input[type=\"date\"].datepicker::-webkit-calendar-picker-indicator {
-                display: none;
-            }
-
-            input[type=\"date\"].datepicker {
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                appearance: none;
-            }
-        </style>
-
-    <script src=\"";
-        // line 40
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/js/plugins/chartjs.min.js"), "html", null, true);
-        yield "\" async></script>
-    <!-- plugin for scrollbar  -->
-    <script src=\"";
-        // line 42
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/js/plugins/perfect-scrollbar.min.js"), "html", null, true);
-        yield "\" async></script>
-    <!-- main script file  -->
-    <script src=\"";
-        // line 44
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/js/argon-dashboard-tailwind.js?v=1.0.1"), "html", null, true);
-        yield "\" async></script>
-        ";
-        // line 45
-        yield from $this->unwrap()->yieldBlock('javascripts', $context, $blocks);
-        // line 47
-        yield "    </head>
-    <body>
-    <div>
-      <aside class=\"argon-sidebar fixed inset-y-0 w-64 items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0\" aria-expanded=\"false\">
-        <div class=\"h-19\">
-          <i class=\"absolute top-0 right-0 p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden\" sidenav-close></i>
-          <a class=\"block px-8 py-6 m-0 text-sm whitespace-nowrap text-slate-700\" href=\"https://demos.creative-tim.com/argon-dashboard-tailwind/pages/dashboard.html\" target=\"_blank\">
-            <img src=\"";
-        // line 54
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/img/logo-ct-dark.png"), "html", null, true);
-        yield "\" class=\"inline h-full max-w-full transition-all duration-200 dark:hidden ease-nav-brand max-h-8\" alt=\"main_logo\" />
-            <img src=\"";
-        // line 55
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/img/logo-ct.png"), "html", null, true);
-        yield "\" class=\"hidden h-full max-w-full transition-all duration-200 dark:inline ease-nav-brand max-h-8\" alt=\"main_logo\" />
-            <span class=\"ml-1 font-semibold transition-all duration-200 ease-nav-brand\">Argon Dashboard 2</span>
-          </a>
-        </div>
-
-        <hr class=\"h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent\" />
-
-        ";
-        // line 62
-        yield from $this->unwrap()->yieldBlock('sidebar', $context, $blocks);
-        // line 161
-        yield "        
-        ";
-        // line 162
-        if (( !array_key_exists("show_docs", $context) || (isset($context["show_docs"]) || array_key_exists("show_docs", $context) ? $context["show_docs"] : (function () { throw new RuntimeError('Variable "show_docs" does not exist.', 162, $this->source); })()))) {
-            // line 163
-            yield "        <div class=\"mx-4\">
-          <!-- load phantom colors for card after: -->
-          <p class=\"invisible hidden text-gray-800 text-red-500 text-red-600 text-blue-500 bg-gray-500/30 bg-cyan-500/30 bg-emerald-500/30 bg-orange-500/30 bg-red-500/30 after:bg-gradient-to-tl after:from-zinc-800 after:to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850 after:from-blue-700 after:to-cyan-500 after:from-orange-500 after:to-yellow-500 after:from-green-600 after:to-lime-400 after:from-red-600 after:to-orange-600 after:from-slate-600 after:to-slate-300 text-emerald-500 text-cyan-500 text-slate-400\"></p>
-          <div class=\"relative flex flex-col min-w-0 break-words bg-transparent border-0 shadow-none rounded-2xl bg-clip-border\" sidenav-card>
-            <img class=\"w-1/2 mx-auto\" src=\"";
-            // line 167
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/img/illustrations/icon-documentation.svg"), "html", null, true);
-            yield "\" alt=\"sidebar illustrations\" />
-            <div class=\"flex-auto w-full p-4 pt-0 text-center\">
-              <div class=\"transition-all duration-200 ease-nav-brand\">
-                <h6 class=\"mb-0 text-slate-700\">Need help?</h6>
-                <p class=\"mb-0 text-xs font-semibold leading-tight dark:opacity-60\">Please check our docs</p>
-              </div>
-            </div>
-          </div>
-          <a href=\"https://www.creative-tim.com/learning-lab/tailwind/html/quick-start/argon-dashboard/\" target=\"_blank\" class=\"inline-block w-full px-8 py-2 mb-4 text-xs font-bold leading-normal text-center capitalize transition-all ease-in rounded-lg shadow-md bg-slate-700 bg-150 hover:shadow-xs hover:-translate-y-px\">Documentation</a>
-          <!-- pro btn  -->
-          <a class=\"inline-block w-full px-8 py-2 text-xs font-bold leading-normal text-center align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md select-none bg-150 bg-x-25 hover:shadow-xs hover:-translate-y-px\" href=\"https://www.creative-tim.com/product/argon-dashboard-pro-tailwind?ref=sidebarfree\" target=\"_blank\">Upgrade to pro</a>
-        </div>
-        ";
-        }
-        // line 180
-        yield "      </aside>
-      <main>
-          ";
-        // line 182
-        yield from $this->unwrap()->yieldBlock('body', $context, $blocks);
-        // line 183
-        yield "      </main>
-    </div>
-    </body>
-</html>
+        // line 15
+        yield "</head>
+<body class=\"m-0 font-sans antialiased font-normal bg-white text-start text-base leading-default text-slate-500\">
 ";
+        // line 17
+        yield from $this->unwrap()->yieldBlock('body', $context, $blocks);
+        // line 18
+        yield "
+<!-- Common JS -->
+<script src=\"";
+        // line 20
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/js/plugins/perfect-scrollbar.min.js"), "html", null, true);
+        yield "\"></script>
+<script src=\"";
+        // line 21
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/js/argon-dashboard-tailwind.js"), "html", null, true);
+        yield "\"></script>
+
+";
+        // line 23
+        yield from $this->unwrap()->yieldBlock('javascripts', $context, $blocks);
+        // line 24
+        yield "</body>
+</html>";
         
         $__internal_5a27a8ba21ca79b61932376b2fa922d2->leave($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof);
 
@@ -198,7 +99,30 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
         yield from [];
     }
 
-    // line 23
+    // line 6
+    /**
+     * @return iterable<null|scalar|\Stringable>
+     */
+    public function block_title(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2 = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->enter($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "title"));
+
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "title"));
+
+        yield "UrbanLink";
+        
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
+
+        
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->leave($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof);
+
+        yield from [];
+    }
+
+    // line 12
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -211,8 +135,9 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "stylesheets"));
 
-        // line 24
-        yield "        ";
+        // line 13
+        yield "    <!-- Your template-specific CSS will be inserted here -->
+  ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -222,221 +147,7 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
         yield from [];
     }
 
-    // line 45
-    /**
-     * @return iterable<null|scalar|\Stringable>
-     */
-    public function block_javascripts(array $context, array $blocks = []): iterable
-    {
-        $macros = $this->macros;
-        $__internal_5a27a8ba21ca79b61932376b2fa922d2 = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_5a27a8ba21ca79b61932376b2fa922d2->enter($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
-
-        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
-
-        // line 46
-        yield "        ";
-        
-        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
-
-        
-        $__internal_5a27a8ba21ca79b61932376b2fa922d2->leave($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof);
-
-        yield from [];
-    }
-
-    // line 62
-    /**
-     * @return iterable<null|scalar|\Stringable>
-     */
-    public function block_sidebar(array $context, array $blocks = []): iterable
-    {
-        $macros = $this->macros;
-        $__internal_5a27a8ba21ca79b61932376b2fa922d2 = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_5a27a8ba21ca79b61932376b2fa922d2->enter($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "sidebar"));
-
-        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "sidebar"));
-
-        // line 63
-        yield "        <div class=\"items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full\">
-          <ul class=\"flex flex-col pl-0 mb-0\">
-          ";
-        // line 65
-        if (( !array_key_exists("show_dashboard", $context) || (isset($context["show_dashboard"]) || array_key_exists("show_dashboard", $context) ? $context["show_dashboard"] : (function () { throw new RuntimeError('Variable "show_dashboard" does not exist.', 65, $this->source); })()))) {
-            // line 66
-            yield "            <li class=\"mt-0.5 w-full\">
-              <a class=\"py-2.7 bg-blue-500/13 dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors\" href=\"";
-            // line 67
-            yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("dashboard");
-            yield "\">
-                <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
-                  <i class=\"relative top-0 text-sm leading-normal text-blue-500 ni ni-tv-2\"></i>
-                </div>
-                <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">Dashboard</span>
-              </a>
-            </li>
-            ";
-        }
-        // line 75
-        yield "
-            ";
-        // line 76
-        if (( !array_key_exists("show_maintenance", $context) || (isset($context["show_maintenance"]) || array_key_exists("show_maintenance", $context) ? $context["show_maintenance"] : (function () { throw new RuntimeError('Variable "show_maintenance" does not exist.', 76, $this->source); })()))) {
-            // line 77
-            yield "            <li class=\"mt-0.5 w-full\">
-              <a class=\" dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"";
-            // line 78
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("pages/tables.html"), "html", null, true);
-            yield "\">
-                <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
-                  <i class=\"relative top-0 text-sm leading-normal text-orange-500 ni ni-calendar-grid-58\"></i>
-                </div>
-                <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">Tables</span>
-              </a>
-            </li>
-            ";
-        }
-        // line 86
-        yield "
-            ";
-        // line 87
-        if (( !array_key_exists("show_billing", $context) || (isset($context["show_billing"]) || array_key_exists("show_billing", $context) ? $context["show_billing"] : (function () { throw new RuntimeError('Variable "show_billing" does not exist.', 87, $this->source); })()))) {
-            // line 88
-            yield "            <li class=\"mt-0.5 w-full\">
-              <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"";
-            // line 89
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("pages/billing.html"), "html", null, true);
-            yield "\">
-                <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5\">
-                  <i class=\"relative top-0 text-sm leading-normal text-emerald-500 ni ni-credit-card\"></i>
-                </div>
-                <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">Billing</span>
-              </a>
-            </li>
-            ";
-        }
-        // line 97
-        yield "
-            ";
-        // line 98
-        if (( !array_key_exists("show_vr", $context) || (isset($context["show_vr"]) || array_key_exists("show_vr", $context) ? $context["show_vr"] : (function () { throw new RuntimeError('Variable "show_vr" does not exist.', 98, $this->source); })()))) {
-            // line 99
-            yield "            <li class=\"mt-0.5 w-full\">
-              <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"";
-            // line 100
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("pages/virtual-reality.html"), "html", null, true);
-            yield "\">
-                <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
-                  <i class=\"relative top-0 text-sm leading-normal text-cyan-500 ni ni-app\"></i>
-                </div>
-                <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">Virtual Reality</span>
-              </a>
-            </li>
-            ";
-        }
-        // line 108
-        yield "
-            ";
-        // line 109
-        if (( !array_key_exists("show_RTL", $context) || (isset($context["show_RTL"]) || array_key_exists("show_RTL", $context) ? $context["show_RTL"] : (function () { throw new RuntimeError('Variable "show_RTL" does not exist.', 109, $this->source); })()))) {
-            // line 110
-            yield "            <li class=\"mt-0.5 w-full\">
-              <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"";
-            // line 111
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("pages/rtl.html"), "html", null, true);
-            yield "\">
-                <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
-                  <i class=\"relative top-0 text-sm leading-normal text-red-600 ni ni-world-2\"></i>
-                </div>
-                <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">RTL</span>
-              </a>
-            </li>
-            ";
-        }
-        // line 119
-        yield "
-            ";
-        // line 120
-        if (( !array_key_exists("show_account", $context) || (isset($context["show_account"]) || array_key_exists("show_account", $context) ? $context["show_account"] : (function () { throw new RuntimeError('Variable "show_account" does not exist.', 120, $this->source); })()))) {
-            // line 121
-            yield "            <li class=\"w-full mt-4\">
-              <h6 class=\"pl-6 ml-2 text-xs font-bold leading-tight uppercase opacity-60\">Account pages</h6>
-            </li>
-            ";
-        }
-        // line 125
-        yield "
-            ";
-        // line 126
-        if (( !array_key_exists("show_profile", $context) || (isset($context["show_profile"]) || array_key_exists("show_profile", $context) ? $context["show_profile"] : (function () { throw new RuntimeError('Variable "show_profile" does not exist.', 126, $this->source); })()))) {
-            // line 127
-            yield "            <li class=\"mt-0.5 w-full\">
-              <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"";
-            // line 128
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("pages/profile.html"), "html", null, true);
-            yield "\">
-                <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
-                  <i class=\"relative top-0 text-sm leading-normal text-slate-700 ni ni-single-02\"></i>
-                </div>
-                <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">Profile</span>
-              </a>
-            </li>
-            ";
-        }
-        // line 136
-        yield "
-            ";
-        // line 137
-        if (( !array_key_exists("show_signIn", $context) || (isset($context["show_signIn"]) || array_key_exists("show_signIn", $context) ? $context["show_signIn"] : (function () { throw new RuntimeError('Variable "show_signIn" does not exist.', 137, $this->source); })()))) {
-            // line 138
-            yield "            <li class=\"mt-0.5 w-full\">
-              <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"";
-            // line 139
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("pages/sign-in.html"), "html", null, true);
-            yield "\">
-                <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
-                  <i class=\"relative top-0 text-sm leading-normal text-orange-500 ni ni-single-copy-04\"></i>
-                </div>
-                <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">Sign In</span>
-              </a>
-            </li>
-            ";
-        }
-        // line 147
-        yield "
-            ";
-        // line 148
-        if (( !array_key_exists("show_signUp", $context) || (isset($context["show_signUp"]) || array_key_exists("show_signUp", $context) ? $context["show_signUp"] : (function () { throw new RuntimeError('Variable "show_signUp" does not exist.', 148, $this->source); })()))) {
-            // line 149
-            yield "            <li class=\"mt-0.5 w-full\">
-              <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"";
-            // line 150
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("pages/sign-up.html"), "html", null, true);
-            yield "\">
-                <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
-                  <i class=\"relative top-0 text-sm leading-normal text-cyan-500 ni ni-collection\"></i>
-                </div>
-                <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">Sign Up</span>
-              </a>
-            </li>
-            ";
-        }
-        // line 158
-        yield "          </ul>
-        </div>
-        ";
-        
-        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
-
-        
-        $__internal_5a27a8ba21ca79b61932376b2fa922d2->leave($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof);
-
-        yield from [];
-    }
-
-    // line 182
+    // line 17
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -448,6 +159,28 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
 
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
+
+        
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
+
+        
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->leave($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof);
+
+        yield from [];
+    }
+
+    // line 23
+    /**
+     * @return iterable<null|scalar|\Stringable>
+     */
+    public function block_javascripts(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2 = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->enter($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
+
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
 
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
@@ -479,197 +212,35 @@ class __TwigTemplate_fe6a33cf2ea68e993d136ecf41ee8298 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  440 => 182,  427 => 158,  416 => 150,  413 => 149,  411 => 148,  408 => 147,  397 => 139,  394 => 138,  392 => 137,  389 => 136,  378 => 128,  375 => 127,  373 => 126,  370 => 125,  364 => 121,  362 => 120,  359 => 119,  348 => 111,  345 => 110,  343 => 109,  340 => 108,  329 => 100,  326 => 99,  324 => 98,  321 => 97,  310 => 89,  307 => 88,  305 => 87,  302 => 86,  291 => 78,  288 => 77,  286 => 76,  283 => 75,  272 => 67,  269 => 66,  267 => 65,  263 => 63,  250 => 62,  239 => 46,  226 => 45,  215 => 24,  202 => 23,  187 => 183,  185 => 182,  181 => 180,  165 => 167,  159 => 163,  157 => 162,  154 => 161,  152 => 62,  142 => 55,  138 => 54,  129 => 47,  127 => 45,  123 => 44,  118 => 42,  113 => 40,  96 => 25,  94 => 23,  89 => 21,  85 => 20,  78 => 16,  74 => 15,  64 => 8,  60 => 7,  52 => 1,);
+        return array (  173 => 23,  151 => 17,  139 => 13,  126 => 12,  103 => 6,  91 => 24,  89 => 23,  84 => 21,  80 => 20,  76 => 18,  74 => 17,  70 => 15,  68 => 12,  59 => 6,  52 => 1,);
     }
 
     public function getSourceContext(): Source
     {
         return new Source("<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset=\"UTF-8\" />
-    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />
+<html lang=\"en\">
+<head>
+  <meta charset=\"UTF-8\">
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+  <title>{% block title %}UrbanLink{% endblock %}</title>
 
-    <link rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"{{asset('assets/img/apple-icon.png')}}\" />
-    <link rel=\"icon\" type=\"image/png\" href=\"{{asset('assets/img/favicon.png')}}\" />
-    <title>Argon Dashboard 2 Tailwind by Creative Tim</title>
-    <!--     Fonts and icons     -->
-    <link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700\" rel=\"stylesheet\" />
-    <!-- Font Awesome Icons -->
-    <script src=\"https://kit.fontawesome.com/42d5adcbca.js\" crossorigin=\"anonymous\"></script>
-    <!-- Nucleo Icons -->
-    <link href=\"{{asset('assets/css/nucleo-icons.css')}}\" rel=\"stylesheet\" />
-    <link href=\"{{asset('assets/css/nucleo-svg.css')}}\" rel=\"stylesheet\" />
-    <!-- Popper -->
-    <script src=\"https://unpkg.com/@popperjs/core@2\"></script>
-    <!-- Main Styling -->
-    <link rel=\"stylesheet\" href=\"{{ asset('build/app.css') }}\">
-    <link href=\"{{asset('assets/css/argon-dashboard-tailwind.css?v=1.0.1')}}\" rel=\"stylesheet\" />
+  <!-- Common CSS -->
+  <link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700\" rel=\"stylesheet\">
+  <script src=\"https://kit.fontawesome.com/42d5adcbca.js\" crossorigin=\"anonymous\"></script>
 
-        {% block stylesheets %}
-        {% endblock %}
+  {% block stylesheets %}
+    <!-- Your template-specific CSS will be inserted here -->
+  {% endblock %}
+</head>
+<body class=\"m-0 font-sans antialiased font-normal bg-white text-start text-base leading-default text-slate-500\">
+{% block body %}{% endblock %}
 
- <!-- Add custom CSS to hide the date picker icon -->
-        <style>
-            /* Hide the date picker icon */
-            input[type=\"date\"].datepicker::-webkit-calendar-picker-indicator {
-                display: none;
-            }
+<!-- Common JS -->
+<script src=\"{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}\"></script>
+<script src=\"{{ asset('assets/js/argon-dashboard-tailwind.js') }}\"></script>
 
-            input[type=\"date\"].datepicker {
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                appearance: none;
-            }
-        </style>
-
-    <script src=\"{{asset('assets/js/plugins/chartjs.min.js')}}\" async></script>
-    <!-- plugin for scrollbar  -->
-    <script src=\"{{asset('assets/js/plugins/perfect-scrollbar.min.js')}}\" async></script>
-    <!-- main script file  -->
-    <script src=\"{{asset('assets/js/argon-dashboard-tailwind.js?v=1.0.1')}}\" async></script>
-        {% block javascripts %}
-        {% endblock %}
-    </head>
-    <body>
-    <div>
-      <aside class=\"argon-sidebar fixed inset-y-0 w-64 items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0\" aria-expanded=\"false\">
-        <div class=\"h-19\">
-          <i class=\"absolute top-0 right-0 p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden\" sidenav-close></i>
-          <a class=\"block px-8 py-6 m-0 text-sm whitespace-nowrap text-slate-700\" href=\"https://demos.creative-tim.com/argon-dashboard-tailwind/pages/dashboard.html\" target=\"_blank\">
-            <img src=\"{{asset('assets/img/logo-ct-dark.png')}}\" class=\"inline h-full max-w-full transition-all duration-200 dark:hidden ease-nav-brand max-h-8\" alt=\"main_logo\" />
-            <img src=\"{{asset('assets/img/logo-ct.png')}}\" class=\"hidden h-full max-w-full transition-all duration-200 dark:inline ease-nav-brand max-h-8\" alt=\"main_logo\" />
-            <span class=\"ml-1 font-semibold transition-all duration-200 ease-nav-brand\">Argon Dashboard 2</span>
-          </a>
-        </div>
-
-        <hr class=\"h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent\" />
-
-        {% block sidebar %}
-        <div class=\"items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full\">
-          <ul class=\"flex flex-col pl-0 mb-0\">
-          {% if show_dashboard is not defined or show_dashboard %}
-            <li class=\"mt-0.5 w-full\">
-              <a class=\"py-2.7 bg-blue-500/13 dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors\" href=\"{{path('dashboard')}}\">
-                <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
-                  <i class=\"relative top-0 text-sm leading-normal text-blue-500 ni ni-tv-2\"></i>
-                </div>
-                <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">Dashboard</span>
-              </a>
-            </li>
-            {% endif %}
-
-            {% if show_maintenance is not defined or show_maintenance %}
-            <li class=\"mt-0.5 w-full\">
-              <a class=\" dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"{{asset('pages/tables.html')}}\">
-                <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
-                  <i class=\"relative top-0 text-sm leading-normal text-orange-500 ni ni-calendar-grid-58\"></i>
-                </div>
-                <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">Tables</span>
-              </a>
-            </li>
-            {% endif %}
-
-            {% if show_billing is not defined or show_billing %}
-            <li class=\"mt-0.5 w-full\">
-              <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"{{asset('pages/billing.html')}}\">
-                <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5\">
-                  <i class=\"relative top-0 text-sm leading-normal text-emerald-500 ni ni-credit-card\"></i>
-                </div>
-                <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">Billing</span>
-              </a>
-            </li>
-            {% endif %}
-
-            {% if show_vr is not defined or show_vr %}
-            <li class=\"mt-0.5 w-full\">
-              <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"{{asset('pages/virtual-reality.html')}}\">
-                <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
-                  <i class=\"relative top-0 text-sm leading-normal text-cyan-500 ni ni-app\"></i>
-                </div>
-                <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">Virtual Reality</span>
-              </a>
-            </li>
-            {% endif %}
-
-            {% if show_RTL is not defined or show_RTL %}
-            <li class=\"mt-0.5 w-full\">
-              <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"{{asset('pages/rtl.html')}}\">
-                <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
-                  <i class=\"relative top-0 text-sm leading-normal text-red-600 ni ni-world-2\"></i>
-                </div>
-                <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">RTL</span>
-              </a>
-            </li>
-            {% endif %}
-
-            {% if show_account is not defined or show_account %}
-            <li class=\"w-full mt-4\">
-              <h6 class=\"pl-6 ml-2 text-xs font-bold leading-tight uppercase opacity-60\">Account pages</h6>
-            </li>
-            {% endif %}
-
-            {% if show_profile is not defined or show_profile %}
-            <li class=\"mt-0.5 w-full\">
-              <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"{{asset('pages/profile.html')}}\">
-                <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
-                  <i class=\"relative top-0 text-sm leading-normal text-slate-700 ni ni-single-02\"></i>
-                </div>
-                <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">Profile</span>
-              </a>
-            </li>
-            {% endif %}
-
-            {% if show_signIn is not defined or show_signIn %}
-            <li class=\"mt-0.5 w-full\">
-              <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"{{asset('pages/sign-in.html')}}\">
-                <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
-                  <i class=\"relative top-0 text-sm leading-normal text-orange-500 ni ni-single-copy-04\"></i>
-                </div>
-                <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">Sign In</span>
-              </a>
-            </li>
-            {% endif %}
-
-            {% if show_signUp is not defined or show_signUp %}
-            <li class=\"mt-0.5 w-full\">
-              <a class=\"dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors\" href=\"{{asset('pages/sign-up.html')}}\">
-                <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
-                  <i class=\"relative top-0 text-sm leading-normal text-cyan-500 ni ni-collection\"></i>
-                </div>
-                <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">Sign Up</span>
-              </a>
-            </li>
-            {% endif %}
-          </ul>
-        </div>
-        {% endblock %}
-        
-        {% if show_docs is not defined or show_docs %}
-        <div class=\"mx-4\">
-          <!-- load phantom colors for card after: -->
-          <p class=\"invisible hidden text-gray-800 text-red-500 text-red-600 text-blue-500 bg-gray-500/30 bg-cyan-500/30 bg-emerald-500/30 bg-orange-500/30 bg-red-500/30 after:bg-gradient-to-tl after:from-zinc-800 after:to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850 after:from-blue-700 after:to-cyan-500 after:from-orange-500 after:to-yellow-500 after:from-green-600 after:to-lime-400 after:from-red-600 after:to-orange-600 after:from-slate-600 after:to-slate-300 text-emerald-500 text-cyan-500 text-slate-400\"></p>
-          <div class=\"relative flex flex-col min-w-0 break-words bg-transparent border-0 shadow-none rounded-2xl bg-clip-border\" sidenav-card>
-            <img class=\"w-1/2 mx-auto\" src=\"{{asset('assets/img/illustrations/icon-documentation.svg')}}\" alt=\"sidebar illustrations\" />
-            <div class=\"flex-auto w-full p-4 pt-0 text-center\">
-              <div class=\"transition-all duration-200 ease-nav-brand\">
-                <h6 class=\"mb-0 text-slate-700\">Need help?</h6>
-                <p class=\"mb-0 text-xs font-semibold leading-tight dark:opacity-60\">Please check our docs</p>
-              </div>
-            </div>
-          </div>
-          <a href=\"https://www.creative-tim.com/learning-lab/tailwind/html/quick-start/argon-dashboard/\" target=\"_blank\" class=\"inline-block w-full px-8 py-2 mb-4 text-xs font-bold leading-normal text-center capitalize transition-all ease-in rounded-lg shadow-md bg-slate-700 bg-150 hover:shadow-xs hover:-translate-y-px\">Documentation</a>
-          <!-- pro btn  -->
-          <a class=\"inline-block w-full px-8 py-2 text-xs font-bold leading-normal text-center align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md select-none bg-150 bg-x-25 hover:shadow-xs hover:-translate-y-px\" href=\"https://www.creative-tim.com/product/argon-dashboard-pro-tailwind?ref=sidebarfree\" target=\"_blank\">Upgrade to pro</a>
-        </div>
-        {% endif %}
-      </aside>
-      <main>
-          {% block body %}{% endblock %}
-      </main>
-    </div>
-    </body>
-</html>
-", "base.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\base.html.twig");
+{% block javascripts %}{% endblock %}
+</body>
+</html>", "base.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\base.html.twig");
     }
 }

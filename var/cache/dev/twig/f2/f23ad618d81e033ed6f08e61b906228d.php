@@ -97,17 +97,19 @@ class __TwigTemplate_5a78986989485c87ddd4723c98e9a381 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
 
         // line 6
-        yield "    <h1>Create new Avis</h1>
+        yield "<div style=\"margin-left: 280px;\">
+    <h1>Create new Avis</h1>
 
     ";
-        // line 8
+        // line 9
         yield Twig\Extension\CoreExtension::include($this->env, $context, "avis/_form.html.twig");
         yield "
 
     <a href=\"";
-        // line 10
+        // line 11
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_index");
         yield "\">back to list</a>
+</div>
 ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
@@ -139,7 +141,7 @@ class __TwigTemplate_5a78986989485c87ddd4723c98e9a381 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  109 => 10,  104 => 8,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
+        return array (  110 => 11,  105 => 9,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -149,11 +151,13 @@ class __TwigTemplate_5a78986989485c87ddd4723c98e9a381 extends Template
 {% block title %}New Avis{% endblock %}
 
 {% block body %}
+<div style=\"margin-left: 280px;\">
     <h1>Create new Avis</h1>
 
     {{ include('avis/_form.html.twig') }}
 
     <a href=\"{{ path('app_avis_index') }}\">back to list</a>
+</div>
 {% endblock %}
 ", "avis/new.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\avis\\new.html.twig");
     }

@@ -3,3 +3,91 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+app_login:
+    path: /login
+    controller: App\Controller\Auth\LoginController::index
+
+app_logout:
+    path: /logout
+
+app_dashboard:
+    path: /dashboard
+    controller: App\Controller\DashboardController::index
+
+admin_dashboard:
+    path: /admin/dashboard
+    controller: App\Controller\DashboardController::adminDashboard
+
+app_home:
+    path: /home
+    controller: App\Controller\DashboardController::home
+admin_user_delete:
+    path: /admin/users/delete
+    controller: App\Controller\Admin\UserManagementController::deleteUsers
+
+admin_user_confirm_delete:
+    path: /admin/users/delete/confirm/{id}
+    controller: App\Controller\Admin\UserManagementController::confirmDelete
+
+admin_user_perform_delete:
+    path: /admin/users/delete/{id}
+    controller: App\Controller\Admin\UserManagementController::performDelete
+    methods: POST
+
+admin_user_edit:
+    path: /admin/users/edit/{id}
+    controller: App\Controller\Admin\UserManagementController::editUser
+    methods: ['GET', 'POST']
+
+app_forgot_password_request:
+    path: /reset-password
+    controller: App\Controller\Auth\ResetPasswordController::request
+    methods: ['GET', 'POST']
+
+app_verify_code:
+    path: /reset-password/verify
+    controller: App\Controller\Auth\ResetPasswordController::verifyCode
+    methods: ['GET', 'POST']
+
+app_reset_password:
+    path: /reset-password/reset/{code}
+    controller: App\Controller\Auth\ResetPasswordController::reset
+    methods: ['GET', 'POST']
+    requirements:
+        code: '\d+'
+
+# config/routes.yaml
+test_email:
+    path: /test/email
+    controller: App\Controller\TestEmailController::testEmail
+
+admin_user_block:
+    path: /admin/users/block/{id}
+    controller: App\Controller\Admin\UserManagementController::blockUser
+    methods: POST
+
+admin_user_unblock:
+    path: /admin/users/unblock/{id}
+    controller: App\Controller\Admin\UserManagementController::unblockUser
+    methods: POST
+
+admin_user_manage:
+    path: /admin/users/manage
+    controller: App\Controller\Admin\UserManagementController::manageUsers
+
+driver_dashboard:
+    path: /driver/dashboard
+    controller: App\Controller\Driver\DashboardController::index
+
+taxi_dashboard:
+    path: /taxi/dashboard
+    controller: App\Controller\Taxi\DashboardController::index
+
+client_profile:
+    path: /profile
+    controller: App\Controller\ProfileController::index
+
+client_dashboard:
+    path: /client/dashboard
+    controller: App\Controller\Client\DashboardController::index

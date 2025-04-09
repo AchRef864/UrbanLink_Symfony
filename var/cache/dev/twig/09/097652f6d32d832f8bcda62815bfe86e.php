@@ -97,22 +97,24 @@ class __TwigTemplate_e74eb025e25c91972cf81a42e8db4c4c extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
 
         // line 6
-        yield "    <h1>Edit Reponse</h1>
+        yield "<div style=\"margin-left: 280px;\">
+    <h1>Edit Reponse</h1>
 
     ";
-        // line 8
+        // line 9
         yield Twig\Extension\CoreExtension::include($this->env, $context, "reponse/_form.html.twig", ["button_label" => "Update"]);
         yield "
 
     <a href=\"";
-        // line 10
+        // line 11
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reponse_index");
         yield "\">back to list</a>
 
     ";
-        // line 12
+        // line 13
         yield Twig\Extension\CoreExtension::include($this->env, $context, "reponse/_delete_form.html.twig");
         yield "
+</div>
 ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
@@ -144,7 +146,7 @@ class __TwigTemplate_e74eb025e25c91972cf81a42e8db4c4c extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  114 => 12,  109 => 10,  104 => 8,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
+        return array (  115 => 13,  110 => 11,  105 => 9,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -154,6 +156,7 @@ class __TwigTemplate_e74eb025e25c91972cf81a42e8db4c4c extends Template
 {% block title %}Edit Reponse{% endblock %}
 
 {% block body %}
+<div style=\"margin-left: 280px;\">
     <h1>Edit Reponse</h1>
 
     {{ include('reponse/_form.html.twig', {'button_label': 'Update'}) }}
@@ -161,6 +164,7 @@ class __TwigTemplate_e74eb025e25c91972cf81a42e8db4c4c extends Template
     <a href=\"{{ path('app_reponse_index') }}\">back to list</a>
 
     {{ include('reponse/_delete_form.html.twig') }}
+</div>
 {% endblock %}
 ", "reponse/edit.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\reponse\\edit.html.twig");
     }
