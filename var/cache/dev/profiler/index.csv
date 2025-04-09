@@ -587,3 +587,4 @@ c37e17,127.0.0.1,GET,https://127.0.0.1:8000/avis/1/assets/css/perfect-scrollbar.
 6add9f,127.0.0.1,GET,https://127.0.0.1:8000/reponse/new/assets/css/perfect-scrollbar.css,1744197295,,404,request
 caae06,127.0.0.1,GET,https://127.0.0.1:8000/reponse/new/assets/js/perfect-scrollbar.js,1744197296,55ddc8,404,request
 55ddc8,127.0.0.1,GET,https://127.0.0.1:8000/reponse/new/assets/js/perfect-scrollbar.js,1744197296,,404,request
+904bd8,127.0.0.1,GET,https://127.0.0.1:8000/avis,1744200363,,200,request
