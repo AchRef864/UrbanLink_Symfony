@@ -43,7 +43,7 @@ class ProfileController extends AbstractController
             }
 
             $entityManager->flush();
-            $this->addFlash('success', 'Your profile has been updated');
+            $this->addFlash('success', 'Your profile has been updated successfully!');
             return $this->redirectToRoute('app_profile');
         }
 
@@ -52,7 +52,7 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/delete', name: 'app_profile_delete')]
+    #[Route('/delete', name: 'app_profile_delete', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
     public function delete(
         Request $request,
@@ -60,7 +60,6 @@ class ProfileController extends AbstractController
     ): Response {
         $user = $this->getUser();
 
-        // CSRF protection
         if ($this->isCsrfTokenValid('delete-profile', $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
@@ -69,10 +68,11 @@ class ProfileController extends AbstractController
             $request->getSession()->invalidate();
             $this->container->get('security.token_storage')->setToken(null);
 
-            $this->addFlash('success', 'Your account has been deleted');
+            $this->addFlash('success', 'Your account has been deleted successfully.');
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('profile/confirm_delete.html.twig');
+        $this->addFlash('error', 'Invalid CSRF token.');
+        return $this->redirectToRoute('app_profile');
     }
 }

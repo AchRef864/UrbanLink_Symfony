@@ -20,11 +20,19 @@ class ProfileFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Full Name'
+                'label' => 'Full Name',
+                'constraints' => [
+                    new NotBlank(['message' => 'Please enter your full name.'])
+                ]
             ])
-            ->add('email', EmailType::class)
+            ->add('email', EmailType::class, [
+                'constraints' => [
+                    new NotBlank(['message' => 'Please enter your email.'])
+                ]
+            ])
             ->add('phone', TextType::class, [
-                'required' => false
+                'required' => false,
+                'label' => 'Phone Number'
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,

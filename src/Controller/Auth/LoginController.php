@@ -7,23 +7,36 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-
 class LoginController extends AbstractController
 {
     #[Route('/login', name: 'app_login')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
-        // get the login error if there is one
+        // Custom error handling
         $error = $authenticationUtils->getLastAuthenticationError();
+        $customErrorMessage = null;
 
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+        if ($error) {
+            // Map security errors to more user-friendly messages
+            switch ($error->getMessageKey()) {
+                case 'Invalid credentials.':
+                    $customErrorMessage = 'Invalid email or password';
+                    break;
+                case 'Account is disabled.':
+                    $customErrorMessage = 'Your account is disabled';
+                    break;
+                default:
+                    $customErrorMessage = 'Login failed. Please try again';
+            }
+        }
 
         return $this->render('auth/login/login.html.twig', [
-            'last_username' => $lastUsername,
-            'error'         => $error,
+            'last_username' => $authenticationUtils->getLastUsername(),
+            'error' => $customErrorMessage,
+            'form_errors' => [], // Will be populated by form validation
         ]);
     }
+
     /*
    #[Route('/login', name: 'app_login')]
    public function login(

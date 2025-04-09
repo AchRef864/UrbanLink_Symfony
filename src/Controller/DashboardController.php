@@ -11,17 +11,22 @@ class DashboardController extends AbstractController
     #[Route('/dashboard', name: 'app_dashboard')]
     public function index(): Response
     {
-        // Check user roles and redirect accordingly
+        $user = $this->getUser();
+
         if ($this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('admin_dashboard');
         }
 
-        if ($this->isGranted('ROLE_USER') || $this->isGranted('ROLE_CLIENT')) {
-            return $this->redirectToRoute('client_dashboard');
+        if ($this->isGranted('ROLE_DRIVER')) {
+            return $this->redirectToRoute('driver_dashboard');
         }
 
-        // If no specific role, redirect to home
-        return $this->redirectToRoute('app_home');
+        if ($this->isGranted('ROLE_TAXI')) {
+            return $this->redirectToRoute('taxi_dashboard');
+        }
+
+        // Default for clients/regular users
+        return $this->redirectToRoute('client_dashboard');
     }
 
     #[Route('/admin/dashboard', name: 'admin_dashboard')]
@@ -33,7 +38,7 @@ class DashboardController extends AbstractController
 
     #[Route('/client/dashboard', name: 'client_dashboard')]
     public function clientDashboard(): Response
-    {   //allow user o client ROLE_...
+    {
         $this->denyAccessUnlessGranted('ROLE_USER');
         return $this->render('dashboard/client.html.twig' , [
             'user' => $this->getUser()
@@ -46,7 +51,6 @@ class DashboardController extends AbstractController
     #[IsGranted('ROLE_DRIVER')]
     public function dashboard(): Response
     {
-        // Verify the stored role matches
         if ($this->getUser()->getRole() !== 'driver') {
             throw $this->createAccessDeniedException();
         }

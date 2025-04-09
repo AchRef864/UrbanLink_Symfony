@@ -1,5 +1,5 @@
 <?php
-// src/Controller/Client/DashboardController.php
+// src/Controller/Taxi/DashboardController.php
 namespace App\Controller\Taxi;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,11 +10,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/taxi')]
 class DashboardController extends AbstractController
 {
-    #[Route('/driver/dashboard', name: 'driver_dashboard')]
-    #[IsGranted('ROLE_DRIVER')]
+    #[Route('/dashboard', name: 'taxi_dashboard')]
+    #[IsGranted('ROLE_TAXI')]
     public function index(): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_DRIVER');
-        return $this->render('dashboard/driver.html.twig');
+        return $this->render('dashboard/taxi.html.twig', [
+            'user' => $this->getUser()
+        ]);
     }
 }

@@ -142,6 +142,16 @@
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Edit Profiles</span>
                     </a>
                 </li>
+                <!-- edit my profile -->
+                <li class="mt-0.5 w-full">
+                    <a class="py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors" href="{{ path('app_profile_edit') }}">
+                        <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                            <i class="fas fa-user-edit text-green-500"></i>
+                        </div>
+                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Edit My Profile</span>
+                    </a>
+                </li>
+
                 <li class="mt-0.5 w-full">
                     <form method="post" action="{{ path('app_logout') }}">
                         <button type="submit" class="w-full py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors hover:bg-red-500/10">
@@ -195,22 +205,6 @@
                             </div>
                         {% endfor %}
                     </div>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-3xl">
-                    <a href="{{ path('app_login') }}" class="action-btn bg-gradient-to-tl from-gray-600 to-slate-400 text-white">
-                        <i class="fas fa-arrow-left"></i>
-                        Back to Login
-                    </a>
-                    <a href="{{ path('admin_user_manage') }}" class="action-btn bg-gradient-to-tl from-yellow-600 to-orange-400 text-white">
-                        <i class="fas fa-user-cog"></i>
-                        Manage Users
-                    </a>
-                    <a href="{{ path('admin_user_delete') }}" class="action-btn bg-gradient-to-tl from-blue-600 to-cyan-400 text-white">
-                        <i class="fas fa-user-edit"></i>
-                        Edit Profiles
-                    </a>
                 </div>
             </div>
         </div>
