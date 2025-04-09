@@ -257,7 +257,7 @@ class __TwigTemplate_4c646f217ac910f356bd4a677bbacb80 extends Template
             yield "            <li class=\"mt-0.5 w-full\">
               <a class=\"py-2.7 bg-blue-500/13 dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors\" href=\"";
             // line 55
-            yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("dashboard");
+            yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_dashboard");
             yield "\">
                 <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
                   <i class=\"relative top-0 text-sm leading-normal text-blue-500 ni ni-tv-2\"></i>
@@ -526,7 +526,7 @@ class __TwigTemplate_4c646f217ac910f356bd4a677bbacb80 extends Template
           <ul class=\"flex flex-col pl-0 mb-0\">
           {% if show_dashboard is not defined or show_dashboard %}
             <li class=\"mt-0.5 w-full\">
-              <a class=\"py-2.7 bg-blue-500/13 dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors\" href=\"{{path('dashboard')}}\">
+              <a class=\"py-2.7 bg-blue-500/13 dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors\" href=\"{{path('app_dashboard')}}\">
                 <div class=\"mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5\">
                   <i class=\"relative top-0 text-sm leading-normal text-blue-500 ni ni-tv-2\"></i>
                 </div>
@@ -646,6 +646,6 @@ class __TwigTemplate_4c646f217ac910f356bd4a677bbacb80 extends Template
     </div>
     </body>
 </html>
-", "base.html.twig", "C:\\Users\\skonb\\Desktop\\UrbanLink_Symfony_Fork-main\\templates\\base.html.twig");
+", "base.html.twig", "C:\\Users\\skonb\\Desktop\\pi\\UrbanLink_Symfony_Fork-main\\templates\\base.html.twig");
     }
 }

@@ -57,7 +57,6 @@ class TrajetController extends AbstractController
 
 
 
-   // src/Controller/TrajetController.php
 
 #[Route('/trajet/affichage', name: 'trajet_affichage')]
 public function affichage(Request $request, TrajetRepository $trajetRepository): Response

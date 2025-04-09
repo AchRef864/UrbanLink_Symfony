@@ -6,146 +6,95 @@ use App\Repository\TrajetRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: TrajetRepository::class)]
 class Trajet
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: "trajet_id", type: Types::INTEGER)]
+    #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(message: "Le lieu de départ est obligatoire")]
+    #[Assert\NotBlank(message: 'Veuillez saisir un lieu de départ')]
     #[Assert\Length(
-        min: 2, 
+        min: 2,
         max: 100,
-        minMessage: "Le lieu de départ doit contenir au moins {{ limit }} caractères",
-        maxMessage: "Le lieu de départ ne peut excéder {{ limit }} caractères"
+        minMessage: 'Le lieu de départ doit contenir au moins {{ limit }} caractères',
+        maxMessage: 'Le lieu de départ ne peut excéder {{ limit }} caractères'
     )]
     #[Assert\Regex(
         pattern: "/^[a-zA-ZÀ-ÿ\s\-']+$/",
-        message: "Le lieu de départ ne peut contenir que des lettres, espaces et tirets"
+        message: 'Seules les lettres, espaces et tirets sont autorisés'
     )]
     private ?string $departure = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(message: "La destination est obligatoire")]
+    #[Assert\NotBlank(message: 'Veuillez saisir une destination')]
     #[Assert\Length(
-        min: 2, 
+        min: 2,
         max: 100,
-        minMessage: "La destination doit contenir au moins {{ limit }} caractères",
-        maxMessage: "La destination ne peut excéder {{ limit }} caractères"
+        minMessage: 'La destination doit contenir au moins {{ limit }} caractères',
+        maxMessage: 'La destination ne peut excéder {{ limit }} caractères'
     )]
     #[Assert\Regex(
         pattern: "/^[a-zA-ZÀ-ÿ\s\-']+$/",
-        message: "La destination ne peut contenir que des lettres, espaces et tirets"
+        message: 'Seules les lettres, espaces et tirets sont autorisés'
     )]
     private ?string $destination = null;
 
-    #[ORM\Column(type: Types::FLOAT)]
-    #[Assert\NotBlank(message: "La distance est obligatoire")]
-    #[Assert\Positive(message: "La distance doit être positive")]
+    #[ORM\Column]
+    #[Assert\NotBlank(message: 'Veuillez saisir une distance')]
+    #[Assert\Positive(message: 'La distance doit être positive')]
     #[Assert\LessThan(
-        value: 1000, 
-        message: "La distance ne peut excéder {{ compared_value }} km"
+        value: 1000,
+        message: 'La distance ne peut excéder {{ compared_value }} km'
     )]
     private ?float $distance = null;
 
-    #[ORM\Column(type: Types::STRING, length: 5)]
-    #[Assert\NotBlank(message: "La durée est obligatoire")]
+    #[ORM\Column(length: 5)]
+    #[Assert\NotBlank(message: 'Veuillez saisir une durée')]
     #[Assert\Regex(
-        pattern: '/^(2[0-3]|[01][0-9]):([0-5][0-9])$/',
-        message: "Le format de durée doit être HH:MM (00:00 à 23:59)"
+        pattern: '/^([01][0-9]|2[0-3]):[0-5][0-9]$/',
+        message: 'Le format doit être HH:MM (ex: 02:30)'
     )]
     private ?string $duration = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\NotBlank(message: "L'heure de départ est obligatoire")]
+    #[Assert\NotBlank(message: 'Veuillez saisir une heure de départ')]
     #[Assert\GreaterThan(
-        "now", 
-        message: "Le départ doit être dans le futur"
+        value: 'now',
+        message: 'Le départ doit être dans le futur'
     )]
     private ?\DateTimeInterface $departureTime = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $arrivalTime = null;
 
-    #[ORM\Column(type: Types::FLOAT)]
-    #[Assert\NotBlank(message: "Le prix est obligatoire")]
-    #[Assert\Positive(message: "Le prix doit être positif")]
+    #[ORM\Column]
+    #[Assert\NotBlank(message: 'Veuillez saisir un prix')]
+    #[Assert\Positive(message: 'Le prix doit être positif')]
     #[Assert\LessThan(
-        value: 10000, 
-        message: "Le prix ne peut excéder {{ compared_value }}"
+        value: 10000,
+        message: 'Le prix ne peut excéder {{ compared_value }}'
     )]
     private ?float $price = null;
 
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[ORM\Column]
+    #[Assert\NotBlank(message: 'Veuillez saisir le nombre de places disponibles')]
+    #[Assert\PositiveOrZero(message: 'Le nombre de places doit être positif ou zéro')]
+    private ?int $availableSeats = null;
+
+    #[ORM\Column(nullable: true)]
     private ?int $vehicleId = null;
 
-    #[ORM\Column(type: Types::STRING, length: 20)]
-    #[Assert\NotBlank(message: "Le type de transport est obligatoire")]
+    #[ORM\Column(length: 20)]
+    #[Assert\NotBlank(message: 'Veuillez choisir un type de transport')]
     #[Assert\Choice(
-        choices: ["PublicTransport", "Carpooling"],
-        message: "Le type de transport doit être soit 'PublicTransport' soit 'Carpooling'"
+        choices: ['PublicTransport', 'Carpooling'],
+        message: 'Choix invalide'
     )]
     private ?string $typeTransport = null;
-
-    // Getters and Setters
-    public function getId(): ?int { return $this->id; }
-    
-    public function getDeparture(): ?string { return $this->departure; }
-    public function setDeparture(string $departure): static { $this->departure = $departure; return $this; }
-    
-    public function getDestination(): ?string { return $this->destination; }
-    public function setDestination(string $destination): static { $this->destination = $destination; return $this; }
-    
-    public function getDistance(): ?float { return $this->distance; }
-    public function setDistance(float $distance): static { $this->distance = $distance; return $this; }
-    
-    public function getDuration(): ?string { return $this->duration; }
-    public function setDuration(string $duration): static { $this->duration = $duration; return $this; }
-    
-    public function getDepartureTime(): ?\DateTimeInterface { return $this->departureTime; }
-    public function setDepartureTime(\DateTimeInterface $departureTime): static { $this->departureTime = $departureTime; return $this; }
-    
-    public function getArrivalTime(): ?\DateTimeInterface { return $this->arrivalTime; }
-    public function setArrivalTime(?\DateTimeInterface $arrivalTime): static { $this->arrivalTime = $arrivalTime; return $this; }
-    
-    public function getPrice(): ?float { return $this->price; }
-    public function setPrice(float $price): static { $this->price = $price; return $this; }
-    
-    public function getVehicleId(): ?int { return $this->vehicleId; }
-    public function setVehicleId(?int $vehicleId): static { $this->vehicleId = $vehicleId; return $this; }
-    
-    public function getTypeTransport(): ?string { return $this->typeTransport; }
-    public function setTypeTransport(string $typeTransport): static { $this->typeTransport = $typeTransport; return $this; }
-
-    // Utility methods
-    public function getDurationParts(): array
-    {
-        if (empty($this->duration)) {
-            throw new \InvalidArgumentException('La durée ne peut pas être vide');
-        }
-
-        if (!preg_match('/^(2[0-3]|[01][0-9]):([0-5][0-9])$/', $this->duration, $matches)) {
-            throw new \InvalidArgumentException('Format HH:MM requis (00:00 à 23:59)');
-        }
-
-        return [(int)$matches[1], (int)$matches[2]]; // [hours, minutes]
-    }
-
-    public function getDurationAsInterval(): \DateInterval
-    {
-        [$hours, $minutes] = $this->getDurationParts();
-        
-        try {
-            return new \DateInterval(sprintf('PT%dH%dM', $hours, $minutes));
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException('Intervalle de durée invalide: '.$e->getMessage());
-        }
-    }
 
     public function calculateArrivalTime(): \DateTimeInterface
     {
@@ -187,25 +136,48 @@ class Trajet
         }
     }
 
-    #[Assert\Callback]
-    public function validate(ExecutionContextInterface $context): void
+    private function getDurationParts(): array
     {
-        if (!$this->departureTime || !$this->duration) {
-            return;
+        if (!$this->duration) {
+            throw new \InvalidArgumentException('La durée doit être définie');
         }
 
-        try {
-            $this->arrivalTime = $this->calculateArrivalTime();
-            
-            if ($this->arrivalTime <= $this->departureTime) {
-                $context->buildViolation('L\'heure d\'arrivée doit être après le départ')
-                    ->atPath('duration')
-                    ->addViolation();
-            }
-        } catch (\InvalidArgumentException $e) {
-            $context->buildViolation($e->getMessage())
-                   ->atPath('duration')
-                   ->addViolation();
+        $parts = explode(':', $this->duration);
+
+        if (count($parts) !== 2) {
+            throw new \InvalidArgumentException('Format de durée invalide, attendu HH:MM');
         }
+
+        [$hours, $minutes] = $parts;
+
+        if (!is_numeric($hours) || !is_numeric($minutes)) {
+            throw new \InvalidArgumentException('Les heures et minutes doivent être des nombres');
+        }
+
+        return [(int)$hours, (int)$minutes];
     }
+
+    // Getters and setters...
+
+    public function getId(): ?int { return $this->id; }
+    public function getDeparture(): ?string { return $this->departure; }
+    public function setDeparture(string $departure): self { $this->departure = $departure; return $this; }
+    public function getDestination(): ?string { return $this->destination; }
+    public function setDestination(string $destination): self { $this->destination = $destination; return $this; }
+    public function getDistance(): ?float { return $this->distance; }
+    public function setDistance(float $distance): self { $this->distance = $distance; return $this; }
+    public function getDuration(): ?string { return $this->duration; }
+    public function setDuration(string $duration): self { $this->duration = $duration; return $this; }
+    public function getDepartureTime(): ?\DateTimeInterface { return $this->departureTime; }
+    public function setDepartureTime(\DateTimeInterface $departureTime): self { $this->departureTime = $departureTime; return $this; }
+    public function getArrivalTime(): ?\DateTimeInterface { return $this->arrivalTime; }
+    public function setArrivalTime(?\DateTimeInterface $arrivalTime): self { $this->arrivalTime = $arrivalTime; return $this; }
+    public function getPrice(): ?float { return $this->price; }
+    public function setPrice(float $price): self { $this->price = $price; return $this; }
+    public function getAvailableSeats(): ?int { return $this->availableSeats; }
+    public function setAvailableSeats(int $availableSeats): self { $this->availableSeats = $availableSeats; return $this; }
+    public function getVehicleId(): ?int { return $this->vehicleId; }
+    public function setVehicleId(?int $vehicleId): self { $this->vehicleId = $vehicleId; return $this; }
+    public function getTypeTransport(): ?string { return $this->typeTransport; }
+    public function setTypeTransport(string $typeTransport): self { $this->typeTransport = $typeTransport; return $this; }
 }

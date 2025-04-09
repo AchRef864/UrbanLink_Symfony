@@ -156,171 +156,186 @@ class __TwigTemplate_cf7b247d0c351702532d1ac7f2f30668 extends Template
     
     ";
         // line 45
-        yield "    ";
-        // line 46
         yield "    <div class=\"flex space-x-2 mb-6\">
       <a href=\"";
-        // line 47
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("trajet_affichage", ["search" => (isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 47, $this->source); })())]), "html", null, true);
+        // line 46
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("trajet_affichage", ["search" => (isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 46, $this->source); })())]), "html", null, true);
         yield "\" 
          class=\"px-3 py-1 text-xs rounded-full ";
-        // line 48
-        yield (( !(isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 48, $this->source); })())) ? ("bg-gray-800 text-white") : ("bg-gray-200 text-gray-800"));
+        // line 47
+        yield (( !(isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 47, $this->source); })())) ? ("bg-gray-800 text-white") : ("bg-gray-200 text-gray-800"));
         yield "\">
           Tous
       </a>
       <a href=\"";
-        // line 51
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("trajet_affichage", ["filter_type" => "PublicTransport", "search" => (isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 51, $this->source); })())]), "html", null, true);
+        // line 50
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("trajet_affichage", ["filter_type" => "PublicTransport", "search" => (isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 50, $this->source); })())]), "html", null, true);
         yield "\" 
          class=\"px-3 py-1 text-xs rounded-full ";
-        // line 52
-        yield ((((isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 52, $this->source); })()) == "PublicTransport")) ? ("bg-blue-800 text-white") : ("bg-blue-200 text-blue-800"));
+        // line 51
+        yield ((((isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 51, $this->source); })()) == "PublicTransport")) ? ("bg-blue-800 text-white") : ("bg-blue-200 text-blue-800"));
         yield "\">
           Transport Public
       </a>
       <a href=\"";
-        // line 55
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("trajet_affichage", ["filter_type" => "Carpooling", "search" => (isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 55, $this->source); })())]), "html", null, true);
+        // line 54
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("trajet_affichage", ["filter_type" => "Carpooling", "search" => (isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 54, $this->source); })())]), "html", null, true);
         yield "\" 
          class=\"px-3 py-1 text-xs rounded-full ";
-        // line 56
-        yield ((((isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 56, $this->source); })()) == "Carpooling")) ? ("bg-green-800 text-white") : ("bg-green-200 text-green-800"));
+        // line 55
+        yield ((((isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 55, $this->source); })()) == "Carpooling")) ? ("bg-green-800 text-white") : ("bg-green-200 text-green-800"));
         yield "\">
           Covoiturage
       </a>
     </div>
     
     ";
-        // line 62
+        // line 61
         yield "    ";
-        if (((isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 62, $this->source); })()) || (isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 62, $this->source); })()))) {
-            // line 63
+        if (((isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 61, $this->source); })()) || (isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 61, $this->source); })()))) {
+            // line 62
             yield "      <div class=\"mb-4 text-sm text-gray-600\">
         ";
-            // line 64
-            if ((Twig\Extension\CoreExtension::length($this->env->getCharset(), (isset($context["trajets"]) || array_key_exists("trajets", $context) ? $context["trajets"] : (function () { throw new RuntimeError('Variable "trajets" does not exist.', 64, $this->source); })())) > 0)) {
-                // line 65
+            // line 63
+            if ((Twig\Extension\CoreExtension::length($this->env->getCharset(), (isset($context["trajets"]) || array_key_exists("trajets", $context) ? $context["trajets"] : (function () { throw new RuntimeError('Variable "trajets" does not exist.', 63, $this->source); })())) > 0)) {
+                // line 64
                 yield "          ";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::length($this->env->getCharset(), (isset($context["trajets"]) || array_key_exists("trajets", $context) ? $context["trajets"] : (function () { throw new RuntimeError('Variable "trajets" does not exist.', 65, $this->source); })())), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::length($this->env->getCharset(), (isset($context["trajets"]) || array_key_exists("trajets", $context) ? $context["trajets"] : (function () { throw new RuntimeError('Variable "trajets" does not exist.', 64, $this->source); })())), "html", null, true);
                 yield " résultat(s) trouvé(s)
           ";
-                // line 66
-                if ((isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 66, $this->source); })())) {
+                // line 65
+                if ((isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 65, $this->source); })())) {
                     yield " pour \"";
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 66, $this->source); })()), "html", null, true);
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 65, $this->source); })()), "html", null, true);
                     yield "\"";
+                }
+                // line 66
+                yield "          ";
+                if (((isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 66, $this->source); })()) == "PublicTransport")) {
+                    yield " (Transport Public)";
                 }
                 // line 67
                 yield "          ";
-                if (((isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 67, $this->source); })()) == "PublicTransport")) {
-                    yield " (Transport Public)";
-                }
-                // line 68
-                yield "          ";
-                if (((isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 68, $this->source); })()) == "Carpooling")) {
+                if (((isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 67, $this->source); })()) == "Carpooling")) {
                     yield " (Covoiturage)";
                 }
-                // line 69
+                // line 68
                 yield "        ";
             }
-            // line 70
+            // line 69
             yield "      </div>
     ";
         }
-        // line 72
+        // line 71
         yield "    
     ";
-        // line 74
+        // line 73
         yield "    <div class=\"space-y-4\">
       ";
-        // line 75
+        // line 74
         $context['_parent'] = $context;
-        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["trajets"]) || array_key_exists("trajets", $context) ? $context["trajets"] : (function () { throw new RuntimeError('Variable "trajets" does not exist.', 75, $this->source); })()));
+        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["trajets"]) || array_key_exists("trajets", $context) ? $context["trajets"] : (function () { throw new RuntimeError('Variable "trajets" does not exist.', 74, $this->source); })()));
         $context['_iterated'] = false;
         foreach ($context['_seq'] as $context["_key"] => $context["trajet"]) {
-            // line 76
+            // line 75
             yield "      <div class=\"bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200\">
         <div class=\"flex justify-between items-start\">
           <div>
             <h3 class=\"font-medium text-gray-900\">";
-            // line 79
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "departure", [], "any", false, false, false, 79), "html", null, true);
+            // line 78
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "departure", [], "any", false, false, false, 78), "html", null, true);
             yield " → ";
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "destination", [], "any", false, false, false, 79), "html", null, true);
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "destination", [], "any", false, false, false, 78), "html", null, true);
             yield "</h3>
             <div class=\"mt-1 text-xs text-gray-500\">
               <span class=\"font-medium\">";
-            // line 81
-            yield ((CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "departureTime", [], "any", false, false, false, 81)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "departureTime", [], "any", false, false, false, 81), "d/m/Y H:i"), "html", null, true)) : ("N/A"));
+            // line 80
+            yield ((CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "departureTime", [], "any", false, false, false, 80)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "departureTime", [], "any", false, false, false, 80), "d/m/Y H:i"), "html", null, true)) : ("N/A"));
             yield "</span>
               <span class=\"mx-1\">→</span>
               <span class=\"font-medium\">";
-            // line 83
-            yield ((CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "arrivalTime", [], "any", false, false, false, 83)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "arrivalTime", [], "any", false, false, false, 83), "d/m/Y H:i"), "html", null, true)) : ("N/A"));
+            // line 82
+            yield ((CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "arrivalTime", [], "any", false, false, false, 82)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "arrivalTime", [], "any", false, false, false, 82), "d/m/Y H:i"), "html", null, true)) : ("N/A"));
             yield "</span>
             </div>
           </div>
           <span class=\"px-2 py-1 text-xs font-semibold rounded-full 
             ";
-            // line 87
-            if ((CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "typeTransport", [], "any", false, false, false, 87) == "PublicTransport")) {
-                // line 88
+            // line 86
+            if ((CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "typeTransport", [], "any", false, false, false, 86) == "PublicTransport")) {
+                // line 87
                 yield "              bg-blue-100 text-blue-800
             ";
             } else {
-                // line 90
+                // line 89
                 yield "              bg-green-100 text-green-800
             ";
             }
-            // line 91
+            // line 90
             yield "\">
             ";
-            // line 92
-            yield (((CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "typeTransport", [], "any", true, true, false, 92) &&  !(null === CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "typeTransport", [], "any", false, false, false, 92)))) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "typeTransport", [], "any", false, false, false, 92), "html", null, true)) : ("N/A"));
+            // line 91
+            yield (((CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "typeTransport", [], "any", true, true, false, 91) &&  !(null === CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "typeTransport", [], "any", false, false, false, 91)))) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "typeTransport", [], "any", false, false, false, 91), "html", null, true)) : ("N/A"));
             yield "
           </span>
         </div>
         
         <div class=\"mt-2 text-sm text-gray-600\">
-          <div class=\"grid grid-cols-3 gap-2\">
+          <div class=\"grid grid-cols-4 gap-2\">
             <div>
               <span class=\"font-medium\">Distance:</span> ";
-            // line 99
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "distance", [], "any", false, false, false, 99), 2), "html", null, true);
+            // line 98
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "distance", [], "any", false, false, false, 98), 2), "html", null, true);
             yield " km
             </div>
             <div>
               <span class=\"font-medium\">Durée:</span> 
               ";
-            // line 103
-            if (CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "duration", [], "any", false, false, false, 103)) {
-                // line 104
+            // line 102
+            if (CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "duration", [], "any", false, false, false, 102)) {
+                // line 103
                 yield "                ";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "duration", [], "any", false, false, false, 104), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "duration", [], "any", false, false, false, 103), "html", null, true);
                 yield "
               ";
             } else {
-                // line 106
+                // line 105
                 yield "                N/A
               ";
             }
-            // line 108
+            // line 107
             yield "            </div>
             <div>
               <span class=\"font-medium\">Prix:</span> ";
-            // line 110
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "price", [], "any", false, false, false, 110), 2), "html", null, true);
+            // line 109
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "price", [], "any", false, false, false, 109), 2), "html", null, true);
             yield " €
             </div>
+            <div>
+              <span class=\"font-medium\">Places:</span> 
+              ";
+            // line 113
+            if ( !(null === CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "availableSeats", [], "any", false, false, false, 113))) {
+                // line 114
+                yield "                ";
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "availableSeats", [], "any", false, false, false, 114), "html", null, true);
+                yield "
+              ";
+            } else {
+                // line 116
+                yield "                N/A
+              ";
+            }
+            // line 118
+            yield "            </div>
           </div>
         </div>
         
         <div class=\"mt-3 flex justify-end space-x-2\">
           <!-- Edit Button -->
           <a href=\"";
-            // line 117
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("trajet_modifier", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "id", [], "any", false, false, false, 117)]), "html", null, true);
+            // line 124
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("trajet_modifier", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "id", [], "any", false, false, false, 124)]), "html", null, true);
             yield "\" class=\"text-blue-500 hover:text-blue-700 p-1 transition-colors duration-200\">
             <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" viewBox=\"0 0 20 20\" fill=\"currentColor\">
               <path d=\"M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z\" />
@@ -329,66 +344,68 @@ class __TwigTemplate_cf7b247d0c351702532d1ac7f2f30668 extends Template
           
           <!-- Delete Button -->
           <button onclick=\"confirmDelete(";
-            // line 124
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "id", [], "any", false, false, false, 124), "html", null, true);
+            // line 131
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "id", [], "any", false, false, false, 131), "html", null, true);
             yield ")\" class=\"text-red-500 hover:text-red-700 p-1 transition-colors duration-200\">
             <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" viewBox=\"0 0 20 20\" fill=\"currentColor\">
               <path fill-rule=\"evenodd\" d=\"M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z\" clip-rule=\"evenodd\" />
             </svg>
           </button>
           <form id=\"delete-form-";
-            // line 129
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "id", [], "any", false, false, false, 129), "html", null, true);
-            yield "\" action=\"";
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("trajet_supprimer", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "id", [], "any", false, false, false, 129)]), "html", null, true);
-            yield "\" method=\"post\" style=\"display: none;\">
-            <input type=\"hidden\" name=\"_method\" value=\"DELETE\">
-            <input type=\"hidden\" name=\"_token\" value=\"";
-            // line 131
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "id", [], "any", false, false, false, 131))), "html", null, true);
-            yield "\">
-          </form>
+            // line 136
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "id", [], "any", false, false, false, 136), "html", null, true);
+            yield "\" 
+      action=\"";
+            // line 137
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("trajet_supprimer", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "id", [], "any", false, false, false, 137)]), "html", null, true);
+            yield "\" 
+      method=\"post\" 
+      style=\"display: none;\">
+    <input type=\"hidden\" name=\"_method\" value=\"DELETE\">
+    ";
+            // line 142
+            yield "</form>
         </div>
       </div>
       ";
             $context['_iterated'] = true;
         }
-        // line 135
+        // line 145
         if (!$context['_iterated']) {
-            // line 136
+            // line 146
             yield "      <div class=\"text-center py-8 text-gray-500\">
         ";
-            // line 137
-            if ((isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 137, $this->source); })())) {
-                // line 138
+            // line 147
+            if ((isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 147, $this->source); })())) {
+                // line 148
                 yield "          Aucun trajet trouvé pour \"";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 138, $this->source); })()), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 148, $this->source); })()), "html", null, true);
                 yield "\"
           ";
-                // line 139
-                if (((isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 139, $this->source); })()) == "PublicTransport")) {
+                // line 149
+                if (((isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 149, $this->source); })()) == "PublicTransport")) {
                     yield " (Transport Public)";
                 }
-                // line 140
+                // line 150
                 yield "          ";
-                if (((isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 140, $this->source); })()) == "Carpooling")) {
+                if (((isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 150, $this->source); })()) == "Carpooling")) {
                     yield " (Covoiturage)";
                 }
-                // line 141
+                // line 151
                 yield "        ";
             } else {
-                // line 142
+                // line 152
                 yield "          Aucun trajet trouvé.
         ";
             }
-            // line 144
+            // line 154
             yield "      </div>
       ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['trajet'], $context['_parent'], $context['_iterated']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 146
+        // line 156
         yield "    </div>
   </div>
 </div>
@@ -444,7 +461,7 @@ function confirmDelete(trajetId) {
      */
     public function getDebugInfo(): array
     {
-        return array (  392 => 146,  385 => 144,  381 => 142,  378 => 141,  373 => 140,  369 => 139,  364 => 138,  362 => 137,  359 => 136,  357 => 135,  348 => 131,  341 => 129,  333 => 124,  323 => 117,  313 => 110,  309 => 108,  305 => 106,  299 => 104,  297 => 103,  290 => 99,  280 => 92,  277 => 91,  273 => 90,  269 => 88,  267 => 87,  260 => 83,  255 => 81,  248 => 79,  243 => 76,  238 => 75,  235 => 74,  232 => 72,  228 => 70,  225 => 69,  220 => 68,  215 => 67,  209 => 66,  204 => 65,  202 => 64,  199 => 63,  196 => 62,  188 => 56,  184 => 55,  178 => 52,  174 => 51,  168 => 48,  164 => 47,  161 => 46,  159 => 45,  147 => 34,  137 => 28,  135 => 27,  129 => 24,  122 => 20,  119 => 19,  111 => 13,  107 => 11,  104 => 9,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
+        return array (  409 => 156,  402 => 154,  398 => 152,  395 => 151,  390 => 150,  386 => 149,  381 => 148,  379 => 147,  376 => 146,  374 => 145,  367 => 142,  360 => 137,  356 => 136,  348 => 131,  338 => 124,  330 => 118,  326 => 116,  320 => 114,  318 => 113,  311 => 109,  307 => 107,  303 => 105,  297 => 103,  295 => 102,  288 => 98,  278 => 91,  275 => 90,  271 => 89,  267 => 87,  265 => 86,  258 => 82,  253 => 80,  246 => 78,  241 => 75,  236 => 74,  233 => 73,  230 => 71,  226 => 69,  223 => 68,  218 => 67,  213 => 66,  207 => 65,  202 => 64,  200 => 63,  197 => 62,  194 => 61,  186 => 55,  182 => 54,  176 => 51,  172 => 50,  166 => 47,  162 => 46,  159 => 45,  147 => 34,  137 => 28,  135 => 27,  129 => 24,  122 => 20,  119 => 19,  111 => 13,  107 => 11,  104 => 9,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -492,7 +509,6 @@ function confirmDelete(trajetId) {
       </div>
     </div>
     
-    {# Le reste du code reste inchangé #}
     {# Filter Buttons #}
     <div class=\"flex space-x-2 mb-6\">
       <a href=\"{{ path('trajet_affichage', {'search': search_term}) }}\" 
@@ -545,7 +561,7 @@ function confirmDelete(trajetId) {
         </div>
         
         <div class=\"mt-2 text-sm text-gray-600\">
-          <div class=\"grid grid-cols-3 gap-2\">
+          <div class=\"grid grid-cols-4 gap-2\">
             <div>
               <span class=\"font-medium\">Distance:</span> {{ trajet.distance|number_format(2) }} km
             </div>
@@ -559,6 +575,14 @@ function confirmDelete(trajetId) {
             </div>
             <div>
               <span class=\"font-medium\">Prix:</span> {{ trajet.price|number_format(2) }} €
+            </div>
+            <div>
+              <span class=\"font-medium\">Places:</span> 
+              {% if trajet.availableSeats is not null %}
+                {{ trajet.availableSeats }}
+              {% else %}
+                N/A
+              {% endif %}
             </div>
           </div>
         </div>
@@ -577,10 +601,13 @@ function confirmDelete(trajetId) {
               <path fill-rule=\"evenodd\" d=\"M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z\" clip-rule=\"evenodd\" />
             </svg>
           </button>
-          <form id=\"delete-form-{{ trajet.id }}\" action=\"{{ path('trajet_supprimer', {'id': trajet.id}) }}\" method=\"post\" style=\"display: none;\">
-            <input type=\"hidden\" name=\"_method\" value=\"DELETE\">
-            <input type=\"hidden\" name=\"_token\" value=\"{{ csrf_token('delete' ~ trajet.id) }}\">
-          </form>
+          <form id=\"delete-form-{{ trajet.id }}\" 
+      action=\"{{ path('trajet_supprimer', {'id': trajet.id}) }}\" 
+      method=\"post\" 
+      style=\"display: none;\">
+    <input type=\"hidden\" name=\"_method\" value=\"DELETE\">
+    {# Remove the CSRF token line completely #}
+</form>
         </div>
       </div>
       {% else %}
@@ -618,6 +645,6 @@ function confirmDelete(trajetId) {
   });
 }
 </script>
-{% endblock %}", "trajet/affichage.html.twig", "C:\\Users\\skonb\\Desktop\\UrbanLink_Symfony_Fork-main\\templates\\trajet\\affichage.html.twig");
+{% endblock %}", "trajet/affichage.html.twig", "C:\\Users\\skonb\\Desktop\\pi\\UrbanLink_Symfony_Fork-main\\templates\\trajet\\affichage.html.twig");
     }
 }

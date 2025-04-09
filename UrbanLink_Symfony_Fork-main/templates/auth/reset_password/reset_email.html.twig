@@ -1,0 +1,31 @@
+{# templates/auth/reset_password/reset_email.html.twig #}
+{% block body_html %}
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>
+            body { font-family: Arial, sans-serif; }
+            .code {
+                font-size: 24px;
+                font-weight: bold;
+                letter-spacing: 2px;
+                color: #2563eb;
+                margin: 10px 0;
+            }
+        </style>
+    </head>
+    <body>
+    <p>Hello,</p>
+
+    <p>Your password reset code is:</p>
+
+    <div class="code">{{ code }}</div>
+
+    <p>Enter this code on the password reset page to continue.</p>
+
+    <p>If you didn't request this, please ignore this email.</p>
+
+    <p>Best regards,<br>Your Application Team</p>
+    </body>
+    </html>
+{% endblock %}

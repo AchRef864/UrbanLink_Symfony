@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Réservation{% endblock %}
+
+{% block body %}
+<div style="margin-left: 280px;">
+  <div class="container mx-auto px-4 py-6">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h1 class="text-2xl font-bold mb-4">Réserver: {{ trajet.departure }} → {{ trajet.destination }}</h1>
+      
+      <div class="mb-6">
+        <div class="grid grid-cols-2 gap-4 mb-2">
+          <div>
+            <span class="font-medium">Date:</span> {{ trajet.departureTime|date('d/m/Y') }}
+          </div>
+          <div>
+            <span class="font-medium">Heure:</span> {{ trajet.departureTime|date('H:i') }}
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <span class="font-medium">Prix unitaire:</span> {{ trajet.price|number_format(2) }} €
+          </div>
+          <div>
+            <span class="font-medium">Places disponibles:</span> {{ trajet.availableSeats }}
+          </div>
+        </div>
+      </div>
+
+      {{ form_start(form) }}
+        <div class="mb-4">
+        {{ form_label(form.numberOfSeats, 'Nombre de places') }}
+        {{ form_widget(form.numberOfSeats, {'attr': {'min': 1, 'max': trajet.availableSeats}}) }}
+        
+          {{ form_errors(form.numberOfSeats) }}
+        </div>
+
+        <div class="flex justify-end">
+          <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            Confirmer la réservation
+          </button>
+        </div>
+      {{ form_end(form) }}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -127,6 +127,18 @@ class TrajetType extends AbstractType
                     ])
                 ]
             ])
+            ->add('availableSeats', NumberType::class, [
+                'label' => 'Places disponibles',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Ex: 4',
+                    'min' => 0
+                ],
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Veuillez saisir le nombre de places disponibles']),
+                    new Assert\PositiveOrZero(['message' => 'Le nombre de places doit être positif ou zéro'])
+                ]
+            ])
             ->add('vehicleId', NumberType::class, [
                 'label' => 'ID Véhicule',
                 'required' => false,

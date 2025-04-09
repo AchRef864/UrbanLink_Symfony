@@ -57,6 +57,16 @@
             {{ form_errors(form.price) }}
         </div>
 
+        {# Available Seats #}
+        <div class="mb-4">
+            {{ form_label(form.availableSeats, 'Places disponibles', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+            {{ form_widget(form.availableSeats, {'attr': {
+                'class': 'w-full px-4 py-2 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500',
+                'min': 0
+            }}) }}
+            {{ form_errors(form.availableSeats) }}
+        </div>
+
         {# Vehicle ID #}
         <div class="mb-4">
             {{ form_label(form.vehicleId, 'ID Véhicule', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
@@ -93,24 +103,27 @@
     </div>
     {{ form_end(form) }}
     <div style="margin-left: 280px;">
-
-    <div class="mt-8 rounded-lg overflow-hidden">
-        <div class="bg-gradient-to-tl from-blue-500 to-violet-500 text-white px-6 py-3">
-            <h5 class="mb-0 text-lg font-semibold">Informations calculées</h5>
+        <div class="mt-8 rounded-lg overflow-hidden">
+            <div class="bg-gradient-to-tl from-blue-500 to-violet-500 text-white px-6 py-3">
+                <h5 class="mb-0 text-lg font-semibold">Informations calculées</h5>
+            </div>
+            <div class="bg-white px-6 py-4 shadow">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="font-medium text-gray-700">Heure de départ:</p>
+                        <p>{{ trajet.departureTime ? trajet.departureTime|date('d/m/Y H:i') : 'Non définie' }}</p>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-700">Heure d'arrivée estimée:</p>
+                        <p>{{ trajet.arrivalTime ? trajet.arrivalTime|date('d/m/Y H:i') : 'Non calculée' }}</p>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-700">Places disponibles:</p>
+                        <p>{{ trajet.availableSeats ?? 'Non spécifié' }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="bg-white px-6 py-4 shadow">
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <p class="font-medium text-gray-700">Heure de départ:</p>
-                    <p>{{ trajet.departureTime ? trajet.departureTime|date('d/m/Y H:i') : 'Non définie' }}</p>
-                </div>
-                <div>
-                    <p class="font-medium text-gray-700">Heure d'arrivée estimée:</p>
-                   <p>{{ trajet.arrivalTime ? trajet.arrivalTime|date('d/m/Y H:i') : 'Non calculée' }}</p>
-                             </div>
-                       </div>
-                </div>
-         </div>
     </div>
 </div>
 {% endblock %}

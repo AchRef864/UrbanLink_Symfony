@@ -219,101 +219,125 @@ class __TwigTemplate_9013f05864e605576b15823892a2ab8d extends Template
         yield "        <div class=\"mb-4\">
             ";
         // line 62
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 62, $this->source); })()), "vehicleId", [], "any", false, false, false, 62), 'label', ["label_attr" => ["class" => "block mb-2 text-sm font-medium text-gray-900"], "label" => "ID Véhicule"]);
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 62, $this->source); })()), "availableSeats", [], "any", false, false, false, 62), 'label', ["label_attr" => ["class" => "block mb-2 text-sm font-medium text-gray-900"], "label" => "Places disponibles"]);
         yield "
             ";
         // line 63
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 63, $this->source); })()), "vehicleId", [], "any", false, false, false, 63), 'widget', ["attr" => ["class" => "w-full px-4 py-2 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"]]);
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 63, $this->source); })()), "availableSeats", [], "any", false, false, false, 63), 'widget', ["attr" => ["class" => "w-full px-4 py-2 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500", "min" => 0]]);
+        // line 66
         yield "
             ";
-        // line 64
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 64, $this->source); })()), "vehicleId", [], "any", false, false, false, 64), 'errors');
+        // line 67
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 67, $this->source); })()), "availableSeats", [], "any", false, false, false, 67), 'errors');
         yield "
         </div>
 
         ";
-        // line 68
+        // line 71
+        yield "        <div class=\"mb-4\">
+            ";
+        // line 72
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 72, $this->source); })()), "vehicleId", [], "any", false, false, false, 72), 'label', ["label_attr" => ["class" => "block mb-2 text-sm font-medium text-gray-900"], "label" => "ID Véhicule"]);
+        yield "
+            ";
+        // line 73
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 73, $this->source); })()), "vehicleId", [], "any", false, false, false, 73), 'widget', ["attr" => ["class" => "w-full px-4 py-2 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"]]);
+        yield "
+            ";
+        // line 74
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 74, $this->source); })()), "vehicleId", [], "any", false, false, false, 74), 'errors');
+        yield "
+        </div>
+
+        ";
+        // line 78
         yield "        <div class=\"mb-8\">
             ";
-        // line 69
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 69, $this->source); })()), "typeTransport", [], "any", false, false, false, 69), 'label', ["label_attr" => ["class" => "block mb-2 text-sm font-medium text-gray-900"], "label" => "Type de transport"]);
+        // line 79
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 79, $this->source); })()), "typeTransport", [], "any", false, false, false, 79), 'label', ["label_attr" => ["class" => "block mb-2 text-sm font-medium text-gray-900"], "label" => "Type de transport"]);
         yield "
             ";
-        // line 70
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 70, $this->source); })()), "typeTransport", [], "any", false, false, false, 70), 'widget', ["attr" => ["class" => "w-full px-4 py-2 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"]]);
+        // line 80
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 80, $this->source); })()), "typeTransport", [], "any", false, false, false, 80), 'widget', ["attr" => ["class" => "w-full px-4 py-2 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"]]);
         yield "
             ";
-        // line 71
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 71, $this->source); })()), "typeTransport", [], "any", false, false, false, 71), 'errors');
+        // line 81
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 81, $this->source); })()), "typeTransport", [], "any", false, false, false, 81), 'errors');
         yield "
         </div>
 
         ";
-        // line 75
+        // line 85
         yield "        ";
-        if (CoreExtension::getAttribute($this->env, $this->source, ($context["form"] ?? null), "arrivalTime", [], "any", true, true, false, 75)) {
-            // line 76
+        if (CoreExtension::getAttribute($this->env, $this->source, ($context["form"] ?? null), "arrivalTime", [], "any", true, true, false, 85)) {
+            // line 86
             yield "            ";
-            yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 76, $this->source); })()), "arrivalTime", [], "any", false, false, false, 76), 'widget', ["attr" => ["class" => "hidden"]]);
+            yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 86, $this->source); })()), "arrivalTime", [], "any", false, false, false, 86), 'widget', ["attr" => ["class" => "hidden"]]);
             yield "
         ";
         }
-        // line 78
+        // line 88
         yield "
         <div class=\"mt-6 flex justify-between\">
             <button type=\"submit\" class=\"inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-500 to-violet-500 leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md\">
                 Enregistrer
             </button>
             <a href=\"";
-        // line 83
+        // line 93
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("trajet_affichage");
         yield "\" class=\"inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-gray-500 to-gray-700 leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md\">
                 Annuler
             </a>
             ";
-        // line 86
-        if (CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 86, $this->source); })()), "id", [], "any", false, false, false, 86)) {
-            // line 87
+        // line 96
+        if (CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 96, $this->source); })()), "id", [], "any", false, false, false, 96)) {
+            // line 97
             yield "            <a href=\"";
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("trajet_supprimer", ["id" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 87, $this->source); })()), "id", [], "any", false, false, false, 87)]), "html", null, true);
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("trajet_supprimer", ["id" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 97, $this->source); })()), "id", [], "any", false, false, false, 97)]), "html", null, true);
             yield "\" class=\"inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-red-500 to-red-700 leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md\"
                onclick=\"return confirm('Êtes-vous sûr de vouloir supprimer ce trajet?')\">
                 Supprimer
             </a>
             ";
         }
-        // line 92
+        // line 102
         yield "        </div>
     </div>
     ";
-        // line 94
-        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 94, $this->source); })()), 'form_end');
+        // line 104
+        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 104, $this->source); })()), 'form_end');
         yield "
     <div style=\"margin-left: 280px;\">
-
-    <div class=\"mt-8 rounded-lg overflow-hidden\">
-        <div class=\"bg-gradient-to-tl from-blue-500 to-violet-500 text-white px-6 py-3\">
-            <h5 class=\"mb-0 text-lg font-semibold\">Informations calculées</h5>
+        <div class=\"mt-8 rounded-lg overflow-hidden\">
+            <div class=\"bg-gradient-to-tl from-blue-500 to-violet-500 text-white px-6 py-3\">
+                <h5 class=\"mb-0 text-lg font-semibold\">Informations calculées</h5>
+            </div>
+            <div class=\"bg-white px-6 py-4 shadow\">
+                <div class=\"grid grid-cols-2 gap-4\">
+                    <div>
+                        <p class=\"font-medium text-gray-700\">Heure de départ:</p>
+                        <p>";
+        // line 114
+        yield ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 114, $this->source); })()), "departureTime", [], "any", false, false, false, 114)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 114, $this->source); })()), "departureTime", [], "any", false, false, false, 114), "d/m/Y H:i"), "html", null, true)) : ("Non définie"));
+        yield "</p>
+                    </div>
+                    <div>
+                        <p class=\"font-medium text-gray-700\">Heure d'arrivée estimée:</p>
+                        <p>";
+        // line 118
+        yield ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 118, $this->source); })()), "arrivalTime", [], "any", false, false, false, 118)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 118, $this->source); })()), "arrivalTime", [], "any", false, false, false, 118), "d/m/Y H:i"), "html", null, true)) : ("Non calculée"));
+        yield "</p>
+                    </div>
+                    <div>
+                        <p class=\"font-medium text-gray-700\">Places disponibles:</p>
+                        <p>";
+        // line 122
+        yield (((CoreExtension::getAttribute($this->env, $this->source, ($context["trajet"] ?? null), "availableSeats", [], "any", true, true, false, 122) &&  !(null === CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 122, $this->source); })()), "availableSeats", [], "any", false, false, false, 122)))) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 122, $this->source); })()), "availableSeats", [], "any", false, false, false, 122), "html", null, true)) : ("Non spécifié"));
+        yield "</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class=\"bg-white px-6 py-4 shadow\">
-            <div class=\"grid grid-cols-2 gap-4\">
-                <div>
-                    <p class=\"font-medium text-gray-700\">Heure de départ:</p>
-                    <p>";
-        // line 105
-        yield ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 105, $this->source); })()), "departureTime", [], "any", false, false, false, 105)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 105, $this->source); })()), "departureTime", [], "any", false, false, false, 105), "d/m/Y H:i"), "html", null, true)) : ("Non définie"));
-        yield "</p>
-                </div>
-                <div>
-                    <p class=\"font-medium text-gray-700\">Heure d'arrivée estimée:</p>
-                   <p>";
-        // line 109
-        yield ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 109, $this->source); })()), "arrivalTime", [], "any", false, false, false, 109)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 109, $this->source); })()), "arrivalTime", [], "any", false, false, false, 109), "d/m/Y H:i"), "html", null, true)) : ("Non calculée"));
-        yield "</p>
-                             </div>
-                       </div>
-                </div>
-         </div>
     </div>
 </div>
 ";
@@ -347,7 +371,7 @@ class __TwigTemplate_9013f05864e605576b15823892a2ab8d extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  311 => 109,  304 => 105,  290 => 94,  286 => 92,  277 => 87,  275 => 86,  269 => 83,  262 => 78,  256 => 76,  253 => 75,  247 => 71,  243 => 70,  239 => 69,  236 => 68,  230 => 64,  226 => 63,  222 => 62,  219 => 61,  213 => 57,  209 => 56,  205 => 55,  202 => 54,  196 => 50,  193 => 49,  191 => 47,  187 => 46,  184 => 45,  177 => 40,  174 => 39,  172 => 36,  168 => 35,  165 => 34,  159 => 30,  155 => 29,  151 => 28,  148 => 27,  142 => 23,  138 => 22,  134 => 21,  131 => 20,  125 => 16,  121 => 15,  117 => 14,  114 => 13,  108 => 9,  103 => 6,  90 => 5,  64 => 3,  41 => 1,);
+        return array (  335 => 122,  328 => 118,  321 => 114,  308 => 104,  304 => 102,  295 => 97,  293 => 96,  287 => 93,  280 => 88,  274 => 86,  271 => 85,  265 => 81,  261 => 80,  257 => 79,  254 => 78,  248 => 74,  244 => 73,  240 => 72,  237 => 71,  231 => 67,  228 => 66,  226 => 63,  222 => 62,  219 => 61,  213 => 57,  209 => 56,  205 => 55,  202 => 54,  196 => 50,  193 => 49,  191 => 47,  187 => 46,  184 => 45,  177 => 40,  174 => 39,  172 => 36,  168 => 35,  165 => 34,  159 => 30,  155 => 29,  151 => 28,  148 => 27,  142 => 23,  138 => 22,  134 => 21,  131 => 20,  125 => 16,  121 => 15,  117 => 14,  114 => 13,  108 => 9,  103 => 6,  90 => 5,  64 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -411,6 +435,16 @@ class __TwigTemplate_9013f05864e605576b15823892a2ab8d extends Template
             {{ form_errors(form.price) }}
         </div>
 
+        {# Available Seats #}
+        <div class=\"mb-4\">
+            {{ form_label(form.availableSeats, 'Places disponibles', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+            {{ form_widget(form.availableSeats, {'attr': {
+                'class': 'w-full px-4 py-2 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500',
+                'min': 0
+            }}) }}
+            {{ form_errors(form.availableSeats) }}
+        </div>
+
         {# Vehicle ID #}
         <div class=\"mb-4\">
             {{ form_label(form.vehicleId, 'ID Véhicule', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
@@ -447,26 +481,29 @@ class __TwigTemplate_9013f05864e605576b15823892a2ab8d extends Template
     </div>
     {{ form_end(form) }}
     <div style=\"margin-left: 280px;\">
-
-    <div class=\"mt-8 rounded-lg overflow-hidden\">
-        <div class=\"bg-gradient-to-tl from-blue-500 to-violet-500 text-white px-6 py-3\">
-            <h5 class=\"mb-0 text-lg font-semibold\">Informations calculées</h5>
+        <div class=\"mt-8 rounded-lg overflow-hidden\">
+            <div class=\"bg-gradient-to-tl from-blue-500 to-violet-500 text-white px-6 py-3\">
+                <h5 class=\"mb-0 text-lg font-semibold\">Informations calculées</h5>
+            </div>
+            <div class=\"bg-white px-6 py-4 shadow\">
+                <div class=\"grid grid-cols-2 gap-4\">
+                    <div>
+                        <p class=\"font-medium text-gray-700\">Heure de départ:</p>
+                        <p>{{ trajet.departureTime ? trajet.departureTime|date('d/m/Y H:i') : 'Non définie' }}</p>
+                    </div>
+                    <div>
+                        <p class=\"font-medium text-gray-700\">Heure d'arrivée estimée:</p>
+                        <p>{{ trajet.arrivalTime ? trajet.arrivalTime|date('d/m/Y H:i') : 'Non calculée' }}</p>
+                    </div>
+                    <div>
+                        <p class=\"font-medium text-gray-700\">Places disponibles:</p>
+                        <p>{{ trajet.availableSeats ?? 'Non spécifié' }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class=\"bg-white px-6 py-4 shadow\">
-            <div class=\"grid grid-cols-2 gap-4\">
-                <div>
-                    <p class=\"font-medium text-gray-700\">Heure de départ:</p>
-                    <p>{{ trajet.departureTime ? trajet.departureTime|date('d/m/Y H:i') : 'Non définie' }}</p>
-                </div>
-                <div>
-                    <p class=\"font-medium text-gray-700\">Heure d'arrivée estimée:</p>
-                   <p>{{ trajet.arrivalTime ? trajet.arrivalTime|date('d/m/Y H:i') : 'Non calculée' }}</p>
-                             </div>
-                       </div>
-                </div>
-         </div>
     </div>
 </div>
-{% endblock %}", "trajet/modifier.html.twig", "C:\\Users\\skonb\\Desktop\\UrbanLink_Symfony_Fork-main\\templates\\trajet\\modifier.html.twig");
+{% endblock %}", "trajet/modifier.html.twig", "C:\\Users\\skonb\\Desktop\\pi\\UrbanLink_Symfony_Fork-main\\templates\\trajet\\modifier.html.twig");
     }
 }
