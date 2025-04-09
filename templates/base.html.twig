@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}UrbanLink{% endblock %}</title>
+
+  <!-- Common CSS -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
+  {% block stylesheets %}
+    <!-- Your template-specific CSS will be inserted here -->
+  {% endblock %}
+</head>
+<body class="m-0 font-sans antialiased font-normal bg-white text-start text-base leading-default text-slate-500">
+{% block body %}{% endblock %}
+
+<!-- Common JS -->
+<script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+<script src="{{ asset('assets/js/argon-dashboard-tailwind.js') }}"></script>
+
+{% block javascripts %}{% endblock %}
+</body>
+</html>
