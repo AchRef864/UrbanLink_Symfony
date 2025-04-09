@@ -98,14 +98,16 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
 
         // line 6
-        yield "    <div class=\"container mx-auto p-6\">
+        yield "<div style=\"margin-left: 280px;\">
+
+    <div class=\"container mx-auto p-6\">
         <h1 class=\"text-center mb-4\">Responses for Avis</h1>
 
         <div class=\"text-right mb-4\">
             <!-- Button to Create a New Response -->
             <a href=\"";
-        // line 11
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reponse_new", ["avisId" => (isset($context["avis_id"]) || array_key_exists("avis_id", $context) ? $context["avis_id"] : (function () { throw new RuntimeError('Variable "avis_id" does not exist.', 11, $this->source); })())]), "html", null, true);
+        // line 13
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reponse_new", ["avisId" => (isset($context["avis_id"]) || array_key_exists("avis_id", $context) ? $context["avis_id"] : (function () { throw new RuntimeError('Variable "avis_id" does not exist.', 13, $this->source); })())]), "html", null, true);
         yield "\" class=\"btn btn-primary\">Create New Response</a>
         </div>
 
@@ -120,39 +122,39 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
             </thead>
             <tbody>
                 ";
-        // line 24
+        // line 26
         $context['_parent'] = $context;
-        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["reponses"]) || array_key_exists("reponses", $context) ? $context["reponses"] : (function () { throw new RuntimeError('Variable "reponses" does not exist.', 24, $this->source); })()));
+        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["reponses"]) || array_key_exists("reponses", $context) ? $context["reponses"] : (function () { throw new RuntimeError('Variable "reponses" does not exist.', 26, $this->source); })()));
         $context['_iterated'] = false;
         foreach ($context['_seq'] as $context["_key"] => $context["reponse"]) {
-            // line 25
+            // line 27
             yield "                    <tr>
                         <td class=\"border border-gray-300 px-4 py-2\">";
-            // line 26
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 26), "html", null, true);
-            yield "</td>
-                        <td class=\"border border-gray-300 px-4 py-2\">";
-            // line 27
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "commentaire", [], "any", false, false, false, 27), "html", null, true);
-            yield "</td>
-                        <td class=\"border border-gray-300 px-4 py-2\">";
             // line 28
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "dateReponse", [], "any", false, false, false, 28), "Y-m-d"), "html", null, true);
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 28), "html", null, true);
+            yield "</td>
+                        <td class=\"border border-gray-300 px-4 py-2\">";
+            // line 29
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "commentaire", [], "any", false, false, false, 29), "html", null, true);
+            yield "</td>
+                        <td class=\"border border-gray-300 px-4 py-2\">";
+            // line 30
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "dateReponse", [], "any", false, false, false, 30), "Y-m-d"), "html", null, true);
             yield "</td>
                         <td class=\"border border-gray-300 px-4 py-2\">
                             <!-- Button to Edit the Response -->
                             <a href=\"";
-            // line 31
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reponse_edit", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 31)]), "html", null, true);
+            // line 33
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reponse_edit", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 33)]), "html", null, true);
             yield "\" class=\"btn btn-warning btn-sm\">Edit</a>
                             <!-- Button to Delete the Response -->
                             <form method=\"post\" action=\"";
-            // line 33
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reponse_delete", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 33)]), "html", null, true);
+            // line 35
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reponse_delete", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 35)]), "html", null, true);
             yield "\" style=\"display:inline-block;\" onsubmit=\"return confirm('Are you sure you want to delete this response?');\">
                                 <input type=\"hidden\" name=\"_token\" value=\"";
-            // line 34
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 34))), "html", null, true);
+            // line 36
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 36))), "html", null, true);
             yield "\">
                                 <button class=\"btn btn-danger btn-sm\">Delete</button>
                             </form>
@@ -161,9 +163,9 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
                 ";
             $context['_iterated'] = true;
         }
-        // line 39
+        // line 41
         if (!$context['_iterated']) {
-            // line 40
+            // line 42
             yield "                    <tr>
                         <td colspan=\"4\" class=\"text-center border border-gray-300 px-4 py-2\">No responses found for this Avis.</td>
                     </tr>
@@ -172,17 +174,18 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['reponse'], $context['_parent'], $context['_iterated']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 44
+        // line 46
         yield "            </tbody>
         </table>
 
         <div class=\"text-center mt-4\">
             <a href=\"";
-        // line 48
+        // line 50
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_index");
         yield "\" class=\"btn btn-secondary\">Back to Avis List</a>
         </div>
     </div>
+    </div>  
 ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
@@ -214,7 +217,7 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  182 => 48,  176 => 44,  167 => 40,  165 => 39,  155 => 34,  151 => 33,  146 => 31,  140 => 28,  136 => 27,  132 => 26,  129 => 25,  124 => 24,  108 => 11,  101 => 6,  88 => 5,  64 => 3,  41 => 1,);
+        return array (  184 => 50,  178 => 46,  169 => 42,  167 => 41,  157 => 36,  153 => 35,  148 => 33,  142 => 30,  138 => 29,  134 => 28,  131 => 27,  126 => 26,  110 => 13,  101 => 6,  88 => 5,  64 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -224,6 +227,8 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
 {% block title %}Responses for Avis {{ avis_id }}{% endblock %}
 
 {% block body %}
+<div style=\"margin-left: 280px;\">
+
     <div class=\"container mx-auto p-6\">
         <h1 class=\"text-center mb-4\">Responses for Avis</h1>
 
@@ -269,6 +274,7 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
             <a href=\"{{ path('app_avis_index') }}\" class=\"btn btn-secondary\">Back to Avis List</a>
         </div>
     </div>
+    </div>  
 {% endblock %}", "avis/reponses.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\avis\\reponses.html.twig");
     }
 }

@@ -97,17 +97,19 @@ class __TwigTemplate_a64203e1ce139a8c0d98dfbf481fdf0a extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
 
         // line 6
-        yield "    <h1>Create new Reponse</h1>
+        yield "<div style=\"margin-left: 280px;\">
+    <h1>Create new Reponse</h1>
 
     ";
-        // line 8
+        // line 9
         yield Twig\Extension\CoreExtension::include($this->env, $context, "reponse/_form.html.twig", ["button_label" => "Create"]);
         yield "
 
     <a href=\"";
-        // line 10
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_reponses", ["id" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["reponse"]) || array_key_exists("reponse", $context) ? $context["reponse"] : (function () { throw new RuntimeError('Variable "reponse" does not exist.', 10, $this->source); })()), "avisId", [], "any", false, false, false, 10)]), "html", null, true);
+        // line 11
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_reponses", ["id" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["reponse"]) || array_key_exists("reponse", $context) ? $context["reponse"] : (function () { throw new RuntimeError('Variable "reponse" does not exist.', 11, $this->source); })()), "avisId", [], "any", false, false, false, 11)]), "html", null, true);
         yield "\" class=\"btn btn-secondary\">Back to Responses</a>
+</div>
 ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
@@ -139,7 +141,7 @@ class __TwigTemplate_a64203e1ce139a8c0d98dfbf481fdf0a extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  109 => 10,  104 => 8,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
+        return array (  110 => 11,  105 => 9,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -149,11 +151,13 @@ class __TwigTemplate_a64203e1ce139a8c0d98dfbf481fdf0a extends Template
 {% block title %}New Reponse{% endblock %}
 
 {% block body %}
+<div style=\"margin-left: 280px;\">
     <h1>Create new Reponse</h1>
 
     {{ include('reponse/_form.html.twig', {'button_label': 'Create'}) }}
 
     <a href=\"{{ path('app_avis_reponses', {'id': reponse.avisId}) }}\" class=\"btn btn-secondary\">Back to Responses</a>
+</div>
 {% endblock %}
 
 ", "reponse/new.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\reponse\\new.html.twig");
