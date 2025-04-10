@@ -10,7 +10,7 @@ DB_PORT = 23048
 DB_USER = "avnadmin"
 DB_PASSWORD = "AVNS_aYEcJsYCG52lJEkN-su"
 DB_NAME = "defaultdb"
-SSL_CERT = "C:/Users/skonb/Desktop/ca.pem" 
+SSL_CERT = "C:/Users/rahal/Downloads/ca.pem"  # Path to the CA certificate
 
 # Entity output directory
 ENTITY_DIR = "src/Entity"
@@ -41,12 +41,12 @@ def map_db_type_to_doctrine(db_type, is_nullable):
         'tinyint': ('boolean' if size == '1' else 'smallint', ''),
         'smallint': ('smallint', ''),
         'mediumint': ('integer', ''),
-        'varchar': ('string', f'length={size}'),
-        'char': ('string', f'length={size}'),
+        'varchar': ('string', f'length: {size}'),
+        'char': ('string', f'length: {size}'),
         'text': ('text', ''),
         'mediumtext': ('text', ''),
         'longtext': ('text', ''),
-        'decimal': ('decimal', f'precision={size.split(",")[0] if "," in size else size}, scale={size.split(",")[1] if "," in size else 0}' if size else ''),
+        'decimal': ('decimal', f'precision: {size.split(",")[0] if "," in size else size}, scale: {size.split(",")[1] if "," in size else 0}' if size else ''),
         'float': ('float', ''),
         'double': ('float', ''),
         'datetime': ('datetime', ''),
@@ -65,7 +65,7 @@ def map_db_type_to_doctrine(db_type, is_nullable):
     if is_nullable == 'YES':
         if options:
             options += ', '
-        options += 'nullable=true'
+        options += 'nullable: true'
     
     return doctrine_type, options
 
@@ -86,15 +86,13 @@ namespace App\\Entity;
 use App\\Repository\\{class_name}Repository;
 use Doctrine\\ORM\\Mapping as ORM;
 
-/**
- * @ORM\\Entity(repositoryClass={class_name}Repository::class)
- * @ORM\\Table(name="{table_name}")
- */
+#[ORM\\Entity(repositoryClass: {class_name}Repository::class)]
+#[ORM\\Table(name: '{table_name}')]
 class {class_name}
 {{
 """)
         
-        # Write properties and annotations
+        # Write properties and attributes
         for column in columns:
             column_name = column['Field']
             column_type = column['Type']
@@ -103,9 +101,18 @@ class {class_name}
             
             doctrine_type, options = map_db_type_to_doctrine(column_type, is_nullable)
             
-            f.write(f"""    /**
-     * @ORM\\{'' if column_name in primary_keys else 'Column'}({'' if column_name in primary_keys else f'type="{doctrine_type}", {options}'})
-     */
+            # Handle primary key correctly
+            if column_name in primary_keys:
+                # For primary key
+                f.write(f"""    #[ORM\\Id]
+    #[ORM\\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\\Column(type: '{doctrine_type}')]
+    private ${property_name};
+
+""")
+            else:
+                # For regular columns
+                f.write(f"""    #[ORM\\Column(type: '{doctrine_type}'{', ' + options if options else ''})]
     private ${property_name};
 
 """)
@@ -143,6 +150,10 @@ class {class_name}
 
 """)
             
+            # Skip setter for ID field if it's auto-generated
+            if column_name in primary_keys and property_name == 'id':
+                continue
+                
             # Setter
             f.write(f"""    public function set{method_name}({nullable}{php_type} ${property_name}): self
     {{
@@ -251,34 +262,3 @@ try:
 
 except mysql.connector.Error as e:
     print(f"Error: {e}")
-
-
-def wait_for_entity_creation(directory, timeout=60, check_interval=5):
-    """
-    This method waits for files to be created in the specified directory.
-    It checks periodically and executes the given command once files are detected.
-    
-    Args:
-    - directory (str): The directory to monitor for file creation.
-    - timeout (int): The maximum time (in seconds) to wait before giving up.
-    - check_interval (int): The time (in seconds) to wait between checks.
-    """
-    start_time = time.time()
-    
-    while time.time() - start_time < timeout:
-        # Check if the directory contains files
-        if os.listdir(directory):
-            print(f"Files found in {directory}, executing command.")
-            # Run the desired command
-            command = f"php bin/console make:entity --regenerate src"
-            os.system(command)
-            break
-        else:
-            print(f"No files found in {directory}, checking again in {check_interval} seconds...")
-            time.sleep(check_interval)
-    
-    # If timeout reached, print a message
-    if time.time() - start_time >= timeout:
-        print(f"Timeout reached: No files found in {directory} within the given time.")
-
-wait_for_entity_creation("src/Entity", timeout=600, check_interval=5)

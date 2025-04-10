@@ -44,38 +44,38 @@ class ChatbotController extends AbstractController
         // Premiers secours - Vue générale
         if (preg_match('/(premier secours|first aid|secours|geste de secours)/i', $message)) {
             return 'Voici les gestes de premiers secours essentiels : 
-1. ⚠️ Sécurisez la zone. 
-2. 📞 Appelez les secours (SAMU : 190).
-3. 🩹 Appliquez les gestes adaptés selon la situation (brûlure, saignement, inconscience...).
+                1. ⚠️ Sécurisez la zone. 
+                2. 📞 Appelez les secours (SAMU : 190).
+                3. 🩹 Appliquez les gestes adaptés selon la situation (brûlure, saignement, inconscience...).
 
-Souhaitez-vous des instructions pour un cas spécifique ? (ex: brûlure, saignement, inconscience)';
+                Souhaitez-vous des instructions pour un cas spécifique ? (ex: brûlure, saignement, inconscience)';
         }
 
         // Brûlure
         if (preg_match('/(brûlure|burn)/i', $message)) {
             return '🔥 En cas de brûlure :
-1. Passez la zone brûlée sous l\'eau tiède (15 minutes).
-2. ❌ Ne mettez ni glace, ni pommade, ni corps gras.
-3. 🧼 Couvrez la brûlure avec un tissu propre non adhérent.
-4. 🚑 Consultez un médecin si la brûlure est grave ou étendue.';
+                1. Passez la zone brûlée sous l\'eau tiède (15 minutes).
+                2. ❌ Ne mettez ni glace, ni pommade, ni corps gras.
+                3. 🧼 Couvrez la brûlure avec un tissu propre non adhérent.
+                4. 🚑 Consultez un médecin si la brûlure est grave ou étendue.';
         }
 
         // Saignement
         if (preg_match('/(saignement|saigner|blood|bleeding)/i', $message)) {
             return '🩸 En cas de saignement :
-1. Appuyez fermement sur la plaie avec un tissu propre.
-2. Élevez le membre blessé si possible.
-3. Maintenez la pression jusqu’à arrêt du saignement.
-4. 🚑 Si ça ne s’arrête pas en 10 minutes, appelez les secours.';
+                1. Appuyez fermement sur la plaie avec un tissu propre.
+                2. Élevez le membre blessé si possible.
+                3. Maintenez la pression jusqu’à arrêt du saignement.
+                4. 🚑 Si ça ne s’arrête pas en 10 minutes, appelez les secours.';
         }
 
         // Inconscience
         if (preg_match('/(inconscient|évanoui|pas réveillé|unconscious|fainted)/i', $message)) {
             return '😵 En cas d’inconscience :
-1. Vérifiez la respiration.
-2. Si la personne ne respire pas : commencez un massage cardiaque.
-3. Si elle respire : placez-la en position latérale de sécurité.
-4. 📞 Appelez immédiatement le 190.';
+                1. Vérifiez la respiration.
+                2. Si la personne ne respire pas : commencez un massage cardiaque.
+                3. Si elle respire : placez-la en position latérale de sécurité.
+                4. 📞 Appelez immédiatement le 190.';
         }
 
         // Salutations
