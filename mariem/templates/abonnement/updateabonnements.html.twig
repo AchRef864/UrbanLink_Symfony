@@ -1,0 +1,91 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Modifier Abonnement{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <h1 class="mb-4">Modifier Abonnement</h1>
+
+    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+    
+    <div class="row g-3">
+        <div class="col-md-6">
+            {{ form_label(form.type, 'Type', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.type, {'attr': {'class': 'form-select'}}) }}
+            <div class="invalid-feedback">
+                {{ form_errors(form.type) }}
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            {{ form_label(form.prix, 'Prix', {'label_attr': {'class': 'form-label'}}) }}
+            <div class="input-group">
+                {{ form_widget(form.prix, {'attr': {'class': 'form-control'}}) }}
+                <span class="input-group-text">€</span>
+            </div>
+            <div class="invalid-feedback">
+                {{ form_errors(form.prix) }}
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            {{ form_label(form.date_debut, 'Date de début', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.date_debut, {'attr': {'class': 'form-control datepicker'}}) }}
+            <div class="invalid-feedback">
+                {{ form_errors(form.date_debut) }}
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            {{ form_label(form.date_fin, 'Date de fin', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.date_fin, {'attr': {'class': 'form-control datepicker'}}) }}
+            <div class="invalid-feedback">
+                {{ form_errors(form.date_fin) }}
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            {{ form_label(form.etat, 'État', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.etat, {'attr': {'class': 'form-select'}}) }}
+            <div class="invalid-feedback">
+                {{ form_errors(form.etat) }}
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            {{ form_label(form.image, 'Image', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-text">
+                {% if abonnement.image %}
+                    Image actuelle: <a href="{{ asset('uploads/' ~ abonnement.image) }}" target="_blank">{{ abonnement.image }}</a>
+                {% else %}
+                    Aucune image actuelle
+                {% endif %}
+            </div>
+            <div class="invalid-feedback">
+                {{ form_errors(form.image) }}
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        {{ form_widget(form.update, {'attr': {'class': 'btn btn-primary me-2'}}) }}
+        <a href="{{ path('afficher_abonnementAdmin') }}" class="btn btn-outline-secondary">Retour</a>
+    </div>
+    
+    {{ form_end(form) }}
+</div>
+
+{% block javascripts %}
+<script>
+    // Initialize datepickers
+    $(document).ready(function() {
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true,
+            todayHighlight: true
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}
