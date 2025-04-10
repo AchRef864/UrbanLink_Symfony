@@ -98,7 +98,7 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
 
         // line 6
-        yield "<div class=\"ml-[280px]\">
+        yield "<div style=\"margin-left: 280px;\">
 
     <div class=\"container mx-auto p-6\">
         <h1 class=\"text-2xl font-bold text-center mb-6\">Responses for Avis</h1>
@@ -109,7 +109,7 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
         // line 13
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reponse_new", ["avisId" => (isset($context["avis_id"]) || array_key_exists("avis_id", $context) ? $context["avis_id"] : (function () { throw new RuntimeError('Variable "avis_id" does not exist.', 13, $this->source); })())]), "html", null, true);
         yield "\" 
-               class=\"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded\">
+               class=\"bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded\">
                 Create New Response
             </a>
         </div>
@@ -146,25 +146,27 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "dateReponse", [], "any", false, false, false, 34), "Y-m-d"), "html", null, true);
             yield "</td>
                             <td class=\"py-3 px-6 border-b border-gray-300 text-center\">
+                                <!-- Edit button -->
                                 <a href=\"";
-            // line 36
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reponse_edit", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 36)]), "html", null, true);
+            // line 37
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reponse_edit", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 37)]), "html", null, true);
             yield "\" 
-                                   class=\"bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-1 px-3 rounded text-sm mr-2\">
+                                   class=\"bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg shadow-md\">
                                     Edit
                                 </a>
+                                <!-- Delete button -->
                                 <form method=\"post\" action=\"";
-            // line 40
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reponse_delete", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 40)]), "html", null, true);
+            // line 42
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reponse_delete", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 42)]), "html", null, true);
             yield "\" 
                                       class=\"inline-block\" 
                                       onsubmit=\"return confirm('Are you sure you want to delete this response?');\">
                                     <input type=\"hidden\" name=\"_token\" value=\"";
-            // line 43
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 43))), "html", null, true);
+            // line 45
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 45))), "html", null, true);
             yield "\">
                                     <button type=\"submit\"
-                                            class=\"bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm\">
+                                            class=\"bg-red-500 hover:bg-red-600 text-black font-semibold py-2 px-4 rounded-lg shadow-md mt-2\">
                                         Delete
                                     </button>
                                 </form>
@@ -173,9 +175,9 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
                     ";
             $context['_iterated'] = true;
         }
-        // line 51
+        // line 53
         if (!$context['_iterated']) {
-            // line 52
+            // line 54
             yield "                        <tr>
                             <td colspan=\"4\" class=\"text-center py-4 text-gray-500\">No responses found for this Avis.</td>
                         </tr>
@@ -184,17 +186,17 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['reponse'], $context['_parent'], $context['_iterated']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 56
+        // line 58
         yield "                </tbody>
             </table>
         </div>
 
         <div class=\"text-center mt-6\">
             <a href=\"";
-        // line 61
+        // line 63
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_index");
         yield "\" 
-               class=\"bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded\">
+               class=\"bg-gray-500 hover:bg-gray-700 text-black font-bold py-2 px-4 rounded\">
                 Back to Avis List
             </a>
         </div>
@@ -231,7 +233,7 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  195 => 61,  188 => 56,  179 => 52,  177 => 51,  164 => 43,  158 => 40,  151 => 36,  146 => 34,  142 => 33,  138 => 32,  135 => 31,  130 => 30,  110 => 13,  101 => 6,  88 => 5,  64 => 3,  41 => 1,);
+        return array (  197 => 63,  190 => 58,  181 => 54,  179 => 53,  166 => 45,  160 => 42,  152 => 37,  146 => 34,  142 => 33,  138 => 32,  135 => 31,  130 => 30,  110 => 13,  101 => 6,  88 => 5,  64 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -241,7 +243,7 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
 {% block title %}Responses for Avis {{ avis_id }}{% endblock %}
 
 {% block body %}
-<div class=\"ml-[280px]\">
+<div style=\"margin-left: 280px;\">
 
     <div class=\"container mx-auto p-6\">
         <h1 class=\"text-2xl font-bold text-center mb-6\">Responses for Avis</h1>
@@ -249,7 +251,7 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
         <div class=\"flex justify-end mb-4\">
             <!-- Button to Create a New Response -->
             <a href=\"{{ path('app_reponse_new', {'avisId': avis_id}) }}\" 
-               class=\"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded\">
+               class=\"bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded\">
                 Create New Response
             </a>
         </div>
@@ -271,16 +273,18 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
                             <td class=\"py-3 px-6 border-b border-gray-300\">{{ reponse.commentaire }}</td>
                             <td class=\"py-3 px-6 border-b border-gray-300\">{{ reponse.dateReponse|date('Y-m-d') }}</td>
                             <td class=\"py-3 px-6 border-b border-gray-300 text-center\">
+                                <!-- Edit button -->
                                 <a href=\"{{ path('app_reponse_edit', {'id': reponse.id}) }}\" 
-                                   class=\"bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-1 px-3 rounded text-sm mr-2\">
+                                   class=\"bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg shadow-md\">
                                     Edit
                                 </a>
+                                <!-- Delete button -->
                                 <form method=\"post\" action=\"{{ path('app_reponse_delete', {'id': reponse.id}) }}\" 
                                       class=\"inline-block\" 
                                       onsubmit=\"return confirm('Are you sure you want to delete this response?');\">
                                     <input type=\"hidden\" name=\"_token\" value=\"{{ csrf_token('delete' ~ reponse.id) }}\">
                                     <button type=\"submit\"
-                                            class=\"bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm\">
+                                            class=\"bg-red-500 hover:bg-red-600 text-black font-semibold py-2 px-4 rounded-lg shadow-md mt-2\">
                                         Delete
                                     </button>
                                 </form>
@@ -297,7 +301,7 @@ class __TwigTemplate_930b2127a9c6ab7f9e0cf437ed5f806d extends Template
 
         <div class=\"text-center mt-6\">
             <a href=\"{{ path('app_avis_index') }}\" 
-               class=\"bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded\">
+               class=\"bg-gray-500 hover:bg-gray-700 text-black font-bold py-2 px-4 rounded\">
                 Back to Avis List
             </a>
         </div>

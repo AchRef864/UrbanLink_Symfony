@@ -12,15 +12,23 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ReponseRepository;
 use App\Entity\Reponse;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/avis')]
 final class AvisController extends AbstractController
 {
     #[Route(name: 'app_avis_index', methods: ['GET'])]
-    public function index(AvisRepository $avisRepository): Response
+    public function index(AvisRepository $avisRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $queryBuilder = $avisRepository->createQueryBuilder('a');
+        $pagination = $paginator->paginate(
+            $queryBuilder, // Query or QueryBuilder
+            $request->query->getInt('page', 1), // Current page number
+            5 // Items per page
+        );
+
         return $this->render('avis/index.html.twig', [
-            'avis' => $avisRepository->findAll(),
+            'avis' => $pagination,
         ]);
     }
 
@@ -80,17 +88,17 @@ final class AvisController extends AbstractController
     #[Route('/{id}', name: 'app_avis_delete', methods: ['POST'])]
     public function delete(Request $request, Avis $avi, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $avi->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($avi);
-            $entityManager->flush();
-
+        if ($this->isCsrfTokenValid('delete' . $avi->getId(), $request->request->get('_token'))) {
             // Remove associated responses
             $reponses = $entityManager->getRepository(Reponse::class)->findBy(['avis' => $avi->getId()]);
             foreach ($reponses as $reponse) {
                 $entityManager->remove($reponse);
             }
+
+            $entityManager->remove($avi);
             $entityManager->flush();
         }
+
         $this->addFlash('success', 'Avis deleted successfully.');
 
         return $this->redirectToRoute('app_avis_index', [], Response::HTTP_SEE_OTHER);

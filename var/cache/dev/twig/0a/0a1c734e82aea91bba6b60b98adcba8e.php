@@ -33,7 +33,6 @@ class __TwigTemplate_dcf1140d25d6518581716a9f513f890d extends Template
             'title' => [$this, 'block_title'],
             'stylesheets' => [$this, 'block_stylesheets'],
             'body' => [$this, 'block_body'],
-            'javascripts' => [$this, 'block_javascripts'],
         ];
     }
 
@@ -100,65 +99,155 @@ class __TwigTemplate_dcf1140d25d6518581716a9f513f890d extends Template
 
         // line 6
         yield "<style>
-    .container {
-        font-family: 'Arial', sans-serif;
+    .w-full {
+        width: 100%;
     }
 
-    table {
+    .max-w-full {
+        max-width: 100%;
+    }
+
+    .relative {
+        position: relative;
+    }
+
+    .flex {
+        display: flex;
+    }
+
+    .flex-col {
+        flex-direction: column;
+    }
+
+    .min-w-0 {
+        min-width: 0;
+    }
+
+    .break-words {
+        word-wrap: break-word;
+    }
+
+    .bg-white {
         background-color: #ffffff;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
     }
 
-    th {
-        background-color: #f8f9fa;
-        color: #6c757d;
-        font-size: 14px;
-        padding: 12px;
+    .border-0 {
+        border: none;
     }
 
-    td {
-        padding: 14px;
-        font-size: 15px;
+    .shadow-xl {
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .rounded-2xl {
+        border-radius: 1rem;
+    }
+
+    .bg-clip-border {
+        background-clip: border-box;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        margin-bottom: 1rem;
+        color: #212529;
+        border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .thead-light th {
         color: #495057;
+        background-color: #e9ecef;
+        border-color: #dee2e6;
     }
 
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
+    .text-slate-500 {
+        color: #6b7280;
     }
 
-    a {
-        margin-right: 10px;
+    .text-sm {
+        font-size: 0.875rem;
+    }
+
+    .font-normal {
+        font-weight: 400;
+    }
+
+    .leading-normal {
+        line-height: 1.5;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
         text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
     }
 
-    a:hover {
-        text-decoration: underline;
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        border: none;
     }
 
-    .text-blue-600:hover {
-        color: #0056b3;
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
     }
 
     .text-center {
-        font-size: 16px;
-        color: #999;
+        text-align: center;
     }
 
-    .btn-create {
-        display: inline-block;
-        margin-top: 20px;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        border-radius: 8px;
-        text-decoration: none;
-        transition: background-color 0.3s;
+    .mt-4 {
+        margin-top: 1.5rem;
     }
 
-    .btn-create:hover {
-        background-color: #0056b3;
+    .mb-4 {
+        margin-bottom: 1.5rem;
     }
 </style>
 ";
@@ -171,7 +260,7 @@ class __TwigTemplate_dcf1140d25d6518581716a9f513f890d extends Template
         yield from [];
     }
 
-    // line 70
+    // line 160
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -184,114 +273,90 @@ class __TwigTemplate_dcf1140d25d6518581716a9f513f890d extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
 
-        // line 71
+        // line 161
         yield "<div style=\"margin-left: 280px;\">
-    <div class=\"container mx-auto p-6\">
-        <!-- Avis Table -->
-        <div class=\"flex flex-wrap -mx-3\">
-            <div class=\"flex-none w-full max-w-full px-3\">
-                <div class=\"relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border\">
-                    <div class=\"p-6 pb-0 mb-0 border-b-0 rounded-t-2xl\">
-                        <h6 class=\"dark:text-white\">Avis Index</h6>
-                    </div>
-                    <div class=\"flex-auto px-0 pt-0 pb-2\">
-                        <div class=\"p-0 overflow-x-auto\">
-                            <table class=\"items-center w-full mb-0 align-top border-collapse dark:border-white/40 text-slate-500\">
-                                <thead class=\"align-bottom\">
-                                    <tr>
-                                        <th>Note</th>
-                                        <th>Commentaire</th>
-                                        <th>Date Avis</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ";
-        // line 92
+    <div class=\"w-full max-w-full\">
+        <div class=\"relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl rounded-2xl bg-clip-border\">
+            <div class=\"table-responsive\">
+                <table class=\"table table-flush text-slate-500\" datatable id=\"datatable-search\">
+                    <thead class=\"thead-light\">
+                        <tr>
+                            <th>Note</th>
+                            <th>Commentaire</th>
+                            <th>Date Avis</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ";
+        // line 175
         $context['_parent'] = $context;
-        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["avis"]) || array_key_exists("avis", $context) ? $context["avis"] : (function () { throw new RuntimeError('Variable "avis" does not exist.', 92, $this->source); })()));
+        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["avis"]) || array_key_exists("avis", $context) ? $context["avis"] : (function () { throw new RuntimeError('Variable "avis" does not exist.', 175, $this->source); })()));
         $context['_iterated'] = false;
         foreach ($context['_seq'] as $context["_key"] => $context["avi"]) {
-            // line 93
-            yield "                                        <tr>
-                                            <td>";
-            // line 94
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "note", [], "any", false, false, false, 94), "html", null, true);
+            // line 176
+            yield "                            <tr>
+                                <td class=\"text-sm font-normal leading-normal\">";
+            // line 177
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "note", [], "any", false, false, false, 177), "html", null, true);
             yield "</td>
-                                            <td>";
-            // line 95
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "commentaire", [], "any", false, false, false, 95), "html", null, true);
+                                <td class=\"text-sm font-normal leading-normal\">";
+            // line 178
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "commentaire", [], "any", false, false, false, 178), "html", null, true);
             yield "</td>
-                                            <td>";
-            // line 96
-            yield ((CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "dateAvis", [], "any", false, false, false, 96)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "dateAvis", [], "any", false, false, false, 96), "Y-m-d"), "html", null, true)) : (""));
+                                <td class=\"text-sm font-normal leading-normal\">";
+            // line 179
+            yield ((CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "dateAvis", [], "any", false, false, false, 179)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "dateAvis", [], "any", false, false, false, 179), "Y-m-d"), "html", null, true)) : (""));
             yield "</td>
-                                            <td>
-                                                <a href=\"";
-            // line 98
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_show", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 98)]), "html", null, true);
-            yield "\" class=\"text-xs font-semibold text-slate-400 dark:text-white dark:opacity-80\">Show</a>
-                                                <a href=\"";
-            // line 99
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_edit", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 99)]), "html", null, true);
-            yield "\" class=\"text-xs font-semibold text-slate-400 dark:text-white dark:opacity-80\">Edit</a>
-                                                <a href=\"";
-            // line 100
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_reponses", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 100)]), "html", null, true);
-            yield "\" class=\"text-xs font-semibold text-blue-600 dark:text-blue-400\">View Responses</a>
-                                            </td>
-                                        </tr>
-                                    ";
+                                <td class=\"text-sm font-normal leading-normal\">
+                                    <a href=\"";
+            // line 181
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_edit", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 181)]), "html", null, true);
+            yield "\" class=\"btn btn-primary\">Edit</a>
+                                    <a href=\"";
+            // line 182
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_reponses", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 182)]), "html", null, true);
+            yield "\" class=\"btn btn-success\">View Responses</a>
+                                    <form method=\"post\" action=\"";
+            // line 183
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_delete", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 183)]), "html", null, true);
+            yield "\" style=\"display:inline-block;\" onsubmit=\"return confirm('Are you sure you want to delete this avis?');\">
+                                        <input type=\"hidden\" name=\"_token\" value=\"";
+            // line 184
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 184))), "html", null, true);
+            yield "\">
+                                        <button type=\"submit\" class=\"btn btn-danger\">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        ";
             $context['_iterated'] = true;
         }
-        // line 103
+        // line 189
         if (!$context['_iterated']) {
-            // line 104
-            yield "                                        <tr>
-                                            <td colspan=\"4\" class=\"text-center p-4\">No records found</td>
-                                        </tr>
-                                    ";
+            // line 190
+            yield "                            <tr>
+                                <td colspan=\"4\" class=\"text-center\">No records found</td>
+                            </tr>
+                        ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['avi'], $context['_parent'], $context['_iterated']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 108
-        yield "                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <a href=\"";
-        // line 113
-        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_new");
-        yield "\" class=\"btn-create\">Create New</a>
+        // line 194
+        yield "                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+    <div class=\"text-center mt-4\">
+        <a href=\"";
+        // line 200
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_new");
+        yield "\" class=\"btn btn-secondary\">Create New Avis</a>
+    </div>
 </div>
 ";
-        
-        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
-
-        
-        $__internal_5a27a8ba21ca79b61932376b2fa922d2->leave($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof);
-
-        yield from [];
-    }
-
-    // line 120
-    /**
-     * @return iterable<null|scalar|\Stringable>
-     */
-    public function block_javascripts(array $context, array $blocks = []): iterable
-    {
-        $macros = $this->macros;
-        $__internal_5a27a8ba21ca79b61932376b2fa922d2 = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_5a27a8ba21ca79b61932376b2fa922d2->enter($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
-
-        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
-
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -322,7 +387,7 @@ class __TwigTemplate_dcf1140d25d6518581716a9f513f890d extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  283 => 120,  266 => 113,  259 => 108,  250 => 104,  248 => 103,  240 => 100,  236 => 99,  232 => 98,  227 => 96,  223 => 95,  219 => 94,  216 => 93,  211 => 92,  188 => 71,  175 => 70,  102 => 6,  89 => 5,  66 => 3,  43 => 1,);
+        return array (  355 => 200,  347 => 194,  338 => 190,  336 => 189,  326 => 184,  322 => 183,  318 => 182,  314 => 181,  309 => 179,  305 => 178,  301 => 177,  298 => 176,  293 => 175,  277 => 161,  264 => 160,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -333,122 +398,202 @@ class __TwigTemplate_dcf1140d25d6518581716a9f513f890d extends Template
 
 {% block stylesheets %}
 <style>
-    .container {
-        font-family: 'Arial', sans-serif;
+    .w-full {
+        width: 100%;
     }
 
-    table {
+    .max-w-full {
+        max-width: 100%;
+    }
+
+    .relative {
+        position: relative;
+    }
+
+    .flex {
+        display: flex;
+    }
+
+    .flex-col {
+        flex-direction: column;
+    }
+
+    .min-w-0 {
+        min-width: 0;
+    }
+
+    .break-words {
+        word-wrap: break-word;
+    }
+
+    .bg-white {
         background-color: #ffffff;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
     }
 
-    th {
-        background-color: #f8f9fa;
-        color: #6c757d;
-        font-size: 14px;
-        padding: 12px;
+    .border-0 {
+        border: none;
     }
 
-    td {
-        padding: 14px;
-        font-size: 15px;
+    .shadow-xl {
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .rounded-2xl {
+        border-radius: 1rem;
+    }
+
+    .bg-clip-border {
+        background-clip: border-box;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        margin-bottom: 1rem;
+        color: #212529;
+        border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .thead-light th {
         color: #495057;
+        background-color: #e9ecef;
+        border-color: #dee2e6;
     }
 
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
+    .text-slate-500 {
+        color: #6b7280;
     }
 
-    a {
-        margin-right: 10px;
+    .text-sm {
+        font-size: 0.875rem;
+    }
+
+    .font-normal {
+        font-weight: 400;
+    }
+
+    .leading-normal {
+        line-height: 1.5;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
         text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
     }
 
-    a:hover {
-        text-decoration: underline;
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        border: none;
     }
 
-    .text-blue-600:hover {
-        color: #0056b3;
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
     }
 
     .text-center {
-        font-size: 16px;
-        color: #999;
+        text-align: center;
     }
 
-    .btn-create {
-        display: inline-block;
-        margin-top: 20px;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        border-radius: 8px;
-        text-decoration: none;
-        transition: background-color 0.3s;
+    .mt-4 {
+        margin-top: 1.5rem;
     }
 
-    .btn-create:hover {
-        background-color: #0056b3;
+    .mb-4 {
+        margin-bottom: 1.5rem;
     }
 </style>
 {% endblock %}
 
 {% block body %}
 <div style=\"margin-left: 280px;\">
-    <div class=\"container mx-auto p-6\">
-        <!-- Avis Table -->
-        <div class=\"flex flex-wrap -mx-3\">
-            <div class=\"flex-none w-full max-w-full px-3\">
-                <div class=\"relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border\">
-                    <div class=\"p-6 pb-0 mb-0 border-b-0 rounded-t-2xl\">
-                        <h6 class=\"dark:text-white\">Avis Index</h6>
-                    </div>
-                    <div class=\"flex-auto px-0 pt-0 pb-2\">
-                        <div class=\"p-0 overflow-x-auto\">
-                            <table class=\"items-center w-full mb-0 align-top border-collapse dark:border-white/40 text-slate-500\">
-                                <thead class=\"align-bottom\">
-                                    <tr>
-                                        <th>Note</th>
-                                        <th>Commentaire</th>
-                                        <th>Date Avis</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for avi in avis %}
-                                        <tr>
-                                            <td>{{ avi.note }}</td>
-                                            <td>{{ avi.commentaire }}</td>
-                                            <td>{{ avi.dateAvis ? avi.dateAvis|date('Y-m-d') : '' }}</td>
-                                            <td>
-                                                <a href=\"{{ path('app_avis_show', {'id': avi.id}) }}\" class=\"text-xs font-semibold text-slate-400 dark:text-white dark:opacity-80\">Show</a>
-                                                <a href=\"{{ path('app_avis_edit', {'id': avi.id}) }}\" class=\"text-xs font-semibold text-slate-400 dark:text-white dark:opacity-80\">Edit</a>
-                                                <a href=\"{{ path('app_avis_reponses', {'id': avi.id}) }}\" class=\"text-xs font-semibold text-blue-600 dark:text-blue-400\">View Responses</a>
-                                            </td>
-                                        </tr>
-                                    {% else %}
-                                        <tr>
-                                            <td colspan=\"4\" class=\"text-center p-4\">No records found</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <a href=\"{{ path('app_avis_new') }}\" class=\"btn-create\">Create New</a>
+    <div class=\"w-full max-w-full\">
+        <div class=\"relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl rounded-2xl bg-clip-border\">
+            <div class=\"table-responsive\">
+                <table class=\"table table-flush text-slate-500\" datatable id=\"datatable-search\">
+                    <thead class=\"thead-light\">
+                        <tr>
+                            <th>Note</th>
+                            <th>Commentaire</th>
+                            <th>Date Avis</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for avi in avis %}
+                            <tr>
+                                <td class=\"text-sm font-normal leading-normal\">{{ avi.note }}</td>
+                                <td class=\"text-sm font-normal leading-normal\">{{ avi.commentaire }}</td>
+                                <td class=\"text-sm font-normal leading-normal\">{{ avi.dateAvis ? avi.dateAvis|date('Y-m-d') : '' }}</td>
+                                <td class=\"text-sm font-normal leading-normal\">
+                                    <a href=\"{{ path('app_avis_edit', {'id': avi.id}) }}\" class=\"btn btn-primary\">Edit</a>
+                                    <a href=\"{{ path('app_avis_reponses', {'id': avi.id}) }}\" class=\"btn btn-success\">View Responses</a>
+                                    <form method=\"post\" action=\"{{ path('app_avis_delete', {'id': avi.id}) }}\" style=\"display:inline-block;\" onsubmit=\"return confirm('Are you sure you want to delete this avis?');\">
+                                        <input type=\"hidden\" name=\"_token\" value=\"{{ csrf_token('delete' ~ avi.id) }}\">
+                                        <button type=\"submit\" class=\"btn btn-danger\">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan=\"4\" class=\"text-center\">No records found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+    <div class=\"text-center mt-4\">
+        <a href=\"{{ path('app_avis_new') }}\" class=\"btn btn-secondary\">Create New Avis</a>
+    </div>
 </div>
-{% endblock %}
-
-{% block javascripts %}
-{# You can add JavaScript here if needed later #}
-{% endblock %}
-", "avis/index.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\avis\\index.html.twig");
+{% endblock %}", "avis/index.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\avis\\index.html.twig");
     }
 }
