@@ -6,12 +6,13 @@ use App\Repository\ReponseRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: ReponseRepository::class)]
 class Reponse
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -20,12 +21,15 @@ class Reponse
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_reponse = null;
 
-    #[ORM\Column]
-    private ?int $avis_id = null;
+    #[ORM\ManyToOne(targetEntity: Avis::class, inversedBy: 'reponses')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    private ?Avis $avis = null;
 
-    #[ORM\Column]
-    private ?int $user_id = null;
-
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reponse')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id', nullable: false, onDelete: 'CASCADE')]
+    private ?User $user = null;
+    
+    
     public function __construct()
     {
         $this->date_reponse = new \DateTime(); // Automatically set the current date
@@ -60,26 +64,26 @@ class Reponse
         return $this;
     }
 
-    public function getAvisId(): ?int
+    public function getAvis(): ?Avis
     {
-        return $this->avis_id;
+        return $this->avis;
     }
 
-    public function setAvisId(int $avis_id): static
+    public function setAvis(?Avis $avis): static
     {
-        $this->avis_id = $avis_id;
+        $this->avis = $avis;
 
         return $this;
     }
 
-    public function getUserId(): ?int
+    public function getUser(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(int $user_id): static
+    public function setUser(?User $user): static
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }

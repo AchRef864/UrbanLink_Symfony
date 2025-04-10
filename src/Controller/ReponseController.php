@@ -9,7 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Avis;
 
 #[Route('/reponse')]
 final class ReponseController extends AbstractController
@@ -26,20 +27,34 @@ final class ReponseController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, int $avisId): Response
     {
         $reponse = new Reponse();
-        $reponse->setAvisId($avisId); // Set avis_id programmatically
+
+        // Fetch the Avis and set it on the Reponse immediately.
+        $avis = $entityManager->getRepository(Avis::class)->find($avisId);
+        if (!$avis) {
+            throw $this->createNotFoundException('Avis not found.');
+        }
+        $reponse->setAvis($avis); // *** This is the important change ***
+
         $form = $this->createForm(ReponseType::class, $reponse);
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            if (!$user) {
+                throw $this->createAccessDeniedException('You must be logged in to create a Reponse.');
+            }
+
+            $reponse->setUser($user);
+
             $entityManager->persist($reponse);
             $entityManager->flush();
-    
+
             return $this->redirectToRoute('app_avis_reponses', ['id' => $avisId], Response::HTTP_SEE_OTHER);
         }
-    
+
         return $this->render('reponse/new.html.twig', [
             'reponse' => $reponse,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -52,33 +67,33 @@ final class ReponseController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_reponse_edit', methods: ['GET', 'POST'])]
-public function edit(Request $request, Reponse $reponse, EntityManagerInterface $entityManager): Response
-{
-    $form = $this->createForm(ReponseType::class, $reponse);
-    $form->handleRequest($request);
+    public function edit(Request $request, Reponse $reponse, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(ReponseType::class, $reponse);
+        $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        $entityManager->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
 
-        return $this->redirectToRoute('app_avis_reponses', ['id' => $reponse->getAvisId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_avis_reponses', ['id' => $reponse->getAvis()->getId()], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('reponse/edit.html.twig', [
+            'reponse' => $reponse,
+            'form' => $form->createView(),
+        ]);
     }
 
-    return $this->render('reponse/edit.html.twig', [
-        'reponse' => $reponse,
-        'form' => $form,
-    ]);
-}
+    #[Route('/{id}', name: 'app_reponse_delete', methods: ['POST'])]
+    public function delete(Request $request, Reponse $reponse, EntityManagerInterface $entityManager): Response
+    {
+        $avisId = $reponse->getAvis()->getId(); // Get the Avis ID before deleting
 
-#[Route('/{id}', name: 'app_reponse_delete', methods: ['POST'])]
-public function delete(Request $request, Reponse $reponse, EntityManagerInterface $entityManager): Response
-{
-    $avisId = $reponse->getAvisId(); // Get the avis_id before deleting
+        if ($this->isCsrfTokenValid('delete' . $reponse->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($reponse);
+            $entityManager->flush();
+        }
 
-    if ($this->isCsrfTokenValid('delete'.$reponse->getId(), $request->request->get('_token'))) {
-        $entityManager->remove($reponse);
-        $entityManager->flush();
+        return $this->redirectToRoute('app_avis_reponses', ['id' => $avisId], Response::HTTP_SEE_OTHER);
     }
-
-    return $this->redirectToRoute('app_avis_reponses', ['id' => $avisId], Response::HTTP_SEE_OTHER);
-}
 }

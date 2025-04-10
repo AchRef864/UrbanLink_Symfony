@@ -9,10 +9,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ReponseRepository;
 use App\Entity\Reponse;
-
 
 #[Route('/avis')]
 final class AvisController extends AbstractController
@@ -25,34 +24,32 @@ final class AvisController extends AbstractController
         ]);
     }
 
+    #[Route('/new', name: 'app_avis_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $avi = new Avis(); // Date is set automatically in the Avis constructor
 
-#[Route('/new', name: 'app_avis_new', methods: ['GET', 'POST'])]
-public function new(Request $request, EntityManagerInterface $entityManager): Response
-{
-    $avi = new Avis(); // ⚡ No need to setDateAvis here: it's already done in Avis __construct()
+        $form = $this->createForm(AvisType::class, $avi);
+        $form->handleRequest($request);
 
-    $form = $this->createForm(AvisType::class, $avi);
-    $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            if (!$user) {
+                throw $this->createAccessDeniedException('You must be logged in to create an Avis.');
+            }
+            $avi->setUser($user);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        $user = $this->getUser();
-                    if (!$user) {
-                        throw $this->createAccessDeniedException(' You must be logged in to create an Avis.');
-                    }
-        $avi->setUser($user);
+            $entityManager->persist($avi);
+            $entityManager->flush();
 
-        $entityManager->persist($avi);
-        $entityManager->flush();
+            return $this->redirectToRoute('app_avis_index', [], Response::HTTP_SEE_OTHER);
+        }
 
-        return $this->redirectToRoute('app_avis_index', [], Response::HTTP_SEE_OTHER);
+        return $this->render('avis/new.html.twig', [
+            'avi' => $avi,
+            'form' => $form->createView(),
+        ]);
     }
-
-    return $this->render('avis/new.html.twig', [
-        'avi' => $avi,
-        'form' => $form,
-    ]);
-}
-
 
     #[Route('/{id}', name: 'app_avis_show', methods: ['GET'])]
     public function show(Avis $avi): Response
@@ -76,18 +73,19 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
 
         return $this->render('avis/edit.html.twig', [
             'avi' => $avi,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_avis_delete', methods: ['POST'])]
     public function delete(Request $request, Avis $avi, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$avi->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $avi->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($avi);
             $entityManager->flush();
-            // supprimer les reponses associées
-            $reponses = $entityManager->getRepository(Reponse::class)->findBy(['avis_id' => $avi->getId()]);
+
+            // Remove associated responses
+            $reponses = $entityManager->getRepository(Reponse::class)->findBy(['avis' => $avi->getId()]);
             foreach ($reponses as $reponse) {
                 $entityManager->remove($reponse);
             }
@@ -99,14 +97,13 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
     }
 
     #[Route('/{id}/reponses', name: 'app_avis_reponses', methods: ['GET'])]
-public function viewReponses(int $id, ReponseRepository $reponseRepository): Response
-{
-    $reponses = $reponseRepository->findBy(['avis_id' => $id]);
+    public function viewReponses(int $id, ReponseRepository $reponseRepository): Response
+    {
+        $reponses = $reponseRepository->findBy(['avis' => $id]);
 
-    return $this->render('avis/reponses.html.twig', [
-        'reponses' => $reponses,
-        'avis_id' => $id,
-    ]);
-}
-
+        return $this->render('avis/reponses.html.twig', [
+            'reponses' => $reponses,
+            'avis_id' => $id,
+        ]);
+    }
 }

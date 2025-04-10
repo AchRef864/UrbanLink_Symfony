@@ -107,7 +107,7 @@ class __TwigTemplate_a64203e1ce139a8c0d98dfbf481fdf0a extends Template
 
     <a href=\"";
         // line 11
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_reponses", ["id" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["reponse"]) || array_key_exists("reponse", $context) ? $context["reponse"] : (function () { throw new RuntimeError('Variable "reponse" does not exist.', 11, $this->source); })()), "avisId", [], "any", false, false, false, 11)]), "html", null, true);
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_reponses", ["id" => CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["reponse"]) || array_key_exists("reponse", $context) ? $context["reponse"] : (function () { throw new RuntimeError('Variable "reponse" does not exist.', 11, $this->source); })()), "avis", [], "any", false, false, false, 11), "id", [], "any", false, false, false, 11)]), "html", null, true);
         yield "\" class=\"btn btn-secondary\">Back to Responses</a>
 </div>
 ";
@@ -156,10 +156,9 @@ class __TwigTemplate_a64203e1ce139a8c0d98dfbf481fdf0a extends Template
 
     {{ include('reponse/_form.html.twig', {'button_label': 'Create'}) }}
 
-    <a href=\"{{ path('app_avis_reponses', {'id': reponse.avisId}) }}\" class=\"btn btn-secondary\">Back to Responses</a>
+    <a href=\"{{ path('app_avis_reponses', {'id': reponse.avis.id}) }}\" class=\"btn btn-secondary\">Back to Responses</a>
 </div>
 {% endblock %}
-
 ", "reponse/new.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\reponse\\new.html.twig");
     }
 }

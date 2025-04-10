@@ -1,16 +1,80 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Avis {% endblock %}
+{% block title %}Avis{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .container {
+        font-family: 'Arial', sans-serif;
+    }
+
+    table {
+        background-color: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    th {
+        background-color: #f8f9fa;
+        color: #6c757d;
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    td {
+        padding: 14px;
+        font-size: 15px;
+        color: #495057;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    a {
+        margin-right: 10px;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .text-blue-600:hover {
+        color: #0056b3;
+    }
+
+    .text-center {
+        font-size: 16px;
+        color: #999;
+    }
+
+    .btn-create {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .btn-create:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock %}
 
 {% block body %}
 <div style="margin-left: 280px;">
-
     <div class="container mx-auto p-6">
         <!-- Avis Table -->
         <div class="flex flex-wrap -mx-3">
             <div class="flex-none w-full max-w-full px-3">
-                <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-                    <div class="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+                <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+                    <div class="p-6 pb-0 mb-0 border-b-0 rounded-t-2xl">
                         <h6 class="dark:text-white">Avis Index</h6>
                     </div>
                     <div class="flex-auto px-0 pt-0 pb-2">
@@ -18,29 +82,19 @@
                             <table class="items-center w-full mb-0 align-top border-collapse dark:border-white/40 text-slate-500">
                                 <thead class="align-bottom">
                                     <tr>
-                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle text-xxs border-b dark:border-white/40 dark:text-white opacity-70">
-                                            <div class="text-sm text-slate-400 dark:text-white">Note</div>
-                                        </th>
-                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle text-xxs border-b dark:border-white/40 dark:text-white opacity-70">
-                                            <div class="text-sm text-slate-400 dark:text-white">Commentaire</div>
-                                        </th>
-                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle text-xxs border-b dark:border-white/40 dark:text-white opacity-70">
-                                            <div class="text-sm text-slate-400 dark:text-white">Date Avis</div>
-                                        </th>
-                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle text-xxs border-b dark:border-white/40 dark:text-white opacity-70">
-                                            <div class="text-sm text-slate-400 dark:text-white">Actions</div>
-                                        </th>
+                                        <th>Note</th>
+                                        <th>Commentaire</th>
+                                        <th>Date Avis</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for avi in avis %}
                                         <tr>
-                                            <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 shadow-transparent">{{ avi.note }}</td>
-                                            <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 shadow-transparent">{{ avi.commentaire }}</td>
-                                            <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 shadow-transparent">
-                                                {{ avi.dateAvis ? avi.dateAvis|date('Y-m-d') : '' }}
-                                            </td>
-                                            <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 shadow-transparent">
+                                            <td>{{ avi.note }}</td>
+                                            <td>{{ avi.commentaire }}</td>
+                                            <td>{{ avi.dateAvis ? avi.dateAvis|date('Y-m-d') : '' }}</td>
+                                            <td>
                                                 <a href="{{ path('app_avis_show', {'id': avi.id}) }}" class="text-xs font-semibold text-slate-400 dark:text-white dark:opacity-80">Show</a>
                                                 <a href="{{ path('app_avis_edit', {'id': avi.id}) }}" class="text-xs font-semibold text-slate-400 dark:text-white dark:opacity-80">Edit</a>
                                                 <a href="{{ path('app_avis_reponses', {'id': avi.id}) }}" class="text-xs font-semibold text-blue-600 dark:text-blue-400">View Responses</a>
@@ -56,9 +110,13 @@
                         </div>
                     </div>
                 </div>
-                <a href="{{ path('app_avis_new') }}" class="text-sm text-blue-600 dark:text-blue-400">Create New</a>
+                <a href="{{ path('app_avis_new') }}" class="btn-create">Create New</a>
             </div>
         </div>
     </div>
-    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{# You can add JavaScript here if needed later #}
 {% endblock %}

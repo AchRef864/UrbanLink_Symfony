@@ -12,8 +12,7 @@ class ReponseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('commentaire')
-            ->add('user_id');
+            ->add('commentaire'); // Only include fields that the user can edit
     }
 
     public function configureOptions(OptionsResolver $resolver): void

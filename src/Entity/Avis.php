@@ -6,6 +6,8 @@ use App\Repository\AvisRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: AvisRepository::class)]
 class Avis
@@ -18,7 +20,7 @@ class Avis
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'avis')]
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "user_id", nullable: false)]
     private ?User $user = null;
-
+    
     #[ORM\Column]
     #[Assert\NotNull]
     #[Assert\Choice(choices: [1, 2, 3, 4, 5], message: 'La note doit être entre 1 et 5.')]
@@ -36,9 +38,13 @@ class Avis
     #[Assert\NotNull]
     private ?\DateTimeInterface $date_avis = null;
 
+    #[ORM\OneToMany(mappedBy: 'avis', targetEntity: Reponse::class, cascade: ['persist', 'remove'])]
+    private Collection $reponses;
+
     public function __construct()
     {
         $this->date_avis = new \DateTime(); // Affecte la date courante automatiquement
+        $this->reponses = new ArrayCollection(); // Initialize the collection
     }
 
     public function getId(): ?int
@@ -87,6 +93,35 @@ class Avis
     public function setDateAvis(\DateTimeInterface $date_avis): self
     {
         $this->date_avis = $date_avis;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reponse>
+     */
+    public function getReponses(): Collection
+    {
+        return $this->reponses;
+    }
+
+    public function addReponse(Reponse $reponse): self
+    {
+        if (!$this->reponses->contains($reponse)) {
+            $this->reponses[] = $reponse;
+            $reponse->setAvis($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReponse(Reponse $reponse): self
+    {
+        if ($this->reponses->removeElement($reponse)) {
+            if ($reponse->getAvis() === $this) {
+                $reponse->setAvis(null);
+            }
+        }
+
         return $this;
     }
 }
