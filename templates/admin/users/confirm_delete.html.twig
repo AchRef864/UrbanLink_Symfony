@@ -1,0 +1,53 @@
+{# templates/admin/users/confirm_delete.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirm User Deletion{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h2>Confirm User Deletion</h2>
+            </div>
+            <div class="card-body">
+                <p class="lead">Are you sure you want to delete this user?</p>
+
+                <div class="user-details mb-4">
+                    <h4>User Details:</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>ID:</strong> {{ user.id }}</li>
+                        <li class="list-group-item"><strong>Name:</strong> {{ user.name }}</li>
+                        <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
+                        <li class="list-group-item">
+                            <strong>Role:</strong>
+                            <span class="badge bg-{{ user.role == 'admin' ? 'danger' : 'primary' }}">
+                            {{ user.role|capitalize }}
+                        </span>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Status:</strong>
+                            {% if user.isBlocked() %}
+                                <span class="badge bg-danger">Blocked</span>
+                            {% else %}
+                                <span class="badge bg-success">Active</span>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+
+                <form method="post" action="{{ path('admin_user_perform_delete', {'id': user.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ path('admin_user_delete') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Confirm Delete
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
