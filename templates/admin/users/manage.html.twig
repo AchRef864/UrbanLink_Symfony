@@ -1,0 +1,176 @@
+{# templates/admin/users/manage.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ mode == 'manage' ? 'User Management' : 'User Profiles' }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/argon-dashboard-tailwind.css') }}" rel="stylesheet" />
+    <style>
+        .user-badge {
+            transition: all 0.2s ease;
+        }
+        .user-badge:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .action-btn {
+            transition: all 0.2s ease;
+        }
+        .action-btn:hover {
+            transform: translateY(-1px);
+        }
+        .table-row-hover:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="relative flex flex-col min-h-screen bg-gray-50">
+        <!-- Main Content -->
+        <main class="relative h-full transition-all duration-200 ease-in-out">
+            <!-- Navbar -->
+            <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start">
+                <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
+                    <nav>
+                        <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
+                            <li class="text-sm leading-normal">
+                                <a class="text-slate-500" href="{{ path('admin_dashboard') }}">Admin</a>
+                            </li>
+                            <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-slate-500 before:content-['/']">
+                                {{ mode == 'manage' ? 'User Management' : 'User Profiles' }}
+                            </li>
+                        </ol>
+                        <h4 class="mb-0 font-bold text-slate-700 capitalize">
+                            {{ mode == 'manage' ? 'User Management' : 'User Profiles' }}
+                        </h4>
+                    </nav>
+                </div>
+            </nav>
+
+            <div class="w-full px-6 py-6 mx-auto">
+                <!-- Search Form -->
+                <div class="mb-6">
+                    {% include 'admin/users/_search_form.html.twig' %}
+                </div>
+
+                <!-- Users Table -->
+                <div class="relative flex flex-col min-w-0 break-words bg-yellow border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+                    <div class="p-6 px-4 pb-0 mb-0 border-b-0 rounded-t-2xl">
+                        <h6 class="mb-0 dark:text-yellow">Users List</h6>
+                    </div>
+                    <div class="flex-auto p-4">
+                        <div class="overflow-x-auto">
+                            <table class="items-center w-full mb-0 align-top border-collapse dark:border-yellow/40 text-slate-500">
+                                <thead class="align-bottom">
+                                <tr>
+                                    <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-yellow/40 dark:text-yellow text-xxs border-b-solid tracking-none whitespace-nowrap">ID</th>
+                                    <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-yellow/40 dark:text-yellow text-xxs border-b-solid tracking-none whitespace-nowrap">Name</th>
+                                    <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-yellow/40 dark:text-yellow text-xxs border-b-solid tracking-none whitespace-nowrap">Email</th>
+                                    <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-yellow/40 dark:text-yellow text-xxs border-b-solid tracking-none whitespace-nowrap">Role</th>
+                                    <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-yellow/40 dark:text-yellow text-xxs border-b-solid tracking-none whitespace-nowrap">Status</th>
+                                    <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-yellow/40 dark:text-yellow text-xxs border-b-solid tracking-none whitespace-nowrap">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for user in users %}
+                                    <tr class="table-row-hover">
+                                        <td class="p-2 align-middle bg-transparent border-b dark:border-yellow/40 whitespace-nowrap shadow-transparent">
+                                            <span class="text-xs font-semibold leading-tight dark:text-yellow">{{ user.id }}</span>
+                                        </td>
+                                        <td class="p-2 align-middle bg-transparent border-b dark:border-yellow/40 whitespace-nowrap shadow-transparent">
+                                            <span class="text-xs font-semibold leading-tight dark:text-yellow">{{ user.name }}</span>
+                                        </td>
+                                        <td class="p-2 align-middle bg-transparent border-b dark:border-yellow/40 whitespace-nowrap shadow-transparent">
+                                            <span class="text-xs font-semibold leading-tight dark:text-yellow">{{ user.email }}</span>
+                                        </td>
+                                        <td class="p-2 align-middle bg-transparent border-b dark:border-yellow/40 whitespace-nowrap shadow-transparent">
+                                                <span class="user-badge px-2.5 py-1.5 text-xs rounded-lg {{ user.role == 'admin' ? 'bg-gradient-to-tl from-red-600 to-orange-600' : 'bg-gradient-to-tl from-blue-600 to-cyan-400' }} text-yellow">
+                                                    {{ user.role|capitalize }}
+                                                </span>
+                                        </td>
+                                        <td class="p-2 align-middle bg-transparent border-b dark:border-yellow/40 whitespace-nowrap shadow-transparent">
+                                                <span class="user-badge px-2.5 py-1.5 text-xs rounded-lg {{ user.isBlocked() ? 'bg-gradient-to-tl from-red-600 to-pink-500' : 'bg-gradient-to-tl from-emerald-600 to-teal-400' }} text-yellow">
+                                                    {{ user.isBlocked() ? 'Blocked' : 'Active' }}
+                                                </span>
+                                        </td>
+                                        <td class="p-2 align-middle bg-transparent border-b dark:border-yellow/40 whitespace-nowrap shadow-transparent">
+                                            {% if mode == 'manage' %}
+                                                <div class="flex space-x-2">
+                                                    {% if not user.isBlocked() %}
+                                                        <form action="{{ path('admin_user_block', {'id': user.id}) }}" method="post">
+                                                            <button class="action-btn px-3 py-1.5 text-xs rounded-lg bg-gradient-to-tl from-yellow-600 to-orange-400 text-yellow"
+                                                                    title="Block {{ user.name }}"
+                                                                    onclick="return confirm('Are you sure you want to block {{ user.name }}?')">
+                                                                <i class="fas fa-lock mr-1"></i> Block
+                                                            </button>
+                                                            <input type="hidden" name="_token" value="{{ csrf_token('block' ~ user.id) }}">
+                                                        </form>
+                                                    {% else %}
+                                                        <form action="{{ path('admin_user_unblock', {'id': user.id}) }}" method="post">
+                                                            <button class="action-btn px-3 py-1.5 text-xs rounded-lg bg-gradient-to-tl from-emerald-600 to-teal-400 text-yellow"
+                                                                    title="Unblock {{ user.name }}"
+                                                                    onclick="return confirm('Are you sure you want to unblock {{ user.name }}?')">
+                                                                <i class="fas fa-unlock mr-1"></i> Unblock
+                                                            </button>
+                                                            <input type="hidden" name="_token" value="{{ csrf_token('unblock' ~ user.id) }}">
+                                                        </form>
+                                                    {% endif %}
+                                                </div>
+                                            {% else %}
+                                                <div class="flex space-x-2">
+                                                    {% if 'ROLE_ADMIN' not in user.roles %}
+                                                        <a href="{{ path('admin_user_edit', {'id': user.id}) }}"
+                                                           class="action-btn px-3 py-1.5 text-xs rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 text-yellow"
+                                                           title="Edit {{ user.name }}">
+                                                            <i class="fas fa-edit mr-1"></i> Edit
+                                                        </a>
+                                                    {% endif %}
+                                                    <a href="{{ path('admin_user_confirm_delete', {'id': user.id}) }}"
+                                                       class="action-btn px-3 py-1.5 text-xs rounded-lg bg-gradient-to-tl from-red-600 to-pink-500 text-yellow"
+                                                       title="Delete {{ user.name }}">
+                                                        <i class="fas fa-trash mr-1"></i> Delete
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="6" class="p-8 text-center text-slate-500 dark:text-yellow/80">
+                                            No users found
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination -->
+                        {% if users.getTotalItemCount > 0 %}
+                            <div class="flex justify-center mt-6">
+                                {{ knp_pagination_render(users, null, {}, {
+                                    'align': 'center',
+                                    'size': 'small',
+                                    'rounded': true,
+                                    'style': 'tailwind'
+                                }) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/js/argon-dashboard-tailwind.js') }}"></script>
+{% endblock %}
