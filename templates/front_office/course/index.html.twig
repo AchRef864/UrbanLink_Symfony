@@ -1,58 +1,130 @@
-{% extends 'back_office/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-  <link rel="stylesheet" href="{{ asset('css/course.css') }}">
-{% endblock %}
-
-{% block javascripts %}
-  <script src="{{ asset('js/course.js') }}"></script>
-{% endblock %}
-
-{% block header %}
-  <h1>Mes Courses</h1>
-{% endblock %}
 {% block title %}Mes Courses{% endblock %}
 
 {% block body %}
-  <h1>Mes Courses</h1>
-  <a href="{{ path('user_course_new') }}" class="btn btn-primary mb-3">Réserver une Nouvelle Course</a>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Taxi</th>
-        <th>Statut</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for course in courses %}
-        <tr>
-          <td>{{ course.dateCourse|date('d/m/Y H:i') }}</td>
-          <td>
-            {% if course.taxi %}
-              {{ course.taxi.marque }} {{ course.taxi.modele }}
-            {% else %}
-              Aucun taxi
-            {% endif %}
-          </td>
-          <td>{{ course.statut }}</td>
-          <td>
-            {% if course.statut == 'En attente' %}
-              <form action="{{ path('user_course_cancel', {'id': course.id}) }}" method="post" onsubmit="return confirm('Annuler cette course ?');">
-                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ course.id) }}">
-                <button class="btn btn-danger btn-sm">Annuler</button>
-              </form>
-            {% else %}
-              ---
-            {% endif %}
-          </td>
-        </tr>
-      {% else %}
-        <tr>
-          <td colspan="4">Aucune course trouvée.</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="relative flex flex-col w-full min-w-0 mb-6 bg-white border-0 rounded-xl shadow-soft-xl overflow-hidden">
+  <!-- En-tête avec le bouton Ajouter Course -->
+  <div class="p-6 pb-0 bg-white rounded-t-xl flex justify-between items-center">
+    <h2 class="text-xl font-bold text-slate-700">
+      <span class="inline-block px-6 py-3 bg-gradient-to-tl from-blue-700 to-cyan-500 text-white rounded-lg shadow-lg">
+        Mes Courses
+      </span>
+    </h2>
+    <!-- Bouton Ajouter Course -->
+    <a href="{{ path('user_course_new') }}" class="inline-block px-6 py-3 mr-3 font-bold text-center text-white uppercase align-middle transition-all bg-cyan-500 rounded-lg cursor-pointer leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md">
+      Ajouter Course
+    </a>
+  </div>
+
+  <div class="flex-auto px-0 pt-0 pb-2">
+    <div class="p-0 overflow-x-auto">
+      <table class="w-full mb-0 text-sm text-left text-slate-500">
+        <thead class="text-xs uppercase bg-slate-50 border-b border-slate-100">
+          <tr>
+            <th class="px-8 py-4 font-bold text-slate-600">Date</th>
+            <th class="px-8 py-4 font-bold text-slate-600">Départ</th>
+            <th class="px-8 py-4 font-bold text-slate-600">Arrivée</th>
+            <th class="px-8 py-4 font-bold text-slate-600 text-center">Distance</th>
+            <th class="px-8 py-4 font-bold text-slate-600 text-center">Montant</th>
+            <th class="px-8 py-4 font-bold text-slate-600 text-center">Statut</th>
+            <th class="px-8 py-4 font-bold text-slate-600 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for course in courses %}
+          <tr class="bg-white border-b hover:bg-slate-50 transition-colors">
+            <!-- Date -->
+            <td class="px-8 py-4 font-medium text-slate-700 whitespace-nowrap">
+              {{ course.dateCourse ? course.dateCourse|date('d/m/Y H:i') : '—' }}
+            </td>
+            <!-- Départ -->
+            <td class="px-8 py-4">
+              <span class="flex items-center">
+                <span class="w-2 h-2 rounded-full bg-blue-500 mr-2 shadow-[0_0_6px_1px_rgba(59,130,246,0.5)]"></span>
+                {{ course.villeDepart }}
+              </span>
+            </td>
+            <!-- Arrivée -->
+            <td class="px-8 py-4">
+              <span class="flex items-center">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 shadow-[0_0_6px_1px_rgba(16,185,129,0.5)]"></span>
+                {{ course.villeArrivee }}
+              </span>
+            </td>
+            <!-- Distance -->
+            <td class="px-8 py-4 text-center">
+              <span class="py-1.4 px-2.5 text-xs rounded-1.8 inline-block whitespace-nowrap text-center bg-gradient-to-tl from-blue-700 to-cyan-500 align-baseline font-bold uppercase leading-none text-white">
+                {{ course.distanceKm }} km
+              </span>
+            </td>
+            <!-- Montant -->
+            <td class="px-8 py-4 text-center font-bold text-slate-700">
+              {{ course.montant }} TND
+            </td>
+            <!-- Statut -->
+            <td class="px-8 py-4 text-center">
+              {% if course.statut == 'Acceptée' %}
+                <span class="py-1.4 px-2.5 text-xs rounded-1.8 inline-block whitespace-nowrap text-center bg-gradient-to-tl from-emerald-500 to-teal-400 align-baseline font-bold uppercase leading-none text-white">
+                  {{ course.statut }}
+                </span>
+              {% elseif course.statut == 'Refusée' %}
+                <span class="py-1.4 px-2.5 text-xs rounded-1.8 inline-block whitespace-nowrap text-center bg-gradient-to-tl from-red-600 to-orange-600 align-baseline font-bold uppercase leading-none text-white">
+                  {{ course.statut }}
+                </span>
+              {% else %}
+                <span class="py-1.4 px-2.5 text-xs rounded-1.8 inline-block whitespace-nowrap text-center bg-gradient-to-tl from-slate-600 to-slate-300 align-baseline font-bold uppercase leading-none text-white">
+                  {{ course.statut }}
+                </span>
+              {% endif %}
+            </td>
+            <!-- Actions -->
+            <td class="px-8 py-4 text-center">
+              <!-- Bouton Annuler -->
+              <a href="{{ path('course_cancel', {'id': course.id}) }}" class="inline-block px-6 py-3 mr-3 font-bold text-center text-white uppercase align-middle transition-all bg-red-600 rounded-lg cursor-pointer leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md">
+                Annuler
+              </a>
+              {% if course.statut == 'Terminée' and course.taxi is not null %}
+                <button type="button" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-500 to-violet-500 leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md"
+                        onclick="window.location='{{ path('taxi_rate', {'id': course.taxi.id}) }}'">
+                  Noter le taxiste
+                </button>
+              {% else %} 
+                <span class="py-1.4 px-2.5 text-xs rounded-1.8 inline-block whitespace-nowrap text-center bg-gradient-to-tl from-gray-400 to-gray-100 align-baseline font-bold uppercase leading-none text-slate-500">
+                  —
+                </span>
+              {% endif %}
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="7" class="px-8 py-12 text-center">
+              <div class="flex flex-col items-center justify-center">
+                <span class="py-1.4 px-2.5 text-xs rounded-1.8 inline-block whitespace-nowrap text-center bg-gradient-to-tl from-gray-400 to-gray-100 align-baseline font-bold uppercase leading-none text-slate-500 mb-4">
+                  Aucune donnée
+                </span>
+                <p class="text-sm text-slate-400">Vos courses apparaîtront ici</p>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Pied de page -->
+  <div class="bg-slate-50 px-6 py-3 rounded-b-xl border-t border-slate-100">
+    <div class="flex justify-between items-center">
+      <span class="py-1.4 px-2.5 text-xs rounded-1.8 inline-block whitespace-nowrap text-center bg-gradient-to-tl from-zinc-800 to-zinc-700 align-baseline font-bold uppercase leading-none text-white">
+        Total : {{ courses|length }} courses
+      </span>
+      {% if courses|length > 0 %}
+      <span class="text-xs text-slate-500">
+        Dernière course : {{ courses|first.dateCourse|date('d/m/Y') }}
+      </span>
+      {% endif %}
+    </div>
+  </div>
+</div>
 {% endblock %}

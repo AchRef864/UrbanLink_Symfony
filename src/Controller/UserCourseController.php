@@ -49,7 +49,6 @@ class UserCourseController extends AbstractController
             $course->setUser($this->getUser());
             $taxi = $course->getTaxi();
             if ($taxi) {
-                $taxi->setStatut('Occupé');
                 // Calcul du montant en fonction du tarif par km et de la distance indiquée
                 $montant = $taxi->getTarifKm() * $course->getDistanceKm();
                 $course->setMontant($montant);
@@ -75,9 +74,6 @@ class UserCourseController extends AbstractController
         
         // Remettre le taxi disponible en cas d'annulation
         $taxi = $course->getTaxi();
-        if ($taxi) {
-            $taxi->setStatut('Disponible');
-        }
         $em->remove($course);
         $em->flush();
 

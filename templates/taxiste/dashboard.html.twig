@@ -1,4 +1,4 @@
-{% extends 'back_office/base.html.twig' %}
+{% extends 'front_office/base.html.twig' %}
 
 {% block title %}Tableau de bord Taxiste{% endblock %}
 
@@ -16,11 +16,11 @@
       Statut : {{ taxi.statut }}
     </p>
 
-    {# Bouton de changement de statut avec gestion de plusieurs états #}
+    {# Bouton de changement de statut du taxi (gère plusieurs états) #}
     <form action="{{ path('taxiste_taxi_change_status', {'id': taxi.id}) }}" method="post" class="mb-6 inline-block">
       <button type="submit" style="background-color: #3B82F6 !important; color: #ffffff !important;" class="font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 w-full sm:w-auto">
         {% if taxi.statut|lower == 'disponible' %}
-          Passer en en course
+          Passer en indisponible
         {% elseif taxi.statut|lower == 'en course' %}
           Passer en indisponible
         {% elseif taxi.statut|lower == 'indisponible' %}
@@ -59,6 +59,18 @@
                     Refuser
                   </button>
                 </form>
+              {% elseif course.statut|lower == 'acceptée' %}
+                <form action="{{ path('taxiste_course_start', {'id': course.id}) }}" method="post" class="inline-block">
+                  <button type="submit" style="background-color: #3B82F6 !important; color: #ffffff !important;" class="font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 w-full sm:w-auto">
+                    Déclencher la course
+                  </button>
+                </form>
+              {% elseif course.statut|lower == 'en course' %}
+                <form action="{{ path('taxiste_course_finish', {'id': course.id}) }}" method="post" class="inline-block">
+                  <button type="submit" style="background-color: #3B82F6 !important; color: #ffffff !important;" class="font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 w-full sm:w-auto">
+                    Terminer la course
+                  </button>
+                </form>
               {% else %} 
                 <span class="text-sm text-gray-600">Aucune action</span>
               {% endif %}
@@ -66,7 +78,7 @@
           </tr>
         {% else %}
           <tr>
-            <td colspan="4" class="py-2 px-4 border text-center">Aucune course en attente.</td>
+            <td colspan="4" class="py-2 px-4 border text-center">Aucune course trouvée.</td>
           </tr>
         {% endfor %}
       </tbody>

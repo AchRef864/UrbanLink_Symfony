@@ -9,51 +9,111 @@
     <!-- Assets Argon Dashboard -->
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/img/apple-icon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
-    
+
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    
-    <!-- Styles Argon -->
+
+    <!-- Styles -->
+    {# Ajout d'une feuille de style custom (build/app.css) et versionnage de l'argon-dashboard-tailwind.css #}
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/argon-dashboard-tailwind.css') }}" rel="stylesheet">
-    
-    {% block stylesheets %}{% endblock %}
-</head>
+    <link href="{{ asset('assets/css/argon-dashboard-tailwind.css?v=1.0.1') }}" rel="stylesheet">
 
+    {% block stylesheets %}{% endblock %}
+
+    <!-- Scripts en Head -->
+    {# Ajout de Popper nécessaire pour certains composants JS #}
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+
+    {# Scripts avec l'attribut async tel que dans la référence #}
+    <script src="{{ asset('assets/js/plugins/chartjs.min.js') }}" async></script>
+    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}" async></script>
+    <script src="{{ asset('assets/js/argon-dashboard-tailwind.js?v=1.0.1') }}" async></script>
+
+    {% block javascripts %}{% endblock %}
+</head>
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
     <div class="absolute w-full bg-blue-500 dark:hidden min-h-75"></div>
 
     <!-- Sidebar -->
-    <aside class="fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0">
-        <div class="h-19">
-            <a class="block px-8 py-6 m-0 text-sm whitespace-nowrap dark:text-white text-slate-700" href="{{ path('back_office_dashboard') }}">
+    <aside class="fixed inset-y-0 flex-wrap items-center justify-between block p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0" aria-expanded="false">
+        <div class="h-19 relative">
+            {# Ajout d'une icône pour fermer la sidebar sur mobile (optionnel) #}
+            <i class="absolute top-0 right-0 p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden" sidenav-close></i>
+            <a class="block px-8 py-6 m-0 text-sm whitespace-nowrap dark:text-white text-slate-700" href="{{ path('app_dashboard') }}">
                 <img src="{{ asset('assets/img/logo-ct-dark.png') }}" class="inline h-full max-w-full transition-all duration-200 dark:hidden ease-nav-brand max-h-8" alt="logo">
+                {# Si vous souhaitez afficher un logo alternatif pour le mode dark, vous pouvez décommenter la ligne ci-dessous #}
+                {# <img src="{{ asset('assets/img/logo-ct.png') }}" class="hidden h-full max-w-full transition-all duration-200 dark:inline ease-nav-brand max-h-8" alt="logo"> #}
                 <span class="ml-1 font-semibold transition-all duration-200 ease-nav-brand">Course & Taxi</span>
             </a>
         </div>
 
         <hr class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent">
 
-        <!-- Menu -->
+        {% block sidebar %}
         <div class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
             <ul class="flex flex-col pl-0 mb-0">
+                {# Exemple d'item : Dashboard (affiché par défaut si show_dashboard n'est pas défini ou vaut true) #}
+                {% if show_dashboard is not defined or show_dashboard %}
                 <li class="mt-0.5 w-full">
-                    <a href="{{ path('taxi_index') }}" class="{% if app.request.attributes.get('_route') starts with 'taxi_' %}bg-blue-500/13{% endif %} dark:text-white py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors">
+                    <a href="{{ path('app_dashboard') }}" class="py-2.7 {{ app.request.attributes.get('_route') starts with 'dashboard_' ? 'bg-blue-500/13' : '' }} dark:text-white text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors">
+                        <i class="ni ni-tv-2 mr-2 text-blue-500"></i>
+                        <span class="ml-1">Dashboard</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {# Gestion Taxis (conserve l'item existant) #}
+                <li class="mt-0.5 w-full">
+                    <a href="{{ path('taxi_index') }}" class="py-2.7 {{ app.request.attributes.get('_route') starts with 'taxi_' ? 'bg-blue-500/13' : '' }} dark:text-white text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors">
                         <i class="ni ni-bus-front-12 mr-2"></i>
                         <span class="ml-1">Gestion Taxis</span>
                     </a>
                 </li>
-                
+
+                {# Gestion Courses (conserve l'item existant) #}
                 <li class="mt-0.5 w-full">
-                    <a href="{{ path('course_index') }}" class="{% if app.request.attributes.get('_route') starts with 'course_' %}bg-blue-500/13{% endif %} dark:text-white py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors">
+                    <a href="{{ path('course_index') }}" class="py-2.7 {{ app.request.attributes.get('_route') starts with 'course_' ? 'bg-blue-500/13' : '' }} dark:text-white text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors">
                         <i class="ni ni-delivery-fast mr-2"></i>
                         <span class="ml-1">Gestion Courses</span>
                     </a>
                 </li>
+
+                {# Vous pouvez ajouter d'autres items conditionnels, par exemple pour la maintenance ou la facturation #}
+                {% if show_maintenance is defined and show_maintenance %}
+                <li class="mt-0.5 w-full">
+                    <a href="{{ path('maintenance_index') }}" class="py-2.7 dark:text-white text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors">
+                        <i class="ni ni-calendar-grid-58 mr-2 text-orange-500"></i>
+                        <span class="ml-1">Maintenance</span>
+                    </a>
+                </li>
+                {% endif %}
             </ul>
         </div>
+        {% endblock %}
+
+        {# Bloc facultatif pour afficher la documentation en bas de la sidebar #}
+        {% if show_docs is not defined or show_docs %}
+        <div class="mx-4">
+            <div class="relative flex flex-col min-w-0 break-words bg-transparent border-0 shadow-none rounded-2xl bg-clip-border" sidenav-card>
+                <img class="w-1/2 mx-auto" src="{{ asset('assets/img/illustrations/icon-documentation.svg') }}" alt="sidebar illustration">
+                <div class="flex-auto w-full p-4 pt-0 text-center">
+                    <div class="transition-all duration-200 ease-nav-brand">
+                        <h6 class="mb-0 text-slate-700">Besoin d'aide ?</h6>
+                        <p class="mb-0 text-xs font-semibold leading-tight dark:opacity-60">Consultez notre documentation</p>
+                    </div>
+                </div>
+            </div>
+            <a href="https://www.creative-tim.com/learning-lab/tailwind/html/quick-start/argon-dashboard/" target="_blank" class="inline-block w-full px-8 py-2 mb-4 text-xs font-bold leading-normal text-center capitalize transition-all ease-in rounded-lg shadow-md bg-slate-700 hover:shadow-xs hover:-translate-y-px">
+                Documentation
+            </a>
+            <a class="inline-block w-full px-8 py-2 text-xs font-bold leading-normal text-center transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md hover:shadow-xs hover:-translate-y-px" href="https://www.creative-tim.com/product/argon-dashboard-pro-tailwind?ref=sidebarfree" target="_blank">
+                Upgrade to pro
+            </a>
+        </div>
+        {% endif %}
     </aside>
 
     <!-- Main Content -->
@@ -93,12 +153,7 @@
         </footer>
     </main>
 
-    <!-- Scripts -->
-    <script src="{{ asset('assets/js/plugins/chartjs.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/argon-dashboard-tailwind.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
-    {% block javascripts %}{% endblock %}
+    {# En option, si vous préférez placer certains scripts en fin de page, vous pouvez les laisser ici
+       Notez que nous avons déjà inclus certains scripts en head avec async. #}
 </body>
 </html>

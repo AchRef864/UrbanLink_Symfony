@@ -48,7 +48,6 @@ class CourseController extends AbstractController
             // Récupération du taxi sélectionné et mise à jour de son statut.
             $taxi = $course->getTaxi();
             if ($taxi) {
-                $taxi->setStatut('Occupé');
 
                 // Calcul automatique du montant : tarif par km * distance
                 $montant = $taxi->getTarifKm() * $course->getDistanceKm();
@@ -81,13 +80,11 @@ class CourseController extends AbstractController
     
             if ($taxi) {
                 switch ($course->getStatut()) {
-                    case 'En cours':
-                    case 'En attente':
-                        $taxi->setStatut('Occupé');
+                    case 'En course':
+                        $taxi->setStatut('En course');
                         break;
     
                     case 'Terminée':
-                    case 'Annulée':
                         $taxi->setStatut('Disponible');
                         break;
                 }
@@ -110,24 +107,25 @@ class CourseController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $course->getId(), $request->request->get('_token'))) {
             // Réinitialiser le statut du taxi à "Disponible" lors de la suppression de la course.
             $taxi = $course->getTaxi();
-            if ($taxi) {
-                $taxi->setStatut('Disponible');
-            }
 
             $em->remove($course);
             $em->flush();
+            $this->addFlash('success', 'Course supprimée avec succès.');
+        } else {
+            $this->addFlash('error', 'Erreur lors de la suppression de la course.');
         }
+
 
         return $this->redirectToRoute('course_index');
     }
 
-    #[Route('/user/courses', name: 'user_courses')]
+    #[Route('/admin/courses', name: 'admin_courses')]
     public function listUserCourses(CourseRepository $courseRepository): Response
     {
         $user = $this->getUser();
         $courses = $courseRepository->findBy(['user' => $user]);
 
-        return $this->render('front_office/course/index.html.twig', [
+        return $this->render('back_office/course/index.html.twig', [
             'courses' => $courses,
         ]);
     }
@@ -141,7 +139,7 @@ class CourseController extends AbstractController
             throw $this->createAccessDeniedException('Utilisateur non valide.');
         }
 
-        if (!in_array('ROLE_TAXISTE', $user->getRoles())) {
+        if (!in_array('ROLE_TAXI', $user->getRoles())) {
             throw $this->createAccessDeniedException('Accès refusé.');
         }
 

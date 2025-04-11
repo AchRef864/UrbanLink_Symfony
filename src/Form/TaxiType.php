@@ -58,7 +58,7 @@ class TaxiType extends AbstractType
                 'choices' => [
                     'Disponible'      => 'Disponible',
                     'En course'       => 'En course',
-                    'Indisponible'    => 'Indisponible',
+                    'Indisponible'    => 'Occupé',
                     'En maintenance'  => 'En maintenance',
                     'Hors service'    => 'Hors service',
 

@@ -1,7 +1,7 @@
 security:
     password_hashers:
         App\Entity\User:
-            algorithm: plaintext # Use plaintext for testing purposes (not recommended for production)
+            algorithm: auto
 
     providers:
         app_user_provider:
@@ -13,23 +13,37 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
         main:
             lazy: true
             provider: app_user_provider
             form_login:
                 login_path: app_login
                 check_path: app_login
-                username_parameter: email
-                password_parameter: password
+                enable_csrf: true
+                username_parameter: _username
+                password_parameter: _password
+                default_target_path: app_dashboard
+                failure_path: app_login
+                failure_forward: false
             logout:
-                path: /logout
-                target: /
+                path: app_logout
+                target: app_login
+
+    role_hierarchy:
+        ROLE_ADMIN: [ ROLE_DRIVER, ROLE_TAXI, ROLE_CLIENT, ROLE_USER ]
+        ROLE_DRIVER: ROLE_TAXI
+        ROLE_TAXI: ROLE_CLIENT
+        ROLE_CLIENT: ROLE_USER
 
     access_control:
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }
+        - { path: ^/dashboard, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/admin/users/edit, roles: ROLE_ADMIN }
+        - { path: ^/admin/users/block, roles: ROLE_ADMIN }
+        - { path: ^/admin/users/unblock, roles: ROLE_ADMIN }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/admin/taxi, roles: [ROLE_TAXISTE, ROLE_ADMIN] }
-        - { path: ^/admin/course, roles: ROLE_ADMIN }
-        - { path: ^/course/new, roles: ROLE_USER }
-        - { path: ^/course/user/courses, roles: ROLE_USER }
-        - { path: ^/course/taxiste/courses, roles: ROLE_TAXISTE }
+        - { path: ^/driver, roles: ROLE_DRIVER }
+        - { path: ^/taxi, roles: ROLE_TAXI }
+        - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/client, roles: ROLE_CLIENT }

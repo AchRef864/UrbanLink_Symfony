@@ -34,7 +34,7 @@ class RatingController extends AbstractController
         }
 
         if ($request->isMethod('POST')) {
-            $note = (int)$request->request->get('note');
+            $note = (int) $request->request->get('note');
             $commentaire = $request->request->get('commentaire');
 
             // Vérification que la note est comprise entre 1 et 10
@@ -45,15 +45,13 @@ class RatingController extends AbstractController
 
             $rating->setNote($note);
             $rating->setCommentaire($commentaire);
-            // La dateRating est automatiquement définie dans le constructeur,
-            // vous pouvez la mettre à jour ici si nécessaire
             $rating->setDateRating(new \DateTime());
 
             $em->persist($rating);
             $em->flush();
 
             $this->addFlash('success', 'Merci pour votre évaluation.');
-            return $this->redirectToRoute('user_taxis'); // ou une page de détails du taxi
+            return $this->redirectToRoute('user_courses'); // ou une page de détails du taxi
         }
 
         // Récupérer les statistiques de notation pour le taxi

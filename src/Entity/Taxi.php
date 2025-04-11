@@ -73,7 +73,7 @@ class Taxi
     private string $tarifBase;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'taxis')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id', nullable: false)]
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'taxi', targetEntity: Course::class, cascade: ['persist', 'remove'])]
@@ -84,7 +84,7 @@ class Taxi
         $this->courses = new ArrayCollection();
     }
 
-    // Getters et setters
+    // Getters et setters...
 
     public function getId(): ?int
     {
@@ -201,50 +201,45 @@ class Taxi
         return $this;
     }
 
-    // Modification ici : on ne divise plus par 100
-    public function getTarifKm(): string
+    public function getCourses(): Collection
+    {
+        return $this->courses;
+    }
+    public function setCourses(Collection $courses): self
+    {
+        foreach ($courses as $course) {
+            if (!$this->courses->contains($course)) {
+                $this->courses[] = $course;
+                $course->setTaxi($this);
+            }
+        }
+        return $this;
+    }
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+        return $this;
+    }
+    public function __toString(): string
+    {
+        return $this->immatriculation;
+    }
+    public function getTarifKm(): string 
     {
         return $this->tarifBase;
+    
     }
-
-    // Et le setter ne multiplie plus par 100
+    
     public function setTarifKm(string $tarifKm): self
     {
         $this->tarifBase = $tarifKm;
         return $this;
     }
 
-    // Pour getTarifTotal et setTarifTotal, adaptez selon votre logique métier.
-    // Si vous n'en avez pas besoin, vous pouvez les supprimer ou les modifier.
-    public function getTarifTotal(): string
-    {
-        return $this->tarifBase;
-    }
-
-    public function setTarifTotal(string $tarifTotal): self
-    {
-        $this->tarifBase = $tarifTotal;
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Course>
-     */
-    public function getCourses(): Collection
-    {
-        return $this->courses;
-    }
 
     public function addCourse(Course $course): self
     {

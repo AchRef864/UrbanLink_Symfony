@@ -18,11 +18,11 @@ class Rating
     private ?Taxi $taxi = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable:false)]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id', nullable:false)]
     private ?User $user = null;
 
     #[ORM\Column(type:"integer")]
-    private int $note =0; // Note sur 10
+    private int $note = 0;
 
     #[ORM\Column(type:"text", nullable:true)]
     private ?string $commentaire = null;
@@ -35,7 +35,7 @@ class Rating
         $this->dateRating = new \DateTime();
     }
 
-    // Getters et Setters
+    // Getters et setters...
 
     public function getId(): ?int
     {

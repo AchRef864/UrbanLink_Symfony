@@ -79,7 +79,7 @@ class TaxiController extends AbstractController
     {
         $user = $this->getUser();
 
-        if (!in_array('ROLE_TAXISTE', $user->getRoles())) {
+        if (!in_array('ROLE_TAXI', $user->getRoles())) {
             throw $this->createAccessDeniedException('Accès refusé.');
         }
 
@@ -128,6 +128,17 @@ class TaxiController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $taxi->getId(), $request->request->get('_token'))) {
             $em->remove($taxi);
             $em->flush();
+            $this->addFlash('success', 'Taxi supprimé avec succès.');
+            //supprimer la course associée
+            $courses = $em->getRepository(Course::class)->findBy(['taxi' => $taxi]);
+            foreach ($courses as $course) {
+                $em->remove($course);
+            }
+            $em->flush();
+            $this->addFlash('success', 'Course associée supprimée avec succès.');
+        } else {
+            $this->addFlash('error', 'Erreur lors de la suppression du taxi.');
+
         }
 
         return $this->redirectToRoute('taxi_index');

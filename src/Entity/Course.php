@@ -16,12 +16,10 @@ class Course
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    // L'utilisateur qui effectue la course
     #[ORM\ManyToOne(targetEntity: \App\Entity\User::class, inversedBy: 'courses')]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id', nullable: false, onDelete: 'CASCADE')]
     private ?\App\Entity\User $user = null;
 
-    // Le taxi affecté à la course
     #[ORM\ManyToOne(targetEntity: \App\Entity\Taxi::class, inversedBy: 'courses')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?\App\Entity\Taxi $taxi = null;
@@ -60,7 +58,7 @@ class Course
         $this->dateReservation = new \DateTime();
     }
 
-    // Getters et setters
+    // Getters et setters...
 
     public function getId(): ?int
     {

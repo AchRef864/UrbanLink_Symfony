@@ -87,7 +87,7 @@ class CourseType extends AbstractType
             $builder->add('statut', ChoiceType::class, [
                 'choices'  => [
                     'En attente' => 'En attente',
-                    'En cours'   => 'En cours',
+                    'En course'   => 'En course',
                     'Terminée'   => 'Terminée',
                     'Annulée'   => 'Annulée',
                 ],
