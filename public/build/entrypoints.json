@@ -1,0 +1,20 @@
+{
+  "entrypoints": {
+    "app": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendors-node_modules_symfony_stimulus-bundle_dist_loader_js.js",
+        "/build/app.js"
+      ],
+      "css": [
+        "/build/app.css"
+      ]
+    },
+    "three_app": {
+      "js": [
+        "/build/runtime.js",
+        "/build/three_app.js"
+      ]
+    }
+  }
+}

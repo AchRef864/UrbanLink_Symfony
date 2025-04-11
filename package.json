@@ -1,0 +1,24 @@
+{
+  "scripts": {
+    "dev": "webpack --mode development --config webpack.config.js && tailwindcss -i ./assets/styles/app.css -o ./public/build/app.css --watch",
+    "build": "webpack --mode production --config webpack.config.js && tailwindcss -i ./assets/styles/app.css -o ./public/build/app.css --minify"
+  },
+  "devDependencies": {
+    "@hotwired/stimulus": "^3.0.0",
+    "@hotwired/turbo": "^7.1.1 || ^8.0",
+    "@symfony/stimulus-bridge": "^3.2.0",
+    "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets",
+    "@symfony/webpack-encore": "^5.1.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-notifier": "^1.15.0"
+  },
+  "dependencies": {
+    "@symfony/stimulus-bundle": "^2.23.0",
+    "core-js": "^3.41.0",
+    "three": "^0.174.0"
+  }
+}
