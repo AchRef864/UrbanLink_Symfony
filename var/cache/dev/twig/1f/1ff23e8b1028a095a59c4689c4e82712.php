@@ -73,7 +73,7 @@ class __TwigTemplate_bc09decd34b46f2b099f7fb37e13a6c3 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "title"));
 
-        yield "Edit Avis";
+        yield "Edit complaint";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -153,7 +153,7 @@ class __TwigTemplate_bc09decd34b46f2b099f7fb37e13a6c3 extends Template
     {
         return new Source("{% extends 'base.html.twig' %}
 
-{% block title %}Edit Avis{% endblock %}
+{% block title %}Edit complaint{% endblock %}
 
 {% block body %}
 <div style=\"margin-left: 280px;\">

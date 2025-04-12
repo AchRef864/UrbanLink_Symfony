@@ -74,7 +74,7 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "title"));
 
-        yield "Avis";
+        yield "Complaints";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -99,96 +99,36 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
 
         // line 6
         yield "<style>
-    /* YOUR ORIGINAL CSS IS HERE - NO CHANGES */
-    .w-full {
-        width: 100%;
+    .w-full { width: 100%; }
+    .max-w-full { max-width: 100%; }
+    .relative { position: relative; }
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .min-w-0 { min-width: 0; }
+    .break-words { word-wrap: break-word; }
+    .bg-white { background-color: #ffffff; }
+    .border-0 { border: none; }
+    .shadow-xl { box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); }
+    .rounded-2xl { border-radius: 1rem; }
+    .bg-clip-border { background-clip: border-box; }
+    .table-responsive { overflow-x: auto; }
+    .table { width: 100%; margin-bottom: 1rem; color: #212529; border-collapse: collapse; }
+    .table th, .table td { padding: 0.75rem; vertical-align: top; border-top: 1px solid #98FB98; } /* pale green border */
+    
+    /* Header styles */
+    .thead-light th { 
+        color: #696969;              /* dim gray text */
+        background-color: #87CEEB;   /* sky blue header background */
+        border-color: #98FB98;       /* pale green border */
     }
+    
+    .text-slate-500 { color: #696969; } /* dim gray text */
+    .text-sm { font-size: 0.875rem; }
+    .font-normal { font-weight: 400; }
+    .leading-normal { line-height: 1.5; }
 
-    .max-w-full {
-        max-width: 100%;
-    }
-
-    .relative {
-        position: relative;
-    }
-
-    .flex {
-        display: flex;
-    }
-
-    .flex-col {
-        flex-direction: column;
-    }
-
-    .min-w-0 {
-        min-width: 0;
-    }
-
-    .break-words {
-        word-wrap: break-word;
-    }
-
-    .bg-white {
-        background-color: #ffffff;
-    }
-
-    .border-0 {
-        border: none;
-    }
-
-    .shadow-xl {
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .rounded-2xl {
-        border-radius: 1rem;
-    }
-
-    .bg-clip-border {
-        background-clip: border-box;
-    }
-
-    .table-responsive {
-        overflow-x: auto;
-    }
-
-    .table {
-        width: 100%;
-        margin-bottom: 1rem;
-        color: #212529;
-        border-collapse: collapse;
-    }
-
-    .table th,
-    .table td {
-        padding: 0.75rem;
-        vertical-align: top;
-        border-top: 1px solid #dee2e6;
-    }
-
-    .thead-light th {
-        color: #495057;
-        background-color: #e9ecef;
-        border-color: #dee2e6;
-    }
-
-    .text-slate-500 {
-        color: #6b7280;
-    }
-
-    .text-sm {
-        font-size: 0.875rem;
-    }
-
-    .font-normal {
-        font-weight: 400;
-    }
-
-    .leading-normal {
-        line-height: 1.5;
-    }
-
-    .btn {
+    /* Button styles */
+    .btn { 
         display: inline-block;
         padding: 10px 20px;
         font-size: 14px;
@@ -199,99 +139,97 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
         transition: background-color 0.3s ease;
     }
 
-    .btn-primary {
-        background-color: #007bff;
+    /* Primary button - gold */
+    .btn-primary { 
+        background-color: #FFD700;  /* gold */
+        color: #696969;             /* dim gray text */
+        border: none;
+    }
+
+    .btn-primary:hover { background-color: #FFD700; }
+
+    /* Secondary button - dim gray */
+    .btn-secondary { 
+        background-color: #6c757d; 
+        color: white; 
+        border: none;
+    }
+
+    .btn-secondary:hover { background-color: #5a6268; }
+
+    /* Success button - green */
+    .btn-success { 
+        background-color: #28a745; 
+        color: white; 
+        border: none;
+    }
+
+    .btn-success:hover { background-color: #218838; }
+
+    /* Danger button - red */
+    .btn-danger { 
+        background-color: #dc3545; 
+        color: white; 
+        border: none; 
+    }
+
+    .btn-danger:hover { background-color: #c82333; }
+
+    /* Custom button for \"Create a new complaint\" */
+    .btn-create {
+        background-color: #87CEEB;  /* sky blue */
         color: white;
         border: none;
     }
 
-    .btn-primary:hover {
-        background-color: #0056b3;
+    .btn-create:hover {
+        background-color: #87CEEB;
+        color: #696969;  /* dim gray text */
     }
 
-    .btn-secondary {
-        background-color: #6c757d;
-        color: white;
-        border: none;
+    .text-center { text-align: center; }
+    .mt-4 { margin-top: 1.5rem; }
+    .mb-4 { margin-bottom: 1.5rem; }
+
+    /* Pagination styles */
+    .pagination { 
+        display: flex; 
+        justify-content: center; 
+        padding: 1rem 0; 
+        list-style: none; 
     }
 
-    .btn-secondary:hover {
-        background-color: #5a6268;
+    .pagination li { margin: 0 5px; }
+
+    .pagination a { 
+        display: inline-block; 
+        padding: 8px 12px; 
+        font-size: 14px; 
+        font-weight: bold; 
+        color: #FFD700;            /* gold */
+        text-decoration: none; 
+        border: 1px solid #98FB98; /* pale green */
+        border-radius: 4px; 
+        transition: background-color 0.3s ease, color 0.3s ease; 
     }
 
-    .btn-danger {
-        background-color: #dc3545;
-        color: white;
-        border: none;
+    .pagination a:hover { 
+        background-color: #FFD700; 
+        color: #696969;             /* dim gray */
     }
 
-    .btn-danger:hover {
-        background-color: #c82333;
+    .pagination .active a { 
+        background-color: #FFD700; 
+        color: #696969; 
+        border-color: #FFD700; 
     }
 
-    .btn-success {
-        background-color: #28a745;
-        color: white;
-        border: none;
+    .pagination .disabled a { 
+        color: #6c757d; 
+        pointer-events: none; 
+        background-color: #f8f9fa; 
+        border-color: #dee2e6; 
     }
-
-    .btn-success:hover {
-        background-color: #218838;
-    }
-
-    .text-center {
-        text-align: center;
-    }
-
-    .mt-4 {
-        margin-top: 1.5rem;
-    }
-
-    .mb-4 {
-        margin-bottom: 1.5rem;
-    }
-
-    .pagination {
-        display: flex;
-        justify-content: center;
-        padding: 1rem 0;
-        list-style: none;
-    }
-
-    .pagination li {
-        margin: 0 5px;
-    }
-
-    .pagination a {
-        display: inline-block;
-        padding: 8px 12px;
-        font-size: 14px;
-        font-weight: bold;
-        color: #007bff;
-        text-decoration: none;
-        border: 1px solid #dee2e6;
-        border-radius: 4px;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .pagination a:hover {
-        background-color: #007bff;
-        color: white;
-    }
-
-    .pagination .active a {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-    }
-
-    .pagination .disabled a {
-        color: #6c757d;
-        pointer-events: none;
-        background-color: #f8f9fa;
-        border-color: #dee2e6;
-    }
-
 </style>
 ";
         
@@ -303,7 +241,7 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
         yield from [];
     }
 
-    // line 203
+    // line 141
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -316,7 +254,7 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
 
-        // line 204
+        // line 142
         yield "<div style=\"margin-left: 280px;\">
     <div class=\"w-full max-w-full\">
         <div class=\"relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl rounded-2xl bg-clip-border\">
@@ -324,56 +262,56 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
                 <table class=\"table table-flush text-slate-500\" datatable id=\"datatable-search\">
                     <thead class=\"thead-light\">
                         <tr>
-                            <th>Statut</th>
-                            <th>Commentaire</th>
-                            <th>Date Avis</th>
-                            <th>Statut</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         ";
-        // line 219
+        // line 157
         $context['_parent'] = $context;
-        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["avis"]) || array_key_exists("avis", $context) ? $context["avis"] : (function () { throw new RuntimeError('Variable "avis" does not exist.', 219, $this->source); })()));
+        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["avis"]) || array_key_exists("avis", $context) ? $context["avis"] : (function () { throw new RuntimeError('Variable "avis" does not exist.', 157, $this->source); })()));
         $context['_iterated'] = false;
         foreach ($context['_seq'] as $context["_key"] => $context["avi"]) {
-            // line 220
+            // line 158
             yield "                            <tr>
                                 <td class=\"text-sm font-normal leading-normal\">";
-            // line 221
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "statut", [], "any", false, false, false, 221), "html", null, true);
+            // line 159
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "type", [], "any", false, false, false, 159), "html", null, true);
             yield "</td>
                                 <td class=\"text-sm font-normal leading-normal\">";
-            // line 222
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "commentaire", [], "any", false, false, false, 222), "html", null, true);
+            // line 160
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "commentaire", [], "any", false, false, false, 160), "html", null, true);
             yield "</td>
                                 <td class=\"text-sm font-normal leading-normal\">";
-            // line 223
-            yield ((CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "dateAvis", [], "any", false, false, false, 223)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "dateAvis", [], "any", false, false, false, 223), "Y-m-d"), "html", null, true)) : (""));
+            // line 161
+            yield ((CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "dateAvis", [], "any", false, false, false, 161)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "dateAvis", [], "any", false, false, false, 161), "Y-m-d"), "html", null, true)) : (""));
             yield "</td>
                                 <td class=\"text-sm font-normal leading-normal\">
                                     ";
-            // line 225
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(((CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "statut", [], "any", true, true, false, 225)) ? (Twig\Extension\CoreExtension::default(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "statut", [], "any", false, false, false, 225), "Pending")) : ("Pending")), "html", null, true);
+            // line 163
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(((CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "statut", [], "any", true, true, false, 163)) ? (Twig\Extension\CoreExtension::default(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "statut", [], "any", false, false, false, 163), "Pending")) : ("Pending")), "html", null, true);
             yield "
                                 </td>
                                 <td class=\"text-sm font-normal leading-normal\">
                                     <a href=\"";
-            // line 228
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_edit", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 228)]), "html", null, true);
+            // line 166
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_edit", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 166)]), "html", null, true);
             yield "\" class=\"btn btn-primary\">Edit</a>
                                     <a href=\"";
-            // line 229
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_reponses", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 229)]), "html", null, true);
-            yield "\" class=\"btn btn-success\">View Responses</a>
+            // line 167
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_reponses", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 167)]), "html", null, true);
+            yield "\" class=\"btn btn-success\">View responses</a>
                                     <form method=\"post\" action=\"";
-            // line 230
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_delete", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 230)]), "html", null, true);
+            // line 168
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_delete", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 168)]), "html", null, true);
             yield "\" style=\"display:inline-block;\" onsubmit=\"return confirm('Are you sure you want to delete this avis?');\">
                                         <input type=\"hidden\" name=\"_token\" value=\"";
-            // line 231
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 231))), "html", null, true);
+            // line 169
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 169))), "html", null, true);
             yield "\">
                                         <button type=\"submit\" class=\"btn btn-danger\">Delete</button>
                                     </form>
@@ -382,19 +320,18 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
                         ";
             $context['_iterated'] = true;
         }
-        // line 236
+        // line 174
         if (!$context['_iterated']) {
-            // line 237
+            // line 175
             yield "                            <tr>
-                                <td colspan=\"5\" class=\"text-center\">No records found</td> ";
-            // line 239
-            yield "                            </tr>
+                                <td colspan=\"5\" class=\"text-center\">No records found</td>
+                            </tr>
                         ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['avi'], $context['_parent'], $context['_iterated']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 241
+        // line 179
         yield "                    </tbody>
                 </table>
             </div>
@@ -403,16 +340,16 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
 
     <div class=\"text-center mt-4\">
         <a href=\"";
-        // line 248
+        // line 186
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_new");
-        yield "\" class=\"btn btn-secondary\">Create New Avis</a>
+        yield "\" class=\"btn btn-create\">Create a new complaint</a>
     </div>
 
     <div class=\"pagination-container\">
         <ul class=\"pagination\">
             ";
-        // line 253
-        yield $this->env->getRuntime('Knp\Bundle\PaginatorBundle\Twig\Extension\PaginationRuntime')->render($this->env, (isset($context["avis"]) || array_key_exists("avis", $context) ? $context["avis"] : (function () { throw new RuntimeError('Variable "avis" does not exist.', 253, $this->source); })()));
+        // line 191
+        yield $this->env->getRuntime('Knp\Bundle\PaginatorBundle\Twig\Extension\PaginationRuntime')->render($this->env, (isset($context["avis"]) || array_key_exists("avis", $context) ? $context["avis"] : (function () { throw new RuntimeError('Variable "avis" does not exist.', 191, $this->source); })()));
         yield "
         </ul>
     </div>
@@ -448,107 +385,47 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  415 => 253,  407 => 248,  398 => 241,  391 => 239,  388 => 237,  386 => 236,  376 => 231,  372 => 230,  368 => 229,  364 => 228,  358 => 225,  353 => 223,  349 => 222,  345 => 221,  342 => 220,  337 => 219,  320 => 204,  307 => 203,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
+        return array (  352 => 191,  344 => 186,  335 => 179,  326 => 175,  324 => 174,  314 => 169,  310 => 168,  306 => 167,  302 => 166,  296 => 163,  291 => 161,  287 => 160,  283 => 159,  280 => 158,  275 => 157,  258 => 142,  245 => 141,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
     }
 
     public function getSourceContext(): Source
     {
         return new Source("{% extends 'base.html.twig' %}
 
-{% block title %}Avis{% endblock %}
+{% block title %}Complaints{% endblock %}
 
 {% block stylesheets %}
 <style>
-    /* YOUR ORIGINAL CSS IS HERE - NO CHANGES */
-    .w-full {
-        width: 100%;
+    .w-full { width: 100%; }
+    .max-w-full { max-width: 100%; }
+    .relative { position: relative; }
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .min-w-0 { min-width: 0; }
+    .break-words { word-wrap: break-word; }
+    .bg-white { background-color: #ffffff; }
+    .border-0 { border: none; }
+    .shadow-xl { box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); }
+    .rounded-2xl { border-radius: 1rem; }
+    .bg-clip-border { background-clip: border-box; }
+    .table-responsive { overflow-x: auto; }
+    .table { width: 100%; margin-bottom: 1rem; color: #212529; border-collapse: collapse; }
+    .table th, .table td { padding: 0.75rem; vertical-align: top; border-top: 1px solid #98FB98; } /* pale green border */
+    
+    /* Header styles */
+    .thead-light th { 
+        color: #696969;              /* dim gray text */
+        background-color: #87CEEB;   /* sky blue header background */
+        border-color: #98FB98;       /* pale green border */
     }
+    
+    .text-slate-500 { color: #696969; } /* dim gray text */
+    .text-sm { font-size: 0.875rem; }
+    .font-normal { font-weight: 400; }
+    .leading-normal { line-height: 1.5; }
 
-    .max-w-full {
-        max-width: 100%;
-    }
-
-    .relative {
-        position: relative;
-    }
-
-    .flex {
-        display: flex;
-    }
-
-    .flex-col {
-        flex-direction: column;
-    }
-
-    .min-w-0 {
-        min-width: 0;
-    }
-
-    .break-words {
-        word-wrap: break-word;
-    }
-
-    .bg-white {
-        background-color: #ffffff;
-    }
-
-    .border-0 {
-        border: none;
-    }
-
-    .shadow-xl {
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .rounded-2xl {
-        border-radius: 1rem;
-    }
-
-    .bg-clip-border {
-        background-clip: border-box;
-    }
-
-    .table-responsive {
-        overflow-x: auto;
-    }
-
-    .table {
-        width: 100%;
-        margin-bottom: 1rem;
-        color: #212529;
-        border-collapse: collapse;
-    }
-
-    .table th,
-    .table td {
-        padding: 0.75rem;
-        vertical-align: top;
-        border-top: 1px solid #dee2e6;
-    }
-
-    .thead-light th {
-        color: #495057;
-        background-color: #e9ecef;
-        border-color: #dee2e6;
-    }
-
-    .text-slate-500 {
-        color: #6b7280;
-    }
-
-    .text-sm {
-        font-size: 0.875rem;
-    }
-
-    .font-normal {
-        font-weight: 400;
-    }
-
-    .leading-normal {
-        line-height: 1.5;
-    }
-
-    .btn {
+    /* Button styles */
+    .btn { 
         display: inline-block;
         padding: 10px 20px;
         font-size: 14px;
@@ -559,99 +436,97 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
         transition: background-color 0.3s ease;
     }
 
-    .btn-primary {
-        background-color: #007bff;
+    /* Primary button - gold */
+    .btn-primary { 
+        background-color: #FFD700;  /* gold */
+        color: #696969;             /* dim gray text */
+        border: none;
+    }
+
+    .btn-primary:hover { background-color: #FFD700; }
+
+    /* Secondary button - dim gray */
+    .btn-secondary { 
+        background-color: #6c757d; 
+        color: white; 
+        border: none;
+    }
+
+    .btn-secondary:hover { background-color: #5a6268; }
+
+    /* Success button - green */
+    .btn-success { 
+        background-color: #28a745; 
+        color: white; 
+        border: none;
+    }
+
+    .btn-success:hover { background-color: #218838; }
+
+    /* Danger button - red */
+    .btn-danger { 
+        background-color: #dc3545; 
+        color: white; 
+        border: none; 
+    }
+
+    .btn-danger:hover { background-color: #c82333; }
+
+    /* Custom button for \"Create a new complaint\" */
+    .btn-create {
+        background-color: #87CEEB;  /* sky blue */
         color: white;
         border: none;
     }
 
-    .btn-primary:hover {
-        background-color: #0056b3;
+    .btn-create:hover {
+        background-color: #87CEEB;
+        color: #696969;  /* dim gray text */
     }
 
-    .btn-secondary {
-        background-color: #6c757d;
-        color: white;
-        border: none;
+    .text-center { text-align: center; }
+    .mt-4 { margin-top: 1.5rem; }
+    .mb-4 { margin-bottom: 1.5rem; }
+
+    /* Pagination styles */
+    .pagination { 
+        display: flex; 
+        justify-content: center; 
+        padding: 1rem 0; 
+        list-style: none; 
     }
 
-    .btn-secondary:hover {
-        background-color: #5a6268;
+    .pagination li { margin: 0 5px; }
+
+    .pagination a { 
+        display: inline-block; 
+        padding: 8px 12px; 
+        font-size: 14px; 
+        font-weight: bold; 
+        color: #FFD700;            /* gold */
+        text-decoration: none; 
+        border: 1px solid #98FB98; /* pale green */
+        border-radius: 4px; 
+        transition: background-color 0.3s ease, color 0.3s ease; 
     }
 
-    .btn-danger {
-        background-color: #dc3545;
-        color: white;
-        border: none;
+    .pagination a:hover { 
+        background-color: #FFD700; 
+        color: #696969;             /* dim gray */
     }
 
-    .btn-danger:hover {
-        background-color: #c82333;
+    .pagination .active a { 
+        background-color: #FFD700; 
+        color: #696969; 
+        border-color: #FFD700; 
     }
 
-    .btn-success {
-        background-color: #28a745;
-        color: white;
-        border: none;
+    .pagination .disabled a { 
+        color: #6c757d; 
+        pointer-events: none; 
+        background-color: #f8f9fa; 
+        border-color: #dee2e6; 
     }
-
-    .btn-success:hover {
-        background-color: #218838;
-    }
-
-    .text-center {
-        text-align: center;
-    }
-
-    .mt-4 {
-        margin-top: 1.5rem;
-    }
-
-    .mb-4 {
-        margin-bottom: 1.5rem;
-    }
-
-    .pagination {
-        display: flex;
-        justify-content: center;
-        padding: 1rem 0;
-        list-style: none;
-    }
-
-    .pagination li {
-        margin: 0 5px;
-    }
-
-    .pagination a {
-        display: inline-block;
-        padding: 8px 12px;
-        font-size: 14px;
-        font-weight: bold;
-        color: #007bff;
-        text-decoration: none;
-        border: 1px solid #dee2e6;
-        border-radius: 4px;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .pagination a:hover {
-        background-color: #007bff;
-        color: white;
-    }
-
-    .pagination .active a {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-    }
-
-    .pagination .disabled a {
-        color: #6c757d;
-        pointer-events: none;
-        background-color: #f8f9fa;
-        border-color: #dee2e6;
-    }
-
 </style>
 {% endblock %}
 
@@ -663,17 +538,17 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
                 <table class=\"table table-flush text-slate-500\" datatable id=\"datatable-search\">
                     <thead class=\"thead-light\">
                         <tr>
-                            <th>Statut</th>
-                            <th>Commentaire</th>
-                            <th>Date Avis</th>
-                            <th>Statut</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for avi in avis %}
                             <tr>
-                                <td class=\"text-sm font-normal leading-normal\">{{ avi.statut }}</td>
+                                <td class=\"text-sm font-normal leading-normal\">{{ avi.type }}</td>
                                 <td class=\"text-sm font-normal leading-normal\">{{ avi.commentaire }}</td>
                                 <td class=\"text-sm font-normal leading-normal\">{{ avi.dateAvis ? avi.dateAvis|date('Y-m-d') : '' }}</td>
                                 <td class=\"text-sm font-normal leading-normal\">
@@ -681,7 +556,7 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
                                 </td>
                                 <td class=\"text-sm font-normal leading-normal\">
                                     <a href=\"{{ path('app_avis_edit', {'id': avi.id}) }}\" class=\"btn btn-primary\">Edit</a>
-                                    <a href=\"{{ path('app_avis_reponses', {'id': avi.id}) }}\" class=\"btn btn-success\">View Responses</a>
+                                    <a href=\"{{ path('app_avis_reponses', {'id': avi.id}) }}\" class=\"btn btn-success\">View responses</a>
                                     <form method=\"post\" action=\"{{ path('app_avis_delete', {'id': avi.id}) }}\" style=\"display:inline-block;\" onsubmit=\"return confirm('Are you sure you want to delete this avis?');\">
                                         <input type=\"hidden\" name=\"_token\" value=\"{{ csrf_token('delete' ~ avi.id) }}\">
                                         <button type=\"submit\" class=\"btn btn-danger\">Delete</button>
@@ -690,7 +565,7 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan=\"5\" class=\"text-center\">No records found</td> {# colspan updated to 5 #}
+                                <td colspan=\"5\" class=\"text-center\">No records found</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -700,7 +575,7 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
     </div>
 
     <div class=\"text-center mt-4\">
-        <a href=\"{{ path('app_avis_new') }}\" class=\"btn btn-secondary\">Create New Avis</a>
+        <a href=\"{{ path('app_avis_new') }}\" class=\"btn btn-create\">Create a new complaint</a>
     </div>
 
     <div class=\"pagination-container\">

@@ -1,13 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Leave a Review{% endblock %}
+{% block title %}Leave a complaint{% endblock %}
 
 {% block stylesheets %}
 <style>
-    /* Your CSS remains unchanged */
+    /* Updated container styles to center the content */
     .container {
         font-family: 'Arial', sans-serif;
-        margin-left: 280px;
+        max-width: 600px;
+        margin: 50px auto; /* centers the container horizontally */
+        padding: 0 15px;
     }
 
     .card {
@@ -16,13 +18,14 @@
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         padding: 30px;
         margin-top: 30px;
-        margin-right: 30px;
+        /* Remove margin-right so it stays centered */
     }
 
     h2 {
         font-size: 28px;
         font-weight: bold;
         color: #333;
+        margin-bottom: 20px;
     }
 
     .form-label {
@@ -48,8 +51,9 @@
         background-color: #fff;
     }
 
+    /* Sky blue color for the button */
     .btn-primary {
-        background-color: #007bff;
+        background-color: #87CEEB; /* Sky blue color */
         border: none;
         padding: 12px 24px;
         font-size: 18px;
@@ -58,7 +62,7 @@
     }
 
     .btn-primary:hover {
-        background-color: #0056b3;
+        background-color: #5b9bd5; /* Slightly darker blue */
         transform: translateY(-2px);
     }
 
@@ -91,6 +95,48 @@
     .rounded-4 {
         border-radius: 1rem;
     }
+
+    /* Pagination styles remain unchanged */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding: 1rem 0;
+        list-style: none;
+    }
+
+    .pagination li {
+        margin: 0 5px;
+    }
+
+    .pagination a {
+        display: inline-block;
+        padding: 8px 12px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #007bff;
+        text-decoration: none;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .pagination a:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .pagination .active a {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    .pagination .disabled a {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: #f8f9fa;
+        border-color: #dee2e6;
+    }
 </style>
 {% endblock %}
 
@@ -99,7 +145,7 @@
     {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
 
     <div class="card shadow-sm p-4 mb-4 rounded-4">
-        <h2 class="mb-4 text-center">Leave a Review</h2>
+        <h2 class="text-center">Leave a complaint</h2>
 
         <!-- Type Field -->
         <div class="mb-4">

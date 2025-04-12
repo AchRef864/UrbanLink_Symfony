@@ -98,7 +98,7 @@ class __TwigTemplate_74fb983af07de9ea7fd93d4d78f1a901 extends Template
 
         // line 6
         yield "<div style=\"margin-left: 280px;\">
-    <h1>Create New Review</h1>
+    <h4>Create a new complaint</h4>
 
     ";
         // line 9
@@ -152,7 +152,7 @@ class __TwigTemplate_74fb983af07de9ea7fd93d4d78f1a901 extends Template
 
 {% block body %}
 <div style=\"margin-left: 280px;\">
-    <h1>Create New Review</h1>
+    <h4>Create a new complaint</h4>
 
     {% include 'avis/_form.html.twig' with {'form': form} %}
     

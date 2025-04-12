@@ -74,7 +74,7 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "title"));
 
-        yield "Leave a Review";
+        yield "Leave a complaint";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -99,10 +99,12 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
 
         // line 6
         yield "<style>
-    /* Your CSS remains unchanged */
+    /* Updated container styles to center the content */
     .container {
         font-family: 'Arial', sans-serif;
-        margin-left: 280px;
+        max-width: 600px;
+        margin: 50px auto; /* centers the container horizontally */
+        padding: 0 15px;
     }
 
     .card {
@@ -111,13 +113,14 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         padding: 30px;
         margin-top: 30px;
-        margin-right: 30px;
+        /* Remove margin-right so it stays centered */
     }
 
     h2 {
         font-size: 28px;
         font-weight: bold;
         color: #333;
+        margin-bottom: 20px;
     }
 
     .form-label {
@@ -143,8 +146,9 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         background-color: #fff;
     }
 
+    /* Sky blue color for the button */
     .btn-primary {
-        background-color: #007bff;
+        background-color: #87CEEB; /* Sky blue color */
         border: none;
         padding: 12px 24px;
         font-size: 18px;
@@ -153,7 +157,7 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
     }
 
     .btn-primary:hover {
-        background-color: #0056b3;
+        background-color: #5b9bd5; /* Slightly darker blue */
         transform: translateY(-2px);
     }
 
@@ -186,6 +190,48 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
     .rounded-4 {
         border-radius: 1rem;
     }
+
+    /* Pagination styles remain unchanged */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding: 1rem 0;
+        list-style: none;
+    }
+
+    .pagination li {
+        margin: 0 5px;
+    }
+
+    .pagination a {
+        display: inline-block;
+        padding: 8px 12px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #007bff;
+        text-decoration: none;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .pagination a:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .pagination .active a {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    .pagination .disabled a {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: #f8f9fa;
+        border-color: #dee2e6;
+    }
 </style>
 ";
         
@@ -197,7 +243,7 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         yield from [];
     }
 
-    // line 97
+    // line 143
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -210,51 +256,51 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
 
-        // line 98
+        // line 144
         yield "<div class=\"container\">
     ";
-        // line 99
-        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 99, $this->source); })()), 'form_start', ["attr" => ["novalidate" => "novalidate", "class" => "needs-validation"]]);
+        // line 145
+        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 145, $this->source); })()), 'form_start', ["attr" => ["novalidate" => "novalidate", "class" => "needs-validation"]]);
         yield "
 
     <div class=\"card shadow-sm p-4 mb-4 rounded-4\">
-        <h2 class=\"mb-4 text-center\">Leave a Review</h2>
+        <h2 class=\"text-center\">Leave a complaint</h2>
 
         <!-- Type Field -->
         <div class=\"mb-4\">
             ";
-        // line 106
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 106, $this->source); })()), "type", [], "any", false, false, false, 106), 'label', ["label_attr" => ["class" => "form-label"], "label" => "Complaint Type"]);
+        // line 152
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 152, $this->source); })()), "type", [], "any", false, false, false, 152), 'label', ["label_attr" => ["class" => "form-label"], "label" => "Complaint Type"]);
         yield "
             <div>
                 ";
-        // line 108
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 108, $this->source); })()), "type", [], "any", false, false, false, 108), 'widget', ["attr" => ["class" => "form-select", "aria-label" => "Select complaint type"]]);
-        // line 113
+        // line 154
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 154, $this->source); })()), "type", [], "any", false, false, false, 154), 'widget', ["attr" => ["class" => "form-select", "aria-label" => "Select complaint type"]]);
+        // line 159
         yield "
             </div>
             ";
-        // line 115
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 115, $this->source); })()), "type", [], "any", false, false, false, 115), 'errors');
+        // line 161
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 161, $this->source); })()), "type", [], "any", false, false, false, 161), 'errors');
         yield "
         </div>
 
         <!-- Comment Field -->
         <div class=\"mb-4\">
             ";
-        // line 120
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 120, $this->source); })()), "commentaire", [], "any", false, false, false, 120), 'label', ["label_attr" => ["class" => "form-label"], "label" => "Your Comment"]);
+        // line 166
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 166, $this->source); })()), "commentaire", [], "any", false, false, false, 166), 'label', ["label_attr" => ["class" => "form-label"], "label" => "Your Comment"]);
         yield "
             <div>
                 ";
-        // line 122
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 122, $this->source); })()), "commentaire", [], "any", false, false, false, 122), 'widget', ["attr" => ["class" => "form-control", "placeholder" => "Write your comment here...", "aria-label" => "Write your comment"]]);
-        // line 128
+        // line 168
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 168, $this->source); })()), "commentaire", [], "any", false, false, false, 168), 'widget', ["attr" => ["class" => "form-control", "placeholder" => "Write your comment here...", "aria-label" => "Write your comment"]]);
+        // line 174
         yield "
             </div>
             ";
-        // line 130
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 130, $this->source); })()), "commentaire", [], "any", false, false, false, 130), 'errors');
+        // line 176
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 176, $this->source); })()), "commentaire", [], "any", false, false, false, 176), 'errors');
         yield "
         </div>
 
@@ -262,16 +308,16 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         <div class=\"text-center mt-4\">
             <button type=\"submit\" class=\"btn btn-primary btn-lg rounded-pill px-5\">
                 ";
-        // line 136
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(((array_key_exists("button_label", $context)) ? (Twig\Extension\CoreExtension::default((isset($context["button_label"]) || array_key_exists("button_label", $context) ? $context["button_label"] : (function () { throw new RuntimeError('Variable "button_label" does not exist.', 136, $this->source); })()), "Submit")) : ("Submit")), "html", null, true);
+        // line 182
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(((array_key_exists("button_label", $context)) ? (Twig\Extension\CoreExtension::default((isset($context["button_label"]) || array_key_exists("button_label", $context) ? $context["button_label"] : (function () { throw new RuntimeError('Variable "button_label" does not exist.', 182, $this->source); })()), "Submit")) : ("Submit")), "html", null, true);
         yield "
             </button>
         </div>
     </div>
 
     ";
-        // line 141
-        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 141, $this->source); })()), 'form_end');
+        // line 187
+        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 187, $this->source); })()), 'form_end');
         yield "
 </div>
 ";
@@ -305,21 +351,23 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  274 => 141,  266 => 136,  257 => 130,  253 => 128,  251 => 122,  246 => 120,  238 => 115,  234 => 113,  232 => 108,  227 => 106,  217 => 99,  214 => 98,  201 => 97,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
+        return array (  320 => 187,  312 => 182,  303 => 176,  299 => 174,  297 => 168,  292 => 166,  284 => 161,  280 => 159,  278 => 154,  273 => 152,  263 => 145,  260 => 144,  247 => 143,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
     }
 
     public function getSourceContext(): Source
     {
         return new Source("{% extends 'base.html.twig' %}
 
-{% block title %}Leave a Review{% endblock %}
+{% block title %}Leave a complaint{% endblock %}
 
 {% block stylesheets %}
 <style>
-    /* Your CSS remains unchanged */
+    /* Updated container styles to center the content */
     .container {
         font-family: 'Arial', sans-serif;
-        margin-left: 280px;
+        max-width: 600px;
+        margin: 50px auto; /* centers the container horizontally */
+        padding: 0 15px;
     }
 
     .card {
@@ -328,13 +376,14 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         padding: 30px;
         margin-top: 30px;
-        margin-right: 30px;
+        /* Remove margin-right so it stays centered */
     }
 
     h2 {
         font-size: 28px;
         font-weight: bold;
         color: #333;
+        margin-bottom: 20px;
     }
 
     .form-label {
@@ -360,8 +409,9 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         background-color: #fff;
     }
 
+    /* Sky blue color for the button */
     .btn-primary {
-        background-color: #007bff;
+        background-color: #87CEEB; /* Sky blue color */
         border: none;
         padding: 12px 24px;
         font-size: 18px;
@@ -370,7 +420,7 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
     }
 
     .btn-primary:hover {
-        background-color: #0056b3;
+        background-color: #5b9bd5; /* Slightly darker blue */
         transform: translateY(-2px);
     }
 
@@ -403,6 +453,48 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
     .rounded-4 {
         border-radius: 1rem;
     }
+
+    /* Pagination styles remain unchanged */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding: 1rem 0;
+        list-style: none;
+    }
+
+    .pagination li {
+        margin: 0 5px;
+    }
+
+    .pagination a {
+        display: inline-block;
+        padding: 8px 12px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #007bff;
+        text-decoration: none;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .pagination a:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .pagination .active a {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    .pagination .disabled a {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: #f8f9fa;
+        border-color: #dee2e6;
+    }
 </style>
 {% endblock %}
 
@@ -411,7 +503,7 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
     {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
 
     <div class=\"card shadow-sm p-4 mb-4 rounded-4\">
-        <h2 class=\"mb-4 text-center\">Leave a Review</h2>
+        <h2 class=\"text-center\">Leave a complaint</h2>
 
         <!-- Type Field -->
         <div class=\"mb-4\">

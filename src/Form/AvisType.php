@@ -8,27 +8,31 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Avis;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class AvisType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            // Keep 'type' field
             ->add('type', ChoiceType::class, [
+                'label' => 'Type of Complaint',
                 'choices' => [
                     'Taxi Complaint' => 'taxi complaint',
                     'Subscription Complaint' => 'subscription complaint',
                 ],
-                'placeholder' => 'Please select a complaint type', 
+                'placeholder' => 'Select a complaint type',
                 'required' => true,
             ])
-            // Keep 'commentaire' field
             ->add('commentaire', TextareaType::class, [
+                'label' => 'Comment',
                 'required' => true,
                 'attr' => [
-                    'placeholder' => 'Enter your comment here',
+                    'placeholder' => 'Enter your comment here...',
                 ],
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Submit',
             ]);
     }
 
