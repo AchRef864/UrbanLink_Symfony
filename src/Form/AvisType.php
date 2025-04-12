@@ -27,6 +27,7 @@ class AvisType extends AbstractType
             ->add('commentaire', TextareaType::class, [
                 'label' => 'Comment',
                 'required' => true,
+                'empty_data' => '',  // Ensures an empty string is submitted if the field is left blank
                 'attr' => [
                     'placeholder' => 'Enter your comment here...',
                 ],

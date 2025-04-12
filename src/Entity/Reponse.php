@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\ReponseRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReponseRepository::class)]
 class Reponse
@@ -16,6 +16,11 @@ class Reponse
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'The comment must not be empty')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Comment cannot exceed {{ limit }} characters',
+    )]
     private ?string $commentaire = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -28,8 +33,7 @@ class Reponse
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reponse')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id', nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
-    
-    
+
     public function __construct()
     {
         $this->date_reponse = new \DateTime(); // Automatically set the current date
@@ -48,11 +52,10 @@ class Reponse
     public function setCommentaire(string $commentaire): static
     {
         $this->commentaire = $commentaire;
-
         return $this;
     }
 
-    public function getDateReponse(): ?\DateTimeInterface 
+    public function getDateReponse(): ?\DateTimeInterface
     {
         return $this->date_reponse;
     }
@@ -60,7 +63,6 @@ class Reponse
     public function setDateReponse(\DateTimeInterface $date_reponse): static
     {
         $this->date_reponse = $date_reponse;
-
         return $this;
     }
 
@@ -72,7 +74,6 @@ class Reponse
     public function setAvis(?Avis $avis): static
     {
         $this->avis = $avis;
-
         return $this;
     }
 
@@ -84,7 +85,6 @@ class Reponse
     public function setUser(?User $user): static
     {
         $this->user = $user;
-
         return $this;
     }
 }
