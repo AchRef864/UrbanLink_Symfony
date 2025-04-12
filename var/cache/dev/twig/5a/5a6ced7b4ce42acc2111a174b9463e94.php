@@ -109,10 +109,10 @@ class __TwigTemplate_3b03fbf2b354011b8e681252266ff9f8 extends Template
         yield "</td>
             </tr>
             <tr>
-                <th>Note</th>
+                <th>Type</th>
                 <td>";
         // line 16
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["avi"]) || array_key_exists("avi", $context) ? $context["avi"] : (function () { throw new RuntimeError('Variable "avi" does not exist.', 16, $this->source); })()), "note", [], "any", false, false, false, 16), "html", null, true);
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["avi"]) || array_key_exists("avi", $context) ? $context["avi"] : (function () { throw new RuntimeError('Variable "avi" does not exist.', 16, $this->source); })()), "type", [], "any", false, false, false, 16), "html", null, true);
         yield "</td>
             </tr>
             <tr>
@@ -203,8 +203,8 @@ class __TwigTemplate_3b03fbf2b354011b8e681252266ff9f8 extends Template
                 <td>{{ avi.id }}</td>
             </tr>
             <tr>
-                <th>Note</th>
-                <td>{{ avi.note }}</td>
+                <th>Type</th>
+                <td>{{ avi.type }}</td>
             </tr>
             <tr>
                 <th>Commentaire</th>

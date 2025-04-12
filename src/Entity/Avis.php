@@ -21,16 +21,16 @@ class Avis
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "user_id", nullable: false)]
     private ?User $user = null;
     
-    #[ORM\Column]
+    #[ORM\Column(length: 50)]
     #[Assert\NotNull]
-    #[Assert\Choice(choices: [1, 2, 3, 4, 5], message: 'La note doit être entre 1 et 5.')]
-    private ?int $note = null;
+    #[Assert\Choice(choices: ["taxi complaint", "subscription complaint"], message: 'Type must be either "taxi complaint" or "subscription complaint".')]
+    private ?string $type = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'La section du commentaire ne peut pas être vide')]
+    #[Assert\NotBlank(message: 'The comment must not be empty')]
     #[Assert\Length(
         max: 255,
-        maxMessage: 'Le commentaire ne peut pas dépasser {{ limit }} caractères',
+        maxMessage: 'Comment cannot exceed {{ limit }} characters',
     )]
     private ?string $commentaire = null;
 
@@ -41,10 +41,16 @@ class Avis
     #[ORM\OneToMany(mappedBy: 'avis', targetEntity: Reponse::class, cascade: ['persist', 'remove'])]
     private Collection $reponses;
 
+    #[ORM\Column(length: 50)]
+    #[Assert\NotNull]
+    #[Assert\Choice(choices: ["processed", "not processed"], message: 'Status must be either "processed" or "not processed".')]
+    private ?string $statut = null;
+
     public function __construct()
     {
-        $this->date_avis = new \DateTime(); // Affecte la date courante automatiquement
+        $this->date_avis = new \DateTime(); // Set current date automatically
         $this->reponses = new ArrayCollection(); // Initialize the collection
+        $this->statut = 'not processed';
     }
 
     public function getId(): ?int
@@ -63,14 +69,14 @@ class Avis
         return $this;
     }
 
-    public function getNote(): ?int
+    public function getType(): ?string
     {
-        return $this->note;
+        return $this->type;
     }
 
-    public function setNote(int $note): self
+    public function setType(string $type): self
     {
-        $this->note = $note;
+        $this->type = $type;
         return $this;
     }
 
@@ -122,6 +128,17 @@ class Avis
             }
         }
 
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $statut): self
+    {
+        $this->statut = $statut;
         return $this;
     }
 }

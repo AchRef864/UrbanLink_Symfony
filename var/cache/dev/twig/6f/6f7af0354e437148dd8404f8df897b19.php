@@ -73,7 +73,7 @@ class __TwigTemplate_74fb983af07de9ea7fd93d4d78f1a901 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "title"));
 
-        yield "New Avis";
+        yield "New Review";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -98,17 +98,17 @@ class __TwigTemplate_74fb983af07de9ea7fd93d4d78f1a901 extends Template
 
         // line 6
         yield "<div style=\"margin-left: 280px;\">
-    <h1>Create new Avis</h1>
+    <h1>Create New Review</h1>
 
     ";
         // line 9
-        yield Twig\Extension\CoreExtension::include($this->env, $context, "avis/_form.html.twig");
-        yield "
-
+        yield from $this->loadTemplate("avis/_form.html.twig", "avis/new.html.twig", 9)->unwrap()->yield(CoreExtension::merge($context, ["form" => (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 9, $this->source); })())]));
+        // line 10
+        yield "    
     <a href=\"";
         // line 11
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_index");
-        yield "\">back to list</a>
+        yield "\">Back to list</a>
 </div>
 ";
         
@@ -141,22 +141,22 @@ class __TwigTemplate_74fb983af07de9ea7fd93d4d78f1a901 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  110 => 11,  105 => 9,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
+        return array (  110 => 11,  107 => 10,  105 => 9,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source
     {
         return new Source("{% extends 'base.html.twig' %}
 
-{% block title %}New Avis{% endblock %}
+{% block title %}New Review{% endblock %}
 
 {% block body %}
 <div style=\"margin-left: 280px;\">
-    <h1>Create new Avis</h1>
+    <h1>Create New Review</h1>
 
-    {{ include('avis/_form.html.twig') }}
-
-    <a href=\"{{ path('app_avis_index') }}\">back to list</a>
+    {% include 'avis/_form.html.twig' with {'form': form} %}
+    
+    <a href=\"{{ path('app_avis_index') }}\">Back to list</a>
 </div>
 {% endblock %}
 ", "avis/new.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\avis\\new.html.twig");

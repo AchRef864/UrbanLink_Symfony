@@ -4,6 +4,7 @@
 
 {% block stylesheets %}
 <style>
+    /* Your CSS remains unchanged */
     .container {
         font-family: 'Arial', sans-serif;
         margin-left: 280px;
@@ -98,30 +99,31 @@
     {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
 
     <div class="card shadow-sm p-4 mb-4 rounded-4">
-        <h2 class="mb-4 text-center">📝 Leave a Review</h2>
+        <h2 class="mb-4 text-center">Leave a Review</h2>
 
-        <!-- Rating Section -->
+        <!-- Type Field -->
         <div class="mb-4">
-            {{ form_label(form.note, 'Rating', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_label(form.type, 'Complaint Type', {'label_attr': {'class': 'form-label'}}) }}
             <div>
-                {{ form_widget(form.note, {
+                {{ form_widget(form.type, {
                     'attr': {
                         'class': 'form-select',
-                        'aria-label': 'Select rating'
+                        'aria-label': 'Select complaint type'
                     }
                 }) }}
             </div>
-            {{ form_errors(form.note) }}
+            {{ form_errors(form.type) }}
         </div>
 
-        <!-- Comment Section -->
+        <!-- Comment Field -->
         <div class="mb-4">
             {{ form_label(form.commentaire, 'Your Comment', {'label_attr': {'class': 'form-label'}}) }}
             <div>
                 {{ form_widget(form.commentaire, {
                     'attr': {
                         'class': 'form-control',
-                        'aria-label': 'Enter your review here'
+                        'placeholder': 'Write your comment here...',
+                        'aria-label': 'Write your comment'
                     }
                 }) }}
             </div>
@@ -131,7 +133,7 @@
         <!-- Submit Button -->
         <div class="text-center mt-4">
             <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5">
-                {{ button_label|default('Submit 🚀') }}
+                {{ button_label|default('Submit') }}
             </button>
         </div>
     </div>

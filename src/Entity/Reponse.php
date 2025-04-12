@@ -52,7 +52,7 @@ class Reponse
         return $this;
     }
 
-    public function getDateReponse(): ?\DateTimeInterface
+    public function getDateReponse(): ?\DateTimeInterface 
     {
         return $this->date_reponse;
     }

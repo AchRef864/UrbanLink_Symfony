@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Avis{% endblock %}
+{% block title %}New Review{% endblock %}
 
 {% block body %}
 <div style="margin-left: 280px;">
-    <h1>Create new Avis</h1>
+    <h1>Create New Review</h1>
 
-    {{ include('avis/_form.html.twig') }}
-
-    <a href="{{ path('app_avis_index') }}">back to list</a>
+    {% include 'avis/_form.html.twig' with {'form': form} %}
+    
+    <a href="{{ path('app_avis_index') }}">Back to list</a>
 </div>
 {% endblock %}

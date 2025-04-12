@@ -4,6 +4,7 @@
 
 {% block stylesheets %}
 <style>
+    /* YOUR ORIGINAL CSS IS HERE - NO CHANGES */
     .w-full {
         width: 100%;
     }
@@ -155,7 +156,6 @@
         margin-bottom: 1.5rem;
     }
 
-    <style>
     .pagination {
         display: flex;
         justify-content: center;
@@ -208,18 +208,22 @@
                 <table class="table table-flush text-slate-500" datatable id="datatable-search">
                     <thead class="thead-light">
                         <tr>
-                            <th>Note</th>
+                            <th>Statut</th>
                             <th>Commentaire</th>
                             <th>Date Avis</th>
+                            <th>Statut</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for avi in avis %}
                             <tr>
-                                <td class="text-sm font-normal leading-normal">{{ avi.note }}</td>
+                                <td class="text-sm font-normal leading-normal">{{ avi.statut }}</td>
                                 <td class="text-sm font-normal leading-normal">{{ avi.commentaire }}</td>
                                 <td class="text-sm font-normal leading-normal">{{ avi.dateAvis ? avi.dateAvis|date('Y-m-d') : '' }}</td>
+                                <td class="text-sm font-normal leading-normal">
+                                    {{ avi.statut|default('Pending') }}
+                                </td>
                                 <td class="text-sm font-normal leading-normal">
                                     <a href="{{ path('app_avis_edit', {'id': avi.id}) }}" class="btn btn-primary">Edit</a>
                                     <a href="{{ path('app_avis_reponses', {'id': avi.id}) }}" class="btn btn-success">View Responses</a>
@@ -231,7 +235,7 @@
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="4" class="text-center">No records found</td>
+                                <td colspan="5" class="text-center">No records found</td> {# colspan updated to 5 #}
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -239,13 +243,15 @@
             </div>
         </div>
     </div>
+
     <div class="text-center mt-4">
         <a href="{{ path('app_avis_new') }}" class="btn btn-secondary">Create New Avis</a>
     </div>
+
     <div class="pagination-container">
-    <ul class="pagination">
-        {{ knp_pagination_render(avis) }}
-    </ul>
-</div>
+        <ul class="pagination">
+            {{ knp_pagination_render(avis) }}
+        </ul>
+    </div>
 </div>
 {% endblock %}

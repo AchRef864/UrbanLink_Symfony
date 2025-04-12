@@ -99,6 +99,7 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
 
         // line 6
         yield "<style>
+    /* Your CSS remains unchanged */
     .container {
         font-family: 'Arial', sans-serif;
         margin-left: 280px;
@@ -196,7 +197,7 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         yield from [];
     }
 
-    // line 96
+    // line 97
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -209,51 +210,51 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
 
-        // line 97
+        // line 98
         yield "<div class=\"container\">
     ";
-        // line 98
-        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 98, $this->source); })()), 'form_start', ["attr" => ["novalidate" => "novalidate", "class" => "needs-validation"]]);
+        // line 99
+        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 99, $this->source); })()), 'form_start', ["attr" => ["novalidate" => "novalidate", "class" => "needs-validation"]]);
         yield "
 
     <div class=\"card shadow-sm p-4 mb-4 rounded-4\">
-        <h2 class=\"mb-4 text-center\">📝 Leave a Review</h2>
+        <h2 class=\"mb-4 text-center\">Leave a Review</h2>
 
-        <!-- Rating Section -->
+        <!-- Type Field -->
         <div class=\"mb-4\">
             ";
-        // line 105
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 105, $this->source); })()), "note", [], "any", false, false, false, 105), 'label', ["label_attr" => ["class" => "form-label"], "label" => "Rating"]);
+        // line 106
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 106, $this->source); })()), "type", [], "any", false, false, false, 106), 'label', ["label_attr" => ["class" => "form-label"], "label" => "Complaint Type"]);
         yield "
             <div>
                 ";
-        // line 107
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 107, $this->source); })()), "note", [], "any", false, false, false, 107), 'widget', ["attr" => ["class" => "form-select", "aria-label" => "Select rating"]]);
-        // line 112
+        // line 108
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 108, $this->source); })()), "type", [], "any", false, false, false, 108), 'widget', ["attr" => ["class" => "form-select", "aria-label" => "Select complaint type"]]);
+        // line 113
         yield "
             </div>
             ";
-        // line 114
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 114, $this->source); })()), "note", [], "any", false, false, false, 114), 'errors');
+        // line 115
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 115, $this->source); })()), "type", [], "any", false, false, false, 115), 'errors');
         yield "
         </div>
 
-        <!-- Comment Section -->
+        <!-- Comment Field -->
         <div class=\"mb-4\">
             ";
-        // line 119
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 119, $this->source); })()), "commentaire", [], "any", false, false, false, 119), 'label', ["label_attr" => ["class" => "form-label"], "label" => "Your Comment"]);
+        // line 120
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 120, $this->source); })()), "commentaire", [], "any", false, false, false, 120), 'label', ["label_attr" => ["class" => "form-label"], "label" => "Your Comment"]);
         yield "
             <div>
                 ";
-        // line 121
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 121, $this->source); })()), "commentaire", [], "any", false, false, false, 121), 'widget', ["attr" => ["class" => "form-control", "aria-label" => "Enter your review here"]]);
-        // line 126
+        // line 122
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 122, $this->source); })()), "commentaire", [], "any", false, false, false, 122), 'widget', ["attr" => ["class" => "form-control", "placeholder" => "Write your comment here...", "aria-label" => "Write your comment"]]);
+        // line 128
         yield "
             </div>
             ";
-        // line 128
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 128, $this->source); })()), "commentaire", [], "any", false, false, false, 128), 'errors');
+        // line 130
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 130, $this->source); })()), "commentaire", [], "any", false, false, false, 130), 'errors');
         yield "
         </div>
 
@@ -261,16 +262,16 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         <div class=\"text-center mt-4\">
             <button type=\"submit\" class=\"btn btn-primary btn-lg rounded-pill px-5\">
                 ";
-        // line 134
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(((array_key_exists("button_label", $context)) ? (Twig\Extension\CoreExtension::default((isset($context["button_label"]) || array_key_exists("button_label", $context) ? $context["button_label"] : (function () { throw new RuntimeError('Variable "button_label" does not exist.', 134, $this->source); })()), "Submit 🚀")) : ("Submit 🚀")), "html", null, true);
+        // line 136
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(((array_key_exists("button_label", $context)) ? (Twig\Extension\CoreExtension::default((isset($context["button_label"]) || array_key_exists("button_label", $context) ? $context["button_label"] : (function () { throw new RuntimeError('Variable "button_label" does not exist.', 136, $this->source); })()), "Submit")) : ("Submit")), "html", null, true);
         yield "
             </button>
         </div>
     </div>
 
     ";
-        // line 139
-        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 139, $this->source); })()), 'form_end');
+        // line 141
+        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 141, $this->source); })()), 'form_end');
         yield "
 </div>
 ";
@@ -304,7 +305,7 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  273 => 139,  265 => 134,  256 => 128,  252 => 126,  250 => 121,  245 => 119,  237 => 114,  233 => 112,  231 => 107,  226 => 105,  216 => 98,  213 => 97,  200 => 96,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
+        return array (  274 => 141,  266 => 136,  257 => 130,  253 => 128,  251 => 122,  246 => 120,  238 => 115,  234 => 113,  232 => 108,  227 => 106,  217 => 99,  214 => 98,  201 => 97,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -315,6 +316,7 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
 
 {% block stylesheets %}
 <style>
+    /* Your CSS remains unchanged */
     .container {
         font-family: 'Arial', sans-serif;
         margin-left: 280px;
@@ -409,30 +411,31 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
     {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
 
     <div class=\"card shadow-sm p-4 mb-4 rounded-4\">
-        <h2 class=\"mb-4 text-center\">📝 Leave a Review</h2>
+        <h2 class=\"mb-4 text-center\">Leave a Review</h2>
 
-        <!-- Rating Section -->
+        <!-- Type Field -->
         <div class=\"mb-4\">
-            {{ form_label(form.note, 'Rating', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_label(form.type, 'Complaint Type', {'label_attr': {'class': 'form-label'}}) }}
             <div>
-                {{ form_widget(form.note, {
+                {{ form_widget(form.type, {
                     'attr': {
                         'class': 'form-select',
-                        'aria-label': 'Select rating'
+                        'aria-label': 'Select complaint type'
                     }
                 }) }}
             </div>
-            {{ form_errors(form.note) }}
+            {{ form_errors(form.type) }}
         </div>
 
-        <!-- Comment Section -->
+        <!-- Comment Field -->
         <div class=\"mb-4\">
             {{ form_label(form.commentaire, 'Your Comment', {'label_attr': {'class': 'form-label'}}) }}
             <div>
                 {{ form_widget(form.commentaire, {
                     'attr': {
                         'class': 'form-control',
-                        'aria-label': 'Enter your review here'
+                        'placeholder': 'Write your comment here...',
+                        'aria-label': 'Write your comment'
                     }
                 }) }}
             </div>
@@ -442,7 +445,7 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         <!-- Submit Button -->
         <div class=\"text-center mt-4\">
             <button type=\"submit\" class=\"btn btn-primary btn-lg rounded-pill px-5\">
-                {{ button_label|default('Submit 🚀') }}
+                {{ button_label|default('Submit') }}
             </button>
         </div>
     </div>

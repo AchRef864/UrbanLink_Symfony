@@ -25,14 +25,16 @@ class Avis extends \App\Entity\Avis implements \Doctrine\ORM\Proxy\InternalProxy
         "\0".parent::class."\0".'commentaire' => [parent::class, 'commentaire', null],
         "\0".parent::class."\0".'date_avis' => [parent::class, 'date_avis', null],
         "\0".parent::class."\0".'id' => [parent::class, 'id', null],
-        "\0".parent::class."\0".'note' => [parent::class, 'note', null],
         "\0".parent::class."\0".'reponses' => [parent::class, 'reponses', null],
+        "\0".parent::class."\0".'statut' => [parent::class, 'statut', null],
+        "\0".parent::class."\0".'type' => [parent::class, 'type', null],
         "\0".parent::class."\0".'user' => [parent::class, 'user', null],
         'commentaire' => [parent::class, 'commentaire', null],
         'date_avis' => [parent::class, 'date_avis', null],
         'id' => [parent::class, 'id', null],
-        'note' => [parent::class, 'note', null],
         'reponses' => [parent::class, 'reponses', null],
+        'statut' => [parent::class, 'statut', null],
+        'type' => [parent::class, 'type', null],
         'user' => [parent::class, 'user', null],
     ];
 

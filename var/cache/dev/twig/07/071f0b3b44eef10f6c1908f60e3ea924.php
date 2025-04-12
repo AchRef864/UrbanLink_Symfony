@@ -118,7 +118,6 @@ class __TwigTemplate_9e7033fabeefe2f24693ed496ce3c9f0 extends Template
             <table class=\"min-w-full bg-white border border-gray-300 rounded-lg overflow-hidden\">
                 <thead class=\"bg-gray-100\">
                     <tr>
-                        <th class=\"text-left py-3 px-6 border-b border-gray-300\">ID</th>
                         <th class=\"text-left py-3 px-6 border-b border-gray-300\">Commentaire</th>
                         <th class=\"text-left py-3 px-6 border-b border-gray-300\">Date</th>
                         <th class=\"text-center py-3 px-6 border-b border-gray-300\">Actions</th>
@@ -126,44 +125,40 @@ class __TwigTemplate_9e7033fabeefe2f24693ed496ce3c9f0 extends Template
                 </thead>
                 <tbody>
                     ";
-        // line 30
+        // line 29
         $context['_parent'] = $context;
-        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["reponses"]) || array_key_exists("reponses", $context) ? $context["reponses"] : (function () { throw new RuntimeError('Variable "reponses" does not exist.', 30, $this->source); })()));
+        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["reponses"]) || array_key_exists("reponses", $context) ? $context["reponses"] : (function () { throw new RuntimeError('Variable "reponses" does not exist.', 29, $this->source); })()));
         $context['_iterated'] = false;
         foreach ($context['_seq'] as $context["_key"] => $context["reponse"]) {
-            // line 31
+            // line 30
             yield "                        <tr class=\"hover:bg-gray-50\">
                             <td class=\"py-3 px-6 border-b border-gray-300\">";
+            // line 31
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "commentaire", [], "any", false, false, false, 31), "html", null, true);
+            yield "</td>
+                            <td class=\"py-3 px-6 border-b border-gray-300\">";
             // line 32
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 32), "html", null, true);
-            yield "</td>
-                            <td class=\"py-3 px-6 border-b border-gray-300\">";
-            // line 33
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "commentaire", [], "any", false, false, false, 33), "html", null, true);
-            yield "</td>
-                            <td class=\"py-3 px-6 border-b border-gray-300\">";
-            // line 34
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "dateReponse", [], "any", false, false, false, 34), "Y-m-d"), "html", null, true);
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "dateReponse", [], "any", false, false, false, 32), "Y-m-d"), "html", null, true);
             yield "</td>
                             <td class=\"py-3 px-6 border-b border-gray-300 text-center\">
                                 <!-- Edit button -->
                                 <a href=\"";
-            // line 37
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reponse_edit", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 37)]), "html", null, true);
+            // line 35
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reponse_edit", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 35)]), "html", null, true);
             yield "\" 
                                    class=\"bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg shadow-md\">
                                     Edit
                                 </a>
                                 <!-- Delete button -->
                                 <form method=\"post\" action=\"";
-            // line 42
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reponse_delete", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 42)]), "html", null, true);
+            // line 40
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reponse_delete", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 40)]), "html", null, true);
             yield "\" 
                                       class=\"inline-block\" 
                                       onsubmit=\"return confirm('Are you sure you want to delete this response?');\">
                                     <input type=\"hidden\" name=\"_token\" value=\"";
-            // line 45
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 45))), "html", null, true);
+            // line 43
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["reponse"], "id", [], "any", false, false, false, 43))), "html", null, true);
             yield "\">
                                     <button type=\"submit\"
                                             class=\"bg-red-500 hover:bg-red-600 text-black font-semibold py-2 px-4 rounded-lg shadow-md mt-2\">
@@ -175,9 +170,9 @@ class __TwigTemplate_9e7033fabeefe2f24693ed496ce3c9f0 extends Template
                     ";
             $context['_iterated'] = true;
         }
-        // line 53
+        // line 51
         if (!$context['_iterated']) {
-            // line 54
+            // line 52
             yield "                        <tr>
                             <td colspan=\"4\" class=\"text-center py-4 text-gray-500\">No responses found for this Avis.</td>
                         </tr>
@@ -186,14 +181,14 @@ class __TwigTemplate_9e7033fabeefe2f24693ed496ce3c9f0 extends Template
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['reponse'], $context['_parent'], $context['_iterated']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 58
+        // line 56
         yield "                </tbody>
             </table>
         </div>
 
         <div class=\"text-center mt-6\">
             <a href=\"";
-        // line 63
+        // line 61
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_index");
         yield "\" 
                class=\"bg-gray-500 hover:bg-gray-700 text-black font-bold py-2 px-4 rounded\">
@@ -233,7 +228,7 @@ class __TwigTemplate_9e7033fabeefe2f24693ed496ce3c9f0 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  197 => 63,  190 => 58,  181 => 54,  179 => 53,  166 => 45,  160 => 42,  152 => 37,  146 => 34,  142 => 33,  138 => 32,  135 => 31,  130 => 30,  110 => 13,  101 => 6,  88 => 5,  64 => 3,  41 => 1,);
+        return array (  192 => 61,  185 => 56,  176 => 52,  174 => 51,  161 => 43,  155 => 40,  147 => 35,  141 => 32,  137 => 31,  134 => 30,  129 => 29,  110 => 13,  101 => 6,  88 => 5,  64 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -260,7 +255,6 @@ class __TwigTemplate_9e7033fabeefe2f24693ed496ce3c9f0 extends Template
             <table class=\"min-w-full bg-white border border-gray-300 rounded-lg overflow-hidden\">
                 <thead class=\"bg-gray-100\">
                     <tr>
-                        <th class=\"text-left py-3 px-6 border-b border-gray-300\">ID</th>
                         <th class=\"text-left py-3 px-6 border-b border-gray-300\">Commentaire</th>
                         <th class=\"text-left py-3 px-6 border-b border-gray-300\">Date</th>
                         <th class=\"text-center py-3 px-6 border-b border-gray-300\">Actions</th>
@@ -269,7 +263,6 @@ class __TwigTemplate_9e7033fabeefe2f24693ed496ce3c9f0 extends Template
                 <tbody>
                     {% for reponse in reponses %}
                         <tr class=\"hover:bg-gray-50\">
-                            <td class=\"py-3 px-6 border-b border-gray-300\">{{ reponse.id }}</td>
                             <td class=\"py-3 px-6 border-b border-gray-300\">{{ reponse.commentaire }}</td>
                             <td class=\"py-3 px-6 border-b border-gray-300\">{{ reponse.dateReponse|date('Y-m-d') }}</td>
                             <td class=\"py-3 px-6 border-b border-gray-300 text-center\">

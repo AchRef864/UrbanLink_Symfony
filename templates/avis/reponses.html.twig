@@ -20,7 +20,6 @@
             <table class="min-w-full bg-white border border-gray-300 rounded-lg overflow-hidden">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="text-left py-3 px-6 border-b border-gray-300">ID</th>
                         <th class="text-left py-3 px-6 border-b border-gray-300">Commentaire</th>
                         <th class="text-left py-3 px-6 border-b border-gray-300">Date</th>
                         <th class="text-center py-3 px-6 border-b border-gray-300">Actions</th>
@@ -29,7 +28,6 @@
                 <tbody>
                     {% for reponse in reponses %}
                         <tr class="hover:bg-gray-50">
-                            <td class="py-3 px-6 border-b border-gray-300">{{ reponse.id }}</td>
                             <td class="py-3 px-6 border-b border-gray-300">{{ reponse.commentaire }}</td>
                             <td class="py-3 px-6 border-b border-gray-300">{{ reponse.dateReponse|date('Y-m-d') }}</td>
                             <td class="py-3 px-6 border-b border-gray-300 text-center">

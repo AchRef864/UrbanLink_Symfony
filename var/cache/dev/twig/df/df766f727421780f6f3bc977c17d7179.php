@@ -99,6 +99,7 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
 
         // line 6
         yield "<style>
+    /* YOUR ORIGINAL CSS IS HERE - NO CHANGES */
     .w-full {
         width: 100%;
     }
@@ -250,7 +251,6 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
         margin-bottom: 1.5rem;
     }
 
-    <style>
     .pagination {
         display: flex;
         justify-content: center;
@@ -324,49 +324,56 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
                 <table class=\"table table-flush text-slate-500\" datatable id=\"datatable-search\">
                     <thead class=\"thead-light\">
                         <tr>
-                            <th>Note</th>
+                            <th>Statut</th>
                             <th>Commentaire</th>
                             <th>Date Avis</th>
+                            <th>Statut</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         ";
-        // line 218
+        // line 219
         $context['_parent'] = $context;
-        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["avis"]) || array_key_exists("avis", $context) ? $context["avis"] : (function () { throw new RuntimeError('Variable "avis" does not exist.', 218, $this->source); })()));
+        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["avis"]) || array_key_exists("avis", $context) ? $context["avis"] : (function () { throw new RuntimeError('Variable "avis" does not exist.', 219, $this->source); })()));
         $context['_iterated'] = false;
         foreach ($context['_seq'] as $context["_key"] => $context["avi"]) {
-            // line 219
+            // line 220
             yield "                            <tr>
                                 <td class=\"text-sm font-normal leading-normal\">";
-            // line 220
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "note", [], "any", false, false, false, 220), "html", null, true);
-            yield "</td>
-                                <td class=\"text-sm font-normal leading-normal\">";
             // line 221
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "commentaire", [], "any", false, false, false, 221), "html", null, true);
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "statut", [], "any", false, false, false, 221), "html", null, true);
             yield "</td>
                                 <td class=\"text-sm font-normal leading-normal\">";
             // line 222
-            yield ((CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "dateAvis", [], "any", false, false, false, 222)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "dateAvis", [], "any", false, false, false, 222), "Y-m-d"), "html", null, true)) : (""));
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "commentaire", [], "any", false, false, false, 222), "html", null, true);
+            yield "</td>
+                                <td class=\"text-sm font-normal leading-normal\">";
+            // line 223
+            yield ((CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "dateAvis", [], "any", false, false, false, 223)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "dateAvis", [], "any", false, false, false, 223), "Y-m-d"), "html", null, true)) : (""));
             yield "</td>
                                 <td class=\"text-sm font-normal leading-normal\">
+                                    ";
+            // line 225
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(((CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "statut", [], "any", true, true, false, 225)) ? (Twig\Extension\CoreExtension::default(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "statut", [], "any", false, false, false, 225), "Pending")) : ("Pending")), "html", null, true);
+            yield "
+                                </td>
+                                <td class=\"text-sm font-normal leading-normal\">
                                     <a href=\"";
-            // line 224
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_edit", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 224)]), "html", null, true);
+            // line 228
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_edit", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 228)]), "html", null, true);
             yield "\" class=\"btn btn-primary\">Edit</a>
                                     <a href=\"";
-            // line 225
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_reponses", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 225)]), "html", null, true);
+            // line 229
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_reponses", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 229)]), "html", null, true);
             yield "\" class=\"btn btn-success\">View Responses</a>
                                     <form method=\"post\" action=\"";
-            // line 226
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_delete", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 226)]), "html", null, true);
+            // line 230
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_delete", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 230)]), "html", null, true);
             yield "\" style=\"display:inline-block;\" onsubmit=\"return confirm('Are you sure you want to delete this avis?');\">
                                         <input type=\"hidden\" name=\"_token\" value=\"";
-            // line 227
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 227))), "html", null, true);
+            // line 231
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 231))), "html", null, true);
             yield "\">
                                         <button type=\"submit\" class=\"btn btn-danger\">Delete</button>
                                     </form>
@@ -375,37 +382,40 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
                         ";
             $context['_iterated'] = true;
         }
-        // line 232
+        // line 236
         if (!$context['_iterated']) {
-            // line 233
+            // line 237
             yield "                            <tr>
-                                <td colspan=\"4\" class=\"text-center\">No records found</td>
-                            </tr>
+                                <td colspan=\"5\" class=\"text-center\">No records found</td> ";
+            // line 239
+            yield "                            </tr>
                         ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['avi'], $context['_parent'], $context['_iterated']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 237
+        // line 241
         yield "                    </tbody>
                 </table>
             </div>
         </div>
     </div>
+
     <div class=\"text-center mt-4\">
         <a href=\"";
-        // line 243
+        // line 248
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_new");
         yield "\" class=\"btn btn-secondary\">Create New Avis</a>
     </div>
+
     <div class=\"pagination-container\">
-    <ul class=\"pagination\">
-        ";
-        // line 247
-        yield $this->env->getRuntime('Knp\Bundle\PaginatorBundle\Twig\Extension\PaginationRuntime')->render($this->env, (isset($context["avis"]) || array_key_exists("avis", $context) ? $context["avis"] : (function () { throw new RuntimeError('Variable "avis" does not exist.', 247, $this->source); })()));
+        <ul class=\"pagination\">
+            ";
+        // line 253
+        yield $this->env->getRuntime('Knp\Bundle\PaginatorBundle\Twig\Extension\PaginationRuntime')->render($this->env, (isset($context["avis"]) || array_key_exists("avis", $context) ? $context["avis"] : (function () { throw new RuntimeError('Variable "avis" does not exist.', 253, $this->source); })()));
         yield "
-    </ul>
-</div>
+        </ul>
+    </div>
 </div>
 ";
         
@@ -438,7 +448,7 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  405 => 247,  398 => 243,  390 => 237,  381 => 233,  379 => 232,  369 => 227,  365 => 226,  361 => 225,  357 => 224,  352 => 222,  348 => 221,  344 => 220,  341 => 219,  336 => 218,  320 => 204,  307 => 203,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
+        return array (  415 => 253,  407 => 248,  398 => 241,  391 => 239,  388 => 237,  386 => 236,  376 => 231,  372 => 230,  368 => 229,  364 => 228,  358 => 225,  353 => 223,  349 => 222,  345 => 221,  342 => 220,  337 => 219,  320 => 204,  307 => 203,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -449,6 +459,7 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
 
 {% block stylesheets %}
 <style>
+    /* YOUR ORIGINAL CSS IS HERE - NO CHANGES */
     .w-full {
         width: 100%;
     }
@@ -600,7 +611,6 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
         margin-bottom: 1.5rem;
     }
 
-    <style>
     .pagination {
         display: flex;
         justify-content: center;
@@ -653,18 +663,22 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
                 <table class=\"table table-flush text-slate-500\" datatable id=\"datatable-search\">
                     <thead class=\"thead-light\">
                         <tr>
-                            <th>Note</th>
+                            <th>Statut</th>
                             <th>Commentaire</th>
                             <th>Date Avis</th>
+                            <th>Statut</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for avi in avis %}
                             <tr>
-                                <td class=\"text-sm font-normal leading-normal\">{{ avi.note }}</td>
+                                <td class=\"text-sm font-normal leading-normal\">{{ avi.statut }}</td>
                                 <td class=\"text-sm font-normal leading-normal\">{{ avi.commentaire }}</td>
                                 <td class=\"text-sm font-normal leading-normal\">{{ avi.dateAvis ? avi.dateAvis|date('Y-m-d') : '' }}</td>
+                                <td class=\"text-sm font-normal leading-normal\">
+                                    {{ avi.statut|default('Pending') }}
+                                </td>
                                 <td class=\"text-sm font-normal leading-normal\">
                                     <a href=\"{{ path('app_avis_edit', {'id': avi.id}) }}\" class=\"btn btn-primary\">Edit</a>
                                     <a href=\"{{ path('app_avis_reponses', {'id': avi.id}) }}\" class=\"btn btn-success\">View Responses</a>
@@ -676,7 +690,7 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan=\"4\" class=\"text-center\">No records found</td>
+                                <td colspan=\"5\" class=\"text-center\">No records found</td> {# colspan updated to 5 #}
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -684,15 +698,18 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
             </div>
         </div>
     </div>
+
     <div class=\"text-center mt-4\">
         <a href=\"{{ path('app_avis_new') }}\" class=\"btn btn-secondary\">Create New Avis</a>
     </div>
+
     <div class=\"pagination-container\">
-    <ul class=\"pagination\">
-        {{ knp_pagination_render(avis) }}
-    </ul>
+        <ul class=\"pagination\">
+            {{ knp_pagination_render(avis) }}
+        </ul>
+    </div>
 </div>
-</div>
-{% endblock %}", "avis/index.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\avis\\index.html.twig");
+{% endblock %}
+", "avis/index.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\avis\\index.html.twig");
     }
 }

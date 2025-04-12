@@ -35,29 +35,35 @@ final class AvisController extends AbstractController
     #[Route('/new', name: 'app_avis_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $avi = new Avis(); // Date is set automatically in the Avis constructor
-
+        $avi = new Avis(); // Create new Avis entity
+    
         $form = $this->createForm(AvisType::class, $avi);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();
             if (!$user) {
-                throw $this->createAccessDeniedException('You must be logged in to create an Avis.');
+                $this->addFlash('error', 'You must be logged in to leave a review.');
+                return $this->redirectToRoute('app_login');
             }
+    
             $avi->setUser($user);
-
+            $avi->setStatut('not processed'); // Default status
+    
             $entityManager->persist($avi);
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_avis_index', [], Response::HTTP_SEE_OTHER);
+    
+            $this->addFlash('success', 'Your review has been submitted successfully.');
+    
+            return $this->redirectToRoute('app_avis_index');
         }
-
+    
         return $this->render('avis/new.html.twig', [
-            'avi' => $avi,
-            'form' => $form->createView(),
+            'form' => $form->createView(), // only pass form to the view, no need to pass avi
         ]);
     }
+    
+    
 
     #[Route('/{id}', name: 'app_avis_show', methods: ['GET'])]
     public function show(Avis $avi): Response

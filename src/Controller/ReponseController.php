@@ -33,7 +33,7 @@ final class ReponseController extends AbstractController
         if (!$avis) {
             throw $this->createNotFoundException('Avis not found.');
         }
-        $reponse->setAvis($avis); // *** This is the important change ***
+        $reponse->setAvis($avis);
 
         $form = $this->createForm(ReponseType::class, $reponse);
         $form->handleRequest($request);
@@ -45,6 +45,9 @@ final class ReponseController extends AbstractController
             }
 
             $reponse->setUser($user);
+
+            // Set the statut of Avis to "processed"
+            $avis->setStatut('processed');
 
             $entityManager->persist($reponse);
             $entityManager->flush();
