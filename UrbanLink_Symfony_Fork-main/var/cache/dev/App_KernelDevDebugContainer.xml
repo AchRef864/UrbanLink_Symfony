@@ -572,7 +572,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.ZGwemnp"/>
+      <argument type="service" id=".service_locator.vho1Rp0"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -3570,7 +3570,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.ZGwemnp"/>
+      <argument type="service" id=".service_locator.vho1Rp0"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <tag name="kernel.reset" method="reset"/>
@@ -8246,7 +8246,7 @@
         <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
       </argument>
     </service>
-    <service id=".service_locator.ZGwemnp" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.vho1Rp0" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\Admin\UserManagementController::blockUser" type="service_closure" id=".service_locator.rvMNZGh"/>
@@ -8265,6 +8265,7 @@
         <argument key="App\Controller\ProfileController::edit" type="service_closure" id=".service_locator.ESgEUJd"/>
         <argument key="App\Controller\ReservationController::affichage" type="service_closure" id=".service_locator.YuFNz6h"/>
         <argument key="App\Controller\ReservationController::cancel" type="service_closure" id=".service_locator.gBkZnE5"/>
+        <argument key="App\Controller\ReservationController::generatePdf" type="service_closure" id=".service_locator.h9c0uBq"/>
         <argument key="App\Controller\ReservationController::new" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\ReservationController::payment" type="service_closure" id=".service_locator.h9c0uBq"/>
         <argument key="App\Controller\ReservationController::paymentCancel" type="service_closure" id=".service_locator.gBkZnE5"/>
@@ -8296,6 +8297,7 @@
         <argument key="App\Controller\ProfileController:edit" type="service_closure" id=".service_locator.ESgEUJd"/>
         <argument key="App\Controller\ReservationController:affichage" type="service_closure" id=".service_locator.YuFNz6h"/>
         <argument key="App\Controller\ReservationController:cancel" type="service_closure" id=".service_locator.gBkZnE5"/>
+        <argument key="App\Controller\ReservationController:generatePdf" type="service_closure" id=".service_locator.h9c0uBq"/>
         <argument key="App\Controller\ReservationController:new" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\ReservationController:payment" type="service_closure" id=".service_locator.h9c0uBq"/>
         <argument key="App\Controller\ReservationController:paymentCancel" type="service_closure" id=".service_locator.gBkZnE5"/>
@@ -10641,7 +10643,7 @@
     <service id="Knp\Component\Pager\ArgumentAccess\ArgumentAccessInterface" alias="Knp\Component\Pager\ArgumentAccess\RequestArgumentAccess"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.w7.f4fT" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.ZGwemnp"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.vho1Rp0"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -10671,7 +10673,7 @@
     <service id=".service_locator.WHWcPEi" alias=".service_locator.Xm4mt1I"/>
     <service id=".service_locator.yZn_IzL" alias=".service_locator.rET9i7U"/>
     <service id=".service_locator.yjYmAoZ" alias=".service_locator.gBkZnE5"/>
-    <service id=".service_locator.xPw22BD" alias=".service_locator.ZGwemnp"/>
+    <service id=".service_locator.wTWi3sM" alias=".service_locator.vho1Rp0"/>
     <service id=".service_locator.BFrsqsn" alias=".service_locator.F9PKc.7"/>
     <service id=".service_locator.1FSBVyw" alias=".service_locator.U77pv0W"/>
     <service id=".service_locator.XtmiKbi" alias=".service_locator.MfxSDRP"/>

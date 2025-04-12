@@ -1,19 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Paiement réussi{% endblock %}
-
 {% block body %}
 <div style="margin-left: 280px;">
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-6">
         <div class="bg-white p-6 rounded-lg shadow-md text-center">
-            <svg class="mx-auto h-12 w-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-            <h2 class="mt-3 text-xl font-medium text-gray-900">Paiement réussi!</h2>
-            <p class="mt-2 text-gray-600">Votre réservation #{{ reservation.id }} a été confirmée.</p>
-            <div class="mt-4">
-                <a href="{{ path('reservation_affichage') }}" class="text-blue-600 hover:text-blue-800">
-                    Retour à la liste des trajets
+            <div class="mb-6">
+                <svg class="mx-auto h-16 w-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <h1 class="text-2xl font-bold mb-2">Réservation confirmée!</h1>
+                <p class="text-gray-600">Votre réservation #{{ reservation.id }} a été confirmée avec succès.</p>
+            </div>
+
+            <div class="mb-6 p-4 bg-gray-50 rounded-lg text-left">
+                <h2 class="text-lg font-semibold mb-3">Détails de la réservation</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-gray-600"><span class="font-medium">Trajet:</span> {{ reservation.trajet.departure }} → {{ reservation.trajet.destination }}</p>
+                        <p class="text-sm text-gray-600"><span class="font-medium">Date:</span> {{ reservation.trajet.departureTime|date('d/m/Y H:i') }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600"><span class="font-medium">Places:</span> {{ reservation.numberOfSeats }}</p>
+                        <p class="text-sm text-gray-600"><span class="font-medium">Prix total:</span> {{ reservation.totalPrice }} €</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-center space-x-4">
+                <a href="{{ path('reservation_pdf', {'id': reservation.id}) }}" 
+                   class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                    Télécharger le reçu (PDF)
+                </a>
+                <a href="{{ path('reservation_list') }}" 
+                   class="px-6 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
+                    Retour à mes réservations
                 </a>
             </div>
         </div>

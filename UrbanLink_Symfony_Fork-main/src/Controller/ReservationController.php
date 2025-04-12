@@ -15,6 +15,15 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\src\ErrorCorrectionLevel;
+use Endroid\QrCode\src\RoundBlockSizeMode;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Writer\SvgWriter;
+
+use Dompdf\Dompdf;
+
 
 class ReservationController extends AbstractController
 {
@@ -59,9 +68,10 @@ class ReservationController extends AbstractController
         $reservation->setTrajet($trajet);
         $reservation->setReservationDate(new \DateTime());
         $reservation->setStatus('Pending');
+        
+        // Calculate initial total price
         $reservation->setTotalPrice($trajet->getPrice() * $reservation->getNumberOfSeats());
 
-        // ✅ FIXED: pass 'trajet' to the form options
         $form = $this->createForm(ReservationType::class, $reservation, [
             'trajet' => $trajet,
         ]);
@@ -69,6 +79,9 @@ class ReservationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Recalculate total price in case seats changed
+            $reservation->setTotalPrice($trajet->getPrice() * $reservation->getNumberOfSeats());
+            
             $trajet->setAvailableSeats($trajet->getAvailableSeats() - $reservation->getNumberOfSeats());
 
             $entityManager->persist($reservation);
@@ -145,7 +158,11 @@ class ReservationController extends AbstractController
 
         Stripe::setApiKey($this->getParameter('stripe_secret_key'));
 
-        if ($reservation->getTotalPrice() <= 0) {
+        // Ensure the price is correct
+        $totalPrice = $reservation->getTrajet()->getPrice() * $reservation->getNumberOfSeats();
+        $reservation->setTotalPrice($totalPrice);
+
+        if ($totalPrice <= 0) {
             throw new \LogicException('Le montant total de la réservation est incorrect.');
         }
 
@@ -157,7 +174,7 @@ class ReservationController extends AbstractController
                     'product_data' => [
                         'name' => 'Trajet ' . $reservation->getTrajet()->getDeparture() . ' - ' . $reservation->getTrajet()->getDestination(),
                     ],
-                    'unit_amount' => (int)($reservation->getTotalPrice() * 100),
+                    'unit_amount' => (int)($totalPrice * 100), // Convert to cents
                 ],
                 'quantity' => 1,
             ]],
@@ -181,24 +198,33 @@ class ReservationController extends AbstractController
         return $this->redirect($checkout_session->url);
     }
 
+
     #[Route('/reservation/payment/success/{id}', name: 'reservation_payment_success')]
     public function paymentSuccess(Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
+    
         /** @var User $user */
         $user = $this->getUser();
-
+    
         if ($reservation->getUser() !== $user) {
             throw $this->createAccessDeniedException('Vous n\'avez pas accès à cette réservation');
         }
-
-        $reservation->setStatus('Confirmed');
-        $entityManager->flush();
-
-        $this->addFlash('success', 'Paiement effectué avec succès!');
-        return $this->redirectToRoute('reservation_success', ['id' => $reservation->getId()]);
+    
+        // Mettre à jour le statut uniquement si ce n’est pas déjà confirmé
+        if ($reservation->getStatus() !== 'Confirmed') {
+            $reservation->setStatus('Confirmed');
+            $entityManager->flush();
+        }
+    
+        $this->addFlash('success', 'Paiement effectué avec succès !');
+    
+        // Rediriger vers la même vue que success()
+        return $this->render('reservation/success.html.twig', [
+            'reservation' => $reservation
+        ]);
     }
+    
 
     #[Route('/reservation/payment/cancel/{id}', name: 'reservation_payment_cancel')]
     public function paymentCancel(Reservation $reservation, EntityManagerInterface $entityManager): Response
@@ -234,4 +260,73 @@ class ReservationController extends AbstractController
             'reservations' => $user->getReservations()
         ]);
     }
+
+
+
+
+    #[Route('/reservation/pdf/{id}', name: 'reservation_pdf')]
+    public function generatePdf(Reservation $reservation): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+    
+        if ($reservation->getUser() !== $user) {
+            throw $this->createAccessDeniedException('You do not have access to this reservation');
+        }
+    
+        // Generate QR code content
+        $qrContent = sprintf(
+            "Reservation #%d\nUser: %s\nRoute: %s → %s\nDate: %s\nSeats: %d\nPrice: %d€",
+            $reservation->getId(),
+            $reservation->getUser()->getName(),
+            $reservation->getTrajet()->getDeparture(),
+            $reservation->getTrajet()->getDestination(),
+            $reservation->getTrajet()->getDepartureTime()->format('d/m/Y H:i'),
+            $reservation->getNumberOfSeats(),
+            $reservation->getTotalPrice()
+        );
+    
+        $qrCode = Builder::create()
+    ->writer(new SvgWriter())
+        ->data($qrContent)
+        ->encoding(new Encoding('UTF-8'))
+        ->errorCorrectionLevel(new \Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh())  // Note: uppercase HIGH
+        ->size(300)  // Increased size for better readability
+        ->margin(10)
+        ->roundBlockSizeMode(new \Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin())  // Note: uppercase MARGIN
+        ->build();
+    
+    $qrCodeImage = $qrCode->getDataUri();
+        // Generate PDF
+        $dompdf = new Dompdf();
+        $dompdf->set_option('isHtml5ParserEnabled', true);
+        $dompdf->set_option('isRemoteEnabled', true);
+        
+        $html = $this->renderView('reservation/pdf.html.twig', [
+            'reservation' => $reservation,
+            'qrCodeImage' => $qrCodeImage
+        ]);
+        
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        
+        $filename = sprintf('reservation-%d-%s.pdf', 
+            $reservation->getId(),
+            (new \DateTime())->format('Y-m-d')
+        );
+        
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+            ]
+        );
+    }
+    
+
 }

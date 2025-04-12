@@ -85,62 +85,151 @@ class __TwigTemplate_30c275ff1c8e66a1c0e77f7aecd5257a extends Template
       
       ";
         // line 10
-        yield "      ";
-        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 10, $this->source); })()), 'form_start', ["attr" => ["id" => "reservation-form", "class" => "space-y-4"]]);
+        yield "      <div class=\"mb-6 p-4 bg-gray-50 rounded-lg\">
+        <h2 class=\"text-lg font-semibold mb-3\">Détails du trajet</h2>
+        <div class=\"grid grid-cols-2 gap-4\">
+          <div>
+            <p class=\"text-sm text-gray-600\"><span class=\"font-medium\">Départ:</span> ";
+        // line 14
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 14, $this->source); })()), "departure", [], "any", false, false, false, 14), "html", null, true);
+        yield "</p>
+            <p class=\"text-sm text-gray-600\"><span class=\"font-medium\">Destination:</span> ";
         // line 15
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 15, $this->source); })()), "destination", [], "any", false, false, false, 15), "html", null, true);
+        yield "</p>
+            <p class=\"text-sm text-gray-600\"><span class=\"font-medium\">Date/Heure:</span> ";
+        // line 16
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 16, $this->source); })()), "departureTime", [], "any", false, false, false, 16), "d/m/Y H:i"), "html", null, true);
+        yield "</p>
+          </div>
+          <div>
+            <p class=\"text-sm text-gray-600\"><span class=\"font-medium\">Type:</span> ";
+        // line 19
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 19, $this->source); })()), "typeTransport", [], "any", false, false, false, 19), "html", null, true);
+        yield "</p>
+            <p class=\"text-sm text-gray-600\"><span class=\"font-medium\">Prix par place:</span> ";
+        // line 20
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber(CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 20, $this->source); })()), "price", [], "any", false, false, false, 20), 2, ",", " "), "html", null, true);
+        yield " €</p>
+            <p class=\"text-sm text-gray-600\"><span class=\"font-medium\">Places disponibles:</span> ";
+        // line 21
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 21, $this->source); })()), "availableSeats", [], "any", false, false, false, 21), "html", null, true);
+        yield "</p>
+          </div>
+        </div>
+      </div>
+
+      ";
+        // line 27
+        yield "      ";
+        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 27, $this->source); })()), 'form_start', ["attr" => ["id" => "reservation-form", "class" => "space-y-4"]]);
         yield "
-        
-        <input type=\"hidden\" id=\"debug-current-value\" value=\"";
-        // line 17
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 17, $this->source); })()), "numberOfSeats", [], "any", false, false, false, 17), "vars", [], "any", false, false, false, 17), "value", [], "any", false, false, false, 17), "html", null, true);
-        yield "\">
 
         <div class=\"mb-4\">
           ";
-        // line 20
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 20, $this->source); })()), "numberOfSeats", [], "any", false, false, false, 20), 'label', ["label_attr" => ["class" => "block text-sm font-medium text-gray-700 mb-1"], "label" => "Nombre de places"]);
-        // line 24
-        yield "
-          
-          ";
-        // line 26
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 26, $this->source); })()), "numberOfSeats", [], "any", false, false, false, 26), 'widget', ["attr" => ["class" => "mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm", "min" => 1, "max" => CoreExtension::getAttribute($this->env, $this->source,         // line 30
-(isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 30, $this->source); })()), "availableSeats", [], "any", false, false, false, 30)]]);
+        // line 30
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 30, $this->source); })()), "numberOfSeats", [], "any", false, false, false, 30), 'label', ["label_attr" => ["class" => "block text-sm font-medium text-gray-700 mb-1"], "label" => "Nombre de places"]);
         // line 32
         yield "
 
           ";
         // line 34
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 34, $this->source); })()), "numberOfSeats", [], "any", false, false, false, 34), 'errors', ["attr" => ["class" => "text-red-500 text-sm mt-1"]]);
-        // line 38
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 34, $this->source); })()), "numberOfSeats", [], "any", false, false, false, 34), 'widget', ["attr" => ["class" => "mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm", "min" => 1, "max" => CoreExtension::getAttribute($this->env, $this->source,         // line 38
+(isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 38, $this->source); })()), "availableSeats", [], "any", false, false, false, 38), "oninput" => "updateTotalPrice(this.value)"]]);
+        // line 41
+        yield "
+
+          ";
+        // line 43
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 43, $this->source); })()), "numberOfSeats", [], "any", false, false, false, 43), 'errors');
         yield "
         </div>
 
-        <div class=\"flex justify-end\">
-          <button type=\"submit\" class=\"px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500\">
-            Confirmer la réservation
+        ";
+        // line 47
+        yield "        <div class=\"p-3 bg-blue-50 rounded-lg mb-4\">
+          <p class=\"text-sm text-gray-700\">
+            <span class=\"font-medium\">Total à payer:</span>
+            <strong id=\"total-price-preview\">
+              ";
+        // line 51
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber((CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 51, $this->source); })()), "price", [], "any", false, false, false, 51) * ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, ($context["form"] ?? null), "numberOfSeats", [], "any", false, true, false, 51), "vars", [], "any", false, true, false, 51), "data", [], "any", true, true, false, 51)) ? (Twig\Extension\CoreExtension::default(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 51, $this->source); })()), "numberOfSeats", [], "any", false, false, false, 51), "vars", [], "any", false, false, false, 51), "data", [], "any", false, false, false, 51), 1)) : (1))), 2, ",", " "), "html", null, true);
+        yield " €
+            </strong>
+            <span id=\"place-count\"> (pour ";
+        // line 53
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, ($context["form"] ?? null), "numberOfSeats", [], "any", false, true, false, 53), "vars", [], "any", false, true, false, 53), "data", [], "any", true, true, false, 53)) ? (Twig\Extension\CoreExtension::default(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 53, $this->source); })()), "numberOfSeats", [], "any", false, false, false, 53), "vars", [], "any", false, false, false, 53), "data", [], "any", false, false, false, 53), 1)) : (1)), "html", null, true);
+        yield " place";
+        yield (((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 53, $this->source); })()), "numberOfSeats", [], "any", false, false, false, 53), "vars", [], "any", false, false, false, 53), "data", [], "any", false, false, false, 53) > 1)) ? ("s") : (""));
+        yield ")</span>
+          </p>
+        </div>
+
+        <div class=\"flex justify-end space-x-4\">
+          <a href=\"";
+        // line 58
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("reservation_affichage");
+        yield "\" class=\"px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500\">
+            Annuler
+          </a>
+          <button type=\"submit\" class=\"inline-block px-6 py-3 font-bold text-white uppercase transition-all rounded-lg bg-gradient-to-tl from-blue-500 to-violet-500 hover:shadow-md hover:-translate-y-px active:opacity-85\">
+            Payer maintenant
           </button>
         </div>
+
       ";
-        // line 46
-        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 46, $this->source); })()), 'form_end');
+        // line 66
+        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 66, $this->source); })()), 'form_end');
         yield "
     </div>
   </div>
 </div>
 
 <script>
-document.getElementById('reservation-form').addEventListener('submit', function(e) {
-    const seatsInput = document.querySelector('#";
-        // line 53
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 53, $this->source); })()), "numberOfSeats", [], "any", false, false, false, 53), "vars", [], "any", false, false, false, 53), "id", [], "any", false, false, false, 53), "html", null, true);
-        yield "');
-    console.log('Submitting value:', seatsInput.value);
+// Get the exact price from PHP to avoid floating point issues
+const pricePerSeat = ";
+        // line 73
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 73, $this->source); })()), "price", [], "any", false, false, false, 73), "html", null, true);
+        yield ";
+const maxSeats = ";
+        // line 74
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["trajet"]) || array_key_exists("trajet", $context) ? $context["trajet"] : (function () { throw new RuntimeError('Variable "trajet" does not exist.', 74, $this->source); })()), "availableSeats", [], "any", false, false, false, 74), "html", null, true);
+        yield ";
+
+function updateTotalPrice(seats) {
+    // Ensure seats is within valid range
+    let count = parseInt(seats) || 1;
+    count = Math.max(1, Math.min(count, maxSeats));
     
-    // Ensure value is properly set before submission
-    if (!seatsInput.value) {
-        seatsInput.value = 1;
-    }
+    // Calculate total price (same calculation as in PHP)
+    const total = pricePerSeat * count;
+    
+    // Format for display
+    const formattedTotal = total.toLocaleString('fr-FR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
+    // Update display
+    document.getElementById('total-price-preview').textContent = formattedTotal + ' €';
+    document.getElementById('place-count').textContent = `(pour \${count} place\${count > 1 ? 's' : ''})`;
+    
+    // Update input value in case it was corrected
+    document.getElementById('";
+        // line 95
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 95, $this->source); })()), "numberOfSeats", [], "any", false, false, false, 95), "vars", [], "any", false, false, false, 95), "id", [], "any", false, false, false, 95), "html", null, true);
+        yield "').value = count;
+}
+
+// Initialize event listener
+document.addEventListener('DOMContentLoaded', function() {
+    const seatsInput = document.getElementById('";
+        // line 100
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 100, $this->source); })()), "numberOfSeats", [], "any", false, false, false, 100), "vars", [], "any", false, false, false, 100), "id", [], "any", false, false, false, 100), "html", null, true);
+        yield "');
+    seatsInput.addEventListener('input', function() {
+        updateTotalPrice(this.value);
+    });
 });
 </script>
 ";
@@ -174,7 +263,7 @@ document.getElementById('reservation-form').addEventListener('submit', function(
      */
     public function getDebugInfo(): array
     {
-        return array (  136 => 53,  126 => 46,  116 => 38,  114 => 34,  110 => 32,  108 => 30,  107 => 26,  103 => 24,  101 => 20,  95 => 17,  91 => 15,  88 => 10,  81 => 7,  76 => 4,  63 => 3,  40 => 1,);
+        return array (  228 => 100,  220 => 95,  196 => 74,  192 => 73,  182 => 66,  171 => 58,  161 => 53,  156 => 51,  150 => 47,  144 => 43,  140 => 41,  138 => 38,  137 => 34,  133 => 32,  131 => 30,  124 => 27,  116 => 21,  112 => 20,  108 => 19,  102 => 16,  98 => 15,  94 => 14,  88 => 10,  81 => 7,  76 => 4,  63 => 3,  40 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -187,57 +276,101 @@ document.getElementById('reservation-form').addEventListener('submit', function(
     <div class=\"bg-white p-6 rounded-lg shadow-md\">
       <h1 class=\"text-2xl font-bold mb-4\">Réserver: {{ trajet.departure }} → {{ trajet.destination }}</h1>
       
-      {# Keep the original form section completely unchanged #}
-      {{ form_start(form, {
-        'attr': {
-          'id': 'reservation-form',
-          'class': 'space-y-4'
-        }
-      }) }}
-        
-        <input type=\"hidden\" id=\"debug-current-value\" value=\"{{ form.numberOfSeats.vars.value }}\">
+      {# Détails du trajet #}
+      <div class=\"mb-6 p-4 bg-gray-50 rounded-lg\">
+        <h2 class=\"text-lg font-semibold mb-3\">Détails du trajet</h2>
+        <div class=\"grid grid-cols-2 gap-4\">
+          <div>
+            <p class=\"text-sm text-gray-600\"><span class=\"font-medium\">Départ:</span> {{ trajet.departure }}</p>
+            <p class=\"text-sm text-gray-600\"><span class=\"font-medium\">Destination:</span> {{ trajet.destination }}</p>
+            <p class=\"text-sm text-gray-600\"><span class=\"font-medium\">Date/Heure:</span> {{ trajet.departureTime|date('d/m/Y H:i') }}</p>
+          </div>
+          <div>
+            <p class=\"text-sm text-gray-600\"><span class=\"font-medium\">Type:</span> {{ trajet.typeTransport }}</p>
+            <p class=\"text-sm text-gray-600\"><span class=\"font-medium\">Prix par place:</span> {{ trajet.price|number_format(2, ',', ' ') }} €</p>
+            <p class=\"text-sm text-gray-600\"><span class=\"font-medium\">Places disponibles:</span> {{ trajet.availableSeats }}</p>
+          </div>
+        </div>
+      </div>
+
+      {# Formulaire de réservation #}
+      {{ form_start(form, { 'attr': { 'id': 'reservation-form', 'class': 'space-y-4' } }) }}
 
         <div class=\"mb-4\">
           {{ form_label(form.numberOfSeats, 'Nombre de places', {
-            'label_attr': {
-              'class': 'block text-sm font-medium text-gray-700 mb-1'
-            }
+            'label_attr': { 'class': 'block text-sm font-medium text-gray-700 mb-1' }
           }) }}
-          
+
           {{ form_widget(form.numberOfSeats, {
             'attr': {
               'class': 'mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm',
               'min': 1,
-              'max': trajet.availableSeats
+              'max': trajet.availableSeats,
+              'oninput': 'updateTotalPrice(this.value)'
             }
           }) }}
 
-          {{ form_errors(form.numberOfSeats, {
-            'attr': {
-              'class': 'text-red-500 text-sm mt-1'
-            }
-          }) }}
+          {{ form_errors(form.numberOfSeats) }}
         </div>
 
-        <div class=\"flex justify-end\">
-          <button type=\"submit\" class=\"px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500\">
-            Confirmer la réservation
+        {# Aperçu du paiement #}
+        <div class=\"p-3 bg-blue-50 rounded-lg mb-4\">
+          <p class=\"text-sm text-gray-700\">
+            <span class=\"font-medium\">Total à payer:</span>
+            <strong id=\"total-price-preview\">
+              {{ (trajet.price * (form.numberOfSeats.vars.data|default(1)))|number_format(2, ',', ' ') }} €
+            </strong>
+            <span id=\"place-count\"> (pour {{ form.numberOfSeats.vars.data|default(1) }} place{{ form.numberOfSeats.vars.data > 1 ? 's' : '' }})</span>
+          </p>
+        </div>
+
+        <div class=\"flex justify-end space-x-4\">
+          <a href=\"{{ path('reservation_affichage') }}\" class=\"px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500\">
+            Annuler
+          </a>
+          <button type=\"submit\" class=\"inline-block px-6 py-3 font-bold text-white uppercase transition-all rounded-lg bg-gradient-to-tl from-blue-500 to-violet-500 hover:shadow-md hover:-translate-y-px active:opacity-85\">
+            Payer maintenant
           </button>
         </div>
+
       {{ form_end(form) }}
     </div>
   </div>
 </div>
 
 <script>
-document.getElementById('reservation-form').addEventListener('submit', function(e) {
-    const seatsInput = document.querySelector('#{{ form.numberOfSeats.vars.id }}');
-    console.log('Submitting value:', seatsInput.value);
+// Get the exact price from PHP to avoid floating point issues
+const pricePerSeat = {{ trajet.price }};
+const maxSeats = {{ trajet.availableSeats }};
+
+function updateTotalPrice(seats) {
+    // Ensure seats is within valid range
+    let count = parseInt(seats) || 1;
+    count = Math.max(1, Math.min(count, maxSeats));
     
-    // Ensure value is properly set before submission
-    if (!seatsInput.value) {
-        seatsInput.value = 1;
-    }
+    // Calculate total price (same calculation as in PHP)
+    const total = pricePerSeat * count;
+    
+    // Format for display
+    const formattedTotal = total.toLocaleString('fr-FR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
+    // Update display
+    document.getElementById('total-price-preview').textContent = formattedTotal + ' €';
+    document.getElementById('place-count').textContent = `(pour \${count} place\${count > 1 ? 's' : ''})`;
+    
+    // Update input value in case it was corrected
+    document.getElementById('{{ form.numberOfSeats.vars.id }}').value = count;
+}
+
+// Initialize event listener
+document.addEventListener('DOMContentLoaded', function() {
+    const seatsInput = document.getElementById('{{ form.numberOfSeats.vars.id }}');
+    seatsInput.addEventListener('input', function() {
+        updateTotalPrice(this.value);
+    });
 });
 </script>
 {% endblock %}", "reservation/new.html.twig", "C:\\Users\\skonb\\Desktop\\pi\\UrbanLink_Symfony_Fork-main\\templates\\reservation\\new.html.twig");

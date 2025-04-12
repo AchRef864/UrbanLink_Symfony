@@ -527,54 +527,55 @@ class __TwigTemplate_37435440254bd0280aeeea26d4b9ec0c extends Template
         </div>
         
         <div class=\"mt-3 flex justify-end space-x-2\">
-          <a href=\"";
+        <a href=\"";
             // line 297
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("reservation_new", ["trajetId" => CoreExtension::getAttribute($this->env, $this->source, $context["trajet"], "id", [], "any", false, false, false, 297)]), "html", null, true);
-            yield "\" 
-             class=\"text-blue-500 hover:text-blue-700 p-1 transition-colors duration-200\">
-            Réserver
-          </a>
-        </div>
+            yield "\"
+           class=\"inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-500 to-violet-500 leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md\">
+          Réserver
+        </a>
+      </div>
+      
       </div>
       ";
             $context['_iterated'] = true;
         }
-        // line 303
+        // line 304
         if (!$context['_iterated']) {
-            // line 304
+            // line 305
             yield "      <div class=\"text-center py-8 text-gray-500\">
         ";
-            // line 305
-            if ((isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 305, $this->source); })())) {
-                // line 306
+            // line 306
+            if ((isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 306, $this->source); })())) {
+                // line 307
                 yield "          Aucun trajet trouvé pour \"";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 306, $this->source); })()), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["search_term"]) || array_key_exists("search_term", $context) ? $context["search_term"] : (function () { throw new RuntimeError('Variable "search_term" does not exist.', 307, $this->source); })()), "html", null, true);
                 yield "\"
           ";
-                // line 307
-                if (((isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 307, $this->source); })()) == "PublicTransport")) {
+                // line 308
+                if (((isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 308, $this->source); })()) == "PublicTransport")) {
                     yield " (Transport Public)";
                 }
-                // line 308
+                // line 309
                 yield "          ";
-                if (((isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 308, $this->source); })()) == "Carpooling")) {
+                if (((isset($context["current_filter"]) || array_key_exists("current_filter", $context) ? $context["current_filter"] : (function () { throw new RuntimeError('Variable "current_filter" does not exist.', 309, $this->source); })()) == "Carpooling")) {
                     yield " (Covoiturage)";
                 }
-                // line 309
+                // line 310
                 yield "        ";
             } else {
-                // line 310
+                // line 311
                 yield "          Aucun trajet trouvé.
         ";
             }
-            // line 312
+            // line 313
             yield "      </div>
       ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['trajet'], $context['_parent'], $context['_iterated']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 314
+        // line 315
         yield "    </div>
   </div>
 </div>
@@ -588,7 +589,7 @@ class __TwigTemplate_37435440254bd0280aeeea26d4b9ec0c extends Template
         yield from [];
     }
 
-    // line 319
+    // line 320
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -601,7 +602,7 @@ class __TwigTemplate_37435440254bd0280aeeea26d4b9ec0c extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
 
-        // line 320
+        // line 321
         yield from $this->yieldParentBlock("javascripts", $context, $blocks);
         yield "
 <script src=\"https://cdn.jsdelivr.net/npm/sweetalert2@11\"></script>
@@ -635,7 +636,7 @@ document.addEventListener('DOMContentLoaded', function() {
         userInput.value = '';
 
         fetch('";
-        // line 351
+        // line 352
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_chatbot_message");
         yield "', {
             method: 'POST',
@@ -724,7 +725,7 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     public function getDebugInfo(): array
     {
-        return array (  639 => 351,  605 => 320,  592 => 319,  578 => 314,  571 => 312,  567 => 310,  564 => 309,  559 => 308,  555 => 307,  550 => 306,  548 => 305,  545 => 304,  543 => 303,  532 => 297,  525 => 292,  521 => 290,  515 => 288,  513 => 287,  506 => 283,  502 => 281,  498 => 279,  492 => 277,  490 => 276,  483 => 272,  473 => 265,  470 => 264,  466 => 263,  462 => 261,  460 => 260,  453 => 256,  448 => 254,  441 => 252,  436 => 249,  431 => 248,  428 => 247,  425 => 245,  421 => 243,  418 => 242,  413 => 241,  408 => 240,  402 => 239,  397 => 238,  395 => 237,  392 => 236,  389 => 235,  381 => 229,  377 => 228,  371 => 225,  367 => 224,  361 => 221,  357 => 220,  354 => 219,  342 => 208,  332 => 202,  330 => 201,  324 => 198,  317 => 194,  314 => 193,  307 => 187,  304 => 185,  273 => 155,  260 => 154,  102 => 6,  89 => 5,  66 => 3,  43 => 1,);
+        return array (  640 => 352,  606 => 321,  593 => 320,  579 => 315,  572 => 313,  568 => 311,  565 => 310,  560 => 309,  556 => 308,  551 => 307,  549 => 306,  546 => 305,  544 => 304,  532 => 297,  525 => 292,  521 => 290,  515 => 288,  513 => 287,  506 => 283,  502 => 281,  498 => 279,  492 => 277,  490 => 276,  483 => 272,  473 => 265,  470 => 264,  466 => 263,  462 => 261,  460 => 260,  453 => 256,  448 => 254,  441 => 252,  436 => 249,  431 => 248,  428 => 247,  425 => 245,  421 => 243,  418 => 242,  413 => 241,  408 => 240,  402 => 239,  397 => 238,  395 => 237,  392 => 236,  389 => 235,  381 => 229,  377 => 228,  371 => 225,  367 => 224,  361 => 221,  357 => 220,  354 => 219,  342 => 208,  332 => 202,  330 => 201,  324 => 198,  317 => 194,  314 => 193,  307 => 187,  304 => 185,  273 => 155,  260 => 154,  102 => 6,  89 => 5,  66 => 3,  43 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -1025,11 +1026,12 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
         
         <div class=\"mt-3 flex justify-end space-x-2\">
-          <a href=\"{{ path('reservation_new', {'trajetId': trajet.id}) }}\" 
-             class=\"text-blue-500 hover:text-blue-700 p-1 transition-colors duration-200\">
-            Réserver
-          </a>
-        </div>
+        <a href=\"{{ path('reservation_new', {'trajetId': trajet.id}) }}\"
+           class=\"inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-500 to-violet-500 leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md\">
+          Réserver
+        </a>
+      </div>
+      
       </div>
       {% else %}
       <div class=\"text-center py-8 text-gray-500\">
