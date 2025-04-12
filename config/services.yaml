@@ -5,15 +5,19 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
       MAILER_FROM: '%env(MAILER_FROM)%'
+      recaptcha.site_key: '%env(RECAPTCHA_SITE_KEY)%'
+      recaptcha.secret_key: '%env(RECAPTCHA_SECRET_KEY)%'
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        autoconfigure: true
+        # Automatically registers your services as commands, event subscribers, etc.
     App\EventSubscriber\AuthenticationSubscriber:
         tags:
             - { name: kernel.event_subscriber }
+
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
@@ -25,3 +29,12 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Service\RecaptchaValidator:
+        arguments:
+            $secretKey: '%recaptcha.secret_key%'
+            $httpClient: '@Symfony\Contracts\HttpClient\HttpClientInterface'
+
+    App\Controller\Auth\LoginController:
+        arguments:
+                $recaptchaSiteKey: '%env(RECAPTCHA_SITE_KEY)%'
+

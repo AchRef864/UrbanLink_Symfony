@@ -24,12 +24,13 @@ security:
                 enable_csrf: true
                 username_parameter: _username
                 password_parameter: _password
-               # default_target_path: app_home
+                default_target_path: app_dashboard
                 failure_path: app_login
                 failure_forward: false
             logout:
                 path: app_logout
                 target: app_login
+            user_checker: App\Security\UserChecker
 
 
     role_hierarchy:
