@@ -33,6 +33,26 @@ class UserRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findByFilters(string $role = 'all', string $status = 'all'): array
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        if ($role !== 'all') {
+            $qb->andWhere('u.role = :role')
+                ->setParameter('role', $role);
+        }
+
+        if ($status !== 'all') {
+            $isBlocked = $status === 'blocked' ? 1 : 0;
+            $qb->andWhere('u.isBlocked = :isBlocked')
+                ->setParameter('isBlocked', $isBlocked);
+        }
+
+        return $qb->orderBy('u.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 
 //    /**
 //     * @return User[] Returns an array of User objects
