@@ -44,6 +44,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private bool $isBlocked = false;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $license = null;
+
+    #[ORM\Column(type: 'datetime')]
+    private \DateTimeInterface $joiningDate;
+
+    public function __construct()
+    {
+        $this->joiningDate = new \DateTime(); // Initialize in constructor
+    }
+
+    public function getLicense(): ?string
+    {
+        return $this->license;
+    }
+
+    public function setLicense(?string $license): self
+    {
+        $this->license = $license;
+        return $this;
+    }
+
+    // Modified joining date handling
+    #[ORM\PrePersist]
+    public function setJoiningDateValue(): void
+    {
+        $this->joiningDate = new \DateTime();
+    }
+
+    public function getJoiningDate(): \DateTimeInterface
+    {
+        return $this->joiningDate;
+    }
+
+    // Optional setter only if you need to override the date
+    public function setJoiningDate(\DateTimeInterface $joiningDate): self
+    {
+        $this->joiningDate = $joiningDate;
+        return $this;
+    }
+
     public function isBlocked(): bool
     {
         return $this->isBlocked;

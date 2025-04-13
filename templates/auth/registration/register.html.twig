@@ -135,6 +135,22 @@
                   {% endif %}
                 </div>
 
+                {# License Field #}
+                <div class="mb-4">
+                  <label class="inline-block mb-2 ml-1 text-xs font-bold text-slate-700">License</label>
+                  <input
+                          type="text"
+                          name="{{ registrationForm.license.vars.full_name }}"
+                          id="licenseInput"
+                          class="w-full placeholder:text-gray-500 text-sm focus:shadow-primary-outline leading-5.6 ease appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-3 font-normal text-gray-700 transition-all focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
+                          placeholder="Enter your license"
+                          value="{{ registrationForm.license.vars.value }}"
+                  >
+                  {% if registrationForm.license.vars.errors|length > 0 %}
+                    <div class="text-red-500 text-xs mt-1">{{ registrationForm.license.vars.errors|first.message }}</div>
+                  {% endif %}
+                </div>
+
                 {# Password Field #}
                 <div class="mb-4">
                   <label class="inline-block mb-2 ml-1 text-xs font-bold text-slate-700">Password</label>
