@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>UrbanLink - Users Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 12px; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .title { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+        .subtitle { font-size: 14px; margin-bottom: 20px; color: #555; }
+        .logo { height: 60px; margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th { background-color: #f2f2f2; text-align: left; padding: 8px; border: 1px solid #ddd; }
+        td { padding: 8px; border: 1px solid #ddd; }
+        .status-active { color: green; }
+        .status-blocked { color: red; }
+        .footer { position: fixed; bottom: 0; left: 0; right: 0; text-align: center; font-size: 10px; padding: 10px; border-top: 1px solid #eee; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <img src="{{ absolute_url(asset('assets/img/logo.png')) }}" class="logo" alt="UrbanLink Logo">
+    <div class="title">Users Report</div>
+    <div class="subtitle">
+        {% if role != 'all' %}Role: {{ role|capitalize }}{% endif %}
+        {% if status != 'all' %} | Status: {{ status|capitalize }}{% endif %}
+        | Generated on: {{ date|date('Y-m-d H:i') }}
+    </div>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Role</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.phone }}</td>
+            <td>{{ user.role|capitalize }}</td>
+            <td class="status-{% if user.isBlocked %}blocked{% else %}active{% endif %}">
+                {% if user.isBlocked %}Blocked{% else %}Active{% endif %}
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="6" style="text-align: center;">No users found with these filters</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

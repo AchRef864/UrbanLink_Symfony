@@ -19,9 +19,14 @@ admin_dashboard:
     path: /admin/dashboard
     controller: App\Controller\DashboardController::adminDashboard
 
+app_home2:
+    path: /
+    controller: App\Controller\HomeController::index
+
 app_home:
     path: /home
     controller: App\Controller\DashboardController::home
+
 admin_user_delete:
     path: /admin/users/delete
     controller: App\Controller\Admin\UserManagementController::deleteUsers

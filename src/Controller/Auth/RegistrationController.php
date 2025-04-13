@@ -4,6 +4,7 @@ namespace App\Controller\Auth;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,10 +32,23 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+            try {
+                $entityManager->persist($user);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('app_home');
+                return $this->redirectToRoute('app_home');
+            } catch (UniqueConstraintViolationException $e) {
+                // Check if the error is about the email field
+                if (strpos($e->getMessage(), 'users.UNIQ_1483A5E9E7927C74') !== false) {
+                    // Add error to the email field
+                    $form->get('email')->addError(
+                        new \Symfony\Component\Form\FormError('This email is already in use. Please use a different email.')
+                    );
+                } else {
+                    // For other unique constraint violations
+                    $this->addFlash('error', 'There was an error with your registration. Please try again.');
+                }
+            }
         }
 
         return $this->render('auth/registration/register.html.twig', [

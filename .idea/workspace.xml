@@ -14,6 +14,7 @@
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
+  <component name="PhpDebugGeneral" listening_started="true" />
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\xampp\php\php.exe">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/psr/clock" />
@@ -150,6 +151,10 @@
       <path value="$PROJECT_DIR$/vendor/symfony/mailgun-mailer" />
       <path value="$PROJECT_DIR$/vendor/symfony/sendgrid-mailer" />
       <path value="$PROJECT_DIR$/vendor/symfony/postmark-mailer" />
+      <path value="$PROJECT_DIR$/vendor/symfony/webpack-encore-bundle" />
+      <path value="$PROJECT_DIR$/vendor/karser/karser-recaptcha3-bundle" />
+      <path value="$PROJECT_DIR$/vendor/knplabs/knp-snappy-bundle" />
+      <path value="$PROJECT_DIR$/vendor/knplabs/knp-snappy" />
     </include_path>
   </component>
   <component name="ProjectColorInfo">{
@@ -162,10 +167,10 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;PHPUnit.Main.executor&quot;: &quot;Debug&quot;,
+    &quot;PHPUnit.Main.executor&quot;: &quot;Coverage&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/sbiss/OneDrive - ESPRIT/Documents/urbanlink_Sy/public/assets&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/sbiss/OneDrive - ESPRIT/Documents/urbanlink_Sy/public/assets/img&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -178,11 +183,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\sbiss\OneDrive - ESPRIT\Documents\urbanlink_Sy\public\assets\img" />
       <recent name="C:\Users\sbiss\OneDrive - ESPRIT\Documents\urbanlink_Sy\public\assets" />
       <recent name="C:\Users\sbiss\OneDrive - ESPRIT\Documents\urbanlink_Sy\templates\assets\img" />
       <recent name="C:\Users\sbiss\OneDrive - ESPRIT\Documents\urbanlink_Sy\templates" />
       <recent name="C:\Users\sbiss\OneDrive - ESPRIT\Documents\urbanlink_Sy\templates\dashboard" />
-      <recent name="C:\Users\sbiss\OneDrive - ESPRIT\Documents\urbanlink_Sy\templates\auth" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\sbiss\OneDrive - ESPRIT\Documents\urbanlink_Sy\templates\dashboard" />
@@ -196,6 +201,7 @@
     <option name="myCommands">
       <command value="ls src/Entity/User.php" />
       <command value="php bin/console debug:router | grep dashboard" />
+      <command value="npm run dev" />
     </option>
   </component>
   <component name="RunManager">
@@ -237,10 +243,25 @@
       <workItem from="1744102295152" duration="77000" />
       <workItem from="1744106474919" duration="315000" />
       <workItem from="1744191140757" duration="8749000" />
+      <workItem from="1744201764332" duration="12931000" />
+      <workItem from="1744230116118" duration="7076000" />
+      <workItem from="1744270964104" duration="659000" />
+      <workItem from="1744271650362" duration="527000" />
+      <workItem from="1744272373190" duration="355000" />
+      <workItem from="1744272791252" duration="9996000" />
+      <workItem from="1744283705374" duration="71000" />
+      <workItem from="1744313422545" duration="4893000" />
+      <workItem from="1744360904981" duration="2097000" />
+      <workItem from="1744364499871" duration="3085000" />
+      <workItem from="1744446964873" duration="28521000" />
+      <workItem from="1744535970471" duration="12108000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/urbanlink_Sy@Main.xml" NAME="Main Coverage Results" MODIFIED="1744211013920" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

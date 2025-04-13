@@ -3,6 +3,7 @@ security:
     password_hashers:
         App\Entity\User:
             algorithm: auto
+            cost: 12
 
     providers:
         app_user_provider:
@@ -29,6 +30,8 @@ security:
             logout:
                 path: app_logout
                 target: app_login
+            user_checker: App\Security\UserChecker
+
 
     role_hierarchy:
         ROLE_ADMIN: [ ROLE_DRIVER, ROLE_TAXI, ROLE_CLIENT, ROLE_USER ]

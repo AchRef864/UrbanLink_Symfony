@@ -17,26 +17,37 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class ProfileController extends AbstractController
 {
     #[Route('', name: 'app_profile')]
+    #[IsGranted('ROLE_USER')]
     public function index(): Response
     {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException('You must be logged in to access this page.');
+        }
+
         return $this->render('profile/show.html.twig', [
-            'user' => $this->getUser()
+            'user' => $user
         ]);
     }
 
     #[Route('/edit', name: 'app_profile_edit')]
+    #[IsGranted('ROLE_USER')]
     public function edit(
         Request $request,
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordHasher
     ): Response {
         $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException('You must be logged in to edit your profile.');
+        }
+
         $form = $this->createForm(ProfileFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Handle password change if provided
-            if ($plainPassword = $form->get('plainPassword')->getData()) {
+            if ($form->has('plainPassword') && $plainPassword = $form->get('plainPassword')->getData()) {
                 $user->setPassword(
                     $passwordHasher->hashPassword($user, $plainPassword)
                 );
@@ -59,14 +70,17 @@ class ProfileController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response {
         $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException('You must be logged in to delete your account.');
+        }
 
         if ($this->isCsrfTokenValid('delete-profile', $request->request->get('_token'))) {
+            // Logout before deletion to avoid issues
+            $this->container->get('security.token_storage')->setToken(null);
+            $request->getSession()->invalidate();
+
             $entityManager->remove($user);
             $entityManager->flush();
-
-            // Invalidate session and logout
-            $request->getSession()->invalidate();
-            $this->container->get('security.token_storage')->setToken(null);
 
             $this->addFlash('success', 'Your account has been deleted successfully.');
             return $this->redirectToRoute('app_home');

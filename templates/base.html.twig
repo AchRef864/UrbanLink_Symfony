@@ -1,25 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}UrbanLink{% endblock %}</title>
-
-  <!-- Common CSS -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="apple-touch-icon" sizes="76x76" href="{{asset('assets/img/apple-icon.png')}}" />
+  <link rel="icon" type="image/png" href="{{asset('assets/img/favicon.png')}}" />
+  <title>{% block title %}Argon Dashboard 2 Tailwind{% endblock %}</title>
+  <!-- Fonts and icons -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-
-  {% block stylesheets %}
-    <!-- Your template-specific CSS will be inserted here -->
-  {% endblock %}
+  <!-- Nucleo Icons -->
+  <link href="{{asset('assets/css/nucleo-icons.css')}}" rel="stylesheet" />
+  <link href="{{asset('assets/css/nucleo-svg.css')}}" rel="stylesheet" />
+  <!-- Main Styling -->
+  <link href="{{asset('assets/css/argon-dashboard-tailwind.css?v=1.0.1')}}" rel="stylesheet" />
+  {% block stylesheets %}{% endblock %}
+            {{ encore_entry_link_tags('app') }}
 </head>
-<body class="m-0 font-sans antialiased font-normal bg-white text-start text-base leading-default text-slate-500">
-{% block body %}{% endblock %}
 
-<!-- Common JS -->
-<script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
-<script src="{{ asset('assets/js/argon-dashboard-tailwind.js') }}"></script>
+<body class="m-0 font-sans text-base antialiased font-normal leading-default bg-gray-50 text-slate-500">
+{# Check if we're on an auth page or home page #}
+{% set is_auth_page = app.request.attributes.get('_route') in ['app_login', 'app_register','app_home'] %}
+
+{% if not is_auth_page and app.user %}
+  <!-- Sidebar -->
+  <aside class="argon-sidebar fixed inset-y-0 w-64 items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0" aria-expanded="false">
+    <div class="h-19">
+      <i class="absolute top-0 right-0 p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden" sidenav-close></i>
+      <a class="block px-8 py-6 m-0 text-sm whitespace-nowrap text-slate-700" href="{{ path('app_dashboard') }}">
+        <img src="{{asset('assets/img/logo-ct-dark.png')}}" class="inline h-full max-w-full transition-all duration-200 dark:hidden ease-nav-brand max-h-8" alt="main_logo" />
+        <img src="{{asset('assets/img/logo-ct.png')}}" class="hidden h-full max-w-full transition-all duration-200 dark:inline ease-nav-brand max-h-8" alt="main_logo" />
+        <span class="ml-1 font-semibold transition-all duration-200 ease-nav-brand">
+            {% if app.user.role == 'admin' %}Admin Panel
+            {% elseif app.user.role == 'driver' %}Driver Panel
+            {% elseif app.user.role == 'taxi' %}Taxi Panel
+            {% else %}Client Panel{% endif %}
+          </span>
+      </a>
+    </div>
+
+    <hr class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent" />
+
+    <div class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full" style="scrollbar-width: none; -ms-overflow-style: none;">
+      <style>
+        .h-sidenav::-webkit-scrollbar {
+          display: none;
+        }
+      </style>
+
+      <ul class="flex flex-col pl-0 mb-0">
+        <!-- Dashboard Section -->
+        <li class="mt-0.5 w-full">
+          <a class="py-2.7 bg-blue-500/13 dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors" href="{{ path('app_dashboard') }}">
+            <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+              <i class="relative top-0 text-sm leading-normal text-blue-500 ni ni-tv-2"></i>
+            </div>
+            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Dashboard</span>
+          </a>
+        </li>
+
+        <!-- Role-Specific Navigation Section -->
+        <li class="w-full">
+          <hr class="h-px mt-2 mb-2 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent" />
+          <h6 class="pl-6 text-xs font-bold uppercase text-slate-500 dark:text-white/60">
+            {% if app.user.role == 'admin' %}Admin Tools
+            {% elseif app.user.role == 'driver' %}Driver Tools
+            {% elseif app.user.role == 'taxi' %}Taxi Tools
+            {% else %}Client Tools{% endif %}
+          </h6>
+        </li>
+
+        {# Admin Specific Navigation #}
+        {% if app.user.role == 'admin' %}
+          <li class="mt-0.5 w-full">
+            <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('admin_user_manage') }}">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <i class="relative top-0 text-sm leading-normal text-orange-500 ni ni-settings-gear-65"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Manage Users</span>
+            </a>
+          </li>
+          <li class="mt-0.5 w-full">
+            <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('admin_user_delete') }}">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <i class="relative top-0 text-sm leading-normal text-cyan-500 ni ni-single-copy-04"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Edit Profiles</span>
+            </a>
+          </li>
+          <li class="mt-0.5 w-full">
+            <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('admin_statistics') }}">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <i class="relative top-0 text-sm leading-normal text-purple-500 ni ni-chart-bar-32"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Statistics</span>
+            </a>
+          </li>
+          <!--generate pdf -->
+          <li class="mt-0.5 w-full">
+            <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('admin_pdf_generator') }}">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <i class="relative top-0 text-sm leading-normal text-red-500 ni ni-single-copy-04"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Generate PDF</span>
+            </a>
+          </li>
+          <!--generate pdf -->
+        {% endif %}
+
+        <!-- Account Section -->
+        <li class="w-full">
+          <hr class="h-px mt-2 mb-2 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent" />
+          <h6 class="pl-6 text-xs font-bold uppercase text-slate-500 dark:text-white/60">Account pages</h6>
+        </li>
+
+        {# Common Items for all authenticated users #}
+        <li class="mt-0.5 w-full">
+          <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('app_profile') }}">
+            <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+              <i class="relative top-0 text-sm leading-normal text-slate-700 ni ni-single-02"></i>
+            </div>
+            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">My Profile</span>
+          </a>
+        </li>
+
+        <li class="mt-0.5 w-full">
+          <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('app_profile_edit') }}">
+            <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+              <i class="relative top-0 text-sm leading-normal text-green-500 ni ni-settings"></i>
+            </div>
+            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Edit Profile</span>
+          </a>
+        </li>
+
+        <li class="mt-0.5 w-full">
+          <form method="post" action="{{ path('app_logout') }}">
+            <button type="submit" class="w-full dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors hover:bg-red-500/10">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <i class="relative top-0 text-sm leading-normal text-red-500 ni ni-button-power"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Logout</span>
+            </button>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </aside>
+{% endif %}
+
+<!-- Main Content -->
+<main class="relative h-full transition-all duration-200 ease-in-out rounded-xl {% if not is_auth_page and app.user %}xl:ml-68{% endif %}">
+  {% block body %}{% endblock %}
+</main>
+
+<!-- Scripts -->
+<script src="{{asset('assets/js/plugins/chartjs.min.js')}}"></script>
+<script src="{{asset('assets/js/plugins/perfect-scrollbar.min.js')}}"></script>
+<script src="{{asset('assets/js/argon-dashboard-tailwind.js?v=1.0.1')}}"></script>
+
+{% if not is_auth_page and app.user %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Sidebar toggle functionality
+      const body = document.body;
+      const sidenavClose = document.querySelector('[sidenav-close]');
+      const overlay = document.querySelector('.overlay');
+
+      if (sidenavClose) {
+        sidenavClose.addEventListener('click', function() {
+          body.classList.remove('sidebar-open');
+        });
+      }
+    });
+  </script>
+{% endif %}
 
 {% block javascripts %}{% endblock %}
+{{ encore_entry_script_tags('app') }}
 </body>
 </html>
