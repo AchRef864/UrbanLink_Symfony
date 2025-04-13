@@ -33,35 +33,40 @@ final class AvisController extends AbstractController
     }
 
     #[Route('/new', name: 'app_avis_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $avi = new Avis(); // Create new Avis entity
-    
-        $form = $this->createForm(AvisType::class, $avi);
-        $form->handleRequest($request);
-    
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getUser();
-            if (!$user) {
-                $this->addFlash('error', 'You must be logged in to leave a review.');
-                return $this->redirectToRoute('app_login');
-            }
-    
-            $avi->setUser($user);
-            $avi->setStatut('not processed'); // Default status
-    
-            $entityManager->persist($avi);
-            $entityManager->flush();
-    
-            $this->addFlash('success', 'Your review has been submitted successfully.');
-    
-            return $this->redirectToRoute('app_avis_index');
-        }
-    
-        return $this->render('avis/new.html.twig', [
-            'form' => $form->createView(), // only pass form to the view, no need to pass avi
-        ]);
+public function new(Request $request, EntityManagerInterface $entityManager): Response
+{
+    // Check that the current user is a client
+    if (!$this->isGranted('ROLE_CLIENT')) {
+        throw $this->createAccessDeniedException('Only clients can add a new complaint.');
     }
+
+    $avi = new Avis(); // Create new Avis entity
+
+    $form = $this->createForm(AvisType::class, $avi);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $user = $this->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException('You must be logged in to leave a complaint.');
+        }
+        // Here we assume that the user is a client based on our security check.
+        $avi->setUser($user);
+        $avi->setStatut('not processed'); // Default status is set
+
+        $entityManager->persist($avi);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Your complaint has been submitted successfully.');
+
+        return $this->redirectToRoute('app_avis_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    return $this->render('avis/new.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
     
     
 
@@ -74,22 +79,36 @@ final class AvisController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_avis_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Avis $avi, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(AvisType::class, $avi);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_avis_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('avis/edit.html.twig', [
-            'avi' => $avi,
-            'form' => $form->createView(),
-        ]);
+public function edit(Request $request, Avis $avi, EntityManagerInterface $entityManager): Response
+{
+    // Check that the current user is a client
+    if (!$this->isGranted('ROLE_CLIENT')) {
+        throw $this->createAccessDeniedException('Only clients can edit complaints.');
     }
+    
+    // Also, check that the current user owns this Avis.
+    $user = $this->getUser();
+    if ($avi->getUser() !== $user) {
+        throw $this->createAccessDeniedException('You can only edit your own complaints.');
+    }
+
+    $form = $this->createForm(AvisType::class, $avi);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Your complaint has been updated successfully.');
+
+        return $this->redirectToRoute('app_avis_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    return $this->render('avis/edit.html.twig', [
+        'avi' => $avi,
+        'form' => $form->createView(),
+    ]);
+}
+
 
     #[Route('/{id}', name: 'app_avis_delete', methods: ['POST'])]
     public function delete(Request $request, Avis $avi, EntityManagerInterface $entityManager): Response

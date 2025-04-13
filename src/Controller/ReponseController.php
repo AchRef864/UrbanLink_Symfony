@@ -16,76 +16,65 @@ use App\Service\TwilioService;
 #[Route('/reponse')]
 final class ReponseController extends AbstractController
 {
-    #[Route(name: 'app_reponse_index', methods: ['GET'])]
+    #[Route('', name: 'app_reponse_index', methods: ['GET'])]
     public function index(ReponseRepository $reponseRepository): Response
     {
         return $this->render('reponse/index.html.twig', [
             'reponses' => $reponseRepository->findAll(),
         ]);
     }
+
     #[Route('/new/{avisId}', name: 'app_reponse_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, int $avisId, TwilioService $twilioService): Response
     {
-        $reponse = new Reponse();
-    
-        // Fetch the Avis and set it on the Reponse immediately.
-        $avis = $entityManager->getRepository(Avis::class)->find($avisId);
-        if (!$avis) {
-            throw $this->createNotFoundException('Avis not found.');
+        $user = $this->getUser();
+
+        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            throw $this->createAccessDeniedException('Only admins can create a response.');
         }
+
+        $avis = $entityManager->getRepository(Avis::class)->find($avisId);
+
+        if (!$avis) {
+            throw $this->createNotFoundException('Complaint not found.');
+        }
+
+        $reponse = new Reponse();
         $reponse->setAvis($avis);
-    
+
         $form = $this->createForm(ReponseType::class, $reponse);
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getUser();
-            if (!$user) {
-                throw $this->createAccessDeniedException('You must be logged in to create a Reponse.');
-            }
-    
             $reponse->setUser($user);
-    
-            // Set the statut of Avis to "processed"
             $avis->setStatut('processed');
-    
+
             $entityManager->persist($reponse);
             $entityManager->flush();
-    
-            // ✅ Send SMS to the Avis owner
+
+            // Send SMS if user's phone exists
             $avisUser = $avis->getUser();
             if ($avisUser && $avisUser->getPhone()) {
-                $phoneNumber = $avisUser->getPhone();
-    
-                // Get the content of Avis and Reponse
-                $avisCommentaire = $avis->getCommentaire();  // Assuming Avis has a `getCommentaire()` method
-                $avisType = $avis->getType();  // Assuming Avis has a `getType()` method
-                $reponseCommentaire = $reponse->getCommentaire();  // Assuming Reponse has a `getCommentaire()` method
-    
-                // Compose the SMS message
                 $smsMessage = sprintf(
-                    "Your complaint has been processed.\n\nComplaint type: %s\nComplaint description: %s\nResponse: %s",
-                    $avisType,
-                    $avisCommentaire,
-                    $reponseCommentaire
+                    "Your complaint has been processed.\n\nComplaint Type: %s\nComplaint: %s\nResponse: %s",
+                    $avis->getType(),
+                    $avis->getCommentaire(),
+                    $reponse->getCommentaire()
                 );
-    
-                // Send SMS using Twilio service
-                $twilioService->sendSms($phoneNumber, $smsMessage);
+                try {
+                    $twilioService->sendSms($avisUser->getPhone(), $smsMessage);
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Failed to send SMS notification.');
+                }
             }
-    
-            // After processing the form, redirect to avoid resubmission
-            return $this->redirectToRoute('app_avis_reponses', ['id' => $avisId], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_avis_reponses', ['id' => $avisId]);
         }
-    
+
         return $this->render('reponse/new.html.twig', [
             'reponse' => $reponse,
             'form' => $form->createView(),
         ]);
     }
-    
-    
-    
 
     #[Route('/{id}', name: 'app_reponse_show', methods: ['GET'])]
     public function show(Reponse $reponse): Response
@@ -98,13 +87,19 @@ final class ReponseController extends AbstractController
     #[Route('/{id}/edit', name: 'app_reponse_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Reponse $reponse, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+    
+        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            throw $this->createAccessDeniedException('Only admins can edit responses.');
+        }
+    
         $form = $this->createForm(ReponseType::class, $reponse);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_avis_reponses', ['id' => $reponse->getAvis()->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_avis_reponses', ['id' => $reponse->getAvis()->getId()]);
         }
 
         return $this->render('reponse/edit.html.twig', [
@@ -116,13 +111,11 @@ final class ReponseController extends AbstractController
     #[Route('/{id}', name: 'app_reponse_delete', methods: ['POST'])]
     public function delete(Request $request, Reponse $reponse, EntityManagerInterface $entityManager): Response
     {
-        $avisId = $reponse->getAvis()->getId(); // Get the Avis ID before deleting
-
-        if ($this->isCsrfTokenValid('delete' . $reponse->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$reponse->getId(), $request->request->get('_token'))) {
             $entityManager->remove($reponse);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_avis_reponses', ['id' => $avisId], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_avis_reponses', ['id' => $reponse->getAvis()->getId()]);
     }
 }

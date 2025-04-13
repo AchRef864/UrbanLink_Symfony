@@ -51,8 +51,8 @@ security:
         - { path: ^/taxi, roles: ROLE_TAXI }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/client, roles: ROLE_CLIENT }
-        - { path: ^/avis/edit, roles: [ROLE_ADMIN, ROLE_USER] }
-        - { path: ^/avis/new, roles: [ROLE_ADMIN, ROLE_USER] }
+        - { path: ^/avis/edit, roles:  ROLE_CLIENT }
+        - { path: ^/avis/new, roles:  ROLE_CLIENT }
         - { path: ^/avis, roles: [ROLE_ADMIN, ROLE_CLIENT] }
 
 

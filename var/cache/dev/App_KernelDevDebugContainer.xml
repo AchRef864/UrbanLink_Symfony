@@ -6751,16 +6751,14 @@
       <call method="add">
         <argument type="service" id=".security.request_matcher.IKz6_8X"/>
         <argument type="collection">
-          <argument>ROLE_ADMIN</argument>
-          <argument>ROLE_USER</argument>
+          <argument>ROLE_CLIENT</argument>
         </argument>
         <argument>null</argument>
       </call>
       <call method="add">
         <argument type="service" id=".security.request_matcher.MtgOUBk"/>
         <argument type="collection">
-          <argument>ROLE_ADMIN</argument>
-          <argument>ROLE_USER</argument>
+          <argument>ROLE_CLIENT</argument>
         </argument>
         <argument>null</argument>
       </call>
