@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Reservations{% endblock %}
+
+{% block body %}
+<div class="relative flex flex-col w-full min-w-0 bg-white border shadow rounded-2xl" style="margin-left: 280px;">
+  <div class="p-4 pb-2 bg-white rounded-t-2xl">
+    <h6 class="text-sm font-semibold">Reservations List</h6>
+  </div>
+  <div class="flex-auto px-4 pt-0 pb-2">
+    <div class="overflow-x-auto">
+      <table class="table-auto w-full text-xs text-slate-700">
+        <thead>
+          <tr class="uppercase bg-gray-100 text-slate-500">
+            <th class="px-2 py-1.5 text-left w-[140px]">User</th>
+            <th class="px-2 py-1.5 text-left w-[180px]">Trajet</th>
+            <th class="px-2 py-1.5 text-center w-[120px]">Date</th>
+            <th class="px-2 py-1.5 text-center w-[60px]">Seats</th>
+            <th class="px-2 py-1.5 text-center w-[100px]">Status</th>
+            <th class="px-2 py-1.5 text-center w-[70px]">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for reservation in reservations %}
+            {% set status = reservation.status|lower %}
+            <tr class="border-t text-xs">
+              <td class="px-2 py-1.5 truncate max-w-[140px]">{{ reservation.user.email }}</td>
+              <td class="px-2 py-1.5 truncate max-w-[180px]">{{ reservation.trajet.departure }} → {{ reservation.trajet.destination }}</td>
+              <td class="px-2 py-1.5 text-center">{{ reservation.reservationDate|date('Y-m-d H:i') }}</td>
+              <td class="px-2 py-1.5 text-center">{{ reservation.numberOfSeats }}</td>
+              <td class="px-2 py-1.5 text-center">
+                <span class="px-2 py-1 rounded text-white text-[10px] font-bold uppercase
+                  {% if status == 'confirmed' %} bg-green-500
+                  {% elseif status == 'pending' %} bg-yellow-500
+                  {% elseif status == 'canceled' or status == 'cancelled' %} bg-red-500
+                  {% else %} bg-gray-400 {% endif %}">
+                  {{ status }}
+                </span>
+              </td>
+              <td class="px-2 py-1.5 text-center">
+                <a href="{{ path('show_reservation', {'id': reservation.id}) }}" class="text-blue-500 underline">Show</a>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="6" class="px-2 py-2 text-center text-slate-400">No reservations found</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

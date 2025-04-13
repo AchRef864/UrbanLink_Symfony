@@ -29,7 +29,7 @@ class Trajet
     )]
     private ?string $departure = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)] // nullable added here
     #[Assert\NotBlank(message: 'Veuillez saisir une destination')]
     #[Assert\Length(
         min: 2,

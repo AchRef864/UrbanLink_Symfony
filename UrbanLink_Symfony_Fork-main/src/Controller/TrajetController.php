@@ -81,54 +81,69 @@ public function affichage(Request $request, TrajetRepository $trajetRepository):
 
   
 
-   #[Route('/trajet/modifier/{id}', name: 'trajet_modifier')]
-   public function modifier(
-       Request $request, 
-       EntityManagerInterface $em, 
-       int $id
-   ): Response {
-       // Find the Trajet by ID
-       $trajet = $em->getRepository(Trajet::class)->find($id);
-   
-       // Check if the Trajet exists
-       if (!$trajet) {
-           $this->addFlash('error', 'Trajet non trouvé!');
-           return $this->redirectToRoute('trajet_affichage');
-       }
-   
-       // Create the form with the existing Trajet data
-       $form = $this->createForm(TrajetType::class, $trajet);
-       $form->handleRequest($request);
-   
-       if ($form->isSubmitted()) {
-           if ($form->isValid()) {
-               try {
-                   // Recalculate arrival time in case duration or departure time changed
-                   $trajet->setArrivalTime($trajet->calculateArrivalTime());
-                   
-                   $em->flush();
-                   
-                   $this->addFlash('success', 'Trajet modifié avec succès!');
-                   return $this->redirectToRoute('trajet_affichage');
-               } catch (\Exception $e) {
-                   $this->addFlash('error', 'Erreur technique: '.$e->getMessage());
-                   error_log($e->getMessage());
-                   error_log($e->getTraceAsString());
-               }
-           } else {
-               // Form is invalid - show errors
-               $errors = $form->getErrors(true);
-               foreach ($errors as $error) {
-                   $this->addFlash('error', $error->getMessage());
-               }
-           }
-       }
-   
-       return $this->render('trajet/modifier.html.twig', [
-           'form' => $form->createView(),
-           'trajet' => $trajet,
-       ]);
-   }
+#[Route('/trajet/modifier/{id}', name: 'trajet_modifier')]
+public function modifier(
+    Request $request, 
+    EntityManagerInterface $em, 
+    int $id
+): Response {
+    // Find the Trajet by ID
+    $trajet = $em->getRepository(Trajet::class)->find($id);
+
+    // Check if the Trajet exists
+    if (!$trajet) {
+        $this->addFlash('error', 'Trajet non trouvé!');
+        return $this->redirectToRoute('trajet_affichage');
+    }
+
+    // Check if the departure is null or empty before binding the form
+    if ($trajet->getDeparture() === null) {
+        $trajet->setDeparture(''); // Set a default empty string to prevent null
+    }
+
+    // Create the form with the existing Trajet data
+    $form = $this->createForm(TrajetType::class, $trajet);
+    $form->handleRequest($request);
+
+    // Debugging - Check if form fields are properly populated
+    if ($form->isSubmitted() && !$form->get('departure')->getData()) {
+        error_log('Departure field is empty or null');
+    }
+
+    if ($form->isSubmitted()) {
+        if ($form->isValid()) {
+            try {
+                // Recalculate arrival time in case duration or departure time changed
+                $trajet->setArrivalTime($trajet->calculateArrivalTime());
+                
+                // Persist the changes
+                $em->flush();
+                
+                $this->addFlash('success', 'Trajet modifié avec succès!');
+                return $this->redirectToRoute('trajet_affichage');
+            } catch (\Exception $e) {
+                // Log and display error if there's an issue with arrival time calculation
+                $this->addFlash('error', 'Erreur technique: '.$e->getMessage());
+                error_log($e->getMessage());
+                error_log($e->getTraceAsString());
+            }
+        } else {
+            // If form is invalid, log and display validation errors
+            $errors = $form->getErrors(true);
+            foreach ($errors as $error) {
+                // Log the error messages
+                error_log($error->getMessage());
+                $this->addFlash('error', $error->getMessage());
+            }
+        }
+    }
+
+    return $this->render('trajet/modifier.html.twig', [
+        'form' => $form->createView(),
+        'trajet' => $trajet,
+    ]);
+}
+
 
 
 

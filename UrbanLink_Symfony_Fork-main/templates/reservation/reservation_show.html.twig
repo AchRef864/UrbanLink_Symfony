@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reservation Details{% endblock %}
+
+{% block body %}
+<div class="relative flex flex-col w-full min-w-0 bg-white border shadow rounded-2xl" style="margin-left: 280px;">
+  <div class="p-4 pb-2 bg-white rounded-t-2xl">
+    <h6 class="text-sm font-semibold">Reservation Details</h6>
+  </div>
+  <div class="flex-auto px-4 pt-0 pb-2">
+    <table class="table-auto w-full text-xs text-slate-700">
+      <tbody>
+        <tr>
+          <td class="px-2 py-1.5 text-left w-[140px]"><strong>User:</strong></td>
+          <td class="px-2 py-1.5">{{ reservation.user.email }}</td>
+        </tr>
+        <tr>
+          <td class="px-2 py-1.5 text-left w-[140px]"><strong>Trajet:</strong></td>
+          <td class="px-2 py-1.5">{{ reservation.trajet.departure }} → {{ reservation.trajet.destination }}</td>
+        </tr>
+        <tr>
+          <td class="px-2 py-1.5 text-left w-[140px]"><strong>Date:</strong></td>
+          <td class="px-2 py-1.5">{{ reservation.reservationDate|date('Y-m-d H:i') }}</td>
+        </tr>
+        <tr>
+          <td class="px-2 py-1.5 text-left w-[140px]"><strong>Seats:</strong></td>
+          <td class="px-2 py-1.5">{{ reservation.numberOfSeats }}</td>
+        </tr>
+        <tr>
+          <td class="px-2 py-1.5 text-left w-[140px]"><strong>Status:</strong></td>
+          <td class="px-2 py-1.5">{{ reservation.status }}</td>
+        </tr>
+        <tr>
+          <td class="px-2 py-1.5 text-left w-[140px]"><strong>Total Price:</strong></td>
+          <td class="px-2 py-1.5">{{ reservation.totalPrice }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

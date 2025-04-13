@@ -125,4 +125,5 @@ class Reservation
         $this->status = $status;
         return $this;
     }
+
 }

@@ -115,13 +115,11 @@
             background-color: #e2e6ea;
         }
 
-        /* Animation */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Bouton SOS flottant */
         .sos-button {
             position: fixed;
             bottom: 25px;
@@ -148,80 +146,81 @@
 </head>
 <body>
 
-    <div class="chat-container">
-        <div class="chat-header">
-            🆘 Assistant d'Urgence
-        </div>
-        <div class="chat-messages" id="chat-messages">
-            <div class="message bot-message">
-                👋 Bonjour ! Je suis votre assistant pour les situations d'urgence. Posez-moi une question ou cliquez sur un des boutons ci-dessous.
-            </div>
-        </div>
-        <div class="chat-input">
-            <input type="text" id="user-input" placeholder="Écrivez ici...">
-            <button id="send-button">Envoyer</button>
-        </div>
-        <div class="suggestions">
-            <button class="suggestion-btn" onclick="sendSuggestion('Brûlure')">🔥 Brûlure</button>
-            <button class="suggestion-btn" onclick="sendSuggestion('Saignement')">🩸 Saignement</button>
-            <button class="suggestion-btn" onclick="sendSuggestion('Inconscience')">😵 Inconscience</button>
-            <button class="suggestion-btn" onclick="sendSuggestion('Appeler les secours')">🚑 Appeler les secours</button>
-            <button class="suggestion-btn" onclick="sendSuggestion('Premiers secours')">🩺 Premiers secours</button>
+<div class="chat-container">
+    <div class="chat-header">
+        🆘 Assistant d'Urgence
+    </div>
+    <div class="chat-messages" id="chat-messages">
+        <div class="message bot-message">
+            👋 Bonjour ! Je suis votre assistant pour les situations d'urgence. Posez-moi une question ou cliquez sur un des boutons ci-dessous.
         </div>
     </div>
+    <div class="chat-input">
+        <input type="text" id="user-input" placeholder="Écrivez ici...">
+        <button id="send-button">Envoyer</button>
+    </div>
+    <div class="suggestions">
+        <button class="suggestion-btn" onclick="sendSuggestion('Brûlure')">🔥 Brûlure</button>
+        <button class="suggestion-btn" onclick="sendSuggestion('Saignement')">🩸 Saignement</button>
+        <button class="suggestion-btn" onclick="sendSuggestion('Inconscience')">😵 Inconscience</button>
+        <button class="suggestion-btn" onclick="sendSuggestion('Appeler les secours')">🚑 Appeler les secours</button>
+        <button class="suggestion-btn" onclick="sendSuggestion('Premiers secours')">🩺 Premiers secours</button>
+    </div>
+</div>
 
-    <button class="sos-button" onclick="sendSuggestion('SOS')">SOS</button>
+<button class="sos-button" onclick="sendSuggestion('SOS')">SOS</button>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const messagesContainer = document.getElementById('chat-messages');
-            const userInput = document.getElementById('user-input');
-            const sendButton = document.getElementById('send-button');
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const messagesContainer = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
 
-            function sendMessage() {
-                const messageText = userInput.value.trim();
-                if (messageText === '') return;
+        function sendMessage() {
+            const messageText = userInput.value.trim();
+            if (messageText === '') return;
 
-                addMessage(messageText, 'user-message');
-                userInput.value = '';
+            addMessage(messageText, 'user-message');
+            userInput.value = '';
 
-                const formData = new FormData();
-                formData.append('message', messageText);
+            const formData = new FormData();
+            formData.append('message', messageText);
 
-                fetch('/chatbot/message', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message) {
-                        addMessage(data.message, 'bot-message');
-                    }
-                })
-                .catch(error => {
-                    console.error('Erreur:', error);
-                    addMessage("Désolé, une erreur est survenue.", 'bot-message');
-                });
-            }
-
-            function addMessage(text, className) {
-                const msg = document.createElement('div');
-                msg.className = 'message ' + className;
-                msg.textContent = text;
-                messagesContainer.appendChild(msg);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-
-            window.sendSuggestion = function (text) {
-                userInput.value = text;
-                sendMessage();
-            };
-
-            sendButton.addEventListener('click', sendMessage);
-            userInput.addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') sendMessage();
+            fetch('/chatbot/message', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    addMessage(data.message, 'bot-message');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                addMessage("Désolé, une erreur est survenue.", 'bot-message');
             });
+        }
+
+        function addMessage(text, className) {
+            const msg = document.createElement('div');
+            msg.className = 'message ' + className;
+            msg.innerHTML = text; // ✅ Utilise innerHTML pour interpréter <br>
+            messagesContainer.appendChild(msg);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        window.sendSuggestion = function (text) {
+            userInput.value = text;
+            sendMessage();
+        };
+
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendMessage();
         });
-    </script>
+    });
+</script>
+
 </body>
 </html>

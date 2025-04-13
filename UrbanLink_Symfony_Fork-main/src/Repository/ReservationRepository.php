@@ -90,4 +90,43 @@ class ReservationRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute();
     }
+
+
+
+
+
+
+
+    public function findAll(): array
+{
+    return $this->findBy([], ['reservation_date' => 'DESC']);
+}
+
+/**
+ * @return Reservation[]
+ */
+public function findAllOrderedByDate(string $order = 'DESC'): array
+{
+    return $this->createQueryBuilder('r')
+        ->orderBy('r.reservation_date', $order)
+        ->getQuery()
+        ->getResult();
+}
+
+/**
+ * Find upcoming reservations
+ * @return Reservation[]
+ */
+public function findUpcomingReservations(): array
+{
+    return $this->createQueryBuilder('r')
+        ->where('r.reservation_date >= :now')
+        ->setParameter('now', new \DateTime())
+        ->orderBy('r.reservation_date', 'ASC')
+        ->getQuery()
+        ->getResult();
+}
+
+
+
 }

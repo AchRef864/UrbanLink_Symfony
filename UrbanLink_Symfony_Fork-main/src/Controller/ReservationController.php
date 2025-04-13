@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Entity\Trajet;
 use App\Form\ReservationType;
 use App\Repository\TrajetRepository;
+use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,13 +18,10 @@ use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\src\ErrorCorrectionLevel;
-use Endroid\QrCode\src\RoundBlockSizeMode;
-use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Writer\SvgWriter;
-
 use Dompdf\Dompdf;
-
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Psr\Log\LoggerInterface;
 
 class ReservationController extends AbstractController
 {
@@ -149,7 +147,7 @@ class ReservationController extends AbstractController
 
         if ($reservation->getStatus() !== 'Pending') {
             $this->addFlash('error', 'Cette réservation a déjà été traitée');
-            return $this->redirectToRoute('reservation_list');
+            return $this->redirectToRoute('reservation_affichage');
         }
 
         if (!$user->getEmail()) {
@@ -294,7 +292,7 @@ class ReservationController extends AbstractController
         ->encoding(new Encoding('UTF-8'))
         ->errorCorrectionLevel(new \Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh())  // Note: uppercase HIGH
         ->size(300)  // Increased size for better readability
-        ->margin(10)
+        ->margin(6)
         ->roundBlockSizeMode(new \Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin())  // Note: uppercase MARGIN
         ->build();
     
@@ -327,6 +325,31 @@ class ReservationController extends AbstractController
             ]
         );
     }
-    
 
+
+    
+    #[Route('/admin/reservations', name: 'admin_reservations')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function indexAdmin(EntityManagerInterface $em): Response
+    {
+        $reservations = $em->getRepository(Reservation::class)
+            ->createQueryBuilder('r')
+            ->orderBy('r.reservationDate', 'DESC') // ✅ Correct field name
+            ->getQuery()
+            ->getResult();
+    
+        return $this->render('reservation/reservations.html.twig', [
+            'reservations' => $reservations,
+            'current_menu' => 'admin_reservations'
+        ]);
+    }
+
+
+    #[Route('/admin/reservations/{id}', name: 'show_reservation')]
+    public function showReservation(Reservation $reservation): Response
+    {
+        return $this->render('reservation/reservation_show.html.twig', [
+            'reservation' => $reservation,
+        ]);
+    }
 }
