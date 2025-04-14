@@ -73,7 +73,8 @@ class __TwigTemplate_0037c823c2979f28b8223ed4fc8862e4 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "title"));
 
-        yield "Admin Reservations";
+        yield "Admin Reservations | ";
+        yield from $this->yieldParentBlock("title", $context, $blocks);
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -97,106 +98,340 @@ class __TwigTemplate_0037c823c2979f28b8223ed4fc8862e4 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
 
         // line 6
-        yield "<div class=\"relative flex flex-col w-full min-w-0 bg-white border shadow rounded-2xl\" style=\"margin-left: 280px;\">
-  <div class=\"p-4 pb-2 bg-white rounded-t-2xl\">
-    <h6 class=\"text-sm font-semibold\">Reservations List</h6>
-  </div>
-  <div class=\"flex-auto px-4 pt-0 pb-2\">
-    <div class=\"overflow-x-auto\">
-      <table class=\"table-auto w-full text-xs text-slate-700\">
-        <thead>
-          <tr class=\"uppercase bg-gray-100 text-slate-500\">
-            <th class=\"px-2 py-1.5 text-left w-[140px]\">User</th>
-            <th class=\"px-2 py-1.5 text-left w-[180px]\">Trajet</th>
-            <th class=\"px-2 py-1.5 text-center w-[120px]\">Date</th>
-            <th class=\"px-2 py-1.5 text-center w-[60px]\">Seats</th>
-            <th class=\"px-2 py-1.5 text-center w-[100px]\">Status</th>
-            <th class=\"px-2 py-1.5 text-center w-[70px]\">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          ";
+        yield "<div class=\"ml-[280px] p-6 transition-all duration-300\" x-data=\"reservations\">
+  <div class=\"bg-white border border-gray-100 shadow-sm rounded-xl overflow-hidden\">
+    ";
+        // line 9
+        yield "    <div class=\"p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-100\">
+      <div>
+        <h1 class=\"text-lg font-semibold text-gray-800\">Reservations Management</h1>
+        <p class=\"text-xs text-gray-500 mt-1\">";
+        // line 12
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["total"]) || array_key_exists("total", $context) ? $context["total"] : (function () { throw new RuntimeError('Variable "total" does not exist.', 12, $this->source); })()), "html", null, true);
+        yield " total reservations</p>
+      </div>
+      
+      <div class=\"flex flex-col sm:flex-row gap-3 w-full sm:w-auto\">
+        <button onclick=\"openDashboardModal()\" class=\"px-3 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600 transition\">
+          Show Dashboard
+        </button>
+        
+        <form id=\"filterForm\" method=\"get\" action=\"";
+        // line 20
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("admin_reservations");
+        yield "\" class=\"flex items-center gap-3\">
+          <div class=\"relative\">
+            <select name=\"status\" id=\"statusFilter\" class=\"appearance-none pl-3 pr-8 py-1.5 text-xs border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500\" onchange=\"this.form.submit()\">
+              <option value=\"\">All Statuses</option>
+              <option value=\"confirmed\" ";
         // line 24
+        if (((isset($context["statusFilter"]) || array_key_exists("statusFilter", $context) ? $context["statusFilter"] : (function () { throw new RuntimeError('Variable "statusFilter" does not exist.', 24, $this->source); })()) == "confirmed")) {
+            yield "selected";
+        }
+        yield ">Confirmed</option>
+              <option value=\"pending\" ";
+        // line 25
+        if (((isset($context["statusFilter"]) || array_key_exists("statusFilter", $context) ? $context["statusFilter"] : (function () { throw new RuntimeError('Variable "statusFilter" does not exist.', 25, $this->source); })()) == "pending")) {
+            yield "selected";
+        }
+        yield ">Pending</option>
+              <option value=\"canceled\" ";
+        // line 26
+        if (((isset($context["statusFilter"]) || array_key_exists("statusFilter", $context) ? $context["statusFilter"] : (function () { throw new RuntimeError('Variable "statusFilter" does not exist.', 26, $this->source); })()) == "canceled")) {
+            yield "selected";
+        }
+        yield ">Canceled</option>
+            </select>
+            <div class=\"absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none\">
+              <svg class=\"h-4 w-4 text-gray-400\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">
+                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"/>
+              </svg>
+            </div>
+          </div>
+          <input type=\"hidden\" name=\"page\" value=\"1\">
+        </form>
+      </div>
+    </div>
+
+    ";
+        // line 40
+        yield "    <div id=\"dashboardModal\" class=\"fixed inset-0 z-50 hidden overflow-y-auto\">
+      <div class=\"flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0\">
+        <div class=\"fixed inset-0 transition-opacity\" aria-hidden=\"true\" onclick=\"closeDashboardModal()\">
+          <div class=\"absolute inset-0 bg-gray-500 opacity-75\"></div>
+        </div>
+        
+        <div class=\"inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full\">
+          <div class=\"bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4\">
+            <div class=\"sm:flex sm:items-start\">
+              <div class=\"mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full\">
+                <h3 class=\"text-lg leading-6 font-medium text-gray-900 mb-4\">
+                  Reservations Dashboard
+                </h3>
+                <div class=\"mt-2\">
+                  <iframe src=\"http://localhost:3000/public/dashboard/fc05c456-b961-4ccb-bb69-2ca3792d6025\" 
+                          frameborder=\"0\" 
+                          width=\"100%\" 
+                          height=\"600\" 
+                          allowtransparency></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class=\"bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse\">
+            <button type=\"button\" 
+                    onclick=\"closeDashboardModal()\" 
+                    class=\"mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm\">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    ";
+        // line 75
+        yield "    <div class=\"p-4\">
+      <div class=\"overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-50\">
+        <table class=\"min-w-full divide-y divide-gray-200 text-xs\">
+          <thead class=\"bg-gray-50\">
+            <tr>
+              <th scope=\"col\" class=\"px-4 py-2.5 text-left font-medium text-gray-500 tracking-wider whitespace-nowrap\">
+                User
+              </th>
+              <th scope=\"col\" class=\"px-4 py-2.5 text-left font-medium text-gray-500 tracking-wider whitespace-nowrap\">Route</th>
+              <th scope=\"col\" class=\"px-4 py-2.5 text-left font-medium text-gray-500 tracking-wider whitespace-nowrap\">
+                Date
+              </th>
+              <th scope=\"col\" class=\"px-4 py-2.5 text-center font-medium text-gray-500 tracking-wider whitespace-nowrap\">Seats</th>
+              <th scope=\"col\" class=\"px-4 py-2.5 text-center font-medium text-gray-500 tracking-wider whitespace-nowrap\">Status</th>
+              <th scope=\"col\" class=\"px-4 py-2.5 text-center font-medium text-gray-500 tracking-wider whitespace-nowrap\">Actions</th>
+            </tr>
+          </thead>
+          <tbody class=\"bg-white divide-y divide-gray-200\">
+            ";
+        // line 93
         $context['_parent'] = $context;
-        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["reservations"]) || array_key_exists("reservations", $context) ? $context["reservations"] : (function () { throw new RuntimeError('Variable "reservations" does not exist.', 24, $this->source); })()));
+        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["reservations"]) || array_key_exists("reservations", $context) ? $context["reservations"] : (function () { throw new RuntimeError('Variable "reservations" does not exist.', 93, $this->source); })()));
         $context['_iterated'] = false;
         foreach ($context['_seq'] as $context["_key"] => $context["reservation"]) {
-            // line 25
-            yield "            ";
-            $context["status"] = Twig\Extension\CoreExtension::lower($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "status", [], "any", false, false, false, 25));
-            // line 26
-            yield "            <tr class=\"border-t text-xs\">
-              <td class=\"px-2 py-1.5 truncate max-w-[140px]\">";
-            // line 27
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "user", [], "any", false, false, false, 27), "email", [], "any", false, false, false, 27), "html", null, true);
-            yield "</td>
-              <td class=\"px-2 py-1.5 truncate max-w-[180px]\">";
-            // line 28
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "trajet", [], "any", false, false, false, 28), "departure", [], "any", false, false, false, 28), "html", null, true);
-            yield " → ";
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "trajet", [], "any", false, false, false, 28), "destination", [], "any", false, false, false, 28), "html", null, true);
-            yield "</td>
-              <td class=\"px-2 py-1.5 text-center\">";
-            // line 29
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "reservationDate", [], "any", false, false, false, 29), "Y-m-d H:i"), "html", null, true);
-            yield "</td>
-              <td class=\"px-2 py-1.5 text-center\">";
-            // line 30
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "numberOfSeats", [], "any", false, false, false, 30), "html", null, true);
-            yield "</td>
-              <td class=\"px-2 py-1.5 text-center\">
-                <span class=\"px-2 py-1 rounded text-white text-[10px] font-bold uppercase
-                  ";
-            // line 33
-            if (((isset($context["status"]) || array_key_exists("status", $context) ? $context["status"] : (function () { throw new RuntimeError('Variable "status" does not exist.', 33, $this->source); })()) == "confirmed")) {
-                yield " bg-green-500
-                  ";
-            } elseif ((            // line 34
-(isset($context["status"]) || array_key_exists("status", $context) ? $context["status"] : (function () { throw new RuntimeError('Variable "status" does not exist.', 34, $this->source); })()) == "pending")) {
-                yield " bg-yellow-500
-                  ";
-            } elseif (((            // line 35
-(isset($context["status"]) || array_key_exists("status", $context) ? $context["status"] : (function () { throw new RuntimeError('Variable "status" does not exist.', 35, $this->source); })()) == "canceled") || ((isset($context["status"]) || array_key_exists("status", $context) ? $context["status"] : (function () { throw new RuntimeError('Variable "status" does not exist.', 35, $this->source); })()) == "cancelled"))) {
-                yield " bg-red-500
-                  ";
+            // line 94
+            yield "              ";
+            $context["status"] = Twig\Extension\CoreExtension::lower($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "status", [], "any", false, false, false, 94));
+            // line 95
+            yield "              <tr class=\"hover:bg-gray-50 transition-colors\" x-data=\"{ showActions: false }\" @mouseenter=\"showActions = true\" @mouseleave=\"showActions = false\">
+                <td class=\"px-4 py-3 whitespace-nowrap max-w-[160px]\">
+                  <div class=\"flex items-center gap-2\">
+                    <div class=\"flex-shrink-0 h-6 w-6 rounded-full bg-gray-200 flex items-center justify-center text-xs text-gray-600\">
+                      ";
+            // line 99
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::upper($this->env->getCharset(), Twig\Extension\CoreExtension::first($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "user", [], "any", false, false, false, 99), "email", [], "any", false, false, false, 99))), "html", null, true);
+            yield "
+                    </div>
+                    <div class=\"truncate\">";
+            // line 101
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "user", [], "any", false, false, false, 101), "email", [], "any", false, false, false, 101), "html", null, true);
+            yield "</div>
+                  </div>
+                </td>
+                <td class=\"px-4 py-3 whitespace-nowrap max-w-[180px]\">
+                  <div class=\"flex items-center gap-1.5\">
+                    <span class=\"font-medium\">";
+            // line 106
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "trajet", [], "any", false, false, false, 106), "departure", [], "any", false, false, false, 106), "html", null, true);
+            yield "</span>
+                    <svg class=\"w-3 h-3 text-gray-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">
+                      <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M14 5l7 7m0 0l-7 7m7-7H3\"/>
+                    </svg>
+                    <span class=\"font-medium\">";
+            // line 110
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "trajet", [], "any", false, false, false, 110), "destination", [], "any", false, false, false, 110), "html", null, true);
+            yield "</span>
+                  </div>
+                  <div class=\"text-xs text-gray-500 mt-0.5\">
+                    ";
+            // line 113
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "trajet", [], "any", false, false, false, 113), "distance", [], "any", false, false, false, 113), "html", null, true);
+            yield " km • ";
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "trajet", [], "any", false, false, false, 113), "duration", [], "any", false, false, false, 113), "html", null, true);
+            yield " mins
+                  </div>
+                </td>
+                <td class=\"px-4 py-3 whitespace-nowrap\">
+                  <div class=\"text-gray-900\">";
+            // line 117
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "reservationDate", [], "any", false, false, false, 117), "Y-m-d"), "html", null, true);
+            yield "</div>
+                  <div class=\"text-xs text-gray-500\">";
+            // line 118
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "reservationDate", [], "any", false, false, false, 118), "H:i"), "html", null, true);
+            yield "</div>
+                </td>
+                <td class=\"px-4 py-3 whitespace-nowrap text-center\">
+                  <span class=\"inline-flex items-center justify-center h-6 w-6 rounded-full bg-blue-100 text-blue-800 font-medium\">
+                    ";
+            // line 122
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "numberOfSeats", [], "any", false, false, false, 122), "html", null, true);
+            yield "
+                  </span>
+                </td>
+                <td class=\"px-4 py-3 whitespace-nowrap text-center\">
+                  <span class=\"inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium leading-4
+                    ";
+            // line 127
+            if (((isset($context["status"]) || array_key_exists("status", $context) ? $context["status"] : (function () { throw new RuntimeError('Variable "status" does not exist.', 127, $this->source); })()) == "confirmed")) {
+                yield " bg-green-100 text-green-800
+                    ";
+            } elseif ((            // line 128
+(isset($context["status"]) || array_key_exists("status", $context) ? $context["status"] : (function () { throw new RuntimeError('Variable "status" does not exist.', 128, $this->source); })()) == "pending")) {
+                yield " bg-yellow-100 text-yellow-800
+                    ";
+            } elseif (((            // line 129
+(isset($context["status"]) || array_key_exists("status", $context) ? $context["status"] : (function () { throw new RuntimeError('Variable "status" does not exist.', 129, $this->source); })()) == "canceled") || ((isset($context["status"]) || array_key_exists("status", $context) ? $context["status"] : (function () { throw new RuntimeError('Variable "status" does not exist.', 129, $this->source); })()) == "cancelled"))) {
+                yield " bg-red-100 text-red-800
+                    ";
             } else {
-                // line 36
-                yield " bg-gray-400 ";
+                // line 130
+                yield " bg-gray-100 text-gray-800 ";
             }
             yield "\">
-                  ";
-            // line 37
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["status"]) || array_key_exists("status", $context) ? $context["status"] : (function () { throw new RuntimeError('Variable "status" does not exist.', 37, $this->source); })()), "html", null, true);
+                    ";
+            // line 131
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["status"]) || array_key_exists("status", $context) ? $context["status"] : (function () { throw new RuntimeError('Variable "status" does not exist.', 131, $this->source); })()), "html", null, true);
             yield "
-                </span>
-              </td>
-              <td class=\"px-2 py-1.5 text-center\">
-                <a href=\"";
-            // line 41
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("show_reservation", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "id", [], "any", false, false, false, 41)]), "html", null, true);
-            yield "\" class=\"text-blue-500 underline\">Show</a>
-              </td>
-            </tr>
-          ";
+                  </span>
+                </td>
+                <td class=\"px-4 py-3 whitespace-nowrap text-center\">
+                  <div class=\"flex justify-center gap-2\" x-show=\"showActions || window.innerWidth < 640\">
+                    <a 
+                      href=\"";
+            // line 137
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("show_reservation", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "id", [], "any", false, false, false, 137)]), "html", null, true);
+            yield "\" 
+                      class=\"p-1 text-blue-600 hover:text-blue-800 rounded hover:bg-blue-50 transition-colors\"
+                      title=\"View details\"
+                    >
+                      <svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">
+                        <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"/>
+                        <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"/>
+                      </svg>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            ";
             $context['_iterated'] = true;
         }
-        // line 44
+        // line 149
         if (!$context['_iterated']) {
-            // line 45
-            yield "            <tr>
-              <td colspan=\"6\" class=\"px-2 py-2 text-center text-slate-400\">No reservations found</td>
-            </tr>
-          ";
+            // line 150
+            yield "              <tr>
+                <td colspan=\"6\" class=\"px-4 py-6 text-center text-gray-400\">
+                  <div class=\"flex flex-col items-center justify-center gap-2\">
+                    <svg class=\"w-10 h-10 text-gray-300\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">
+                      <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2\"/>
+                    </svg>
+                    <p>No reservations found</p>
+                  </div>
+                </td>
+              </tr>
+            ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['reservation'], $context['_parent'], $context['_iterated']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 49
-        yield "        </tbody>
-      </table>
-    </div>
+        // line 161
+        yield "          </tbody>
+        </table>
+      </div>
+      
+      ";
+        // line 166
+        yield "      ";
+        if ((Twig\Extension\CoreExtension::length($this->env->getCharset(), (isset($context["reservations"]) || array_key_exists("reservations", $context) ? $context["reservations"] : (function () { throw new RuntimeError('Variable "reservations" does not exist.', 166, $this->source); })())) > 0)) {
+            // line 167
+            yield "        <div class=\"flex items-center justify-between mt-4 px-2\">
+          <div class=\"text-xs text-gray-500\">
+            Showing <span class=\"font-medium\">";
+            // line 169
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(((((isset($context["currentPage"]) || array_key_exists("currentPage", $context) ? $context["currentPage"] : (function () { throw new RuntimeError('Variable "currentPage" does not exist.', 169, $this->source); })()) - 1) * (isset($context["limit"]) || array_key_exists("limit", $context) ? $context["limit"] : (function () { throw new RuntimeError('Variable "limit" does not exist.', 169, $this->source); })())) + 1), "html", null, true);
+            yield "</span> 
+            to <span class=\"font-medium\">";
+            // line 170
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(min(((isset($context["currentPage"]) || array_key_exists("currentPage", $context) ? $context["currentPage"] : (function () { throw new RuntimeError('Variable "currentPage" does not exist.', 170, $this->source); })()) * (isset($context["limit"]) || array_key_exists("limit", $context) ? $context["limit"] : (function () { throw new RuntimeError('Variable "limit" does not exist.', 170, $this->source); })())), (isset($context["total"]) || array_key_exists("total", $context) ? $context["total"] : (function () { throw new RuntimeError('Variable "total" does not exist.', 170, $this->source); })())), "html", null, true);
+            yield "</span> 
+            of <span class=\"font-medium\">";
+            // line 171
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["total"]) || array_key_exists("total", $context) ? $context["total"] : (function () { throw new RuntimeError('Variable "total" does not exist.', 171, $this->source); })()), "html", null, true);
+            yield "</span> results
+          </div>
+          <div class=\"flex gap-1\">
+            <a href=\"?page=";
+            // line 174
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(((isset($context["currentPage"]) || array_key_exists("currentPage", $context) ? $context["currentPage"] : (function () { throw new RuntimeError('Variable "currentPage" does not exist.', 174, $this->source); })()) - 1), "html", null, true);
+            if ((isset($context["statusFilter"]) || array_key_exists("statusFilter", $context) ? $context["statusFilter"] : (function () { throw new RuntimeError('Variable "statusFilter" does not exist.', 174, $this->source); })())) {
+                yield "&status=";
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["statusFilter"]) || array_key_exists("statusFilter", $context) ? $context["statusFilter"] : (function () { throw new RuntimeError('Variable "statusFilter" does not exist.', 174, $this->source); })()), "html", null, true);
+            }
+            yield "\" 
+               class=\"px-3 py-1 border rounded text-xs text-gray-700 bg-white hover:bg-gray-50 ";
+            // line 175
+            if (((isset($context["currentPage"]) || array_key_exists("currentPage", $context) ? $context["currentPage"] : (function () { throw new RuntimeError('Variable "currentPage" does not exist.', 175, $this->source); })()) == 1)) {
+                yield "opacity-50 pointer-events-none";
+            }
+            yield "\">
+              Previous
+            </a>
+            <a href=\"?page=";
+            // line 178
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(((isset($context["currentPage"]) || array_key_exists("currentPage", $context) ? $context["currentPage"] : (function () { throw new RuntimeError('Variable "currentPage" does not exist.', 178, $this->source); })()) + 1), "html", null, true);
+            if ((isset($context["statusFilter"]) || array_key_exists("statusFilter", $context) ? $context["statusFilter"] : (function () { throw new RuntimeError('Variable "statusFilter" does not exist.', 178, $this->source); })())) {
+                yield "&status=";
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["statusFilter"]) || array_key_exists("statusFilter", $context) ? $context["statusFilter"] : (function () { throw new RuntimeError('Variable "statusFilter" does not exist.', 178, $this->source); })()), "html", null, true);
+            }
+            yield "\" 
+               class=\"px-3 py-1 border rounded text-xs text-gray-700 bg-white hover:bg-gray-50 ";
+            // line 179
+            if ((((isset($context["currentPage"]) || array_key_exists("currentPage", $context) ? $context["currentPage"] : (function () { throw new RuntimeError('Variable "currentPage" does not exist.', 179, $this->source); })()) * (isset($context["limit"]) || array_key_exists("limit", $context) ? $context["limit"] : (function () { throw new RuntimeError('Variable "limit" does not exist.', 179, $this->source); })())) >= (isset($context["total"]) || array_key_exists("total", $context) ? $context["total"] : (function () { throw new RuntimeError('Variable "total" does not exist.', 179, $this->source); })()))) {
+                yield "opacity-50 pointer-events-none";
+            }
+            yield "\">
+              Next
+            </a>
+          </div>
+        </div>
+      ";
+        }
+        // line 185
+        yield "    </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('alpine:init', () => {
+  Alpine.data('reservations', () => ({
+    init() {
+      // Initialize any necessary data
+    }
+  }));
+});
+
+function openDashboardModal() {
+  document.getElementById('dashboardModal').classList.remove('hidden');
+  document.body.classList.add('overflow-hidden');
+}
+
+function closeDashboardModal() {
+  document.getElementById('dashboardModal').classList.add('hidden');
+  document.body.classList.remove('overflow-hidden');
+}
+</script>
+
+<style>
+  .overflow-hidden {
+    overflow: hidden;
+  }
+</style>
 ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
@@ -228,65 +463,224 @@ class __TwigTemplate_0037c823c2979f28b8223ed4fc8862e4 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  195 => 49,  186 => 45,  184 => 44,  176 => 41,  169 => 37,  164 => 36,  159 => 35,  155 => 34,  151 => 33,  145 => 30,  141 => 29,  135 => 28,  131 => 27,  128 => 26,  125 => 25,  120 => 24,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
+        return array (  406 => 185,  395 => 179,  387 => 178,  379 => 175,  371 => 174,  365 => 171,  361 => 170,  357 => 169,  353 => 167,  350 => 166,  344 => 161,  328 => 150,  326 => 149,  309 => 137,  300 => 131,  295 => 130,  290 => 129,  286 => 128,  282 => 127,  274 => 122,  267 => 118,  263 => 117,  254 => 113,  248 => 110,  241 => 106,  233 => 101,  228 => 99,  222 => 95,  219 => 94,  214 => 93,  194 => 75,  158 => 40,  140 => 26,  134 => 25,  128 => 24,  121 => 20,  110 => 12,  105 => 9,  101 => 6,  88 => 5,  64 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source
     {
         return new Source("{% extends 'base.html.twig' %}
 
-{% block title %}Admin Reservations{% endblock %}
+{% block title %}Admin Reservations | {{ parent() }}{% endblock %}
 
 {% block body %}
-<div class=\"relative flex flex-col w-full min-w-0 bg-white border shadow rounded-2xl\" style=\"margin-left: 280px;\">
-  <div class=\"p-4 pb-2 bg-white rounded-t-2xl\">
-    <h6 class=\"text-sm font-semibold\">Reservations List</h6>
-  </div>
-  <div class=\"flex-auto px-4 pt-0 pb-2\">
-    <div class=\"overflow-x-auto\">
-      <table class=\"table-auto w-full text-xs text-slate-700\">
-        <thead>
-          <tr class=\"uppercase bg-gray-100 text-slate-500\">
-            <th class=\"px-2 py-1.5 text-left w-[140px]\">User</th>
-            <th class=\"px-2 py-1.5 text-left w-[180px]\">Trajet</th>
-            <th class=\"px-2 py-1.5 text-center w-[120px]\">Date</th>
-            <th class=\"px-2 py-1.5 text-center w-[60px]\">Seats</th>
-            <th class=\"px-2 py-1.5 text-center w-[100px]\">Status</th>
-            <th class=\"px-2 py-1.5 text-center w-[70px]\">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for reservation in reservations %}
-            {% set status = reservation.status|lower %}
-            <tr class=\"border-t text-xs\">
-              <td class=\"px-2 py-1.5 truncate max-w-[140px]\">{{ reservation.user.email }}</td>
-              <td class=\"px-2 py-1.5 truncate max-w-[180px]\">{{ reservation.trajet.departure }} → {{ reservation.trajet.destination }}</td>
-              <td class=\"px-2 py-1.5 text-center\">{{ reservation.reservationDate|date('Y-m-d H:i') }}</td>
-              <td class=\"px-2 py-1.5 text-center\">{{ reservation.numberOfSeats }}</td>
-              <td class=\"px-2 py-1.5 text-center\">
-                <span class=\"px-2 py-1 rounded text-white text-[10px] font-bold uppercase
-                  {% if status == 'confirmed' %} bg-green-500
-                  {% elseif status == 'pending' %} bg-yellow-500
-                  {% elseif status == 'canceled' or status == 'cancelled' %} bg-red-500
-                  {% else %} bg-gray-400 {% endif %}\">
-                  {{ status }}
-                </span>
-              </td>
-              <td class=\"px-2 py-1.5 text-center\">
-                <a href=\"{{ path('show_reservation', {'id': reservation.id}) }}\" class=\"text-blue-500 underline\">Show</a>
-              </td>
-            </tr>
-          {% else %}
+<div class=\"ml-[280px] p-6 transition-all duration-300\" x-data=\"reservations\">
+  <div class=\"bg-white border border-gray-100 shadow-sm rounded-xl overflow-hidden\">
+    {# Header Section with Filters #}
+    <div class=\"p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-100\">
+      <div>
+        <h1 class=\"text-lg font-semibold text-gray-800\">Reservations Management</h1>
+        <p class=\"text-xs text-gray-500 mt-1\">{{ total }} total reservations</p>
+      </div>
+      
+      <div class=\"flex flex-col sm:flex-row gap-3 w-full sm:w-auto\">
+        <button onclick=\"openDashboardModal()\" class=\"px-3 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600 transition\">
+          Show Dashboard
+        </button>
+        
+        <form id=\"filterForm\" method=\"get\" action=\"{{ path('admin_reservations') }}\" class=\"flex items-center gap-3\">
+          <div class=\"relative\">
+            <select name=\"status\" id=\"statusFilter\" class=\"appearance-none pl-3 pr-8 py-1.5 text-xs border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500\" onchange=\"this.form.submit()\">
+              <option value=\"\">All Statuses</option>
+              <option value=\"confirmed\" {% if statusFilter == 'confirmed' %}selected{% endif %}>Confirmed</option>
+              <option value=\"pending\" {% if statusFilter == 'pending' %}selected{% endif %}>Pending</option>
+              <option value=\"canceled\" {% if statusFilter == 'canceled' %}selected{% endif %}>Canceled</option>
+            </select>
+            <div class=\"absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none\">
+              <svg class=\"h-4 w-4 text-gray-400\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">
+                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"/>
+              </svg>
+            </div>
+          </div>
+          <input type=\"hidden\" name=\"page\" value=\"1\">
+        </form>
+      </div>
+    </div>
+
+    {# Dashboard Modal #}
+    <div id=\"dashboardModal\" class=\"fixed inset-0 z-50 hidden overflow-y-auto\">
+      <div class=\"flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0\">
+        <div class=\"fixed inset-0 transition-opacity\" aria-hidden=\"true\" onclick=\"closeDashboardModal()\">
+          <div class=\"absolute inset-0 bg-gray-500 opacity-75\"></div>
+        </div>
+        
+        <div class=\"inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full\">
+          <div class=\"bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4\">
+            <div class=\"sm:flex sm:items-start\">
+              <div class=\"mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full\">
+                <h3 class=\"text-lg leading-6 font-medium text-gray-900 mb-4\">
+                  Reservations Dashboard
+                </h3>
+                <div class=\"mt-2\">
+                  <iframe src=\"http://localhost:3000/public/dashboard/fc05c456-b961-4ccb-bb69-2ca3792d6025\" 
+                          frameborder=\"0\" 
+                          width=\"100%\" 
+                          height=\"600\" 
+                          allowtransparency></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class=\"bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse\">
+            <button type=\"button\" 
+                    onclick=\"closeDashboardModal()\" 
+                    class=\"mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm\">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# Table Section #}
+    <div class=\"p-4\">
+      <div class=\"overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-50\">
+        <table class=\"min-w-full divide-y divide-gray-200 text-xs\">
+          <thead class=\"bg-gray-50\">
             <tr>
-              <td colspan=\"6\" class=\"px-2 py-2 text-center text-slate-400\">No reservations found</td>
+              <th scope=\"col\" class=\"px-4 py-2.5 text-left font-medium text-gray-500 tracking-wider whitespace-nowrap\">
+                User
+              </th>
+              <th scope=\"col\" class=\"px-4 py-2.5 text-left font-medium text-gray-500 tracking-wider whitespace-nowrap\">Route</th>
+              <th scope=\"col\" class=\"px-4 py-2.5 text-left font-medium text-gray-500 tracking-wider whitespace-nowrap\">
+                Date
+              </th>
+              <th scope=\"col\" class=\"px-4 py-2.5 text-center font-medium text-gray-500 tracking-wider whitespace-nowrap\">Seats</th>
+              <th scope=\"col\" class=\"px-4 py-2.5 text-center font-medium text-gray-500 tracking-wider whitespace-nowrap\">Status</th>
+              <th scope=\"col\" class=\"px-4 py-2.5 text-center font-medium text-gray-500 tracking-wider whitespace-nowrap\">Actions</th>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+          </thead>
+          <tbody class=\"bg-white divide-y divide-gray-200\">
+            {% for reservation in reservations %}
+              {% set status = reservation.status|lower %}
+              <tr class=\"hover:bg-gray-50 transition-colors\" x-data=\"{ showActions: false }\" @mouseenter=\"showActions = true\" @mouseleave=\"showActions = false\">
+                <td class=\"px-4 py-3 whitespace-nowrap max-w-[160px]\">
+                  <div class=\"flex items-center gap-2\">
+                    <div class=\"flex-shrink-0 h-6 w-6 rounded-full bg-gray-200 flex items-center justify-center text-xs text-gray-600\">
+                      {{ reservation.user.email|first|upper }}
+                    </div>
+                    <div class=\"truncate\">{{ reservation.user.email }}</div>
+                  </div>
+                </td>
+                <td class=\"px-4 py-3 whitespace-nowrap max-w-[180px]\">
+                  <div class=\"flex items-center gap-1.5\">
+                    <span class=\"font-medium\">{{ reservation.trajet.departure }}</span>
+                    <svg class=\"w-3 h-3 text-gray-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">
+                      <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M14 5l7 7m0 0l-7 7m7-7H3\"/>
+                    </svg>
+                    <span class=\"font-medium\">{{ reservation.trajet.destination }}</span>
+                  </div>
+                  <div class=\"text-xs text-gray-500 mt-0.5\">
+                    {{ reservation.trajet.distance }} km • {{ reservation.trajet.duration }} mins
+                  </div>
+                </td>
+                <td class=\"px-4 py-3 whitespace-nowrap\">
+                  <div class=\"text-gray-900\">{{ reservation.reservationDate|date('Y-m-d') }}</div>
+                  <div class=\"text-xs text-gray-500\">{{ reservation.reservationDate|date('H:i') }}</div>
+                </td>
+                <td class=\"px-4 py-3 whitespace-nowrap text-center\">
+                  <span class=\"inline-flex items-center justify-center h-6 w-6 rounded-full bg-blue-100 text-blue-800 font-medium\">
+                    {{ reservation.numberOfSeats }}
+                  </span>
+                </td>
+                <td class=\"px-4 py-3 whitespace-nowrap text-center\">
+                  <span class=\"inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium leading-4
+                    {% if status == 'confirmed' %} bg-green-100 text-green-800
+                    {% elseif status == 'pending' %} bg-yellow-100 text-yellow-800
+                    {% elseif status == 'canceled' or status == 'cancelled' %} bg-red-100 text-red-800
+                    {% else %} bg-gray-100 text-gray-800 {% endif %}\">
+                    {{ status }}
+                  </span>
+                </td>
+                <td class=\"px-4 py-3 whitespace-nowrap text-center\">
+                  <div class=\"flex justify-center gap-2\" x-show=\"showActions || window.innerWidth < 640\">
+                    <a 
+                      href=\"{{ path('show_reservation', {'id': reservation.id}) }}\" 
+                      class=\"p-1 text-blue-600 hover:text-blue-800 rounded hover:bg-blue-50 transition-colors\"
+                      title=\"View details\"
+                    >
+                      <svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">
+                        <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"/>
+                        <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"/>
+                      </svg>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan=\"6\" class=\"px-4 py-6 text-center text-gray-400\">
+                  <div class=\"flex flex-col items-center justify-center gap-2\">
+                    <svg class=\"w-10 h-10 text-gray-300\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">
+                      <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2\"/>
+                    </svg>
+                    <p>No reservations found</p>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      
+      {# Pagination #}
+      {% if reservations|length > 0 %}
+        <div class=\"flex items-center justify-between mt-4 px-2\">
+          <div class=\"text-xs text-gray-500\">
+            Showing <span class=\"font-medium\">{{ ((currentPage - 1) * limit) + 1 }}</span> 
+            to <span class=\"font-medium\">{{ min(currentPage * limit, total) }}</span> 
+            of <span class=\"font-medium\">{{ total }}</span> results
+          </div>
+          <div class=\"flex gap-1\">
+            <a href=\"?page={{ currentPage - 1 }}{% if statusFilter %}&status={{ statusFilter }}{% endif %}\" 
+               class=\"px-3 py-1 border rounded text-xs text-gray-700 bg-white hover:bg-gray-50 {% if currentPage == 1 %}opacity-50 pointer-events-none{% endif %}\">
+              Previous
+            </a>
+            <a href=\"?page={{ currentPage + 1 }}{% if statusFilter %}&status={{ statusFilter }}{% endif %}\" 
+               class=\"px-3 py-1 border rounded text-xs text-gray-700 bg-white hover:bg-gray-50 {% if currentPage * limit >= total %}opacity-50 pointer-events-none{% endif %}\">
+              Next
+            </a>
+          </div>
+        </div>
+      {% endif %}
     </div>
   </div>
 </div>
-{% endblock %}
-", "reservation/reservations.html.twig", "C:\\Users\\skonb\\Desktop\\pi\\UrbanLink_Symfony_Fork-main\\templates\\reservation\\reservations.html.twig");
+
+<script>
+document.addEventListener('alpine:init', () => {
+  Alpine.data('reservations', () => ({
+    init() {
+      // Initialize any necessary data
+    }
+  }));
+});
+
+function openDashboardModal() {
+  document.getElementById('dashboardModal').classList.remove('hidden');
+  document.body.classList.add('overflow-hidden');
+}
+
+function closeDashboardModal() {
+  document.getElementById('dashboardModal').classList.add('hidden');
+  document.body.classList.remove('overflow-hidden');
+}
+</script>
+
+<style>
+  .overflow-hidden {
+    overflow: hidden;
+  }
+</style>
+{% endblock %}", "reservation/reservations.html.twig", "C:\\Users\\skonb\\Desktop\\pi\\UrbanLink_Symfony_Fork-main\\templates\\reservation\\reservations.html.twig");
     }
 }

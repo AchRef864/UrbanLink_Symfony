@@ -102,7 +102,7 @@ class __TwigTemplate_266d302d5b7f0f4257d13b20213eeb52 extends Template
 
     ";
         // line 11
-        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 11, $this->source); })()), 'form_start');
+        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 11, $this->source); })()), 'form_start', ["attr" => ["novalidate" => "novalidate"]]);
         yield "
     <div style=\"margin-left: 280px;\">
 
@@ -350,7 +350,7 @@ class __TwigTemplate_266d302d5b7f0f4257d13b20213eeb52 extends Template
 <div class=\"container mx-auto px-4 py-8 max-w-3xl\">
     <h1 class=\"text-3xl font-bold mb-8 text-center\">Ajouter un Trajet</h1>
 
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
     <div style=\"margin-left: 280px;\">
 
         {# Departure #}

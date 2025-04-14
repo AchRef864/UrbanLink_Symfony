@@ -329,20 +329,25 @@ class ReservationController extends AbstractController
 
     
     #[Route('/admin/reservations', name: 'admin_reservations')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function indexAdmin(EntityManagerInterface $em): Response
-    {
-        $reservations = $em->getRepository(Reservation::class)
-            ->createQueryBuilder('r')
-            ->orderBy('r.reservationDate', 'DESC') // ✅ Correct field name
-            ->getQuery()
-            ->getResult();
+#[IsGranted('ROLE_ADMIN')]
+public function indexAdmin(Request $request, ReservationRepository $reservationRepository): Response
+{
+    $status = $request->query->get('status');
+    $page = $request->query->get('page', 1);
+    $limit = 10;
     
-        return $this->render('reservation/reservations.html.twig', [
-            'reservations' => $reservations,
-            'current_menu' => 'admin_reservations'
-        ]);
-    }
+    $paginator = $reservationRepository->getPaginatedReservations($status, $page, $limit);
+    $totalReservations = count($paginator);
+
+    return $this->render('reservation/reservations.html.twig', [
+        'reservations' => $paginator,
+        'total' => $totalReservations,
+        'currentPage' => $page,
+        'limit' => $limit,
+        'statusFilter' => $status,
+        'current_menu' => 'admin_reservations'
+    ]);
+}
 
 
     #[Route('/admin/reservations/{id}', name: 'show_reservation')]

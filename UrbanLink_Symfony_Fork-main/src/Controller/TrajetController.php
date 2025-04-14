@@ -13,47 +13,35 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TrajetController extends AbstractController
 {
-    #[Route('/trajet/ajouter', name: 'trajet_ajouter')]
-    public function ajouter(Request $request, EntityManagerInterface $em): Response
-    {
-        $trajet = new Trajet();
-        $form = $this->createForm(TrajetType::class, $trajet);
-        $form->handleRequest($request);
-    
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                try {
-                    // Ensure arrival time is calculated
-                    if (!$trajet->getArrivalTime()) {
-                        $trajet->setArrivalTime($trajet->calculateArrivalTime());
-                    }
-                    
-                    $em->persist($trajet);
-                    $em->flush();
-                    
-                    $this->addFlash('success', 'Trajet ajouté avec succès!');
-                    return $this->redirectToRoute('trajet_affichage');
-                } catch (\Exception $e) {
-                    $this->addFlash('error', 'Erreur technique: '.$e->getMessage());
-                    // Log the full error for debugging
-                    error_log($e->getMessage());
-                    error_log($e->getTraceAsString());
-                }
-            } else {
-                // Form is invalid - show errors
-                $errors = $form->getErrors(true);
-                foreach ($errors as $error) {
-                    $this->addFlash('error', $error->getMessage());
-                }
+    // src/Controller/TrajetController.php
+#[Route('/trajet/ajouter', name: 'trajet_ajouter')]
+public function ajouter(Request $request, EntityManagerInterface $em): Response
+{
+    $trajet = new Trajet();
+    $form = $this->createForm(TrajetType::class, $trajet);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        try {
+            // Calculate arrival time if not provided
+            if (!$trajet->getArrivalTime()) {
+                $trajet->setArrivalTime($trajet->calculateArrivalTime());
             }
+            
+            $em->persist($trajet);
+            $em->flush();
+            
+            $this->addFlash('success', 'Trajet ajouté avec succès!');
+            return $this->redirectToRoute('trajet_affichage');
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Une erreur est survenue: '.$e->getMessage());
         }
-    
-        return $this->render('trajet/ajouter.html.twig', [
-            'form' => $form->createView(),
-        ]);
     }
 
-
+    return $this->render('trajet/ajouter.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
 
 
 
