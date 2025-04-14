@@ -74,7 +74,7 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "title"));
 
-        yield "Leave a complaint";
+        yield "Leave a Complaint";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -99,11 +99,10 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
 
         // line 6
         yield "<style>
-    /* Updated container styles to center the content */
     .container {
         font-family: 'Arial', sans-serif;
         max-width: 600px;
-        margin: 50px auto; /* centers the container horizontally */
+        margin: 50px auto;
         padding: 0 15px;
     }
 
@@ -113,7 +112,6 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         padding: 30px;
         margin-top: 30px;
-        /* Remove margin-right so it stays centered */
     }
 
     h2 {
@@ -121,6 +119,7 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         font-weight: bold;
         color: #333;
         margin-bottom: 20px;
+        text-align: center;
     }
 
     .form-label {
@@ -146,9 +145,8 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         background-color: #fff;
     }
 
-    /* Sky blue color for the button */
     .btn-primary {
-        background-color: #87CEEB; /* Sky blue color */
+        background-color: #87CEEB;
         border: none;
         padding: 12px 24px;
         font-size: 18px;
@@ -157,22 +155,12 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
     }
 
     .btn-primary:hover {
-        background-color: #5b9bd5; /* Slightly darker blue */
+        background-color: #5b9bd5;
         transform: translateY(-2px);
     }
 
     .text-center {
         text-align: center;
-    }
-
-    .needs-validation .form-control:invalid, 
-    .needs-validation .form-select:invalid {
-        border-color: #dc3545;
-    }
-
-    .needs-validation .form-control:valid, 
-    .needs-validation .form-select:valid {
-        border-color: #28a745;
     }
 
     .mb-4 {
@@ -182,55 +170,10 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
     .mt-4 {
         margin-top: 1.5rem;
     }
-
-    .shadow-sm {
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-    }
-
-    .rounded-4 {
-        border-radius: 1rem;
-    }
-
-    /* Pagination styles remain unchanged */
-    .pagination {
-        display: flex;
-        justify-content: center;
-        padding: 1rem 0;
-        list-style: none;
-    }
-
-    .pagination li {
-        margin: 0 5px;
-    }
-
-    .pagination a {
-        display: inline-block;
-        padding: 8px 12px;
-        font-size: 14px;
-        font-weight: bold;
-        color: #007bff;
-        text-decoration: none;
-        border: 1px solid #dee2e6;
-        border-radius: 4px;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .pagination a:hover {
-        background-color: #007bff;
-        color: white;
-    }
-
-    .pagination .active a {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-    }
-
-    .pagination .disabled a {
-        color: #6c757d;
-        pointer-events: none;
-        background-color: #f8f9fa;
-        border-color: #dee2e6;
+    
+    /* Initially hide the taxi field */
+    .taxi-field-container {
+        display: none;
     }
 </style>
 ";
@@ -243,7 +186,7 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         yield from [];
     }
 
-    // line 143
+    // line 86
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -256,70 +199,135 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
 
-        // line 144
+        // line 87
         yield "<div class=\"container\">
     ";
-        // line 145
-        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 145, $this->source); })()), 'form_start', ["attr" => ["novalidate" => "novalidate", "class" => "needs-validation"]]);
+        // line 88
+        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 88, $this->source); })()), 'form_start', ["attr" => ["novalidate" => "novalidate", "class" => "needs-validation"]]);
         yield "
 
-    <div class=\"card shadow-sm p-4 mb-4 rounded-4\">
-        <h2 class=\"text-center\">Leave a complaint</h2>
+    <div class=\"card\">
+        <h2>Leave a Complaint</h2>
 
-        <!-- Type Field -->
-        <div class=\"mb-4\">
+        ";
+        // line 94
+        yield "        <div class=\"mb-4\">
             ";
-        // line 152
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 152, $this->source); })()), "type", [], "any", false, false, false, 152), 'label', ["label_attr" => ["class" => "form-label"], "label" => "Complaint Type"]);
+        // line 95
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 95, $this->source); })()), "type", [], "any", false, false, false, 95), 'label', ["label_attr" => ["class" => "form-label"], "label" => "Complaint Type"]);
         yield "
-            <div>
-                ";
-        // line 154
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 154, $this->source); })()), "type", [], "any", false, false, false, 154), 'widget', ["attr" => ["class" => "form-select", "aria-label" => "Select complaint type"]]);
-        // line 159
-        yield "
-            </div>
             ";
-        // line 161
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 161, $this->source); })()), "type", [], "any", false, false, false, 161), 'errors');
+        // line 96
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 96, $this->source); })()), "type", [], "any", false, false, false, 96), 'widget', ["attr" => ["class" => "form-select complaint-type-select"]]);
+        yield "
+            ";
+        // line 97
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 97, $this->source); })()), "type", [], "any", false, false, false, 97), 'errors');
         yield "
         </div>
 
-        <!-- Comment Field -->
-        <div class=\"mb-4\">
+        ";
+        // line 101
+        yield "        <div class=\"mb-4 taxi-field-container\">
             ";
-        // line 166
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 166, $this->source); })()), "commentaire", [], "any", false, false, false, 166), 'label', ["label_attr" => ["class" => "form-label"], "label" => "Your Comment"]);
+        // line 102
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 102, $this->source); })()), "taxi", [], "any", false, false, false, 102), 'label', ["label_attr" => ["class" => "form-label"], "label" => "Taxi Immatriculation"]);
         yield "
-            <div>
-                ";
-        // line 168
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 168, $this->source); })()), "commentaire", [], "any", false, false, false, 168), 'widget', ["attr" => ["class" => "form-control", "placeholder" => "Write your comment here...", "aria-label" => "Write your comment"]]);
-        // line 174
-        yield "
-            </div>
             ";
-        // line 176
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 176, $this->source); })()), "commentaire", [], "any", false, false, false, 176), 'errors');
+        // line 103
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 103, $this->source); })()), "taxi", [], "any", false, false, false, 103), 'widget', ["attr" => ["class" => "form-select"]]);
+        yield "
+            ";
+        // line 104
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 104, $this->source); })()), "taxi", [], "any", false, false, false, 104), 'errors');
         yield "
         </div>
 
-        <!-- Submit Button -->
-        <div class=\"text-center mt-4\">
-            <button type=\"submit\" class=\"btn btn-primary btn-lg rounded-pill px-5\">
+        ";
+        // line 108
+        yield "        <div class=\"mb-4\">
+            ";
+        // line 109
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 109, $this->source); })()), "commentaire", [], "any", false, false, false, 109), 'label', ["label_attr" => ["class" => "form-label"], "label" => "Description"]);
+        yield "
+            ";
+        // line 110
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 110, $this->source); })()), "commentaire", [], "any", false, false, false, 110), 'widget', ["attr" => ["class" => "form-control", "placeholder" => "Write your description here..."]]);
+        yield "
+            ";
+        // line 111
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 111, $this->source); })()), "commentaire", [], "any", false, false, false, 111), 'errors');
+        yield "
+        </div>
+
+        ";
+        // line 115
+        yield "        <div class=\"text-center mt-4\">
+            <button type=\"submit\" class=\"btn btn-primary\">
                 ";
-        // line 182
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(((array_key_exists("button_label", $context)) ? (Twig\Extension\CoreExtension::default((isset($context["button_label"]) || array_key_exists("button_label", $context) ? $context["button_label"] : (function () { throw new RuntimeError('Variable "button_label" does not exist.', 182, $this->source); })()), "Submit")) : ("Submit")), "html", null, true);
+        // line 117
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(((array_key_exists("button_label", $context)) ? (Twig\Extension\CoreExtension::default((isset($context["button_label"]) || array_key_exists("button_label", $context) ? $context["button_label"] : (function () { throw new RuntimeError('Variable "button_label" does not exist.', 117, $this->source); })()), "Submit")) : ("Submit")), "html", null, true);
         yield "
             </button>
         </div>
     </div>
 
     ";
-        // line 187
-        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 187, $this->source); })()), 'form_end');
+        // line 122
+        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 122, $this->source); })()), 'form_end');
         yield "
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all necessary elements
+    const typeSelect = document.querySelector('.complaint-type-select');
+    const taxiFieldContainer = document.querySelector('.taxi-field-container');
+    
+    // Make sure we found the elements
+    if (!typeSelect || !taxiFieldContainer) {
+        console.error('Could not find required elements:', {
+            typeSelect,
+            taxiFieldContainer
+        });
+        return;
+    }
+    
+    console.log('Found elements:', {
+        typeSelect,
+        taxiFieldContainer
+    });
+
+    // Function to check and toggle the taxi field
+    function checkComplaintType() {
+        // Get the selected option text rather than value
+        const selectedOption = typeSelect.options[typeSelect.selectedIndex];
+        const selectedText = selectedOption ? selectedOption.text.trim().toLowerCase() : '';
+        const selectedValue = typeSelect.value;
+        
+        console.log('Selected:', {
+            text: selectedText,
+            value: selectedValue,
+            index: typeSelect.selectedIndex
+        });
+        
+        // Check if the selected option contains \"taxi\"
+        if (selectedText.includes('taxi') || selectedValue.includes('taxi')) {
+            taxiFieldContainer.style.display = 'block';
+            console.log('Showing taxi field');
+        } else {
+            taxiFieldContainer.style.display = 'none';
+            console.log('Hiding taxi field');
+        }
+    }
+    
+    // Run the check initially
+    checkComplaintType();
+    
+    // Add event listener for changes
+    typeSelect.addEventListener('change', checkComplaintType);
+});
+</script>
 ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
@@ -351,22 +359,21 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  320 => 187,  312 => 182,  303 => 176,  299 => 174,  297 => 168,  292 => 166,  284 => 161,  280 => 159,  278 => 154,  273 => 152,  263 => 145,  260 => 144,  247 => 143,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
+        return array (  277 => 122,  269 => 117,  265 => 115,  259 => 111,  255 => 110,  251 => 109,  248 => 108,  242 => 104,  238 => 103,  234 => 102,  231 => 101,  225 => 97,  221 => 96,  217 => 95,  214 => 94,  206 => 88,  203 => 87,  190 => 86,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
     }
 
     public function getSourceContext(): Source
     {
         return new Source("{% extends 'base.html.twig' %}
 
-{% block title %}Leave a complaint{% endblock %}
+{% block title %}Leave a Complaint{% endblock %}
 
 {% block stylesheets %}
 <style>
-    /* Updated container styles to center the content */
     .container {
         font-family: 'Arial', sans-serif;
         max-width: 600px;
-        margin: 50px auto; /* centers the container horizontally */
+        margin: 50px auto;
         padding: 0 15px;
     }
 
@@ -376,7 +383,6 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         padding: 30px;
         margin-top: 30px;
-        /* Remove margin-right so it stays centered */
     }
 
     h2 {
@@ -384,6 +390,7 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         font-weight: bold;
         color: #333;
         margin-bottom: 20px;
+        text-align: center;
     }
 
     .form-label {
@@ -409,9 +416,8 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
         background-color: #fff;
     }
 
-    /* Sky blue color for the button */
     .btn-primary {
-        background-color: #87CEEB; /* Sky blue color */
+        background-color: #87CEEB;
         border: none;
         padding: 12px 24px;
         font-size: 18px;
@@ -420,22 +426,12 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
     }
 
     .btn-primary:hover {
-        background-color: #5b9bd5; /* Slightly darker blue */
+        background-color: #5b9bd5;
         transform: translateY(-2px);
     }
 
     .text-center {
         text-align: center;
-    }
-
-    .needs-validation .form-control:invalid, 
-    .needs-validation .form-select:invalid {
-        border-color: #dc3545;
-    }
-
-    .needs-validation .form-control:valid, 
-    .needs-validation .form-select:valid {
-        border-color: #28a745;
     }
 
     .mb-4 {
@@ -445,55 +441,10 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
     .mt-4 {
         margin-top: 1.5rem;
     }
-
-    .shadow-sm {
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-    }
-
-    .rounded-4 {
-        border-radius: 1rem;
-    }
-
-    /* Pagination styles remain unchanged */
-    .pagination {
-        display: flex;
-        justify-content: center;
-        padding: 1rem 0;
-        list-style: none;
-    }
-
-    .pagination li {
-        margin: 0 5px;
-    }
-
-    .pagination a {
-        display: inline-block;
-        padding: 8px 12px;
-        font-size: 14px;
-        font-weight: bold;
-        color: #007bff;
-        text-decoration: none;
-        border: 1px solid #dee2e6;
-        border-radius: 4px;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .pagination a:hover {
-        background-color: #007bff;
-        color: white;
-    }
-
-    .pagination .active a {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-    }
-
-    .pagination .disabled a {
-        color: #6c757d;
-        pointer-events: none;
-        background-color: #f8f9fa;
-        border-color: #dee2e6;
+    
+    /* Initially hide the taxi field */
+    .taxi-field-container {
+        display: none;
     }
 </style>
 {% endblock %}
@@ -502,41 +453,33 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
 <div class=\"container\">
     {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
 
-    <div class=\"card shadow-sm p-4 mb-4 rounded-4\">
-        <h2 class=\"text-center\">Leave a complaint</h2>
+    <div class=\"card\">
+        <h2>Leave a Complaint</h2>
 
-        <!-- Type Field -->
+        {# Complaint Type Field #}
         <div class=\"mb-4\">
             {{ form_label(form.type, 'Complaint Type', {'label_attr': {'class': 'form-label'}}) }}
-            <div>
-                {{ form_widget(form.type, {
-                    'attr': {
-                        'class': 'form-select',
-                        'aria-label': 'Select complaint type'
-                    }
-                }) }}
-            </div>
+            {{ form_widget(form.type, {'attr': {'class': 'form-select complaint-type-select'}}) }}
             {{ form_errors(form.type) }}
         </div>
 
-        <!-- Comment Field -->
+        {# Taxi Immatriculation Field #}
+        <div class=\"mb-4 taxi-field-container\">
+            {{ form_label(form.taxi, 'Taxi Immatriculation', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.taxi, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.taxi) }}
+        </div>
+
+        {# Comment Field #}
         <div class=\"mb-4\">
-            {{ form_label(form.commentaire, 'Your Comment', {'label_attr': {'class': 'form-label'}}) }}
-            <div>
-                {{ form_widget(form.commentaire, {
-                    'attr': {
-                        'class': 'form-control',
-                        'placeholder': 'Write your comment here...',
-                        'aria-label': 'Write your comment'
-                    }
-                }) }}
-            </div>
+            {{ form_label(form.commentaire, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.commentaire, {'attr': {'class': 'form-control', 'placeholder': 'Write your description here...'}}) }}
             {{ form_errors(form.commentaire) }}
         </div>
 
-        <!-- Submit Button -->
+        {# Submit Button #}
         <div class=\"text-center mt-4\">
-            <button type=\"submit\" class=\"btn btn-primary btn-lg rounded-pill px-5\">
+            <button type=\"submit\" class=\"btn btn-primary\">
                 {{ button_label|default('Submit') }}
             </button>
         </div>
@@ -544,7 +487,57 @@ class __TwigTemplate_f75e4a2acfd9a4546f414c3015c469bf extends Template
 
     {{ form_end(form) }}
 </div>
-{% endblock %}
-", "avis/_form.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\avis\\_form.html.twig");
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all necessary elements
+    const typeSelect = document.querySelector('.complaint-type-select');
+    const taxiFieldContainer = document.querySelector('.taxi-field-container');
+    
+    // Make sure we found the elements
+    if (!typeSelect || !taxiFieldContainer) {
+        console.error('Could not find required elements:', {
+            typeSelect,
+            taxiFieldContainer
+        });
+        return;
+    }
+    
+    console.log('Found elements:', {
+        typeSelect,
+        taxiFieldContainer
+    });
+
+    // Function to check and toggle the taxi field
+    function checkComplaintType() {
+        // Get the selected option text rather than value
+        const selectedOption = typeSelect.options[typeSelect.selectedIndex];
+        const selectedText = selectedOption ? selectedOption.text.trim().toLowerCase() : '';
+        const selectedValue = typeSelect.value;
+        
+        console.log('Selected:', {
+            text: selectedText,
+            value: selectedValue,
+            index: typeSelect.selectedIndex
+        });
+        
+        // Check if the selected option contains \"taxi\"
+        if (selectedText.includes('taxi') || selectedValue.includes('taxi')) {
+            taxiFieldContainer.style.display = 'block';
+            console.log('Showing taxi field');
+        } else {
+            taxiFieldContainer.style.display = 'none';
+            console.log('Hiding taxi field');
+        }
+    }
+    
+    // Run the check initially
+    checkComplaintType();
+    
+    // Add event listener for changes
+    typeSelect.addEventListener('change', checkComplaintType);
+});
+</script>
+{% endblock %}", "avis/_form.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\avis\\_form.html.twig");
     }
 }

@@ -2,10 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\Avis;
+use App\Entity\Taxi;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Entity\Avis;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -24,10 +26,18 @@ class AvisType extends AbstractType
                 'placeholder' => 'Select a complaint type',
                 'required' => true,
             ])
+            ->add('taxi', EntityType::class, [
+                'class' => Taxi::class,
+                'choice_label' => 'immatriculation',
+                'label' => 'Taxi Immatriculation',
+                'placeholder' => 'Select a taxi',
+                'required' => false,
+                'mapped' => false, // Not mapped to the Avis entity
+            ])
             ->add('commentaire', TextareaType::class, [
                 'label' => 'Comment',
                 'required' => true,
-                'empty_data' => '',  // Ensures an empty string is submitted if the field is left blank
+                'empty_data' => '',
                 'attr' => [
                     'placeholder' => 'Enter your comment here...',
                 ],

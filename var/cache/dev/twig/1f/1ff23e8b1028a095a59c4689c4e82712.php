@@ -98,7 +98,7 @@ class __TwigTemplate_bc09decd34b46f2b099f7fb37e13a6c3 extends Template
 
         // line 6
         yield "<div style=\"margin-left: 280px;\">
-    <h1>Edit Avis</h1>
+    <h3>Edit complaint</h3>
 
     ";
         // line 9
@@ -157,7 +157,7 @@ class __TwigTemplate_bc09decd34b46f2b099f7fb37e13a6c3 extends Template
 
 {% block body %}
 <div style=\"margin-left: 280px;\">
-    <h1>Edit Avis</h1>
+    <h3>Edit complaint</h3>
 
     {{ include('avis/_form.html.twig', {'button_label': 'Update'}) }}
 
