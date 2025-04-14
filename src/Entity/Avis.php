@@ -45,6 +45,10 @@ class Avis
     #[Assert\NotNull]
     #[Assert\Choice(choices: ["processed", "not processed"], message: 'Status must be either "processed" or "not processed".')]
     private ?string $statut = null;
+    
+    #[ORM\ManyToOne(targetEntity: Taxi::class)]
+    #[ORM\JoinColumn(name: "taxi_id", referencedColumnName: "id", nullable: true)] 
+    private ?Taxi $taxi = null;
 
     public function __construct()
     {
@@ -139,6 +143,16 @@ class Avis
     public function setStatut(string $statut): self
     {
         $this->statut = $statut;
+        return $this;
+    }
+    public function getTaxi(): ?Taxi
+    {
+        return $this->taxi;
+    }
+
+    public function setTaxi(?Taxi $taxi): self
+    {
+        $this->taxi = $taxi;
         return $this;
     }
 }

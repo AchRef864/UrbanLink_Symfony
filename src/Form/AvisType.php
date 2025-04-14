@@ -32,7 +32,6 @@ class AvisType extends AbstractType
                 'label' => 'Taxi Immatriculation',
                 'placeholder' => 'Select a taxi',
                 'required' => false,
-                'mapped' => false, // Not mapped to the Avis entity
             ])
             ->add('commentaire', TextareaType::class, [
                 'label' => 'Comment',
