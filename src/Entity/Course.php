@@ -22,6 +22,7 @@ class Course
 
     #[ORM\ManyToOne(targetEntity: \App\Entity\Taxi::class, inversedBy: 'courses')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[Assert\NotNull(message: "Veuillez sélectionner un taxi.")]
     private ?\App\Entity\Taxi $taxi = null;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
@@ -34,21 +35,21 @@ class Course
 
     #[ORM\Column(type: 'string', length: 50)]
     #[Assert\NotBlank(message: "La ville de départ est obligatoire.")]
-    private string $villeDepart;
+    private ?string $villeDepart = null;
 
     #[ORM\Column(type: 'string', length: 50)]
     #[Assert\NotBlank(message: "La ville d'arrivée est obligatoire.")]
-    private string $villeArrivee;
+    private ?string $villeArrivee = null;
 
     #[ORM\Column(type: 'decimal', precision: 6, scale: 2)]
     #[Assert\NotBlank(message: "La distance est obligatoire.")]
     #[Assert\Positive(message: "La distance doit être supérieure à 0.")]
-    private string $distanceKm;
+    private ?string $distanceKm = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     #[Assert\NotBlank(message: "Le montant est obligatoire.")]
     #[Assert\PositiveOrZero(message: "Le montant ne peut être négatif.")]
-    private string $montant;
+    private ?string $montant = null;
 
     #[ORM\Column(type: 'string', length: 20, options: ['default' => 'En attente'])]
     private string $statut = 'En attente';
@@ -58,7 +59,7 @@ class Course
         $this->dateReservation = new \DateTime();
     }
 
-    // Getters et setters...
+    // Getters et setters…
 
     public function getId(): ?int
     {
@@ -109,45 +110,45 @@ class Course
         return $this;
     }
 
-    public function getVilleDepart(): string
+    public function getVilleDepart(): ?string
     {
         return $this->villeDepart;
     }
 
-    public function setVilleDepart(string $villeDepart): self
+    public function setVilleDepart(?string $villeDepart): self
     {
         $this->villeDepart = $villeDepart;
         return $this;
     }
 
-    public function getVilleArrivee(): string
+    public function getVilleArrivee(): ?string
     {
         return $this->villeArrivee;
     }
 
-    public function setVilleArrivee(string $villeArrivee): self
+    public function setVilleArrivee(?string $villeArrivee): self
     {
         $this->villeArrivee = $villeArrivee;
         return $this;
     }
 
-    public function getDistanceKm(): string
+    public function getDistanceKm(): ?string
     {
         return $this->distanceKm;
     }
 
-    public function setDistanceKm(string $distanceKm): self
+    public function setDistanceKm(?string $distanceKm): self
     {
         $this->distanceKm = $distanceKm;
         return $this;
     }
 
-    public function getMontant(): string
+    public function getMontant(): ?string
     {
         return $this->montant;
     }
 
-    public function setMontant(string $montant): self
+    public function setMontant(?string $montant): self
     {
         $this->montant = $montant;
         return $this;

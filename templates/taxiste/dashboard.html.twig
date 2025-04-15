@@ -1,4 +1,4 @@
-{% extends 'front_office/base.html.twig' %}
+{% extends 'back_office/base.html.twig' %}
 
 {% block title %}Tableau de bord Taxiste{% endblock %}
 
@@ -36,6 +36,10 @@
       <thead>
         <tr class="bg-gray-100">
           <th class="py-2 px-4 border">Date</th>
+          <th class="py-2 px-4 border">villeDepart</th>
+          <th class="py-2 px-4 border">villeArrivee</th>
+          <th class="py-2 px-4 border">Distance</th>
+          <th class="py-2 px-4 border">Montant</th>
           <th class="py-2 px-4 border">Client</th>
           <th class="py-2 px-4 border">Statut</th>
           <th class="py-2 px-4 border">Actions</th>
@@ -45,7 +49,11 @@
         {% for course in courses %}
           <tr class="hover:bg-gray-50">
             <td class="py-2 px-4 border">{{ course.dateCourse|date('d/m/Y H:i') }}</td>
-            <td class="py-2 px-4 border">{{ course.user.Email }}</td>
+            <td class="py-2 px-4 border">{{ course.villeDepart }}</td>
+            <td class="py-2 px-4 border">{{ course.villeArrivee }}</td>
+            <td class="py-2 px-4 border">{{ course.distanceKm }} km</td>
+            <td class="py-2 px-4 border">€{{ course.montant }}</td>
+            <td class="py-2 px-4 border">{{ course.user.nom }}</td>
             <td class="py-2 px-4 border">{{ course.statut }}</td>
             <td class="py-2 px-4 border space-x-2">
               {% if course.statut|lower == 'en attente' %}

@@ -143,4 +143,21 @@ class TaxiController extends AbstractController
 
         return $this->redirectToRoute('taxi_index');
     }
+    #[Route('/taxis/nearby', name: 'get_nearby_taxis')]
+    public function getNearbyTaxis(Request $request, TaxiRepository $taxiRepository): JsonResponse
+    {
+        $longitude = (float) $request->query->get('longitude');
+        $latitude  = (float) $request->query->get('latitude');
+
+        if (!$longitude || !$latitude) {
+            return new JsonResponse(['error' => 'Coordonnées manquantes.'], 400);
+        }
+
+        // Définir un rayon de recherche (par exemple 5 km)
+        $radius = 5;
+
+        $taxis = $taxiRepository->findNearbyTaxis($longitude, $latitude, $radius);
+
+        return $this->json($taxis);
+    }
 }

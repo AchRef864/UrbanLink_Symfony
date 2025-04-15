@@ -42,8 +42,6 @@ security:
         - { path: ^/admin/users/edit, roles: ROLE_ADMIN }
         - { path: ^/admin/users/block, roles: ROLE_ADMIN }
         - { path: ^/admin/users/unblock, roles: ROLE_ADMIN }
-        - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/driver, roles: ROLE_DRIVER }
-        - { path: ^/taxi, roles: ROLE_TAXI }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/client, roles: ROLE_CLIENT }

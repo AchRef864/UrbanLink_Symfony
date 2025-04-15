@@ -46,7 +46,6 @@ class TaxisteController extends AbstractController
         
         // Mise à jour des statuts
         $course->setStatut('Acceptée');
-        $taxi->setStatut('En course');
         $em->flush();
         
         // Préparation de l'email structuré au client

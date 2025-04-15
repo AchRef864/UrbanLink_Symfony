@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use App\Entity\User;
 
 class AuthenticationSubscriber implements EventSubscriberInterface
 {

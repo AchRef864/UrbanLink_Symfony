@@ -1,4 +1,5 @@
 <?php
+// src/Form/CourseType.php
 
 namespace App\Form;
 
@@ -11,12 +12,15 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class CourseType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // Liste des villes disponibles
         $cities = [
             'Tunis'     => 'Tunis',
             'Sousse'    => 'Sousse',
@@ -33,76 +37,88 @@ class CourseType extends AbstractType
         $builder
             ->add('taxi', EntityType::class, [
                 'class'         => Taxi::class,
-                'query_builder' => function (\App\Repository\TaxiRepository $repo) use ($options) {
+                'query_builder' => function ($repo) use ($options) {
                     $qb = $repo->createQueryBuilder('t')
                         ->where('t.statut = :statut')
                         ->setParameter('statut', 'Disponible');
-                    
-                    // Si le formulaire est en modification et qu'un taxi est déjà associé, l'inclure dans la liste
+
                     if ($options['data'] && $options['data']->getTaxi()) {
                         $qb->orWhere('t.id = :taxiId')
                            ->setParameter('taxiId', $options['data']->getTaxi()->getId());
                     }
                     return $qb;
                 },
-                'choice_label'  => function(Taxi $taxi) {
-                    return $taxi->getImmatriculation() . ' (' . $taxi->getTarifKm() . ' TND/km)';
-                },
-                // Formattage du tarif avec deux décimales et point comme séparateur
-                'choice_attr'   => function(Taxi $taxi, $key, $value) {
-                    return ['data-tarif' => number_format($taxi->getTarifKm(), 2, '.', '')];
-                },
-                'placeholder'   => 'Sélectionnez un taxi',
-                'required'      => true,
+                'choice_label' => fn(Taxi $taxi) => $taxi->getImmatriculation() . ' (' . $taxi->getTarifKm() . ' TND/km)',
+                'choice_attr'  => fn(Taxi $taxi) => [
+                    'data-tarif' => number_format($taxi->getTarifKm(), 2, '.', '')
+                ],
+                'placeholder'  => 'Sélectionnez un taxi',
+                'required'     => true,
             ])
             ->add('dateCourse', DateTimeType::class, [
-                'widget'   => 'single_text',
-                'required' => true,
+                'widget' => 'single_text',
             ])
-            ->add('villeDepart', ChoiceType::class, [
-                'choices'     => $cities,
-                'placeholder' => 'Choisissez la ville de départ',
-                'required'    => true,
-            ])
-            ->add('villeArrivee', ChoiceType::class, [
-                'choices'     => $cities,
-                'placeholder' => 'Choisissez la ville d\'arrivée',
-                'required'    => true,
-            ])
+            // Pour villeDepart :
+->add('villeDepart', TextType::class, [
+    'constraints' => [
+        new NotBlank(['message' => 'La ville de départ est obligatoire.'])
+    ],
+    'attr' => [
+        'readonly' => 'readonly'
+    ]
+])
+
+// Pour villeArrivee :
+->add('villeArrivee', TextType::class, [
+    'constraints' => [
+        new NotBlank(['message' => 'La ville d\'arrivée est obligatoire.'])
+    ],
+    'attr' => [
+        'readonly' => 'readonly'
+    ]
+])
             ->add('distanceKm', NumberType::class, [
-                'required' => true,
-                'attr'     => ['id' => 'distanceKm']
+                'attr' => ['id' => 'distanceKm'],
             ])
             ->add('montant', NumberType::class, [
-                'required'   => false, // Non requis, car calculé automatiquement
-                'data'       => 0,     // Valeur par défaut pour forcer l'affichage
-                'attr'       => [
-                    'readonly' => true, // Lecture seule, l'utilisateur ne peut pas le modifier
-                    'id'       => 'montant'
+                'data' => 0,
+                'attr' => [
+                    'readonly' => true,
+                    'id'       => 'montant',
                 ],
             ]);
 
-        // Affichage du champ statut uniquement si autorisé par l'option
         if ($options['show_statut']) {
             $builder->add('statut', ChoiceType::class, [
-                'choices'  => [
+                'choices'     => [
                     'En attente' => 'En attente',
-                    'En course'   => 'En course',
+                    'En course'  => 'En course',
                     'Terminée'   => 'Terminée',
-                    'Annulée'   => 'Annulée',
+                    'Annulée'    => 'Annulée',
                 ],
-                'required' => true,
-                'label'    => 'Statut',
+                'placeholder' => 'Choisissez un statut',
+                'empty_data'  => '',
             ]);
         }
+
+        // Écouteur PRE_SUBMIT pour transformer null en '' pour certains champs
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
+            $data = $event->getData();
+            foreach (['villeDepart', 'villeArrivee', 'statut'] as $field) {
+                if (array_key_exists($field, $data) && null === $data[$field]) {
+                    $data[$field] = '';
+                }
+            }
+            $event->setData($data);
+        });
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class'             => Course::class,
-            'show_statut'            => true,  // Option pour afficher ou non le champ statut
-            'auto_calculate_montant' => false, // Option complémentaire (non utilisée ici côté JS)
+            'show_statut'            => true,
+            'auto_calculate_montant' => false,
         ]);
     }
 }

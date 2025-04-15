@@ -4,100 +4,91 @@
 
 {% block body %}
 <div class="bg-white shadow-md rounded-2xl max-w-3xl mx-auto border border-yellow-300">
-  <!-- Section titre avec fond jaune -->
-  <div class="px-6 py-3 rounded-t-2xl" style="background-color: #FFEB3B;">
-    <h1 class="text-xl font-bold" style="color: #FF9800;">Modifier un Taxi</h1>
+  <!-- Section Titre -->
+  <div class="px-6 py-3 rounded-t-2xl" style="background-color: rgb(163, 209, 207);">
+    <h1 class="text-xl font-bold" style="color: rgb(0, 11, 222);">Modifier un Taxi</h1>
   </div>
-
+  
+  <!-- Formulaire -->
   <div class="p-6">
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
+        <!-- Champ Immatriculation -->
         <div class="mb-4">
           {{ form_label(form.immatriculation) }}
           {{ form_widget(form.immatriculation, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
-          <div class="text-red-500 text-sm mt-1">
-            {{ form_errors(form.immatriculation) }}
-          </div>
+          <div class="text-red-500 text-sm mt-1">{{ form_errors(form.immatriculation) }}</div>
         </div>
-
+        <!-- Champ Marque -->
         <div class="mb-4">
           {{ form_label(form.marque) }}
           {{ form_widget(form.marque, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
-          <div class="text-red-500 text-sm mt-1">
-            {{ form_errors(form.marque) }}
-          </div>
+          <div class="text-red-500 text-sm mt-1">{{ form_errors(form.marque) }}</div>
         </div>
-
+        <!-- Champ Modèle -->
         <div class="mb-4">
           {{ form_label(form.modele) }}
           {{ form_widget(form.modele, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
-          <div class="text-red-500 text-sm mt-1">
-            {{ form_errors(form.modele) }}
-          </div>
+          <div class="text-red-500 text-sm mt-1">{{ form_errors(form.modele) }}</div>
         </div>
-
+        <!-- Champ Année de Fabrication -->
         <div class="mb-4">
           {{ form_label(form.anneeFabrication) }}
           {{ form_widget(form.anneeFabrication, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
-          <div class="text-red-500 text-sm mt-1">
-            {{ form_errors(form.anneeFabrication) }}
-          </div>
+          <div class="text-red-500 text-sm mt-1">{{ form_errors(form.anneeFabrication) }}</div>
         </div>
-
+        <!-- Champ Capacité -->
         <div class="mb-4">
           {{ form_label(form.capacite) }}
           {{ form_widget(form.capacite, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
-          <div class="text-red-500 text-sm mt-1">
-            {{ form_errors(form.capacite) }}
-          </div>
+          <div class="text-red-500 text-sm mt-1">{{ form_errors(form.capacite) }}</div>
         </div>
-
+        <!-- Champ Zone Desserte -->
         <div class="mb-4">
           {{ form_label(form.zoneDesserte) }}
           {{ form_widget(form.zoneDesserte, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
-          <div class="text-red-500 text-sm mt-1">
-            {{ form_errors(form.zoneDesserte) }}
-          </div>
+          <div class="text-red-500 text-sm mt-1">{{ form_errors(form.zoneDesserte) }}</div>
         </div>
-
+        <!-- Champ Statut -->
         <div class="mb-4">
           {{ form_label(form.statut) }}
           {{ form_widget(form.statut, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
-          <div class="text-red-500 text-sm mt-1">
-            {{ form_errors(form.statut) }}
-          </div>
+          <div class="text-red-500 text-sm mt-1">{{ form_errors(form.statut) }}</div>
         </div>
-
+        <!-- Champ Numéro de Licence -->
         <div class="mb-4">
           {{ form_label(form.licenceNumero) }}
           {{ form_widget(form.licenceNumero, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
-          <div class="text-red-500 text-sm mt-1">
-            {{ form_errors(form.licenceNumero) }}
-          </div>
+          <div class="text-red-500 text-sm mt-1">{{ form_errors(form.licenceNumero) }}</div>
         </div>
-
+        <!-- Champ Date d'Obtention de Licence -->
         <div class="mb-4">
           {{ form_label(form.licenceDateObtention) }}
           {{ form_widget(form.licenceDateObtention, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
-          <div class="text-red-500 text-sm mt-1">
-            {{ form_errors(form.licenceDateObtention) }}
-          </div>
+          <div class="text-red-500 text-sm mt-1">{{ form_errors(form.licenceDateObtention) }}</div>
         </div>
-
+        <!-- Champ Tarif de Base -->
         <div class="mb-4">
           {{ form_label(form.tarifBase) }}
           {{ form_widget(form.tarifBase, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
-          <div class="text-red-500 text-sm mt-1">
-            {{ form_errors(form.tarifBase) }}
-          </div>
+          <div class="text-red-500 text-sm mt-1">{{ form_errors(form.tarifBase) }}</div>
         </div>
-
       </div>
 
+      <!-- Section Carte -->
+      <div class="mb-4">
+        <label class="block font-medium mb-2">
+          Position du Taxi (cliquez sur la carte pour sélectionner) :
+        </label>
+        <div id="mapDiv" style="height: 400px; width: 100%; border: 1px solid #ccc;"></div>
+      </div>
+
+      <!-- Champs cachés pour Longitude & Latitude -->
+      {{ form_widget(form.longitude) }}
+      {{ form_widget(form.latitude) }}
+
       <div class="mt-6 flex justify-between items-center">
-        <!-- Bouton Modifier Taxi -->
-        <button type="submit" class="bg-[#FFEB3B] hover:bg-[#FF9800] text-white font-bold py-2 px-6 rounded-lg shadow-md transition" style="background-color: #FFEB3B; color: #FFFFFF;">
+        <button type="submit" class="bg-[#FFEB3B] hover:bg-[#FF9800] text-white font-bold py-2 px-6 rounded-lg shadow-md transition" style="background-color: rgb(116, 104, 2); color: #FFFFFF;">
           Modifier Taxi
         </button>
         <a href="{{ path('taxi_index') }}" class="text-sm text-slate-500 hover:underline">← Retour à la liste</a>
@@ -105,5 +96,97 @@
     {{ form_end(form) }}
   </div>
 </div>
+{% endblock %}
 
+{% block javascripts %}
+  {{ parent() }}
+  {# Inclusion de l'API ArcGIS avec defer #}
+  <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.25/" defer></script>
+  <script>
+    window.addEventListener("load", function () {
+      console.log("DOM complètement chargé pour Modifier Taxi");
+      require([
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/Graphic"
+      ], function(Map, MapView, Graphic) {
+
+        console.log("Modules ArcGIS chargés (Modifier Taxi)");
+
+        const map = new Map({ basemap: "streets-navigation-vector" });
+
+        // Récupération des coordonnées existantes ou valeurs par défaut
+        const longitude = {{ form.vars.value.longitude|default(10.18) }};
+        const latitude = {{ form.vars.value.latitude|default(36.80) }};
+        console.log("Coordonnées initiales (Modifier Taxi) :", longitude, latitude);
+
+        const view = new MapView({
+          container: "mapDiv",
+          map: map,
+          zoom: 12,
+          center: [longitude, latitude]
+        });
+
+        {% if form.vars.value and form.vars.value.longitude is not null and form.vars.value.latitude is not null %}
+          const initialGraphic = new Graphic({
+            geometry: { type: "point", longitude: longitude, latitude: latitude },
+            symbol: { type: "simple-marker", color: "blue", size: "12px" }
+          });
+          view.graphics.add(initialGraphic);
+          console.log("Marqueur initial ajouté (Modifier Taxi)");
+        {% endif %}
+
+        view.on("click", function(event) {
+          console.log("Clic sur la carte (Modifier Taxi) :", event.mapPoint);
+          view.graphics.removeAll();
+          const point = { type: "point", longitude: event.mapPoint.longitude, latitude: event.mapPoint.latitude };
+          const marker = new Graphic({
+            geometry: point,
+            symbol: { type: "simple-marker", color: "blue", size: "12px" }
+          });
+          view.graphics.add(marker);
+
+          const lngField = document.getElementById('{{ form.longitude.vars.id }}');
+          const latField = document.getElementById('{{ form.latitude.vars.id }}');
+          if(lngField && latField){
+            lngField.value = event.mapPoint.longitude;
+            latField.value = event.mapPoint.latitude;
+            console.log("Champs de coordonnées mis à jour (Modifier Taxi) :", lngField.value, latField.value);
+          } else {
+            console.error("Champs de coordonnées introuvables (Modifier Taxi)");
+          }
+        });
+      });
+    });
+  </script>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#{{ form.marque.vars.id }}').on('change', function () {
+        const marque = $(this).val();
+        const modeleField = $('#{{ form.modele.vars.id }}');
+        if (marque) {
+          $.ajax({
+            url: '{{ path("get_models") }}',
+            method: 'POST',
+            data: { marque: marque },
+            success: function (data) {
+              modeleField.empty();
+              modeleField.append('<option value="">Choisissez un modèle</option>');
+              data.forEach(function (model) {
+                modeleField.append('<option value="' + model + '">' + model + '</option>');
+              });
+            },
+            error: function () {
+              alert('Une erreur est survenue lors du chargement des modèles.');
+            }
+          });
+        } else {
+          modeleField.empty();
+          modeleField.append('<option value="">Choisissez d\'abord une marque</option>');
+        }
+      });
+    });
+  </script>
 {% endblock %}

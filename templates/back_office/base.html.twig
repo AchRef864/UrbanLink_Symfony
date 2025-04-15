@@ -40,11 +40,11 @@
     <!-- Sidebar -->
     <aside class="fixed inset-y-0 flex-wrap items-center justify-between block p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0" aria-expanded="false">
         <div class="h-19 relative">
-            {# Ajout d'une icône pour fermer la sidebar sur mobile (optionnel) #}
+            {# Icône pour fermer la sidebar sur mobile (optionnel) #}
             <i class="absolute top-0 right-0 p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden" sidenav-close></i>
             <a class="block px-8 py-6 m-0 text-sm whitespace-nowrap dark:text-white text-slate-700" href="{{ path('app_dashboard') }}">
                 <img src="{{ asset('assets/img/logo-ct-dark.png') }}" class="inline h-full max-w-full transition-all duration-200 dark:hidden ease-nav-brand max-h-8" alt="logo">
-                {# Si vous souhaitez afficher un logo alternatif pour le mode dark, vous pouvez décommenter la ligne ci-dessous #}
+                {# Logo alternatif pour le mode dark, à décommenter si nécessaire #}
                 {# <img src="{{ asset('assets/img/logo-ct.png') }}" class="hidden h-full max-w-full transition-all duration-200 dark:inline ease-nav-brand max-h-8" alt="logo"> #}
                 <span class="ml-1 font-semibold transition-all duration-200 ease-nav-brand">Course & Taxi</span>
             </a>
@@ -55,7 +55,7 @@
         {% block sidebar %}
         <div class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
             <ul class="flex flex-col pl-0 mb-0">
-                {# Exemple d'item : Dashboard (affiché par défaut si show_dashboard n'est pas défini ou vaut true) #}
+                {# Dashboard #}
                 {% if show_dashboard is not defined or show_dashboard %}
                 <li class="mt-0.5 w-full">
                     <a href="{{ path('app_dashboard') }}" class="py-2.7 {{ app.request.attributes.get('_route') starts with 'dashboard_' ? 'bg-blue-500/13' : '' }} dark:text-white text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors">
@@ -65,7 +65,7 @@
                 </li>
                 {% endif %}
 
-                {# Gestion Taxis (conserve l'item existant) #}
+                {# Gestion Taxis #}
                 <li class="mt-0.5 w-full">
                     <a href="{{ path('taxi_index') }}" class="py-2.7 {{ app.request.attributes.get('_route') starts with 'taxi_' ? 'bg-blue-500/13' : '' }} dark:text-white text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors">
                         <i class="ni ni-bus-front-12 mr-2"></i>
@@ -73,7 +73,7 @@
                     </a>
                 </li>
 
-                {# Gestion Courses (conserve l'item existant) #}
+                {# Gestion Courses #}
                 <li class="mt-0.5 w-full">
                     <a href="{{ path('course_index') }}" class="py-2.7 {{ app.request.attributes.get('_route') starts with 'course_' ? 'bg-blue-500/13' : '' }} dark:text-white text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors">
                         <i class="ni ni-delivery-fast mr-2"></i>
@@ -81,7 +81,23 @@
                     </a>
                 </li>
 
-                {# Vous pouvez ajouter d'autres items conditionnels, par exemple pour la maintenance ou la facturation #}
+                {# Bouton Taxiste #}
+                <li class="mt-0.5 w-full">
+                    <a href="{{ path('taxiste_dashboard') }}" class="py-2.7 {{ app.request.attributes.get('_route') starts with 'taxiste_dashboard' ? 'bg-blue-500/13' : '' }} dark:text-white text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors">
+                        <i class="ni ni-circle-08 mr-2"></i>
+                        <span class="ml-1">Taxiste</span>
+                    </a>
+                </li>
+
+                {# Bouton Client Courses vers les courses de l'utilisateur #}
+                <li class="mt-0.5 w-full">
+                    <a href="{{ path('user_courses') }}" class="py-2.7 {{ app.request.attributes.get('_route') starts with 'user_courses' ? 'bg-blue-500/13' : '' }} dark:text-white text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors">
+                        <i class="ni ni-shop mr-2"></i>
+                        <span class="ml-1">Client Courses</span>
+                    </a>
+                </li>
+
+                {# Autres items, par exemple Maintenance #}
                 {% if show_maintenance is defined and show_maintenance %}
                 <li class="mt-0.5 w-full">
                     <a href="{{ path('maintenance_index') }}" class="py-2.7 dark:text-white text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors">
@@ -94,7 +110,7 @@
         </div>
         {% endblock %}
 
-        {# Bloc facultatif pour afficher la documentation en bas de la sidebar #}
+        {# Bloc optionnel pour afficher la documentation en bas de la sidebar #}
         {% if show_docs is not defined or show_docs %}
         <div class="mx-4">
             <div class="relative flex flex-col min-w-0 break-words bg-transparent border-0 shadow-none rounded-2xl bg-clip-border" sidenav-card>
@@ -153,7 +169,6 @@
         </footer>
     </main>
 
-    {# En option, si vous préférez placer certains scripts en fin de page, vous pouvez les laisser ici
-       Notez que nous avons déjà inclus certains scripts en head avec async. #}
+    {# Vous pouvez aussi placer certains scripts en fin de page si besoin #}
 </body>
 </html>

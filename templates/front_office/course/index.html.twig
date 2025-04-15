@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'back_office/base.html.twig' %}
 
 {% block title %}Mes Courses{% endblock %}
 
@@ -22,6 +22,12 @@
       <table class="w-full mb-0 text-sm text-left text-slate-500">
         <thead class="text-xs uppercase bg-slate-50 border-b border-slate-100">
           <tr>
+            <th class="px-8 py-4 font-bold text-slate-600">Nom Taxiste</th>
+            <th class="px-8 py-4 font-bold text-slate-600">Marque Taxi</th>
+            <th class="px-8 py-4 font-bold text-slate-600">Modèle Taxi</th>
+            <th class="px-8 py-4 font-bold text-slate-600">Immatriculation</th>
+            <th class="px-8 py-4 font-bold text-slate-600">Client</th>
+            <th class="px-8 py-4 font-bold text-slate-600">Chauffeur</th>
             <th class="px-8 py-4 font-bold text-slate-600">Date</th>
             <th class="px-8 py-4 font-bold text-slate-600">Départ</th>
             <th class="px-8 py-4 font-bold text-slate-600">Arrivée</th>
@@ -34,6 +40,30 @@
         <tbody>
           {% for course in courses %}
           <tr class="bg-white border-b hover:bg-slate-50 transition-colors">
+            <!-- Nom Taxiste -->
+            <td class="px-8 py-4 font-medium text-slate-700 whitespace-nowrap">
+              {{ course.taxi ? course.taxi.user.name : '—' }}
+            </td>
+            <!-- Taxi -->
+            <td class="px-8 py-4 font-medium text-slate-700 whitespace-nowrap">
+              {{ course.taxi ? course.taxi.marque : '—' }}
+            </td>
+            <!-- Modèle -->
+            <td class="px-8 py-4 font-medium text-slate-700 whitespace-nowrap">
+              {{ course.taxi ? course.taxi.modele : '—' }}
+            </td>
+            <!-- Immatriculation -->
+            <td class="px-8 py-4 font-medium text-slate-700 whitespace-nowrap">
+              {{ course.taxi ? course.taxi.immatriculation : '—' }}
+            </td>
+            <!-- Client -->
+            <td class="px-8 py-4 font-medium text-slate-700 whitespace-nowrap">
+              {{ course.user ? course.user.name : '—' }}
+            </td>
+            <!-- Chauffeur -->
+            <td class="px-8 py-4 font-medium text-slate-700 whitespace-nowrap">
+              {{ course.taxi ? course.taxi.user.name : '—' }}
+            </td>
             <!-- Date -->
             <td class="px-8 py-4 font-medium text-slate-700 whitespace-nowrap">
               {{ course.dateCourse ? course.dateCourse|date('d/m/Y H:i') : '—' }}

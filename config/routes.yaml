@@ -45,7 +45,7 @@ course_index:
     controller: App\Controller\CourseController::index
 
 course_show:
-    path: /user/course/{id}
+    path: /user/course
     controller: App\Controller\UserCourseController::index
 
 course_new:
@@ -150,3 +150,6 @@ client_profile:
 client_dashboard:
     path: /client/dashboard
     controller: App\Controller\Client\DashboardController::index
+taxiste_dashboard:
+    path: /taxiste/dashboard
+    controller: App\Controller\TaxisteController::dashboard
