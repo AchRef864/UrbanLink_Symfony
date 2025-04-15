@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Avis;
 use App\Entity\Taxi;
+use App\Entity\Vehicle;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,6 +22,7 @@ class AvisType extends AbstractType
                 'label' => 'Type of Complaint',
                 'choices' => [
                     'Taxi Complaint' => 'taxi complaint',
+                    'Vehicle Complaint' => 'vehicle complaint',
                     'Subscription Complaint' => 'subscription complaint',
                 ],
                 'placeholder' => 'Select a complaint type',
@@ -32,6 +34,15 @@ class AvisType extends AbstractType
                 'label' => 'Taxi Immatriculation',
                 'placeholder' => 'Select a taxi',
                 'required' => false,
+                'mapped' => true,
+            ])
+            ->add('vehicle', EntityType::class, [
+                'class' => Vehicle::class,
+                'choice_label' => 'licensePlate',
+                'label' => 'Vehicle License Plate',
+                'placeholder' => 'Select a vehicle',
+                'required' => false,
+                'mapped' => true,
             ])
             ->add('commentaire', TextareaType::class, [
                 'label' => 'Comment',

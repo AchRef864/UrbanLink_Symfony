@@ -33,6 +33,7 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
             'title' => [$this, 'block_title'],
             'stylesheets' => [$this, 'block_stylesheets'],
             'body' => [$this, 'block_body'],
+            'javascripts' => [$this, 'block_javascripts'],
         ];
     }
 
@@ -233,6 +234,27 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
         yield "<div style=\"margin-left: 280px;\">
     <div class=\"w-full max-w-full\">
         <div class=\"relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl rounded-2xl bg-clip-border\">
+            <!-- Search Form -->
+            <div class=\"mb-4 text-center\">
+                <form method=\"get\" action=\"";
+        // line 122
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_index");
+        yield "\" style=\"display: inline-flex; gap: 8px;\">
+                    <input 
+                        type=\"text\" 
+                        name=\"search\" 
+                        id=\"search\" 
+                        value=\"";
+        // line 127
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["search"]) || array_key_exists("search", $context) ? $context["search"] : (function () { throw new RuntimeError('Variable "search" does not exist.', 127, $this->source); })()), "html", null, true);
+        yield "\" 
+                        placeholder=\"Search Complaints\" 
+                        style=\"padding: 10px; border: 1px solid #87CEEB; border-radius: 5px; background-color: white; color: #696969; font-size: 14px;\"
+                    >
+                    <button type=\"submit\" class=\"btn btn-create\">Search</button>
+                </form>
+            </div>
+
             <div class=\"table-responsive\">
                 <table class=\"table table-flush text-slate-500\" datatable id=\"datatable-search\">
                     <thead class=\"thead-light\">
@@ -242,118 +264,131 @@ class __TwigTemplate_83bf55bcf9a9fb004c9e969d86f52428 extends Template
                             <th>Date Avis</th>
                             <th>Statut</th>
                             <th>Taxi registration</th>
+                            <th>Vehicle license plate</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id=\"searchResults\">
                         ";
-        // line 133
+        // line 149
         $context['_parent'] = $context;
-        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["avis"]) || array_key_exists("avis", $context) ? $context["avis"] : (function () { throw new RuntimeError('Variable "avis" does not exist.', 133, $this->source); })()));
+        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["avis"]) || array_key_exists("avis", $context) ? $context["avis"] : (function () { throw new RuntimeError('Variable "avis" does not exist.', 149, $this->source); })()));
         $context['_iterated'] = false;
         foreach ($context['_seq'] as $context["_key"] => $context["avi"]) {
-            // line 134
+            // line 150
             yield "                            <tr>
                                 <td class=\"text-sm font-normal leading-normal\">";
-            // line 135
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "type", [], "any", false, false, false, 135), "html", null, true);
+            // line 151
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "type", [], "any", false, false, false, 151), "html", null, true);
             yield "</td>
                                 <td class=\"text-sm font-normal leading-normal\">";
-            // line 136
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "commentaire", [], "any", false, false, false, 136), "html", null, true);
+            // line 152
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "commentaire", [], "any", false, false, false, 152), "html", null, true);
             yield "</td>
                                 <td class=\"text-sm font-normal leading-normal\">
                                     ";
-            // line 138
-            yield ((CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "dateAvis", [], "any", false, false, false, 138)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "dateAvis", [], "any", false, false, false, 138), "Y-m-d"), "html", null, true)) : (""));
+            // line 154
+            yield ((CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "dateAvis", [], "any", false, false, false, 154)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "dateAvis", [], "any", false, false, false, 154), "Y-m-d"), "html", null, true)) : (""));
             yield "
                                 </td>
                                 <td class=\"text-sm font-normal leading-normal\">
                                     ";
-            // line 141
-            if ((CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "statut", [], "any", false, false, false, 141) == "processed")) {
-                // line 142
+            // line 157
+            if ((CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "statut", [], "any", false, false, false, 157) == "processed")) {
+                // line 158
                 yield "                                        Processed
                                     ";
-            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 143
-$context["avi"], "statut", [], "any", false, false, false, 143) == "not processed")) {
-                // line 144
+            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 159
+$context["avi"], "statut", [], "any", false, false, false, 159) == "not processed")) {
+                // line 160
                 yield "                                        Not Processed
                                     ";
             } else {
-                // line 146
+                // line 162
                 yield "                                        N/A
                                     ";
             }
-            // line 148
+            // line 164
             yield "                                </td>
-
                                 <td class=\"text-sm font-normal leading-normal\">
                                     ";
-            // line 151
-            if ( !(null === CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "taxi", [], "any", false, false, false, 151))) {
-                // line 152
+            // line 166
+            if ( !(null === CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "taxi", [], "any", false, false, false, 166))) {
+                // line 167
                 yield "                                        ";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "taxi", [], "any", false, false, false, 152), "immatriculation", [], "any", false, false, false, 152), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "taxi", [], "any", false, false, false, 167), "immatriculation", [], "any", false, false, false, 167), "html", null, true);
                 yield "
                                     ";
             } else {
-                // line 154
+                // line 169
                 yield "                                        N/A
                                     ";
             }
-            // line 156
+            // line 171
             yield "                                </td>
                                 <td class=\"text-sm font-normal leading-normal\">
                                     ";
-            // line 158
-            if ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 158, $this->source); })()), "user", [], "any", false, false, false, 158) && (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 158, $this->source); })()), "user", [], "any", false, false, false, 158), "id", [], "any", false, false, false, 158) == CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "user", [], "any", false, false, false, 158), "id", [], "any", false, false, false, 158)))) {
-                // line 159
+            // line 173
+            if ( !(null === CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "vehicle", [], "any", false, false, false, 173))) {
+                // line 174
+                yield "                                        ";
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "vehicle", [], "any", false, false, false, 174), "licensePlate", [], "any", false, false, false, 174), "html", null, true);
+                yield "
+                                    ";
+            } else {
+                // line 176
+                yield "                                        N/A
+                                    ";
+            }
+            // line 178
+            yield "                                </td>
+                                <td class=\"text-sm font-normal leading-normal\">
+                                    ";
+            // line 180
+            if ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 180, $this->source); })()), "user", [], "any", false, false, false, 180) && (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 180, $this->source); })()), "user", [], "any", false, false, false, 180), "id", [], "any", false, false, false, 180) == CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "user", [], "any", false, false, false, 180), "id", [], "any", false, false, false, 180)))) {
+                // line 181
                 yield "                                        <a href=\"";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_edit", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 159)]), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_edit", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 181)]), "html", null, true);
                 yield "\" class=\"btn btn-primary\">Edit</a>
                                     ";
             }
-            // line 161
-            yield "                                    
-                                    <a href=\"";
-            // line 162
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_reponses", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 162)]), "html", null, true);
+            // line 183
+            yield "                                    <a href=\"";
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_reponses", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 183)]), "html", null, true);
             yield "\" class=\"btn btn-success\">View Responses</a>
-
                                     ";
-            // line 164
-            if (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 164, $this->source); })()), "user", [], "any", false, false, false, 164) && (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 164, $this->source); })()), "user", [], "any", false, false, false, 164), "role", [], "any", false, false, false, 164) == "client")) && (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 164, $this->source); })()), "user", [], "any", false, false, false, 164), "id", [], "any", false, false, false, 164) == CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "user", [], "any", false, false, false, 164), "id", [], "any", false, false, false, 164)))) {
-                // line 165
+            // line 184
+            if (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 184, $this->source); })()), "user", [], "any", false, false, false, 184) && (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 184, $this->source); })()), "user", [], "any", false, false, false, 184), "role", [], "any", false, false, false, 184) == "client")) && (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 184, $this->source); })()), "user", [], "any", false, false, false, 184), "id", [], "any", false, false, false, 184) == CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "user", [], "any", false, false, false, 184), "id", [], "any", false, false, false, 184)))) {
+                // line 185
                 yield "                                        <form method=\"post\" action=\"";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_delete", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 165)]), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_delete", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 185)]), "html", null, true);
                 yield "\" style=\"display:inline-block;\" onsubmit=\"return confirm('Are you sure you want to delete this avis?');\">
                                             <input type=\"hidden\" name=\"_token\" value=\"";
-                // line 166
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 166))), "html", null, true);
+                // line 186
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["avi"], "id", [], "any", false, false, false, 186))), "html", null, true);
                 yield "\">
                                             <button type=\"submit\" class=\"btn btn-danger\">Delete</button>
                                         </form>
                                     ";
             }
-            // line 170
+            // line 190
             yield "                                </td>
                             </tr>
                         ";
             $context['_iterated'] = true;
         }
-        // line 172
+        // line 192
         if (!$context['_iterated']) {
-            // line 173
+            // line 193
             yield "                            <tr>
-                                <td colspan=\"6\" class=\"text-center\">No records found</td>
+                                <td colspan=\"7\" class=\"text-center\">No records found</td>
                             </tr>
                         ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['avi'], $context['_parent'], $context['_iterated']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 177
+        // line 197
         yield "                    </tbody>
                 </table>
             </div>
@@ -361,28 +396,61 @@ $context["avi"], "statut", [], "any", false, false, false, 143) == "not processe
     </div>
 
     ";
-        // line 183
-        if ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 183, $this->source); })()), "user", [], "any", false, false, false, 183) && (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 183, $this->source); })()), "user", [], "any", false, false, false, 183), "role", [], "any", false, false, false, 183) == "client"))) {
-            // line 184
+        // line 203
+        if ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 203, $this->source); })()), "user", [], "any", false, false, false, 203) && (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 203, $this->source); })()), "user", [], "any", false, false, false, 203), "role", [], "any", false, false, false, 203) == "client"))) {
+            // line 204
             yield "        <div class=\"text-center mt-4\">
             <a href=\"";
-            // line 185
+            // line 205
             yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_avis_new");
             yield "\" class=\"btn btn-create\">Create New Complaint</a>
         </div>
     ";
         }
-        // line 188
+        // line 208
         yield "
     <div class=\"pagination-container\">
         <ul class=\"pagination\">
             ";
-        // line 191
-        yield $this->env->getRuntime('Knp\Bundle\PaginatorBundle\Twig\Extension\PaginationRuntime')->render($this->env, (isset($context["avis"]) || array_key_exists("avis", $context) ? $context["avis"] : (function () { throw new RuntimeError('Variable "avis" does not exist.', 191, $this->source); })()));
+        // line 211
+        yield $this->env->getRuntime('Knp\Bundle\PaginatorBundle\Twig\Extension\PaginationRuntime')->render($this->env, (isset($context["avis"]) || array_key_exists("avis", $context) ? $context["avis"] : (function () { throw new RuntimeError('Variable "avis" does not exist.', 211, $this->source); })()));
         yield "
         </ul>
     </div>
 </div>
+";
+        
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
+
+        
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->leave($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof);
+
+        yield from [];
+    }
+
+    // line 217
+    /**
+     * @return iterable<null|scalar|\Stringable>
+     */
+    public function block_javascripts(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2 = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->enter($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
+
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
+
+        // line 218
+        yield "<script>
+    // Live search using JavaScript
+    document.getElementById('search').addEventListener('input', function() {
+        let searchTerm = this.value;
+        let url = new URL(window.location.href);
+        url.searchParams.set('search', searchTerm);
+        window.location.href = url;
+    });
+</script>
 ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
@@ -414,7 +482,7 @@ $context["avi"], "statut", [], "any", false, false, false, 143) == "not processe
      */
     public function getDebugInfo(): array
     {
-        return array (  381 => 191,  376 => 188,  370 => 185,  367 => 184,  365 => 183,  357 => 177,  348 => 173,  346 => 172,  340 => 170,  333 => 166,  328 => 165,  326 => 164,  321 => 162,  318 => 161,  312 => 159,  310 => 158,  306 => 156,  302 => 154,  296 => 152,  294 => 151,  289 => 148,  285 => 146,  281 => 144,  279 => 143,  276 => 142,  274 => 141,  268 => 138,  263 => 136,  259 => 135,  256 => 134,  251 => 133,  233 => 117,  220 => 116,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
+        return array (  445 => 218,  432 => 217,  416 => 211,  411 => 208,  405 => 205,  402 => 204,  400 => 203,  392 => 197,  383 => 193,  381 => 192,  375 => 190,  368 => 186,  363 => 185,  361 => 184,  356 => 183,  350 => 181,  348 => 180,  344 => 178,  340 => 176,  334 => 174,  332 => 173,  328 => 171,  324 => 169,  318 => 167,  316 => 166,  312 => 164,  308 => 162,  304 => 160,  302 => 159,  299 => 158,  297 => 157,  291 => 154,  286 => 152,  282 => 151,  279 => 150,  274 => 149,  249 => 127,  241 => 122,  234 => 117,  221 => 116,  102 => 6,  89 => 5,  66 => 3,  43 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -538,6 +606,21 @@ $context["avi"], "statut", [], "any", false, false, false, 143) == "not processe
 <div style=\"margin-left: 280px;\">
     <div class=\"w-full max-w-full\">
         <div class=\"relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl rounded-2xl bg-clip-border\">
+            <!-- Search Form -->
+            <div class=\"mb-4 text-center\">
+                <form method=\"get\" action=\"{{ path('app_avis_index') }}\" style=\"display: inline-flex; gap: 8px;\">
+                    <input 
+                        type=\"text\" 
+                        name=\"search\" 
+                        id=\"search\" 
+                        value=\"{{ search }}\" 
+                        placeholder=\"Search Complaints\" 
+                        style=\"padding: 10px; border: 1px solid #87CEEB; border-radius: 5px; background-color: white; color: #696969; font-size: 14px;\"
+                    >
+                    <button type=\"submit\" class=\"btn btn-create\">Search</button>
+                </form>
+            </div>
+
             <div class=\"table-responsive\">
                 <table class=\"table table-flush text-slate-500\" datatable id=\"datatable-search\">
                     <thead class=\"thead-light\">
@@ -547,10 +630,11 @@ $context["avi"], "statut", [], "any", false, false, false, 143) == "not processe
                             <th>Date Avis</th>
                             <th>Statut</th>
                             <th>Taxi registration</th>
+                            <th>Vehicle license plate</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id=\"searchResults\">
                         {% for avi in avis %}
                             <tr>
                                 <td class=\"text-sm font-normal leading-normal\">{{ avi.type }}</td>
@@ -567,7 +651,6 @@ $context["avi"], "statut", [], "any", false, false, false, 143) == "not processe
                                         N/A
                                     {% endif %}
                                 </td>
-
                                 <td class=\"text-sm font-normal leading-normal\">
                                     {% if avi.taxi is not null %}
                                         {{ avi.taxi.immatriculation }}
@@ -576,12 +659,17 @@ $context["avi"], "statut", [], "any", false, false, false, 143) == "not processe
                                     {% endif %}
                                 </td>
                                 <td class=\"text-sm font-normal leading-normal\">
+                                    {% if avi.vehicle is not null %}
+                                        {{ avi.vehicle.licensePlate }}
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </td>
+                                <td class=\"text-sm font-normal leading-normal\">
                                     {% if app.user and app.user.id == avi.user.id %}
                                         <a href=\"{{ path('app_avis_edit', {'id': avi.id}) }}\" class=\"btn btn-primary\">Edit</a>
                                     {% endif %}
-                                    
                                     <a href=\"{{ path('app_avis_reponses', {'id': avi.id}) }}\" class=\"btn btn-success\">View Responses</a>
-
                                     {% if app.user and app.user.role == 'client' and app.user.id == avi.user.id %}
                                         <form method=\"post\" action=\"{{ path('app_avis_delete', {'id': avi.id}) }}\" style=\"display:inline-block;\" onsubmit=\"return confirm('Are you sure you want to delete this avis?');\">
                                             <input type=\"hidden\" name=\"_token\" value=\"{{ csrf_token('delete' ~ avi.id) }}\">
@@ -592,7 +680,7 @@ $context["avi"], "statut", [], "any", false, false, false, 143) == "not processe
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan=\"6\" class=\"text-center\">No records found</td>
+                                <td colspan=\"7\" class=\"text-center\">No records found</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -613,6 +701,18 @@ $context["avi"], "statut", [], "any", false, false, false, 143) == "not processe
         </ul>
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    // Live search using JavaScript
+    document.getElementById('search').addEventListener('input', function() {
+        let searchTerm = this.value;
+        let url = new URL(window.location.href);
+        url.searchParams.set('search', searchTerm);
+        window.location.href = url;
+    });
+</script>
 {% endblock %}
 ", "avis/index.html.twig", "C:\\Users\\PC\\OneDrive\\Documents\\GitHub\\UrbanLInk_Symfony\\UrbanLink_Symfony\\templates\\avis\\index.html.twig");
     }

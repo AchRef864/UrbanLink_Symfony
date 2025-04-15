@@ -23,7 +23,10 @@ class Avis
     
     #[ORM\Column(length: 50)]
     #[Assert\NotNull]
-    #[Assert\Choice(choices: ["taxi complaint", "subscription complaint"], message: 'Type must be either "taxi complaint" or "subscription complaint".')]
+    #[Assert\Choice(
+        choices: ["taxi complaint", "subscription complaint", "vehicle complaint"],
+        message: 'Type must be either "taxi complaint", "subscription complaint" or "vehicle complaint".'
+    )]
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
@@ -43,12 +46,20 @@ class Avis
 
     #[ORM\Column(length: 50)]
     #[Assert\NotNull]
-    #[Assert\Choice(choices: ["processed", "not processed"], message: 'Status must be either "processed" or "not processed".')]
+    #[Assert\Choice(
+        choices: ["processed", "not processed"],
+        message: 'Status must be either "processed" or "not processed".'
+    )]
     private ?string $statut = null;
     
     #[ORM\ManyToOne(targetEntity: Taxi::class)]
     #[ORM\JoinColumn(name: "taxi_id", referencedColumnName: "id", nullable: true)] 
     private ?Taxi $taxi = null;
+
+    #[ORM\ManyToOne(targetEntity: Vehicle::class)]
+    #[ORM\JoinColumn(name: "vehicle_id", referencedColumnName: "id", nullable: true)]
+    private ?Vehicle $vehicle = null;
+
 
     public function __construct()
     {
@@ -120,7 +131,6 @@ class Avis
             $this->reponses[] = $reponse;
             $reponse->setAvis($this);
         }
-
         return $this;
     }
 
@@ -131,7 +141,6 @@ class Avis
                 $reponse->setAvis(null);
             }
         }
-
         return $this;
     }
 
@@ -145,6 +154,7 @@ class Avis
         $this->statut = $statut;
         return $this;
     }
+
     public function getTaxi(): ?Taxi
     {
         return $this->taxi;
@@ -153,6 +163,17 @@ class Avis
     public function setTaxi(?Taxi $taxi): self
     {
         $this->taxi = $taxi;
+        return $this;
+    }
+
+    public function getVehicle(): ?Vehicle
+    {
+        return $this->vehicle;
+    }
+
+    public function setVehicle(?Vehicle $vehicle): self
+    {
+        $this->vehicle = $vehicle;
         return $this;
     }
 }

@@ -20,17 +20,29 @@ final class AvisController extends AbstractController
     #[Route(name: 'app_avis_index', methods: ['GET'])]
     public function index(AvisRepository $avisRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        $queryBuilder = $avisRepository->createQueryBuilder('a');
+        $searchTerm = $request->query->get('search', '');
+    
+        $queryBuilder = $avisRepository->createQueryBuilder('a')
+        ->leftJoin('a.taxi', 't');
+    
+        if (!empty($searchTerm)) {
+            $queryBuilder->where('a.type LIKE :search OR a.commentaire LIKE :search OR a.statut LIKE :search OR a.date_avis LIKE :search OR t.immatriculation LIKE :search')
+                        ->setParameter('search', '%' . $searchTerm . '%');
+        }
+    
         $pagination = $paginator->paginate(
-            $queryBuilder, // Query or QueryBuilder
+            $queryBuilder,
             $request->query->getInt('page', 1), // Current page number
             5 // Items per page
         );
-
+    
         return $this->render('avis/index.html.twig', [
             'avis' => $pagination,
+            'search' => $searchTerm
         ]);
     }
+    
+    
 
     #[Route('/new', name: 'app_avis_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -53,7 +65,6 @@ final class AvisController extends AbstractController
             // Here we assume that the user is a client based on our security check.
             $avi->setUser($user);
             $avi->setStatut('not processed'); // Default status is set
-    
     
             $entityManager->persist($avi);
             $entityManager->flush();

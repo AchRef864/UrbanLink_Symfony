@@ -50,6 +50,7 @@
         background-color: #fff;
     }
 
+    /* Sky blue color for the button */
     .btn-primary {
         background-color: #87CEEB;
         border: none;
@@ -76,8 +77,9 @@
         margin-top: 1.5rem;
     }
     
-    /* Initially hide the taxi field */
-    .taxi-field-container {
+    /* Initially hide the taxi and vehicle fields */
+    .taxi-field-container,
+    .vehicle-field-container {
         display: none;
     }
 </style>
@@ -97,11 +99,18 @@
             {{ form_errors(form.type) }}
         </div>
 
-        {# Taxi Immatriculation Field #}
+        {# Taxi Immatriculation Field (initially hidden) #}
         <div class="mb-4 taxi-field-container">
             {{ form_label(form.taxi, 'Taxi Immatriculation', {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.taxi, {'attr': {'class': 'form-select'}}) }}
             {{ form_errors(form.taxi) }}
+        </div>
+
+        {# Vehicle License Plate Field (initially hidden) #}
+        <div class="mb-4 vehicle-field-container">
+            {{ form_label(form.vehicle, 'Vehicle License Plate', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.vehicle, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.vehicle) }}
         </div>
 
         {# Comment Field #}
@@ -124,50 +133,35 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Get all necessary elements
     const typeSelect = document.querySelector('.complaint-type-select');
-    const taxiFieldContainer = document.querySelector('.taxi-field-container');
-    
-    // Make sure we found the elements
-    if (!typeSelect || !taxiFieldContainer) {
-        console.error('Could not find required elements:', {
-            typeSelect,
-            taxiFieldContainer
-        });
-        return;
-    }
-    
-    console.log('Found elements:', {
-        typeSelect,
-        taxiFieldContainer
-    });
+    const taxiContainer = document.querySelector('.taxi-field-container');
+    const vehicleContainer = document.querySelector('.vehicle-field-container');
 
-    // Function to check and toggle the taxi field
     function checkComplaintType() {
-        // Get the selected option text rather than value
         const selectedOption = typeSelect.options[typeSelect.selectedIndex];
         const selectedText = selectedOption ? selectedOption.text.trim().toLowerCase() : '';
         const selectedValue = typeSelect.value;
-        
-        console.log('Selected:', {
-            text: selectedText,
-            value: selectedValue,
-            index: typeSelect.selectedIndex
-        });
-        
-        // Check if the selected option contains "taxi"
+
+        // Show taxi field if "taxi complaint" is chosen
         if (selectedText.includes('taxi') || selectedValue.includes('taxi')) {
-            taxiFieldContainer.style.display = 'block';
-            console.log('Showing taxi field');
-        } else {
-            taxiFieldContainer.style.display = 'none';
-            console.log('Hiding taxi field');
+            taxiContainer.style.display = 'block';
+            vehicleContainer.style.display = 'none';
+        } 
+        // Show vehicle field if "vehicle complaint" is chosen
+        else if (selectedText.includes('vehicle') || selectedValue.includes('vehicle')) {
+            vehicleContainer.style.display = 'block';
+            taxiContainer.style.display = 'none';
+        } 
+        // Hide both if neither
+        else {
+            taxiContainer.style.display = 'none';
+            vehicleContainer.style.display = 'none';
         }
     }
-    
+
     // Run the check initially
     checkComplaintType();
-    
+
     // Add event listener for changes
     typeSelect.addEventListener('change', checkComplaintType);
 });
