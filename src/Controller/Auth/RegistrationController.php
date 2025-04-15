@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Controller\Auth;
 
 use App\Entity\User;
@@ -16,15 +17,27 @@ class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
     public function register(
-        Request $request,
+        Request                     $request,
         UserPasswordHasherInterface $passwordHasher,
-        EntityManagerInterface $entityManager
-    ): Response {
+        EntityManagerInterface      $entityManager
+    ): Response
+    {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Set joining date if not already set
+            if ($user->getJoiningDate() === null) {
+                $user->setJoiningDate(new \DateTime());
+            }
+
+            // Set license if not already set
+            if (empty($user->getLicense())) {
+                $user->setLicense($this->generateLicenseNumber());
+            }
+
+            // Hash password
             $user->setPassword(
                 $passwordHasher->hashPassword(
                     $user,
@@ -36,16 +49,14 @@ class RegistrationController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
+                // Redirect after successful registration
                 return $this->redirectToRoute('app_home');
             } catch (UniqueConstraintViolationException $e) {
-                // Check if the error is about the email field
                 if (strpos($e->getMessage(), 'users.UNIQ_1483A5E9E7927C74') !== false) {
-                    // Add error to the email field
                     $form->get('email')->addError(
                         new \Symfony\Component\Form\FormError('This email is already in use. Please use a different email.')
                     );
                 } else {
-                    // For other unique constraint violations
                     $this->addFlash('error', 'There was an error with your registration. Please try again.');
                 }
             }
@@ -54,5 +65,18 @@ class RegistrationController extends AbstractController
         return $this->render('auth/registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }
+
+    private function generateLicenseNumber(): string
+    {
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $license = 'UL-';
+        $max = strlen($characters) - 1;
+
+        for ($i = 0; $i < 8; $i++) {
+            $license .= $characters[random_int(0, $max)];
+        }
+
+        return $license;
     }
 }

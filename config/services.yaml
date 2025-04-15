@@ -17,6 +17,9 @@ services:
     App\EventSubscriber\AuthenticationSubscriber:
         tags:
             - { name: kernel.event_subscriber }
+    App\EventListener\UserListener:
+        tags:
+            - { name: doctrine.orm.entity_listener, event: prePersist }
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
