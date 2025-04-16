@@ -4,9 +4,13 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-      MAILER_FROM: '%env(MAILER_FROM)%'
-      recaptcha.site_key: '%env(RECAPTCHA_SITE_KEY)%'
-      recaptcha.secret_key: '%env(RECAPTCHA_SECRET_KEY)%'
+    MAILER_FROM: '%env(MAILER_FROM)%'
+    twilio_sid: '%env(TWILIO_SID)%'
+    twilio_token: '%env(TWILIO_AUTH_TOKEN)%'
+    twilio_number: '%env(TWILIO_PHONE_NUMBER)%'
+
+    recaptcha.site_key: '%env(RECAPTCHA_SITE_KEY)%'
+    recaptcha.secret_key: '%env(RECAPTCHA_SECRET_KEY)%'
 
 services:
     # default configuration for services in *this* file
@@ -32,6 +36,12 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\TwilioService:
+        arguments:
+            $twilioSid: '%twilio_sid%'
+            $twilioToken: '%twilio_token%'
+            $twilioNumber: '%twilio_number%'
     App\Service\RecaptchaValidator:
         arguments:
             $secretKey: '%recaptcha.secret_key%'

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\User;
@@ -14,7 +13,6 @@ class DashboardController extends AbstractController
     public function index(): Response
     {
         $user = $this->getUser();
-
         if (!$user instanceof User) {
             return $this->redirectToRoute('app_login');
         }

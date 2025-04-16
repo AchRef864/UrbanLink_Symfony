@@ -7,6 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
@@ -14,8 +18,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: "user_id")]
+    #[ORM\Column(type: 'integer', name: "user_id")]
     private ?int $id = null;
+    
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Avis::class, cascade: ['persist', 'remove'])]
+    private Collection $avis;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reponse::class, cascade: ['persist', 'remove'])]
+    private Collection $reponse;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
@@ -44,62 +53,64 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private bool $isBlocked = false;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $license = null;
-
-    #[ORM\Column(type: 'datetime')]
-    private \DateTimeInterface $joiningDate;
-
-    public function __construct()
-    {
-        $this->joiningDate = new \DateTime(); // Initialize in constructor
-    }
-
-    public function getLicense(): ?string
-    {
-        return $this->license;
-    }
-
-    public function setLicense(?string $license): self
-    {
-        $this->license = $license;
-        return $this;
-    }
-
-    // Modified joining date handling
-    #[ORM\PrePersist]
-    public function setJoiningDateValue(): void
-    {
-        $this->joiningDate = new \DateTime();
-    }
-
-    public function getJoiningDate(): \DateTimeInterface
-    {
-        return $this->joiningDate;
-    }
-
-    // Optional setter only if you need to override the date
-    public function setJoiningDate(\DateTimeInterface $joiningDate): self
-    {
-        $this->joiningDate = $joiningDate;
-        return $this;
-    }
-
-    public function isBlocked(): bool
-    {
-        return $this->isBlocked;
-    }
-
-    public function setIsBlocked(bool $isBlocked): self
-    {
-        $this->isBlocked = $isBlocked;
-        return $this;
-    }
-
-
+    
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return Collection<int, \App\Entity\Avis>
+     */
+    public function getAvis(): Collection
+    {
+        return $this->avis;
+    }
+    
+    public function addAvis(\App\Entity\Avis $avis): self
+    {
+        if (!$this->avis->contains($avis)) {
+            $this->avis[] = $avis;
+            $avis->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeAvis(\App\Entity\Avis $avis): self
+    {
+        if ($this->avis->removeElement($avis)) {
+            if ($avis->getUser() === $this) {
+                $avis->setUser(null);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, \App\Entity\Reponse>
+     */
+    public function getReponse(): Collection
+    {
+        return $this->reponse;
+    }
+    
+    public function addReponse(\App\Entity\Reponse $reponse): self
+    {
+        if (!$this->reponse->contains($reponse)) {
+            $this->reponse[] = $reponse;
+            $reponse->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeReponse(\App\Entity\Reponse $reponse): self
+    {
+        if ($this->reponse->removeElement($reponse)) {
+            if ($reponse->getUser() === $this) {
+                $reponse->setUser(null);
+            }
+        }
+        return $this;
     }
 
     public function getName(): ?string
@@ -167,6 +178,60 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->code = $code;
         return $this;
     }
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $license = null;
+
+    #[ORM\Column(type: 'datetime')]
+    private \DateTimeInterface $joiningDate;
+
+    public function __construct()
+    {
+        $this->joiningDate = new \DateTime(); // Initialize in constructor
+        $this->avis = new ArrayCollection();
+        $this->reponse = new ArrayCollection();
+    }
+
+    public function getLicense(): ?string
+    {
+        return $this->license;
+    }
+
+    public function setLicense(?string $license): self
+    {
+        $this->license = $license;
+        return $this;
+    }
+
+    // Modified joining date handling
+    #[ORM\PrePersist]
+    public function setJoiningDateValue(): void
+    {
+        $this->joiningDate = new \DateTime();
+    }
+
+    public function getJoiningDate(): \DateTimeInterface
+    {
+        return $this->joiningDate;
+    }
+
+    // Optional setter only if you need to override the date
+    public function setJoiningDate(\DateTimeInterface $joiningDate): self
+    {
+        $this->joiningDate = $joiningDate;
+        return $this;
+    }
+
+    public function isBlocked(): bool
+    {
+        return $this->isBlocked;
+    }
+
+    public function setIsBlocked(bool $isBlocked): self
+    {
+        $this->isBlocked = $isBlocked;
+        return $this;
+    }
+
      public function getRoles(): array
     {
         $roles = ['ROLE_USER']; // All users get this
