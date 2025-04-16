@@ -31,6 +31,7 @@ class EntityManagerConfig
     private $quoteStrategy;
     private $typedFieldMapper;
     private $entityListenerResolver;
+    private $fetchModeSubselectBatchSize;
     private $repositoryFactory;
     private $schemaIgnoreClasses;
     private $reportFieldsWhereDeclared;
@@ -245,6 +246,19 @@ class EntityManagerConfig
     {
         $this->_usedProperties['entityListenerResolver'] = true;
         $this->entityListenerResolver = $value;
+
+        return $this;
+    }
+
+    /**
+     * @default null
+     * @param ParamConfigurator|mixed $value
+     * @return $this
+     */
+    public function fetchModeSubselectBatchSize($value): static
+    {
+        $this->_usedProperties['fetchModeSubselectBatchSize'] = true;
+        $this->fetchModeSubselectBatchSize = $value;
 
         return $this;
     }
@@ -474,6 +488,12 @@ class EntityManagerConfig
             unset($value['entity_listener_resolver']);
         }
 
+        if (array_key_exists('fetch_mode_subselect_batch_size', $value)) {
+            $this->_usedProperties['fetchModeSubselectBatchSize'] = true;
+            $this->fetchModeSubselectBatchSize = $value['fetch_mode_subselect_batch_size'];
+            unset($value['fetch_mode_subselect_batch_size']);
+        }
+
         if (array_key_exists('repository_factory', $value)) {
             $this->_usedProperties['repositoryFactory'] = true;
             $this->repositoryFactory = $value['repository_factory'];
@@ -577,6 +597,9 @@ class EntityManagerConfig
         }
         if (isset($this->_usedProperties['entityListenerResolver'])) {
             $output['entity_listener_resolver'] = $this->entityListenerResolver;
+        }
+        if (isset($this->_usedProperties['fetchModeSubselectBatchSize'])) {
+            $output['fetch_mode_subselect_batch_size'] = $this->fetchModeSubselectBatchSize;
         }
         if (isset($this->_usedProperties['repositoryFactory'])) {
             $output['repository_factory'] = $this->repositoryFactory;

@@ -66,34 +66,35 @@ return [
                 .'|/rese(?'
                     .'|rvation/(?'
                         .'|new/([^/]++)(*:200)'
-                        .'|success/([^/]++)(*:224)'
-                        .'|cancel/([^/]++)(*:247)'
+                        .'|trajet\\-supprime/([^/]++)(*:233)'
+                        .'|success/([^/]++)(*:257)'
+                        .'|cancel/([^/]++)(*:280)'
                         .'|p(?'
                             .'|ayment/(?'
-                                .'|([^/]++)(*:277)'
-                                .'|success/([^/]++)(*:301)'
-                                .'|cancel/([^/]++)(*:324)'
+                                .'|([^/]++)(*:310)'
+                                .'|success/([^/]++)(*:334)'
+                                .'|cancel/([^/]++)(*:357)'
                             .')'
-                            .'|df/([^/]++)(*:344)'
+                            .'|df/([^/]++)(*:377)'
                         .')'
                     .')'
-                    .'|t\\-password/reset/(\\d+)(*:377)'
+                    .'|t\\-password/reset/(\\d+)(*:410)'
                 .')'
                 .'|/admin/(?'
-                    .'|reservations/([^/]++)(*:417)'
+                    .'|reservations/([^/]++)(*:450)'
                     .'|users/(?'
                         .'|delete/(?'
-                            .'|confirm/([^/]++)(*:460)'
-                            .'|([^/]++)(*:476)'
+                            .'|confirm/([^/]++)(*:493)'
+                            .'|([^/]++)(*:509)'
                         .')'
-                        .'|edit/([^/]++)(*:498)'
-                        .'|block/([^/]++)(*:520)'
-                        .'|unblock/([^/]++)(*:544)'
+                        .'|edit/([^/]++)(*:531)'
+                        .'|block/([^/]++)(*:553)'
+                        .'|unblock/([^/]++)(*:577)'
                     .')'
                 .')'
                 .'|/trajet/(?'
-                    .'|modifier/([^/]++)(*:582)'
-                    .'|supprimer/([^/]++)(*:608)'
+                    .'|modifier/([^/]++)(*:615)'
+                    .'|supprimer/([^/]++)(*:641)'
                 .')'
             .')/?$}sDu',
     ],
@@ -106,21 +107,22 @@ return [
         148 => [[['_route' => '_profiler_exception_css', '_controller' => 'web_profiler.controller.exception_panel::stylesheet'], ['token'], null, null, false, false, null]],
         158 => [[['_route' => '_profiler', '_controller' => 'web_profiler.controller.profiler::panelAction'], ['token'], null, null, false, true, null]],
         200 => [[['_route' => 'reservation_new', '_controller' => 'App\\Controller\\ReservationController::new'], ['trajetId'], null, null, false, true, null]],
-        224 => [[['_route' => 'reservation_success', '_controller' => 'App\\Controller\\ReservationController::success'], ['id'], null, null, false, true, null]],
-        247 => [[['_route' => 'reservation_cancel', '_controller' => 'App\\Controller\\ReservationController::cancel'], ['id'], null, null, false, true, null]],
-        277 => [[['_route' => 'reservation_payment', '_controller' => 'App\\Controller\\ReservationController::payment'], ['id'], null, null, false, true, null]],
-        301 => [[['_route' => 'reservation_payment_success', '_controller' => 'App\\Controller\\ReservationController::paymentSuccess'], ['id'], null, null, false, true, null]],
-        324 => [[['_route' => 'reservation_payment_cancel', '_controller' => 'App\\Controller\\ReservationController::paymentCancel'], ['id'], null, null, false, true, null]],
-        344 => [[['_route' => 'reservation_pdf', '_controller' => 'App\\Controller\\ReservationController::generatePdf'], ['id'], null, null, false, true, null]],
-        377 => [[['_route' => 'app_reset_password', '_controller' => 'App\\Controller\\Auth\\ResetPasswordController::reset'], ['code'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        417 => [[['_route' => 'show_reservation', '_controller' => 'App\\Controller\\ReservationController::showReservation'], ['id'], null, null, false, true, null]],
-        460 => [[['_route' => 'admin_user_confirm_delete', '_controller' => 'App\\Controller\\Admin\\UserManagementController::confirmDelete'], ['id'], null, null, false, true, null]],
-        476 => [[['_route' => 'admin_user_perform_delete', '_controller' => 'App\\Controller\\Admin\\UserManagementController::performDelete'], ['id'], ['POST' => 0], null, false, true, null]],
-        498 => [[['_route' => 'admin_user_edit', '_controller' => 'App\\Controller\\Admin\\UserManagementController::editUser'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        520 => [[['_route' => 'admin_user_block', '_controller' => 'App\\Controller\\Admin\\UserManagementController::blockUser'], ['id'], ['POST' => 0], null, false, true, null]],
-        544 => [[['_route' => 'admin_user_unblock', '_controller' => 'App\\Controller\\Admin\\UserManagementController::unblockUser'], ['id'], ['POST' => 0], null, false, true, null]],
-        582 => [[['_route' => 'trajet_modifier', '_controller' => 'App\\Controller\\TrajetController::modifier'], ['id'], null, null, false, true, null]],
-        608 => [
+        233 => [[['_route' => 'reservation_trajet_supprime', '_controller' => 'App\\Controller\\ReservationController::showDeletedTrajetDetails'], ['id'], null, null, false, true, null]],
+        257 => [[['_route' => 'reservation_success', '_controller' => 'App\\Controller\\ReservationController::success'], ['id'], null, null, false, true, null]],
+        280 => [[['_route' => 'reservation_cancel', '_controller' => 'App\\Controller\\ReservationController::cancel'], ['id'], null, null, false, true, null]],
+        310 => [[['_route' => 'reservation_payment', '_controller' => 'App\\Controller\\ReservationController::payment'], ['id'], null, null, false, true, null]],
+        334 => [[['_route' => 'reservation_payment_success', '_controller' => 'App\\Controller\\ReservationController::paymentSuccess'], ['id'], null, null, false, true, null]],
+        357 => [[['_route' => 'reservation_payment_cancel', '_controller' => 'App\\Controller\\ReservationController::paymentCancel'], ['id'], null, null, false, true, null]],
+        377 => [[['_route' => 'reservation_pdf', '_controller' => 'App\\Controller\\ReservationController::generatePdf'], ['id'], null, null, false, true, null]],
+        410 => [[['_route' => 'app_reset_password', '_controller' => 'App\\Controller\\Auth\\ResetPasswordController::reset'], ['code'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        450 => [[['_route' => 'show_reservation', '_controller' => 'App\\Controller\\ReservationController::showReservation'], ['id'], null, null, false, true, null]],
+        493 => [[['_route' => 'admin_user_confirm_delete', '_controller' => 'App\\Controller\\Admin\\UserManagementController::confirmDelete'], ['id'], null, null, false, true, null]],
+        509 => [[['_route' => 'admin_user_perform_delete', '_controller' => 'App\\Controller\\Admin\\UserManagementController::performDelete'], ['id'], ['POST' => 0], null, false, true, null]],
+        531 => [[['_route' => 'admin_user_edit', '_controller' => 'App\\Controller\\Admin\\UserManagementController::editUser'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        553 => [[['_route' => 'admin_user_block', '_controller' => 'App\\Controller\\Admin\\UserManagementController::blockUser'], ['id'], ['POST' => 0], null, false, true, null]],
+        577 => [[['_route' => 'admin_user_unblock', '_controller' => 'App\\Controller\\Admin\\UserManagementController::unblockUser'], ['id'], ['POST' => 0], null, false, true, null]],
+        615 => [[['_route' => 'trajet_modifier', '_controller' => 'App\\Controller\\TrajetController::modifier'], ['id'], null, null, false, true, null]],
+        641 => [
             [['_route' => 'trajet_supprimer', '_controller' => 'App\\Controller\\TrajetController::supprimer'], ['id'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],

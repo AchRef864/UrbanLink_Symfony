@@ -173,53 +173,60 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 45, $this->source); })()), "invalidEntityCount", [], "any", false, false, false, 45), "html", null, true);
                 yield "</span>
             </div>
+            <div class=\"sf-toolbar-info-piece\">
+                <b>Managed entities</b>
+                <span class=\"sf-toolbar-status\">";
+                // line 49
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 49, $this->source); })()), "managedEntityCount", [], "any", false, false, false, 49), "html", null, true);
+                yield "</span>
+            </div>
             ";
-                // line 47
-                if (CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 47, $this->source); })()), "cacheEnabled", [], "any", false, false, false, 47)) {
-                    // line 48
+                // line 51
+                if (CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 51, $this->source); })()), "cacheEnabled", [], "any", false, false, false, 51)) {
+                    // line 52
                     yield "                <div class=\"sf-toolbar-info-piece\">
                     <b>Cache hits</b>
                     <span class=\"sf-toolbar-status sf-toolbar-status-green\">";
-                    // line 50
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 50, $this->source); })()), "cacheHitsCount", [], "any", false, false, false, 50), "html", null, true);
+                    // line 54
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 54, $this->source); })()), "cacheHitsCount", [], "any", false, false, false, 54), "html", null, true);
                     yield "</span>
                 </div>
                 <div class=\"sf-toolbar-info-piece\">
                     <b>Cache misses</b>
                     <span class=\"sf-toolbar-status ";
-                    // line 54
-                    yield (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 54, $this->source); })()), "cacheMissesCount", [], "any", false, false, false, 54) > 0)) ? ("sf-toolbar-status-yellow") : (""));
+                    // line 58
+                    yield (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 58, $this->source); })()), "cacheMissesCount", [], "any", false, false, false, 58) > 0)) ? ("sf-toolbar-status-yellow") : (""));
                     yield "\">";
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 54, $this->source); })()), "cacheMissesCount", [], "any", false, false, false, 54), "html", null, true);
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 58, $this->source); })()), "cacheMissesCount", [], "any", false, false, false, 58), "html", null, true);
                     yield "</span>
                 </div>
                 <div class=\"sf-toolbar-info-piece\">
                     <b>Cache puts</b>
                     <span class=\"sf-toolbar-status ";
-                    // line 58
-                    yield (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 58, $this->source); })()), "cachePutsCount", [], "any", false, false, false, 58) > 0)) ? ("sf-toolbar-status-yellow") : (""));
+                    // line 62
+                    yield (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 62, $this->source); })()), "cachePutsCount", [], "any", false, false, false, 62) > 0)) ? ("sf-toolbar-status-yellow") : (""));
                     yield "\">";
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 58, $this->source); })()), "cachePutsCount", [], "any", false, false, false, 58), "html", null, true);
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 62, $this->source); })()), "cachePutsCount", [], "any", false, false, false, 62), "html", null, true);
                     yield "</span>
                 </div>
             ";
                 } else {
-                    // line 61
+                    // line 65
                     yield "                <div class=\"sf-toolbar-info-piece\">
                     <b>Second Level Cache</b>
                     <span class=\"sf-toolbar-status\">disabled</span>
                 </div>
             ";
                 }
-                // line 66
+                // line 70
                 yield "        ";
                 yield from [];
             })())) ? '' : new Markup($tmp, $this->env->getCharset());
-            // line 67
+            // line 71
             yield "
         ";
-            // line 68
-            yield Twig\Extension\CoreExtension::include($this->env, $context, "@WebProfiler/Profiler/toolbar_item.html.twig", ["link" => (isset($context["profiler_url"]) || array_key_exists("profiler_url", $context) ? $context["profiler_url"] : (function () { throw new RuntimeError('Variable "profiler_url" does not exist.', 68, $this->source); })()), "status" => ((array_key_exists("status", $context)) ? (Twig\Extension\CoreExtension::default((isset($context["status"]) || array_key_exists("status", $context) ? $context["status"] : (function () { throw new RuntimeError('Variable "status" does not exist.', 68, $this->source); })()), "")) : (""))]);
+            // line 72
+            yield Twig\Extension\CoreExtension::include($this->env, $context, "@WebProfiler/Profiler/toolbar_item.html.twig", ["link" => (isset($context["profiler_url"]) || array_key_exists("profiler_url", $context) ? $context["profiler_url"] : (function () { throw new RuntimeError('Variable "profiler_url" does not exist.', 72, $this->source); })()), "status" => ((array_key_exists("status", $context)) ? (Twig\Extension\CoreExtension::default((isset($context["status"]) || array_key_exists("status", $context) ? $context["status"] : (function () { throw new RuntimeError('Variable "status" does not exist.', 72, $this->source); })()), "")) : (""))]);
             yield "
 
     ";
@@ -233,7 +240,7 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
         yield from [];
     }
 
-    // line 73
+    // line 77
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -246,30 +253,30 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "menu"));
 
-        // line 74
+        // line 78
         yield "    <span class=\"label ";
-        yield (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 74, $this->source); })()), "invalidEntityCount", [], "any", false, false, false, 74) > 0)) ? ("label-status-error") : (""));
+        yield (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 78, $this->source); })()), "invalidEntityCount", [], "any", false, false, false, 78) > 0)) ? ("label-status-error") : (""));
         yield " ";
-        yield (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 74, $this->source); })()), "querycount", [], "any", false, false, false, 74) == 0)) ? ("disabled") : (""));
+        yield (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 78, $this->source); })()), "querycount", [], "any", false, false, false, 78) == 0)) ? ("disabled") : (""));
         yield "\">
         <span class=\"icon\">";
-        // line 75
-        yield Twig\Extension\CoreExtension::include($this->env, $context, (("@Doctrine/Collector/" . ((((isset($context["profiler_markup_version"]) || array_key_exists("profiler_markup_version", $context) ? $context["profiler_markup_version"] : (function () { throw new RuntimeError('Variable "profiler_markup_version" does not exist.', 75, $this->source); })()) < 3)) ? ("icon") : ("database"))) . ".svg"));
+        // line 79
+        yield Twig\Extension\CoreExtension::include($this->env, $context, (("@Doctrine/Collector/" . ((((isset($context["profiler_markup_version"]) || array_key_exists("profiler_markup_version", $context) ? $context["profiler_markup_version"] : (function () { throw new RuntimeError('Variable "profiler_markup_version" does not exist.', 79, $this->source); })()) < 3)) ? ("icon") : ("database"))) . ".svg"));
         yield "</span>
         <strong>Doctrine</strong>
         ";
-        // line 77
-        if (CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 77, $this->source); })()), "invalidEntityCount", [], "any", false, false, false, 77)) {
-            // line 78
+        // line 81
+        if (CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 81, $this->source); })()), "invalidEntityCount", [], "any", false, false, false, 81)) {
+            // line 82
             yield "            <span class=\"count\">
                 <span>";
-            // line 79
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 79, $this->source); })()), "invalidEntityCount", [], "any", false, false, false, 79), "html", null, true);
+            // line 83
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 83, $this->source); })()), "invalidEntityCount", [], "any", false, false, false, 83), "html", null, true);
             yield "</span>
             </span>
         ";
         }
-        // line 82
+        // line 86
         yield "    </span>
 ";
         
@@ -281,7 +288,7 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
         yield from [];
     }
 
-    // line 85
+    // line 89
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -294,20 +301,20 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "panel"));
 
-        // line 86
+        // line 90
         yield "    ";
-        if (("explain" == (isset($context["page"]) || array_key_exists("page", $context) ? $context["page"] : (function () { throw new RuntimeError('Variable "page" does not exist.', 86, $this->source); })()))) {
-            // line 87
+        if (("explain" == (isset($context["page"]) || array_key_exists("page", $context) ? $context["page"] : (function () { throw new RuntimeError('Variable "page" does not exist.', 90, $this->source); })()))) {
+            // line 91
             yield "        ";
-            yield $this->env->getRuntime('Symfony\Bridge\Twig\Extension\HttpKernelRuntime')->renderFragment(Symfony\Bridge\Twig\Extension\HttpKernelExtension::controller("Doctrine\\Bundle\\DoctrineBundle\\Controller\\ProfilerController::explainAction", ["token" =>             // line 88
-(isset($context["token"]) || array_key_exists("token", $context) ? $context["token"] : (function () { throw new RuntimeError('Variable "token" does not exist.', 88, $this->source); })()), "panel" => "db", "connectionName" => CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source,             // line 90
-(isset($context["request"]) || array_key_exists("request", $context) ? $context["request"] : (function () { throw new RuntimeError('Variable "request" does not exist.', 90, $this->source); })()), "query", [], "any", false, false, false, 90), "get", ["connection"], "method", false, false, false, 90), "query" => CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source,             // line 91
-(isset($context["request"]) || array_key_exists("request", $context) ? $context["request"] : (function () { throw new RuntimeError('Variable "request" does not exist.', 91, $this->source); })()), "query", [], "any", false, false, false, 91), "get", ["query"], "method", false, false, false, 91)]));
-            // line 92
+            yield $this->env->getRuntime('Symfony\Bridge\Twig\Extension\HttpKernelRuntime')->renderFragment(Symfony\Bridge\Twig\Extension\HttpKernelExtension::controller("Doctrine\\Bundle\\DoctrineBundle\\Controller\\ProfilerController::explainAction", ["token" =>             // line 92
+(isset($context["token"]) || array_key_exists("token", $context) ? $context["token"] : (function () { throw new RuntimeError('Variable "token" does not exist.', 92, $this->source); })()), "panel" => "db", "connectionName" => CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source,             // line 94
+(isset($context["request"]) || array_key_exists("request", $context) ? $context["request"] : (function () { throw new RuntimeError('Variable "request" does not exist.', 94, $this->source); })()), "query", [], "any", false, false, false, 94), "get", ["connection"], "method", false, false, false, 94), "query" => CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source,             // line 95
+(isset($context["request"]) || array_key_exists("request", $context) ? $context["request"] : (function () { throw new RuntimeError('Variable "request" does not exist.', 95, $this->source); })()), "query", [], "any", false, false, false, 95), "get", ["query"], "method", false, false, false, 95)]));
+            // line 96
             yield "
     ";
         } else {
-            // line 94
+            // line 98
             yield "        ";
             yield from             $this->unwrap()->yieldBlock("queries", $context, $blocks);
             yield "
@@ -322,7 +329,7 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
         yield from [];
     }
 
-    // line 98
+    // line 102
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -335,7 +342,7 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "queries"));
 
-        // line 99
+        // line 103
         yield "    <style>
         .time-container { position: relative; }
         .time-container .nowrap { position: relative; z-index: 1; text-shadow: 0 0 2px #fff; }
@@ -343,9 +350,9 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
         .sql-runnable.sf-toggle-content.sf-toggle-visible { display: flex; flex-direction: column; }
         .sql-runnable button { align-self: end; }
         ";
-        // line 105
-        if (((isset($context["profiler_markup_version"]) || array_key_exists("profiler_markup_version", $context) ? $context["profiler_markup_version"] : (function () { throw new RuntimeError('Variable "profiler_markup_version" does not exist.', 105, $this->source); })()) >= 3)) {
-            // line 106
+        // line 109
+        if (((isset($context["profiler_markup_version"]) || array_key_exists("profiler_markup_version", $context) ? $context["profiler_markup_version"] : (function () { throw new RuntimeError('Variable "profiler_markup_version" does not exist.', 109, $this->source); })()) >= 3)) {
+            // line 110
             yield "        .highlight .keyword   { color: var(--highlight-keyword); font-weight: bold; }
         .highlight .word      { color: var(--color-text); }
         .highlight .variable  { color: var(--highlight-variable); }
@@ -356,7 +363,7 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
         .highlight .error     { color: var(--highlight-error); }
         ";
         }
-        // line 115
+        // line 119
         yield "    </style>
 
     <h2>Query Metrics</h2>
@@ -365,124 +372,132 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
         <div class=\"metric-group\">
             <div class=\"metric\">
                 <span class=\"value\">";
-        // line 122
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 122, $this->source); })()), "querycount", [], "any", false, false, false, 122), "html", null, true);
+        // line 126
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 126, $this->source); })()), "querycount", [], "any", false, false, false, 126), "html", null, true);
         yield "</span>
                 <span class=\"label\">Database Queries</span>
             </div>
 
             <div class=\"metric\">
                 <span class=\"value\">";
-        // line 127
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 127, $this->source); })()), "groupedQueryCount", [], "any", false, false, false, 127), "html", null, true);
+        // line 131
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 131, $this->source); })()), "groupedQueryCount", [], "any", false, false, false, 131), "html", null, true);
         yield "</span>
                 <span class=\"label\">Different statements</span>
             </div>
 
             <div class=\"metric\">
                 <span class=\"value\">";
-        // line 132
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::sprintf("%0.2f", (CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 132, $this->source); })()), "time", [], "any", false, false, false, 132) * 1000)), "html", null, true);
+        // line 136
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::sprintf("%0.2f", (CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 136, $this->source); })()), "time", [], "any", false, false, false, 136) * 1000)), "html", null, true);
         yield " ms</span>
                 <span class=\"label\">Query time</span>
             </div>
 
             <div class=\"metric\">
                 <span class=\"value\">";
-        // line 137
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 137, $this->source); })()), "invalidEntityCount", [], "any", false, false, false, 137), "html", null, true);
+        // line 141
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 141, $this->source); })()), "invalidEntityCount", [], "any", false, false, false, 141), "html", null, true);
         yield "</span>
                 <span class=\"label\">Invalid entities</span>
+            </div>
+
+            <div class=\"metric\">
+                <span class=\"value\">";
+        // line 146
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 146, $this->source); })()), "managedEntityCount", [], "any", false, false, false, 146), "html", null, true);
+        yield "</span>
+                <span class=\"label\">Managed entities</span>
             </div>
         </div>
 
         ";
-        // line 142
-        if (CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 142, $this->source); })()), "cacheEnabled", [], "any", false, false, false, 142)) {
-            // line 143
+        // line 151
+        if (CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 151, $this->source); })()), "cacheEnabled", [], "any", false, false, false, 151)) {
+            // line 152
             yield "            <div class=\"metric-group\">
                 <div class=\"metric\">
                     <span class=\"value\">";
-            // line 145
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 145, $this->source); })()), "cacheHitsCount", [], "any", false, false, false, 145), "html", null, true);
+            // line 154
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 154, $this->source); })()), "cacheHitsCount", [], "any", false, false, false, 154), "html", null, true);
             yield "</span>
                     <span class=\"label\">Cache hits</span>
                 </div>
                 <div class=\"metric\">
                     <span class=\"value\">";
-            // line 149
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 149, $this->source); })()), "cacheMissesCount", [], "any", false, false, false, 149), "html", null, true);
+            // line 158
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 158, $this->source); })()), "cacheMissesCount", [], "any", false, false, false, 158), "html", null, true);
             yield "</span>
                     <span class=\"label\">Cache misses</span>
                 </div>
                 <div class=\"metric\">
                     <span class=\"value\">";
-            // line 153
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 153, $this->source); })()), "cachePutsCount", [], "any", false, false, false, 153), "html", null, true);
+            // line 162
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 162, $this->source); })()), "cachePutsCount", [], "any", false, false, false, 162), "html", null, true);
             yield "</span>
                     <span class=\"label\">Cache puts</span>
                 </div>
             </div>
         ";
         }
-        // line 158
+        // line 167
         yield "    </div>
 
     <div class=\"sf-tabs\" style=\"margin-top: 20px;\">
         <div class=\"tab ";
-        // line 161
-        yield ((Twig\Extension\CoreExtension::testEmpty(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 161, $this->source); })()), "queries", [], "any", false, false, false, 161))) ? ("disabled") : (""));
+        // line 170
+        yield ((Twig\Extension\CoreExtension::testEmpty(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 170, $this->source); })()), "queries", [], "any", false, false, false, 170))) ? ("disabled") : (""));
         yield "\">
             ";
-        // line 162
-        $context["group_queries"] = CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["request"]) || array_key_exists("request", $context) ? $context["request"] : (function () { throw new RuntimeError('Variable "request" does not exist.', 162, $this->source); })()), "query", [], "any", false, false, false, 162), "getBoolean", ["group"], "method", false, false, false, 162);
-        // line 163
+        // line 171
+        $context["group_queries"] = CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["request"]) || array_key_exists("request", $context) ? $context["request"] : (function () { throw new RuntimeError('Variable "request" does not exist.', 171, $this->source); })()), "query", [], "any", false, false, false, 171), "getBoolean", ["group"], "method", false, false, false, 171);
+        // line 172
         yield "            <h3 class=\"tab-title\">
                 ";
-        // line 164
-        if ((isset($context["group_queries"]) || array_key_exists("group_queries", $context) ? $context["group_queries"] : (function () { throw new RuntimeError('Variable "group_queries" does not exist.', 164, $this->source); })())) {
-            // line 165
+        // line 173
+        if ((isset($context["group_queries"]) || array_key_exists("group_queries", $context) ? $context["group_queries"] : (function () { throw new RuntimeError('Variable "group_queries" does not exist.', 173, $this->source); })())) {
+            // line 174
             yield "                    Grouped Statements
                 ";
         } else {
-            // line 167
+            // line 176
             yield "                    Queries
                 ";
         }
-        // line 169
+        // line 178
         yield "            </h3>
 
             <div class=\"tab-content\">
                 ";
-        // line 172
-        if ( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 172, $this->source); })()), "queries", [], "any", false, false, false, 172)) {
-            // line 173
+        // line 181
+        if ( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 181, $this->source); })()), "queries", [], "any", false, false, false, 181)) {
+            // line 182
             yield "                    <div class=\"empty\">
                         <p>No executed queries.</p>
                     </div>
                 ";
         } else {
-            // line 177
+            // line 186
             yield "                    ";
-            if ((isset($context["group_queries"]) || array_key_exists("group_queries", $context) ? $context["group_queries"] : (function () { throw new RuntimeError('Variable "group_queries" does not exist.', 177, $this->source); })())) {
-                // line 178
+            if ((isset($context["group_queries"]) || array_key_exists("group_queries", $context) ? $context["group_queries"] : (function () { throw new RuntimeError('Variable "group_queries" does not exist.', 186, $this->source); })())) {
+                // line 187
                 yield "                        <p><a href=\"";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("_profiler", ["panel" => "db", "token" => (isset($context["token"]) || array_key_exists("token", $context) ? $context["token"] : (function () { throw new RuntimeError('Variable "token" does not exist.', 178, $this->source); })())]), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("_profiler", ["panel" => "db", "token" => (isset($context["token"]) || array_key_exists("token", $context) ? $context["token"] : (function () { throw new RuntimeError('Variable "token" does not exist.', 187, $this->source); })())]), "html", null, true);
                 yield "\">Show all queries</a></p>
                     ";
             } else {
-                // line 180
+                // line 189
                 yield "                        <p><a href=\"";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("_profiler", ["panel" => "db", "token" => (isset($context["token"]) || array_key_exists("token", $context) ? $context["token"] : (function () { throw new RuntimeError('Variable "token" does not exist.', 180, $this->source); })()), "group" => true]), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("_profiler", ["panel" => "db", "token" => (isset($context["token"]) || array_key_exists("token", $context) ? $context["token"] : (function () { throw new RuntimeError('Variable "token" does not exist.', 189, $this->source); })()), "group" => true]), "html", null, true);
                 yield "\">Group similar statements</a></p>
                     ";
             }
-            // line 182
+            // line 191
             yield "
                     ";
-            // line 183
+            // line 192
             $context['_parent'] = $context;
-            $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 183, $this->source); })()), "queries", [], "any", false, false, false, 183));
+            $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 192, $this->source); })()), "queries", [], "any", false, false, false, 192));
             $context['loop'] = [
               'parent' => $context['_parent'],
               'index0' => 0,
@@ -497,72 +512,72 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
                 $context['loop']['last'] = 1 === $length;
             }
             foreach ($context['_seq'] as $context["connection"] => $context["queries"]) {
-                // line 184
+                // line 193
                 yield "                        ";
-                if ((Twig\Extension\CoreExtension::length($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 184, $this->source); })()), "connections", [], "any", false, false, false, 184)) > 1)) {
-                    // line 185
+                if ((Twig\Extension\CoreExtension::length($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 193, $this->source); })()), "connections", [], "any", false, false, false, 193)) > 1)) {
+                    // line 194
                     yield "                            <h3>";
                     yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["connection"], "html", null, true);
                     yield " <small>connection</small></h3>
                         ";
                 }
-                // line 187
+                // line 196
                 yield "
                         ";
-                // line 188
+                // line 197
                 if (Twig\Extension\CoreExtension::testEmpty($context["queries"])) {
-                    // line 189
+                    // line 198
                     yield "                            <div class=\"empty\">
                                 <p>No database queries were performed.</p>
                             </div>
                         ";
                 } else {
-                    // line 193
+                    // line 202
                     yield "                            ";
-                    if ((isset($context["group_queries"]) || array_key_exists("group_queries", $context) ? $context["group_queries"] : (function () { throw new RuntimeError('Variable "group_queries" does not exist.', 193, $this->source); })())) {
-                        // line 194
+                    if ((isset($context["group_queries"]) || array_key_exists("group_queries", $context) ? $context["group_queries"] : (function () { throw new RuntimeError('Variable "group_queries" does not exist.', 202, $this->source); })())) {
+                        // line 203
                         yield "                                ";
-                        $context["queries"] = CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 194, $this->source); })()), "groupedQueries", [], "any", false, false, false, 194), $context["connection"], [], "array", false, false, false, 194);
-                        // line 195
+                        $context["queries"] = CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 203, $this->source); })()), "groupedQueries", [], "any", false, false, false, 203), $context["connection"], [], "array", false, false, false, 203);
+                        // line 204
                         yield "                            ";
                     }
-                    // line 196
+                    // line 205
                     yield "                            <table class=\"alt queries-table\">
                                 <thead>
                                 <tr>
                                     ";
-                    // line 199
-                    if ((isset($context["group_queries"]) || array_key_exists("group_queries", $context) ? $context["group_queries"] : (function () { throw new RuntimeError('Variable "group_queries" does not exist.', 199, $this->source); })())) {
-                        // line 200
+                    // line 208
+                    if ((isset($context["group_queries"]) || array_key_exists("group_queries", $context) ? $context["group_queries"] : (function () { throw new RuntimeError('Variable "group_queries" does not exist.', 208, $this->source); })())) {
+                        // line 209
                         yield "                                        <th class=\"nowrap\" onclick=\"javascript:sortTable(this, 0, 'queries-";
-                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 200), "html", null, true);
+                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 209), "html", null, true);
                         yield "')\" data-sort-direction=\"1\" style=\"cursor: pointer;\">Time<span class=\"text-muted\">&#9660;</span></th>
                                         <th class=\"nowrap\" onclick=\"javascript:sortTable(this, 1, 'queries-";
-                        // line 201
-                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 201), "html", null, true);
+                        // line 210
+                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 210), "html", null, true);
                         yield "')\" style=\"cursor: pointer;\">Count<span></span></th>
                                     ";
                     } else {
-                        // line 203
+                        // line 212
                         yield "                                        <th class=\"nowrap\" onclick=\"javascript:sortTable(this, 0, 'queries-";
-                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 203), "html", null, true);
+                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 212), "html", null, true);
                         yield "')\" data-sort-direction=\"-1\" style=\"cursor: pointer;\">#<span class=\"text-muted\">&#9650;</span></th>
                                         <th class=\"nowrap\" onclick=\"javascript:sortTable(this, 1, 'queries-";
-                        // line 204
-                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 204), "html", null, true);
+                        // line 213
+                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 213), "html", null, true);
                         yield "')\" style=\"cursor: pointer;\">Time<span></span></th>
                                     ";
                     }
-                    // line 206
+                    // line 215
                     yield "                                    <th style=\"width: 100%;\">Info</th>
                                 </tr>
                                 </thead>
                                 <tbody id=\"queries-";
-                    // line 209
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 209), "html", null, true);
+                    // line 218
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 218), "html", null, true);
                     yield "\">
                                 ";
-                    // line 210
+                    // line 219
                     $context['_parent'] = $context;
                     $context['_seq'] = CoreExtension::ensureTraversable($context["queries"]);
                     $context['loop'] = [
@@ -579,179 +594,179 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
                         $context['loop']['last'] = 1 === $length;
                     }
                     foreach ($context['_seq'] as $context["i"] => $context["query"]) {
-                        // line 211
+                        // line 220
                         yield "                                    ";
-                        $context["i"] = (((isset($context["group_queries"]) || array_key_exists("group_queries", $context) ? $context["group_queries"] : (function () { throw new RuntimeError('Variable "group_queries" does not exist.', 211, $this->source); })())) ? (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "index", [], "any", false, false, false, 211)) : ($context["i"]));
-                        // line 212
+                        $context["i"] = (((isset($context["group_queries"]) || array_key_exists("group_queries", $context) ? $context["group_queries"] : (function () { throw new RuntimeError('Variable "group_queries" does not exist.', 220, $this->source); })())) ? (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "index", [], "any", false, false, false, 220)) : ($context["i"]));
+                        // line 221
                         yield "                                    <tr id=\"queryNo-";
                         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["i"], "html", null, true);
                         yield "-";
-                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 212), "loop", [], "any", false, false, false, 212), "index", [], "any", false, false, false, 212), "html", null, true);
+                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 221), "loop", [], "any", false, false, false, 221), "index", [], "any", false, false, false, 221), "html", null, true);
                         yield "\">
                                         ";
-                        // line 213
-                        if ((isset($context["group_queries"]) || array_key_exists("group_queries", $context) ? $context["group_queries"] : (function () { throw new RuntimeError('Variable "group_queries" does not exist.', 213, $this->source); })())) {
-                            // line 214
+                        // line 222
+                        if ((isset($context["group_queries"]) || array_key_exists("group_queries", $context) ? $context["group_queries"] : (function () { throw new RuntimeError('Variable "group_queries" does not exist.', 222, $this->source); })())) {
+                            // line 223
                             yield "                                            <td class=\"time-container\">
                                                 <span class=\"time-bar\" style=\"width:";
-                            // line 215
-                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::sprintf("%0.2f", CoreExtension::getAttribute($this->env, $this->source, $context["query"], "executionPercent", [], "any", false, false, false, 215)), "html", null, true);
+                            // line 224
+                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::sprintf("%0.2f", CoreExtension::getAttribute($this->env, $this->source, $context["query"], "executionPercent", [], "any", false, false, false, 224)), "html", null, true);
                             yield "%\"></span>
                                                 <span class=\"nowrap\">";
-                            // line 216
-                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::sprintf("%0.2f", (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "executionMS", [], "any", false, false, false, 216) * 1000)), "html", null, true);
+                            // line 225
+                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::sprintf("%0.2f", (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "executionMS", [], "any", false, false, false, 225) * 1000)), "html", null, true);
                             yield "&nbsp;ms<br />(";
-                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::sprintf("%0.2f", CoreExtension::getAttribute($this->env, $this->source, $context["query"], "executionPercent", [], "any", false, false, false, 216)), "html", null, true);
+                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::sprintf("%0.2f", CoreExtension::getAttribute($this->env, $this->source, $context["query"], "executionPercent", [], "any", false, false, false, 225)), "html", null, true);
                             yield "%)</span>
                                             </td>
                                             <td class=\"nowrap\">";
-                            // line 218
-                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["query"], "count", [], "any", false, false, false, 218), "html", null, true);
+                            // line 227
+                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["query"], "count", [], "any", false, false, false, 227), "html", null, true);
                             yield "</td>
                                         ";
                         } else {
-                            // line 220
+                            // line 229
                             yield "                                            <td class=\"nowrap\">";
-                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 220), "html", null, true);
+                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 229), "html", null, true);
                             yield "</td>
                                             <td class=\"nowrap\">";
-                            // line 221
-                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::sprintf("%0.2f", (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "executionMS", [], "any", false, false, false, 221) * 1000)), "html", null, true);
+                            // line 230
+                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::sprintf("%0.2f", (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "executionMS", [], "any", false, false, false, 230) * 1000)), "html", null, true);
                             yield "&nbsp;ms</td>
                                         ";
                         }
-                        // line 223
+                        // line 232
                         yield "                                        <td>
                                             ";
-                        // line 224
-                        yield $this->extensions['Doctrine\Bundle\DoctrineBundle\Twig\DoctrineExtension']->prettifySql(CoreExtension::getAttribute($this->env, $this->source, $context["query"], "sql", [], "any", false, false, false, 224));
+                        // line 233
+                        yield $this->extensions['Doctrine\Bundle\DoctrineBundle\Twig\DoctrineExtension']->prettifySql(CoreExtension::getAttribute($this->env, $this->source, $context["query"], "sql", [], "any", false, false, false, 233));
                         yield "
 
                                             <div>
                                                 <strong class=\"font-normal text-small\">Parameters</strong>: ";
-                        // line 227
-                        yield $this->extensions['Symfony\Bundle\WebProfilerBundle\Twig\WebProfilerExtension']->dumpData($this->env, CoreExtension::getAttribute($this->env, $this->source, $context["query"], "params", [], "any", false, false, false, 227), 2);
+                        // line 236
+                        yield $this->extensions['Symfony\Bundle\WebProfilerBundle\Twig\WebProfilerExtension']->dumpData($this->env, CoreExtension::getAttribute($this->env, $this->source, $context["query"], "params", [], "any", false, false, false, 236), 2);
                         yield "
                                             </div>
 
                                             <div class=\"text-small font-normal\">
                                                 <a href=\"#\" class=\"sf-toggle link-inverse\" data-toggle-selector=\"#formatted-query-";
-                        // line 231
+                        // line 240
                         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["i"], "html", null, true);
                         yield "-";
-                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 231), "loop", [], "any", false, false, false, 231), "index", [], "any", false, false, false, 231), "html", null, true);
+                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 240), "loop", [], "any", false, false, false, 240), "index", [], "any", false, false, false, 240), "html", null, true);
                         yield "\" data-toggle-alt-content=\"Hide formatted query\">View formatted query</a>
 
                                                 ";
-                        // line 233
-                        if (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "runnable", [], "any", false, false, false, 233)) {
-                            // line 234
+                        // line 242
+                        if (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "runnable", [], "any", false, false, false, 242)) {
+                            // line 243
                             yield "                                                    &nbsp;&nbsp;
                                                     <a href=\"#\" class=\"sf-toggle link-inverse\" data-toggle-selector=\"#original-query-";
-                            // line 235
+                            // line 244
                             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["i"], "html", null, true);
                             yield "-";
-                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 235), "loop", [], "any", false, false, false, 235), "index", [], "any", false, false, false, 235), "html", null, true);
+                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 244), "loop", [], "any", false, false, false, 244), "index", [], "any", false, false, false, 244), "html", null, true);
                             yield "\" data-toggle-alt-content=\"Hide runnable query\">View runnable query</a>
                                                 ";
                         }
-                        // line 237
+                        // line 246
                         yield "
                                                 ";
-                        // line 238
-                        if (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "explainable", [], "any", false, false, false, 238)) {
-                            // line 239
+                        // line 247
+                        if (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "explainable", [], "any", false, false, false, 247)) {
+                            // line 248
                             yield "                                                    &nbsp;&nbsp;
                                                     <a class=\"link-inverse\" href=\"";
-                            // line 240
-                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("_profiler", ["panel" => "db", "token" => (isset($context["token"]) || array_key_exists("token", $context) ? $context["token"] : (function () { throw new RuntimeError('Variable "token" does not exist.', 240, $this->source); })()), "page" => "explain", "connection" => $context["connection"], "query" => $context["i"]]), "html", null, true);
+                            // line 249
+                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("_profiler", ["panel" => "db", "token" => (isset($context["token"]) || array_key_exists("token", $context) ? $context["token"] : (function () { throw new RuntimeError('Variable "token" does not exist.', 249, $this->source); })()), "page" => "explain", "connection" => $context["connection"], "query" => $context["i"]]), "html", null, true);
                             yield "\" onclick=\"return explain(this);\" data-target-id=\"explain-";
                             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["i"], "html", null, true);
                             yield "-";
-                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 240), "loop", [], "any", false, false, false, 240), "index", [], "any", false, false, false, 240), "html", null, true);
+                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 249), "loop", [], "any", false, false, false, 249), "index", [], "any", false, false, false, 249), "html", null, true);
                             yield "\">Explain query</a>
                                                 ";
                         }
-                        // line 242
+                        // line 251
                         yield "
                                                 ";
-                        // line 243
-                        if (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "backtrace", [], "any", true, true, false, 243)) {
-                            // line 244
+                        // line 252
+                        if (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "backtrace", [], "any", true, true, false, 252)) {
+                            // line 253
                             yield "                                                    &nbsp;&nbsp;
                                                     <a href=\"#\" class=\"sf-toggle link-inverse\" data-toggle-selector=\"#backtrace-";
-                            // line 245
+                            // line 254
                             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["i"], "html", null, true);
                             yield "-";
-                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 245), "loop", [], "any", false, false, false, 245), "index", [], "any", false, false, false, 245), "html", null, true);
+                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 254), "loop", [], "any", false, false, false, 254), "index", [], "any", false, false, false, 254), "html", null, true);
                             yield "\" data-toggle-alt-content=\"Hide query backtrace\">View query backtrace</a>
                                                 ";
                         }
-                        // line 247
+                        // line 256
                         yield "                                            </div>
 
                                             <div id=\"formatted-query-";
-                        // line 249
+                        // line 258
                         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["i"], "html", null, true);
                         yield "-";
-                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 249), "loop", [], "any", false, false, false, 249), "index", [], "any", false, false, false, 249), "html", null, true);
+                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 258), "loop", [], "any", false, false, false, 258), "index", [], "any", false, false, false, 258), "html", null, true);
                         yield "\" class=\"sql-runnable hidden\">
                                                 ";
-                        // line 250
-                        yield $this->extensions['Doctrine\Bundle\DoctrineBundle\Twig\DoctrineExtension']->formatSql(CoreExtension::getAttribute($this->env, $this->source, $context["query"], "sql", [], "any", false, false, false, 250), true);
+                        // line 259
+                        yield $this->extensions['Doctrine\Bundle\DoctrineBundle\Twig\DoctrineExtension']->formatSql(CoreExtension::getAttribute($this->env, $this->source, $context["query"], "sql", [], "any", false, false, false, 259), true);
                         yield "
                                                 <button class=\"btn btn-sm hidden\" data-clipboard-text=\"";
-                        // line 251
-                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Doctrine\Bundle\DoctrineBundle\Twig\DoctrineExtension']->formatSql(CoreExtension::getAttribute($this->env, $this->source, $context["query"], "sql", [], "any", false, false, false, 251), false), "html_attr");
+                        // line 260
+                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Doctrine\Bundle\DoctrineBundle\Twig\DoctrineExtension']->formatSql(CoreExtension::getAttribute($this->env, $this->source, $context["query"], "sql", [], "any", false, false, false, 260), false), "html_attr");
                         yield "\">Copy</button>
                                             </div>
 
                                             ";
-                        // line 254
-                        if (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "runnable", [], "any", false, false, false, 254)) {
-                            // line 255
+                        // line 263
+                        if (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "runnable", [], "any", false, false, false, 263)) {
+                            // line 264
                             yield "                                                <div id=\"original-query-";
                             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["i"], "html", null, true);
                             yield "-";
-                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 255), "loop", [], "any", false, false, false, 255), "index", [], "any", false, false, false, 255), "html", null, true);
+                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 264), "loop", [], "any", false, false, false, 264), "index", [], "any", false, false, false, 264), "html", null, true);
                             yield "\" class=\"sql-runnable hidden\">
                                                     ";
-                            // line 256
-                            $context["runnable_sql"] = $this->extensions['Doctrine\Bundle\DoctrineBundle\Twig\DoctrineExtension']->replaceQueryParameters((CoreExtension::getAttribute($this->env, $this->source, $context["query"], "sql", [], "any", false, false, false, 256) . ";"), CoreExtension::getAttribute($this->env, $this->source, $context["query"], "params", [], "any", false, false, false, 256));
-                            // line 257
+                            // line 265
+                            $context["runnable_sql"] = $this->extensions['Doctrine\Bundle\DoctrineBundle\Twig\DoctrineExtension']->replaceQueryParameters((CoreExtension::getAttribute($this->env, $this->source, $context["query"], "sql", [], "any", false, false, false, 265) . ";"), CoreExtension::getAttribute($this->env, $this->source, $context["query"], "params", [], "any", false, false, false, 265));
+                            // line 266
                             yield "                                                    ";
-                            yield $this->extensions['Doctrine\Bundle\DoctrineBundle\Twig\DoctrineExtension']->prettifySql((isset($context["runnable_sql"]) || array_key_exists("runnable_sql", $context) ? $context["runnable_sql"] : (function () { throw new RuntimeError('Variable "runnable_sql" does not exist.', 257, $this->source); })()));
+                            yield $this->extensions['Doctrine\Bundle\DoctrineBundle\Twig\DoctrineExtension']->prettifySql((isset($context["runnable_sql"]) || array_key_exists("runnable_sql", $context) ? $context["runnable_sql"] : (function () { throw new RuntimeError('Variable "runnable_sql" does not exist.', 266, $this->source); })()));
                             yield "
                                                     <button class=\"btn btn-sm hidden\" data-clipboard-text=\"";
-                            // line 258
-                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["runnable_sql"]) || array_key_exists("runnable_sql", $context) ? $context["runnable_sql"] : (function () { throw new RuntimeError('Variable "runnable_sql" does not exist.', 258, $this->source); })()), "html_attr");
+                            // line 267
+                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["runnable_sql"]) || array_key_exists("runnable_sql", $context) ? $context["runnable_sql"] : (function () { throw new RuntimeError('Variable "runnable_sql" does not exist.', 267, $this->source); })()), "html_attr");
                             yield "\">Copy</button>
                                                 </div>
                                             ";
                         }
-                        // line 261
+                        // line 270
                         yield "
                                             ";
-                        // line 262
-                        if (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "explainable", [], "any", false, false, false, 262)) {
-                            // line 263
+                        // line 271
+                        if (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "explainable", [], "any", false, false, false, 271)) {
+                            // line 272
                             yield "                                                <div id=\"explain-";
                             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["i"], "html", null, true);
                             yield "-";
-                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 263), "loop", [], "any", false, false, false, 263), "index", [], "any", false, false, false, 263), "html", null, true);
+                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 272), "loop", [], "any", false, false, false, 272), "index", [], "any", false, false, false, 272), "html", null, true);
                             yield "\" class=\"sql-explain\"></div>
                                             ";
                         }
-                        // line 265
+                        // line 274
                         yield "
                                             ";
-                        // line 266
-                        if (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "backtrace", [], "any", true, true, false, 266)) {
-                            // line 267
+                        // line 275
+                        if (CoreExtension::getAttribute($this->env, $this->source, $context["query"], "backtrace", [], "any", true, true, false, 275)) {
+                            // line 276
                             yield "                                                <div id=\"backtrace-";
                             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["i"], "html", null, true);
                             yield "-";
-                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 267), "loop", [], "any", false, false, false, 267), "index", [], "any", false, false, false, 267), "html", null, true);
+                            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "parent", [], "any", false, false, false, 276), "loop", [], "any", false, false, false, 276), "index", [], "any", false, false, false, 276), "html", null, true);
                             yield "\" class=\"hidden\">
                                                     <table>
                                                         <thead>
@@ -762,9 +777,9 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
                                                         </thead>
                                                         <tbody>
                                                         ";
-                            // line 276
+                            // line 285
                             $context['_parent'] = $context;
-                            $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, $context["query"], "backtrace", [], "any", false, false, false, 276));
+                            $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, $context["query"], "backtrace", [], "any", false, false, false, 285));
                             $context['loop'] = [
                               'parent' => $context['_parent'],
                               'index0' => 0,
@@ -779,42 +794,42 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
                                 $context['loop']['last'] = 1 === $length;
                             }
                             foreach ($context['_seq'] as $context["_key"] => $context["trace"]) {
-                                // line 277
+                                // line 286
                                 yield "                                                            <tr>
                                                                 <td>";
-                                // line 278
-                                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 278), "html", null, true);
+                                // line 287
+                                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 287), "html", null, true);
                                 yield "</td>
                                                                 <td>
                                                                             <span class=\"text-small\">
                                                                                 ";
-                                // line 281
-                                $context["line_number"] = ((CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "line", [], "any", true, true, false, 281)) ? (Twig\Extension\CoreExtension::default(CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "line", [], "any", false, false, false, 281), 1)) : (1));
-                                // line 282
+                                // line 290
+                                $context["line_number"] = ((CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "line", [], "any", true, true, false, 290)) ? (Twig\Extension\CoreExtension::default(CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "line", [], "any", false, false, false, 290), 1)) : (1));
+                                // line 291
                                 yield "                                                                                ";
-                                if (CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "file", [], "any", true, true, false, 282)) {
-                                    // line 283
+                                if (CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "file", [], "any", true, true, false, 291)) {
+                                    // line 292
                                     yield "                                                                                    <a href=\"";
-                                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\CodeExtension']->getFileLink(CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "file", [], "any", false, false, false, 283), (isset($context["line_number"]) || array_key_exists("line_number", $context) ? $context["line_number"] : (function () { throw new RuntimeError('Variable "line_number" does not exist.', 283, $this->source); })())), "html", null, true);
+                                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\CodeExtension']->getFileLink(CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "file", [], "any", false, false, false, 292), (isset($context["line_number"]) || array_key_exists("line_number", $context) ? $context["line_number"] : (function () { throw new RuntimeError('Variable "line_number" does not exist.', 292, $this->source); })())), "html", null, true);
                                     yield "\">
                                                                                 ";
                                 }
-                                // line 285
-                                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((((CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "class", [], "any", true, true, false, 285)) ? (Twig\Extension\CoreExtension::default(CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "class", [], "any", false, false, false, 285))) : ("")) . ((CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "class", [], "any", true, true, false, 285)) ? (((CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "type", [], "any", true, true, false, 285)) ? (Twig\Extension\CoreExtension::default(CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "type", [], "any", false, false, false, 285), "::")) : ("::"))) : (""))), "html", null, true);
-                                // line 286
+                                // line 294
+                                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((((CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "class", [], "any", true, true, false, 294)) ? (Twig\Extension\CoreExtension::default(CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "class", [], "any", false, false, false, 294))) : ("")) . ((CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "class", [], "any", true, true, false, 294)) ? (((CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "type", [], "any", true, true, false, 294)) ? (Twig\Extension\CoreExtension::default(CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "type", [], "any", false, false, false, 294), "::")) : ("::"))) : (""))), "html", null, true);
+                                // line 295
                                 yield "<span class=\"status-warning\">";
-                                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "function", [], "any", false, false, false, 286), "html", null, true);
+                                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "function", [], "any", false, false, false, 295), "html", null, true);
                                 yield "</span>
                                                                                 ";
-                                // line 287
-                                if (CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "file", [], "any", true, true, false, 287)) {
-                                    // line 288
+                                // line 296
+                                if (CoreExtension::getAttribute($this->env, $this->source, $context["trace"], "file", [], "any", true, true, false, 296)) {
+                                    // line 297
                                     yield "                                                                                    </a>
                                                                                 ";
                                 }
-                                // line 290
+                                // line 299
                                 yield "                                                                                (line ";
-                                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["line_number"]) || array_key_exists("line_number", $context) ? $context["line_number"] : (function () { throw new RuntimeError('Variable "line_number" does not exist.', 290, $this->source); })()), "html", null, true);
+                                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["line_number"]) || array_key_exists("line_number", $context) ? $context["line_number"] : (function () { throw new RuntimeError('Variable "line_number" does not exist.', 299, $this->source); })()), "html", null, true);
                                 yield ")
                                                                             </span>
                                                                 </td>
@@ -832,13 +847,13 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
                             $_parent = $context['_parent'];
                             unset($context['_seq'], $context['_key'], $context['trace'], $context['_parent'], $context['loop']);
                             $context = array_intersect_key($context, $_parent) + $_parent;
-                            // line 295
+                            // line 304
                             yield "                                                        </tbody>
                                                     </table>
                                                 </div>
                                             ";
                         }
-                        // line 299
+                        // line 308
                         yield "                                        </td>
                                     </tr>
                                 ";
@@ -854,12 +869,12 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
                     $_parent = $context['_parent'];
                     unset($context['_seq'], $context['i'], $context['query'], $context['_parent'], $context['loop']);
                     $context = array_intersect_key($context, $_parent) + $_parent;
-                    // line 302
+                    // line 311
                     yield "                                </tbody>
                             </table>
                         ";
                 }
-                // line 305
+                // line 314
                 yield "                    ";
                 ++$context['loop']['index0'];
                 ++$context['loop']['index'];
@@ -873,205 +888,242 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['connection'], $context['queries'], $context['_parent'], $context['loop']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 306
+            // line 315
             yield "                ";
         }
-        // line 307
+        // line 316
         yield "            </div>
         </div>
 
         <div class=\"tab ";
-        // line 310
-        yield ((Twig\Extension\CoreExtension::testEmpty(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 310, $this->source); })()), "connections", [], "any", false, false, false, 310))) ? ("disabled") : (""));
+        // line 319
+        yield ((Twig\Extension\CoreExtension::testEmpty(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 319, $this->source); })()), "connections", [], "any", false, false, false, 319))) ? ("disabled") : (""));
         yield "\">
             <h3 class=\"tab-title\">Database Connections</h3>
             <div class=\"tab-content\">
                 ";
-        // line 313
-        if ( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 313, $this->source); })()), "connections", [], "any", false, false, false, 313)) {
-            // line 314
+        // line 322
+        if ( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 322, $this->source); })()), "connections", [], "any", false, false, false, 322)) {
+            // line 323
             yield "                    <div class=\"empty\">
                         <p>There are no configured database connections.</p>
                     </div>
                 ";
         } else {
-            // line 318
+            // line 327
             yield "                    ";
-            yield $macros["helper"]->getTemplateForMacro("macro_render_simple_table", $context, 318, $this->getSourceContext())->macro_render_simple_table(...["Name", "Service", CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 318, $this->source); })()), "connections", [], "any", false, false, false, 318)]);
+            yield $macros["helper"]->getTemplateForMacro("macro_render_simple_table", $context, 327, $this->getSourceContext())->macro_render_simple_table(...["Name", "Service", CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 327, $this->source); })()), "connections", [], "any", false, false, false, 327)]);
             yield "
                 ";
         }
-        // line 320
+        // line 329
         yield "            </div>
         </div>
 
         <div class=\"tab ";
-        // line 323
-        yield ((Twig\Extension\CoreExtension::testEmpty(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 323, $this->source); })()), "managers", [], "any", false, false, false, 323))) ? ("disabled") : (""));
+        // line 332
+        yield ((Twig\Extension\CoreExtension::testEmpty(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 332, $this->source); })()), "managers", [], "any", false, false, false, 332))) ? ("disabled") : (""));
         yield "\">
             <h3 class=\"tab-title\">Entity Managers</h3>
             <div class=\"tab-content\">
 
                 ";
-        // line 327
-        if ( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 327, $this->source); })()), "managers", [], "any", false, false, false, 327)) {
-            // line 328
+        // line 336
+        if ( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 336, $this->source); })()), "managers", [], "any", false, false, false, 336)) {
+            // line 337
             yield "                    <div class=\"empty\">
                         <p>There are no configured entity managers.</p>
                     </div>
                 ";
         } else {
-            // line 332
+            // line 341
             yield "                    ";
-            yield $macros["helper"]->getTemplateForMacro("macro_render_simple_table", $context, 332, $this->getSourceContext())->macro_render_simple_table(...["Name", "Service", CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 332, $this->source); })()), "managers", [], "any", false, false, false, 332)]);
+            yield $macros["helper"]->getTemplateForMacro("macro_render_simple_table", $context, 341, $this->getSourceContext())->macro_render_simple_table(...["Name", "Service", CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 341, $this->source); })()), "managers", [], "any", false, false, false, 341)]);
             yield "
                 ";
         }
-        // line 334
+        // line 343
         yield "            </div>
         </div>
 
         <div class=\"tab ";
-        // line 337
-        yield (( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 337, $this->source); })()), "cacheEnabled", [], "any", false, false, false, 337)) ? ("disabled") : (""));
+        // line 346
+        yield (( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 346, $this->source); })()), "cacheEnabled", [], "any", false, false, false, 346)) ? ("disabled") : (""));
         yield "\">
             <h3 class=\"tab-title\">Second Level Cache</h3>
             <div class=\"tab-content\">
 
                 ";
-        // line 341
-        if ( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 341, $this->source); })()), "cacheEnabled", [], "any", false, false, false, 341)) {
-            // line 342
+        // line 350
+        if ( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 350, $this->source); })()), "cacheEnabled", [], "any", false, false, false, 350)) {
+            // line 351
             yield "                    <div class=\"empty\">
                         <p>Second Level Cache is not enabled.</p>
                     </div>
                 ";
         } else {
-            // line 346
+            // line 355
             yield "                    ";
-            if ( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 346, $this->source); })()), "cacheCounts", [], "any", false, false, false, 346)) {
-                // line 347
+            if ( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 355, $this->source); })()), "cacheCounts", [], "any", false, false, false, 355)) {
+                // line 356
                 yield "                        <div class=\"empty\">
                             <p>Second level cache information is not available.</p>
                         </div>
                     ";
             } else {
-                // line 351
+                // line 360
                 yield "                        <div class=\"metrics\">
                             <div class=\"metric\">
                                 <span class=\"value\">";
-                // line 353
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 353, $this->source); })()), "cacheCounts", [], "any", false, false, false, 353), "hits", [], "any", false, false, false, 353), "html", null, true);
+                // line 362
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 362, $this->source); })()), "cacheCounts", [], "any", false, false, false, 362), "hits", [], "any", false, false, false, 362), "html", null, true);
                 yield "</span>
                                 <span class=\"label\">Hits</span>
                             </div>
 
                             <div class=\"metric\">
                                 <span class=\"value\">";
-                // line 358
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 358, $this->source); })()), "cacheCounts", [], "any", false, false, false, 358), "misses", [], "any", false, false, false, 358), "html", null, true);
+                // line 367
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 367, $this->source); })()), "cacheCounts", [], "any", false, false, false, 367), "misses", [], "any", false, false, false, 367), "html", null, true);
                 yield "</span>
                                 <span class=\"label\">Misses</span>
                             </div>
 
                             <div class=\"metric\">
                                 <span class=\"value\">";
-                // line 363
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 363, $this->source); })()), "cacheCounts", [], "any", false, false, false, 363), "puts", [], "any", false, false, false, 363), "html", null, true);
+                // line 372
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 372, $this->source); })()), "cacheCounts", [], "any", false, false, false, 372), "puts", [], "any", false, false, false, 372), "html", null, true);
                 yield "</span>
                                 <span class=\"label\">Puts</span>
                             </div>
                         </div>
 
                         ";
-                // line 368
-                if (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 368, $this->source); })()), "cacheRegions", [], "any", false, false, false, 368), "hits", [], "any", false, false, false, 368)) {
-                    // line 369
+                // line 377
+                if (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 377, $this->source); })()), "cacheRegions", [], "any", false, false, false, 377), "hits", [], "any", false, false, false, 377)) {
+                    // line 378
                     yield "                            <h3>Number of cache hits</h3>
                             ";
-                    // line 370
-                    yield $macros["helper"]->getTemplateForMacro("macro_render_simple_table", $context, 370, $this->getSourceContext())->macro_render_simple_table(...["Region", "Hits", CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 370, $this->source); })()), "cacheRegions", [], "any", false, false, false, 370), "hits", [], "any", false, false, false, 370)]);
+                    // line 379
+                    yield $macros["helper"]->getTemplateForMacro("macro_render_simple_table", $context, 379, $this->getSourceContext())->macro_render_simple_table(...["Region", "Hits", CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 379, $this->source); })()), "cacheRegions", [], "any", false, false, false, 379), "hits", [], "any", false, false, false, 379)]);
                     yield "
                         ";
                 }
-                // line 372
+                // line 381
                 yield "
                         ";
-                // line 373
-                if (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 373, $this->source); })()), "cacheRegions", [], "any", false, false, false, 373), "misses", [], "any", false, false, false, 373)) {
-                    // line 374
+                // line 382
+                if (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 382, $this->source); })()), "cacheRegions", [], "any", false, false, false, 382), "misses", [], "any", false, false, false, 382)) {
+                    // line 383
                     yield "                            <h3>Number of cache misses</h3>
                             ";
-                    // line 375
-                    yield $macros["helper"]->getTemplateForMacro("macro_render_simple_table", $context, 375, $this->getSourceContext())->macro_render_simple_table(...["Region", "Misses", CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 375, $this->source); })()), "cacheRegions", [], "any", false, false, false, 375), "misses", [], "any", false, false, false, 375)]);
+                    // line 384
+                    yield $macros["helper"]->getTemplateForMacro("macro_render_simple_table", $context, 384, $this->getSourceContext())->macro_render_simple_table(...["Region", "Misses", CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 384, $this->source); })()), "cacheRegions", [], "any", false, false, false, 384), "misses", [], "any", false, false, false, 384)]);
                     yield "
                         ";
                 }
-                // line 377
+                // line 386
                 yield "
                         ";
-                // line 378
-                if (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 378, $this->source); })()), "cacheRegions", [], "any", false, false, false, 378), "puts", [], "any", false, false, false, 378)) {
-                    // line 379
+                // line 387
+                if (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 387, $this->source); })()), "cacheRegions", [], "any", false, false, false, 387), "puts", [], "any", false, false, false, 387)) {
+                    // line 388
                     yield "                            <h3>Number of cache puts</h3>
                             ";
-                    // line 380
-                    yield $macros["helper"]->getTemplateForMacro("macro_render_simple_table", $context, 380, $this->getSourceContext())->macro_render_simple_table(...["Region", "Puts", CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 380, $this->source); })()), "cacheRegions", [], "any", false, false, false, 380), "puts", [], "any", false, false, false, 380)]);
+                    // line 389
+                    yield $macros["helper"]->getTemplateForMacro("macro_render_simple_table", $context, 389, $this->getSourceContext())->macro_render_simple_table(...["Region", "Puts", CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 389, $this->source); })()), "cacheRegions", [], "any", false, false, false, 389), "puts", [], "any", false, false, false, 389)]);
                     yield "
                         ";
                 }
-                // line 382
+                // line 391
                 yield "                    ";
             }
-            // line 383
+            // line 392
             yield "                ";
         }
-        // line 384
+        // line 393
+        yield "            </div>
+        </div>
+
+        <div class=\"tab\">
+            <h3 class=\"tab-title\">Managed Entities</h3>
+            <div class=\"tab-content\">
+                ";
+        // line 399
+        if ( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 399, $this->source); })()), "managedEntityCountByClass", [], "any", false, false, false, 399)) {
+            // line 400
+            yield "                    <div class=\"empty\">
+                        <p>No managed entities.</p>
+                    </div>
+                ";
+        } else {
+            // line 404
+            yield "                    ";
+            $context['_parent'] = $context;
+            $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 404, $this->source); })()), "managedEntityCountByClass", [], "any", false, false, false, 404));
+            foreach ($context['_seq'] as $context["manager"] => $context["entityCounts"]) {
+                // line 405
+                yield "                        <h4>";
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["manager"], "html", null, true);
+                yield " <small>entity manager</small></h4>
+                        ";
+                // line 406
+                yield $macros["helper"]->getTemplateForMacro("macro_render_simple_table", $context, 406, $this->getSourceContext())->macro_render_simple_table(...["Class", "Amount of managed objects", $context["entityCounts"]]);
+                yield "
+                    ";
+            }
+            $_parent = $context['_parent'];
+            unset($context['_seq'], $context['manager'], $context['entityCounts'], $context['_parent']);
+            $context = array_intersect_key($context, $_parent) + $_parent;
+            // line 408
+            yield "                ";
+        }
+        // line 409
         yield "            </div>
         </div>
 
         <div class=\"tab ";
-        // line 387
-        yield (( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 387, $this->source); })()), "entities", [], "any", false, false, false, 387)) ? ("disabled") : (""));
+        // line 412
+        yield (( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 412, $this->source); })()), "entities", [], "any", false, false, false, 412)) ? ("disabled") : (""));
         yield "\">
             <h3 class=\"tab-title\">Entities Mapping</h3>
             <div class=\"tab-content\">
 
                 ";
-        // line 391
-        if ( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 391, $this->source); })()), "entities", [], "any", false, false, false, 391)) {
-            // line 392
+        // line 416
+        if ( !CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 416, $this->source); })()), "entities", [], "any", false, false, false, 416)) {
+            // line 417
             yield "                    <div class=\"empty\">
                         <p>No mapped entities.</p>
                     </div>
                 ";
         } else {
-            // line 396
+            // line 421
             yield "                    ";
             $context['_parent'] = $context;
-            $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 396, $this->source); })()), "entities", [], "any", false, false, false, 396));
+            $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 421, $this->source); })()), "entities", [], "any", false, false, false, 421));
             foreach ($context['_seq'] as $context["manager"] => $context["classes"]) {
-                // line 397
+                // line 422
                 yield "                        ";
-                if ((Twig\Extension\CoreExtension::length($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 397, $this->source); })()), "managers", [], "any", false, false, false, 397)) > 1)) {
-                    // line 398
-                    yield "                            <h3>";
+                if ((Twig\Extension\CoreExtension::length($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 422, $this->source); })()), "managers", [], "any", false, false, false, 422)) > 1)) {
+                    // line 423
+                    yield "                            <h4>";
                     yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["manager"], "html", null, true);
-                    yield " <small>entity manager</small></h3>
+                    yield " <small>entity manager</small></h4>
                         ";
                 }
-                // line 400
+                // line 425
                 yield "
                         ";
-                // line 401
+                // line 426
                 if (Twig\Extension\CoreExtension::testEmpty($context["classes"])) {
-                    // line 402
+                    // line 427
                     yield "                            <div class=\"empty\">
                                 <p>No loaded entities.</p>
                             </div>
                         ";
                 } else {
-                    // line 406
+                    // line 431
                     yield "                            <table>
                                 <thead>
                                 <tr>
@@ -1081,37 +1133,37 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
                                 </thead>
                                 <tbody>
                                 ";
-                    // line 414
+                    // line 439
                     $context['_parent'] = $context;
                     $context['_seq'] = CoreExtension::ensureTraversable($context["classes"]);
                     foreach ($context['_seq'] as $context["_key"] => $context["class"]) {
-                        // line 415
+                        // line 440
                         yield "                                    ";
-                        $context["contains_errors"] = (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, ($context["collector"] ?? null), "mappingErrors", [], "any", false, true, false, 415), $context["manager"], [], "array", true, true, false, 415) && CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, ($context["collector"] ?? null), "mappingErrors", [], "any", false, true, false, 415), $context["manager"], [], "array", false, true, false, 415), CoreExtension::getAttribute($this->env, $this->source, $context["class"], "class", [], "any", false, false, false, 415), [], "array", true, true, false, 415));
-                        // line 416
+                        $context["contains_errors"] = (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, ($context["collector"] ?? null), "mappingErrors", [], "any", false, true, false, 440), $context["manager"], [], "array", true, true, false, 440) && CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, ($context["collector"] ?? null), "mappingErrors", [], "any", false, true, false, 440), $context["manager"], [], "array", false, true, false, 440), CoreExtension::getAttribute($this->env, $this->source, $context["class"], "class", [], "any", false, false, false, 440), [], "array", true, true, false, 440));
+                        // line 441
                         yield "                                    <tr class=\"";
-                        yield (((isset($context["contains_errors"]) || array_key_exists("contains_errors", $context) ? $context["contains_errors"] : (function () { throw new RuntimeError('Variable "contains_errors" does not exist.', 416, $this->source); })())) ? ("status-error") : (""));
+                        yield (((isset($context["contains_errors"]) || array_key_exists("contains_errors", $context) ? $context["contains_errors"] : (function () { throw new RuntimeError('Variable "contains_errors" does not exist.', 441, $this->source); })())) ? ("status-error") : (""));
                         yield "\">
                                         <td>
                                 <a href=\"";
-                        // line 418
-                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\CodeExtension']->getFileLink(CoreExtension::getAttribute($this->env, $this->source, $context["class"], "file", [], "any", false, false, false, 418), CoreExtension::getAttribute($this->env, $this->source, $context["class"], "line", [], "any", false, false, false, 418)), "html", null, true);
+                        // line 443
+                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\CodeExtension']->getFileLink(CoreExtension::getAttribute($this->env, $this->source, $context["class"], "file", [], "any", false, false, false, 443), CoreExtension::getAttribute($this->env, $this->source, $context["class"], "line", [], "any", false, false, false, 443)), "html", null, true);
                         yield "\">";
-                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["class"], "class", [], "any", false, false, false, 418), "html", null, true);
+                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["class"], "class", [], "any", false, false, false, 443), "html", null, true);
                         yield "</a>
                             </td>
                                         <td class=\"font-normal\">
                                             ";
-                        // line 421
-                        if ((isset($context["contains_errors"]) || array_key_exists("contains_errors", $context) ? $context["contains_errors"] : (function () { throw new RuntimeError('Variable "contains_errors" does not exist.', 421, $this->source); })())) {
-                            // line 422
+                        // line 446
+                        if ((isset($context["contains_errors"]) || array_key_exists("contains_errors", $context) ? $context["contains_errors"] : (function () { throw new RuntimeError('Variable "contains_errors" does not exist.', 446, $this->source); })())) {
+                            // line 447
                             yield "                                                <ul>
                                                     ";
-                            // line 423
+                            // line 448
                             $context['_parent'] = $context;
-                            $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 423, $this->source); })()), "mappingErrors", [], "any", false, false, false, 423), $context["manager"], [], "array", false, false, false, 423), CoreExtension::getAttribute($this->env, $this->source, $context["class"], "class", [], "any", false, false, false, 423), [], "array", false, false, false, 423));
+                            $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 448, $this->source); })()), "mappingErrors", [], "any", false, false, false, 448), $context["manager"], [], "array", false, false, false, 448), CoreExtension::getAttribute($this->env, $this->source, $context["class"], "class", [], "any", false, false, false, 448), [], "array", false, false, false, 448));
                             foreach ($context['_seq'] as $context["_key"] => $context["error"]) {
-                                // line 424
+                                // line 449
                                 yield "                                                        <li>";
                                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["error"], "html", null, true);
                                 yield "</li>
@@ -1120,15 +1172,15 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
                             $_parent = $context['_parent'];
                             unset($context['_seq'], $context['_key'], $context['error'], $context['_parent']);
                             $context = array_intersect_key($context, $_parent) + $_parent;
-                            // line 426
+                            // line 451
                             yield "                                                </ul>
                                             ";
                         } else {
-                            // line 428
+                            // line 453
                             yield "                                                No errors.
                                             ";
                         }
-                        // line 430
+                        // line 455
                         yield "                                        </td>
                                     </tr>
                                 ";
@@ -1136,21 +1188,21 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
                     $_parent = $context['_parent'];
                     unset($context['_seq'], $context['_key'], $context['class'], $context['_parent']);
                     $context = array_intersect_key($context, $_parent) + $_parent;
-                    // line 433
+                    // line 458
                     yield "                                </tbody>
                             </table>
                         ";
                 }
-                // line 436
+                // line 461
                 yield "                    ";
             }
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['manager'], $context['classes'], $context['_parent']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 437
+            // line 462
             yield "                ";
         }
-        // line 438
+        // line 463
         yield "            </div>
         </div>
     </div>
@@ -1237,7 +1289,7 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
         yield from [];
     }
 
-    // line 516
+    // line 541
     public function macro_render_simple_table($label1 = null, $label2 = null, $data = null, ...$varargs): string|Markup
     {
         $macros = $this->macros;
@@ -1257,34 +1309,34 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
             $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
             $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "macro", "render_simple_table"));
 
-            // line 517
+            // line 542
             yield "    <table>
         <thead>
         <tr>
             <th scope=\"col\" class=\"key\">";
-            // line 520
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["label1"]) || array_key_exists("label1", $context) ? $context["label1"] : (function () { throw new RuntimeError('Variable "label1" does not exist.', 520, $this->source); })()), "html", null, true);
+            // line 545
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["label1"]) || array_key_exists("label1", $context) ? $context["label1"] : (function () { throw new RuntimeError('Variable "label1" does not exist.', 545, $this->source); })()), "html", null, true);
             yield "</th>
             <th scope=\"col\">";
-            // line 521
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["label2"]) || array_key_exists("label2", $context) ? $context["label2"] : (function () { throw new RuntimeError('Variable "label2" does not exist.', 521, $this->source); })()), "html", null, true);
+            // line 546
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["label2"]) || array_key_exists("label2", $context) ? $context["label2"] : (function () { throw new RuntimeError('Variable "label2" does not exist.', 546, $this->source); })()), "html", null, true);
             yield "</th>
         </tr>
         </thead>
         <tbody>
         ";
-            // line 525
+            // line 550
             $context['_parent'] = $context;
-            $context['_seq'] = CoreExtension::ensureTraversable((isset($context["data"]) || array_key_exists("data", $context) ? $context["data"] : (function () { throw new RuntimeError('Variable "data" does not exist.', 525, $this->source); })()));
+            $context['_seq'] = CoreExtension::ensureTraversable((isset($context["data"]) || array_key_exists("data", $context) ? $context["data"] : (function () { throw new RuntimeError('Variable "data" does not exist.', 550, $this->source); })()));
             foreach ($context['_seq'] as $context["key"] => $context["value"]) {
-                // line 526
+                // line 551
                 yield "            <tr>
                 <th scope=\"row\">";
-                // line 527
+                // line 552
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["key"], "html", null, true);
                 yield "</th>
                 <td>";
-                // line 528
+                // line 553
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["value"], "html", null, true);
                 yield "</td>
             </tr>
@@ -1293,7 +1345,7 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['key'], $context['value'], $context['_parent']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 531
+            // line 556
             yield "        </tbody>
     </table>
 ";
@@ -1328,7 +1380,7 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  1297 => 531,  1288 => 528,  1284 => 527,  1281 => 526,  1277 => 525,  1270 => 521,  1266 => 520,  1261 => 517,  1241 => 516,  1154 => 438,  1151 => 437,  1145 => 436,  1140 => 433,  1132 => 430,  1128 => 428,  1124 => 426,  1115 => 424,  1111 => 423,  1108 => 422,  1106 => 421,  1098 => 418,  1092 => 416,  1089 => 415,  1085 => 414,  1075 => 406,  1069 => 402,  1067 => 401,  1064 => 400,  1058 => 398,  1055 => 397,  1050 => 396,  1044 => 392,  1042 => 391,  1035 => 387,  1030 => 384,  1027 => 383,  1024 => 382,  1019 => 380,  1016 => 379,  1014 => 378,  1011 => 377,  1006 => 375,  1003 => 374,  1001 => 373,  998 => 372,  993 => 370,  990 => 369,  988 => 368,  980 => 363,  972 => 358,  964 => 353,  960 => 351,  954 => 347,  951 => 346,  945 => 342,  943 => 341,  936 => 337,  931 => 334,  925 => 332,  919 => 328,  917 => 327,  910 => 323,  905 => 320,  899 => 318,  893 => 314,  891 => 313,  885 => 310,  880 => 307,  877 => 306,  863 => 305,  858 => 302,  842 => 299,  836 => 295,  816 => 290,  812 => 288,  810 => 287,  805 => 286,  803 => 285,  797 => 283,  794 => 282,  792 => 281,  786 => 278,  783 => 277,  766 => 276,  751 => 267,  749 => 266,  746 => 265,  738 => 263,  736 => 262,  733 => 261,  727 => 258,  722 => 257,  720 => 256,  713 => 255,  711 => 254,  705 => 251,  701 => 250,  695 => 249,  691 => 247,  684 => 245,  681 => 244,  679 => 243,  676 => 242,  667 => 240,  664 => 239,  662 => 238,  659 => 237,  652 => 235,  649 => 234,  647 => 233,  640 => 231,  633 => 227,  627 => 224,  624 => 223,  619 => 221,  614 => 220,  609 => 218,  602 => 216,  598 => 215,  595 => 214,  593 => 213,  586 => 212,  583 => 211,  566 => 210,  562 => 209,  557 => 206,  552 => 204,  547 => 203,  542 => 201,  537 => 200,  535 => 199,  530 => 196,  527 => 195,  524 => 194,  521 => 193,  515 => 189,  513 => 188,  510 => 187,  504 => 185,  501 => 184,  484 => 183,  481 => 182,  475 => 180,  469 => 178,  466 => 177,  460 => 173,  458 => 172,  453 => 169,  449 => 167,  445 => 165,  443 => 164,  440 => 163,  438 => 162,  434 => 161,  429 => 158,  421 => 153,  414 => 149,  407 => 145,  403 => 143,  401 => 142,  393 => 137,  385 => 132,  377 => 127,  369 => 122,  360 => 115,  349 => 106,  347 => 105,  339 => 99,  326 => 98,  311 => 94,  307 => 92,  305 => 91,  304 => 90,  303 => 88,  301 => 87,  298 => 86,  285 => 85,  273 => 82,  267 => 79,  264 => 78,  262 => 77,  257 => 75,  250 => 74,  237 => 73,  222 => 68,  219 => 67,  215 => 66,  208 => 61,  200 => 58,  191 => 54,  184 => 50,  180 => 48,  178 => 47,  171 => 45,  164 => 41,  157 => 37,  148 => 33,  144 => 31,  142 => 30,  139 => 29,  135 => 28,  128 => 24,  121 => 21,  114 => 18,  112 => 17,  109 => 16,  103 => 14,  97 => 12,  95 => 11,  92 => 10,  89 => 9,  87 => 8,  84 => 7,  81 => 6,  68 => 5,  58 => 1,  56 => 3,  43 => 1,);
+        return array (  1349 => 556,  1340 => 553,  1336 => 552,  1333 => 551,  1329 => 550,  1322 => 546,  1318 => 545,  1313 => 542,  1293 => 541,  1206 => 463,  1203 => 462,  1197 => 461,  1192 => 458,  1184 => 455,  1180 => 453,  1176 => 451,  1167 => 449,  1163 => 448,  1160 => 447,  1158 => 446,  1150 => 443,  1144 => 441,  1141 => 440,  1137 => 439,  1127 => 431,  1121 => 427,  1119 => 426,  1116 => 425,  1110 => 423,  1107 => 422,  1102 => 421,  1096 => 417,  1094 => 416,  1087 => 412,  1082 => 409,  1079 => 408,  1071 => 406,  1066 => 405,  1061 => 404,  1055 => 400,  1053 => 399,  1045 => 393,  1042 => 392,  1039 => 391,  1034 => 389,  1031 => 388,  1029 => 387,  1026 => 386,  1021 => 384,  1018 => 383,  1016 => 382,  1013 => 381,  1008 => 379,  1005 => 378,  1003 => 377,  995 => 372,  987 => 367,  979 => 362,  975 => 360,  969 => 356,  966 => 355,  960 => 351,  958 => 350,  951 => 346,  946 => 343,  940 => 341,  934 => 337,  932 => 336,  925 => 332,  920 => 329,  914 => 327,  908 => 323,  906 => 322,  900 => 319,  895 => 316,  892 => 315,  878 => 314,  873 => 311,  857 => 308,  851 => 304,  831 => 299,  827 => 297,  825 => 296,  820 => 295,  818 => 294,  812 => 292,  809 => 291,  807 => 290,  801 => 287,  798 => 286,  781 => 285,  766 => 276,  764 => 275,  761 => 274,  753 => 272,  751 => 271,  748 => 270,  742 => 267,  737 => 266,  735 => 265,  728 => 264,  726 => 263,  720 => 260,  716 => 259,  710 => 258,  706 => 256,  699 => 254,  696 => 253,  694 => 252,  691 => 251,  682 => 249,  679 => 248,  677 => 247,  674 => 246,  667 => 244,  664 => 243,  662 => 242,  655 => 240,  648 => 236,  642 => 233,  639 => 232,  634 => 230,  629 => 229,  624 => 227,  617 => 225,  613 => 224,  610 => 223,  608 => 222,  601 => 221,  598 => 220,  581 => 219,  577 => 218,  572 => 215,  567 => 213,  562 => 212,  557 => 210,  552 => 209,  550 => 208,  545 => 205,  542 => 204,  539 => 203,  536 => 202,  530 => 198,  528 => 197,  525 => 196,  519 => 194,  516 => 193,  499 => 192,  496 => 191,  490 => 189,  484 => 187,  481 => 186,  475 => 182,  473 => 181,  468 => 178,  464 => 176,  460 => 174,  458 => 173,  455 => 172,  453 => 171,  449 => 170,  444 => 167,  436 => 162,  429 => 158,  422 => 154,  418 => 152,  416 => 151,  408 => 146,  400 => 141,  392 => 136,  384 => 131,  376 => 126,  367 => 119,  356 => 110,  354 => 109,  346 => 103,  333 => 102,  318 => 98,  314 => 96,  312 => 95,  311 => 94,  310 => 92,  308 => 91,  305 => 90,  292 => 89,  280 => 86,  274 => 83,  271 => 82,  269 => 81,  264 => 79,  257 => 78,  244 => 77,  229 => 72,  226 => 71,  222 => 70,  215 => 65,  207 => 62,  198 => 58,  191 => 54,  187 => 52,  185 => 51,  180 => 49,  171 => 45,  164 => 41,  157 => 37,  148 => 33,  144 => 31,  142 => 30,  139 => 29,  135 => 28,  128 => 24,  121 => 21,  114 => 18,  112 => 17,  109 => 16,  103 => 14,  97 => 12,  95 => 11,  92 => 10,  89 => 9,  87 => 8,  84 => 7,  81 => 6,  68 => 5,  58 => 1,  56 => 3,  43 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -1378,6 +1430,10 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
             <div class=\"sf-toolbar-info-piece\">
                 <b>Invalid entities</b>
                 <span class=\"sf-toolbar-status {{ collector.invalidEntityCount > 0 ? 'sf-toolbar-status-red' : '' }}\">{{ collector.invalidEntityCount }}</span>
+            </div>
+            <div class=\"sf-toolbar-info-piece\">
+                <b>Managed entities</b>
+                <span class=\"sf-toolbar-status\">{{ collector.managedEntityCount }}</span>
             </div>
             {% if collector.cacheEnabled %}
                 <div class=\"sf-toolbar-info-piece\">
@@ -1471,6 +1527,11 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
             <div class=\"metric\">
                 <span class=\"value\">{{ collector.invalidEntityCount }}</span>
                 <span class=\"label\">Invalid entities</span>
+            </div>
+
+            <div class=\"metric\">
+                <span class=\"value\">{{ collector.managedEntityCount }}</span>
+                <span class=\"label\">Managed entities</span>
             </div>
         </div>
 
@@ -1719,6 +1780,22 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
             </div>
         </div>
 
+        <div class=\"tab\">
+            <h3 class=\"tab-title\">Managed Entities</h3>
+            <div class=\"tab-content\">
+                {% if not collector.managedEntityCountByClass %}
+                    <div class=\"empty\">
+                        <p>No managed entities.</p>
+                    </div>
+                {% else %}
+                    {% for manager, entityCounts in collector.managedEntityCountByClass %}
+                        <h4>{{ manager }} <small>entity manager</small></h4>
+                        {{ helper.render_simple_table('Class', 'Amount of managed objects', entityCounts) }}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
         <div class=\"tab {{ not collector.entities ? 'disabled' }}\">
             <h3 class=\"tab-title\">Entities Mapping</h3>
             <div class=\"tab-content\">
@@ -1730,7 +1807,7 @@ class __TwigTemplate_d155c82b9cc9a0358b9dfa880841341d extends Template
                 {% else %}
                     {% for manager, classes in collector.entities %}
                         {% if collector.managers|length > 1 %}
-                            <h3>{{ manager }} <small>entity manager</small></h3>
+                            <h4>{{ manager }} <small>entity manager</small></h4>
                         {% endif %}
 
                         {% if classes is empty %}

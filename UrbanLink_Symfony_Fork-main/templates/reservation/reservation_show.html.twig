@@ -1,41 +1,136 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reservation Details{% endblock %}
+{% block title %}Reservation #{{ reservation.id }} Details | {{ parent() }}{% endblock %}
 
 {% block body %}
-<div class="relative flex flex-col w-full min-w-0 bg-white border shadow rounded-2xl" style="margin-left: 280px;">
-  <div class="p-4 pb-2 bg-white rounded-t-2xl">
-    <h6 class="text-sm font-semibold">Reservation Details</h6>
-  </div>
-  <div class="flex-auto px-4 pt-0 pb-2">
-    <table class="table-auto w-full text-xs text-slate-700">
-      <tbody>
-        <tr>
-          <td class="px-2 py-1.5 text-left w-[140px]"><strong>User:</strong></td>
-          <td class="px-2 py-1.5">{{ reservation.user.email }}</td>
-        </tr>
-        <tr>
-          <td class="px-2 py-1.5 text-left w-[140px]"><strong>Trajet:</strong></td>
-          <td class="px-2 py-1.5">{{ reservation.trajet.departure }} → {{ reservation.trajet.destination }}</td>
-        </tr>
-        <tr>
-          <td class="px-2 py-1.5 text-left w-[140px]"><strong>Date:</strong></td>
-          <td class="px-2 py-1.5">{{ reservation.reservationDate|date('Y-m-d H:i') }}</td>
-        </tr>
-        <tr>
-          <td class="px-2 py-1.5 text-left w-[140px]"><strong>Seats:</strong></td>
-          <td class="px-2 py-1.5">{{ reservation.numberOfSeats }}</td>
-        </tr>
-        <tr>
-          <td class="px-2 py-1.5 text-left w-[140px]"><strong>Status:</strong></td>
-          <td class="px-2 py-1.5">{{ reservation.status }}</td>
-        </tr>
-        <tr>
-          <td class="px-2 py-1.5 text-left w-[140px]"><strong>Total Price:</strong></td>
-          <td class="px-2 py-1.5">{{ reservation.totalPrice }}</td>
-        </tr>
-      </tbody>
-    </table>
+<div class="ml-[280px] p-6 transition-all duration-300">
+  <div class="flex flex-col gap-6">
+    {# Header with back button #}
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="{{ path('admin_reservations') }}" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+          <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+        </a>
+        <div>
+          <h1 class="text-xl font-semibold text-gray-800">Reservation Details</h1>
+          <p class="text-xs text-gray-500">ID: {{ reservation.id }}</p>
+        </div>
+      </div>
+      
+      <div class="flex gap-2">
+        {% set status = reservation.status|lower %}
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+          {% if status == 'confirmed' %} bg-green-100 text-green-800
+          {% elseif status == 'pending' %} bg-yellow-100 text-yellow-800
+          {% elseif status == 'canceled' or status == 'cancelled' %} bg-red-100 text-red-800
+          {% else %} bg-gray-100 text-gray-800 {% endif %}">
+          {{ status|capitalize }}
+        </span>
+      </div>
+    </div>
+
+    {# Main card #}
+    <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+      {# User section #}
+      <div class="p-6 border-b border-gray-200">
+        <h2 class="text-sm font-medium text-gray-500 mb-4">USER INFORMATION</h2>
+        <div class="flex items-center gap-4">
+          <div class="flex-shrink-0 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-lg font-medium text-blue-600">
+            {{ reservation.user.email|first|upper }}
+          </div>
+          <div>
+            <p class="font-medium text-gray-900">{{ reservation.user.name ?? 'N/A' }}</p>
+            <p class="text-sm text-gray-600">{{ reservation.user.email }}</p>
+            <p class="text-xs text-gray-500 mt-1">{{ reservation.user.phone ?? 'No phone provided' }}</p>
+          </div>
+        </div>
+      </div>
+
+      {# Trip details - Only show if trajet exists #}
+      {% if reservation.trajet %}
+      <div class="p-6 border-b border-gray-200">
+        <h2 class="text-sm font-medium text-gray-500 mb-4">TRIP DETAILS</h2>
+        <div class="space-y-4">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 mt-1">
+              <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                <svg class="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7l4-4m0 0l4 4m-4-4v18"/>
+                </svg>
+              </div>
+            </div>
+            <div>
+              <p class="font-medium text-gray-900">{{ reservation.trajet.departure ?? 'Unknown departure' }}</p>
+              <p class="text-xs text-gray-500">Departure</p>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-center">
+            <div class="h-12 w-px bg-gray-200 mx-4"></div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 mt-1">
+              <div class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                <svg class="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+            </div>
+            <div>
+              <p class="font-medium text-gray-900">{{ reservation.trajet.destination ?? 'Unknown destination' }}</p>
+              <p class="text-xs text-gray-500">Destination</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-4 mt-6">
+            <div>
+              <p class="text-xs text-gray-500">Distance</p>
+              <p class="font-medium">{{ reservation.trajet.distance ?? 'N/A' }} km</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Duration</p>
+              <p class="font-medium">{{ reservation.trajet.duration ?? 'N/A' }} mins</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Date & Time</p>
+              <p class="font-medium">{{ reservation.reservationDate|date('M j, Y H:i') }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="p-6 border-b border-gray-200">
+        <h2 class="text-sm font-medium text-gray-500 mb-4">TRIP DETAILS</h2>
+        <div class="text-gray-400 italic">No trip information available for this reservation</div>
+      </div>
+      {% endif %}
+
+      {# Reservation details #}
+      <div class="p-6">
+        <h2 class="text-sm font-medium text-gray-500 mb-4">RESERVATION INFORMATION</h2>
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <p class="text-xs text-gray-500">Reservation Date</p>
+            <p class="font-medium">{{ reservation.reservationDate|date('M j, Y H:i') }}</p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-500">Number of Seats</p>
+            <p class="font-medium">{{ reservation.numberOfSeats }}</p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-500">Total Price</p>
+            <p class="font-medium">{{ reservation.totalPrice ?? '0.00' }} DT</p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-500">User Role</p>
+            <p class="font-medium">{{ reservation.user.role|capitalize }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

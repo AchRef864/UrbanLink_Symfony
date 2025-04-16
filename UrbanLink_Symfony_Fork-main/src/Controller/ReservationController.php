@@ -21,7 +21,7 @@ use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\Writer\SvgWriter;
 use Dompdf\Dompdf;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Psr\Log\LoggerInterface;
+use Dompdf\Options;
 
 class ReservationController extends AbstractController
 {
@@ -93,6 +93,41 @@ class ReservationController extends AbstractController
             'trajet' => $trajet
         ]);
     }
+
+
+
+
+
+
+    // src/Controller/ReservationController.php
+
+#[Route('/reservation/trajet-supprime/{id}', name: 'reservation_trajet_supprime')]
+public function showDeletedTrajetDetails(Reservation $reservation): Response
+{
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+    
+    // Verify the reservation belongs to the current user
+    if ($reservation->getUser() !== $this->getUser()) {
+        throw $this->createAccessDeniedException('Vous n\'avez pas accès à cette réservation');
+    }
+
+    // Verify the trajet was deleted
+    if (!$reservation->isTrajetDeleted()) {
+        throw $this->createNotFoundException('Ce trajet n\'a pas été supprimé');
+    }
+
+    // Decode the stored trajet info
+    $trajetInfo = json_decode($reservation->getTrajetDeletedInfo(), true);
+
+    return $this->render('reservation/trajet_supprime.html.twig', [
+        'reservation' => $reservation,
+        'trajetInfo' => $trajetInfo,
+    ]);
+}
+
+
+
+
 
     #[Route('/reservation/success/{id}', name: 'reservation_success')]
     public function success(Reservation $reservation): Response
@@ -290,17 +325,18 @@ class ReservationController extends AbstractController
     ->writer(new SvgWriter())
         ->data($qrContent)
         ->encoding(new Encoding('UTF-8'))
-        ->errorCorrectionLevel(new \Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh())  // Note: uppercase HIGH
+        ->errorCorrectionLevel(new \Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh())  
         ->size(300)  // Increased size for better readability
         ->margin(6)
-        ->roundBlockSizeMode(new \Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin())  // Note: uppercase MARGIN
+        ->roundBlockSizeMode(new \Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin())  
         ->build();
     
     $qrCodeImage = $qrCode->getDataUri();
         // Generate PDF
+        $options = new Options();
         $dompdf = new Dompdf();
-        $dompdf->set_option('isHtml5ParserEnabled', true);
-        $dompdf->set_option('isRemoteEnabled', true);
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
         
         $html = $this->renderView('reservation/pdf.html.twig', [
             'reservation' => $reservation,

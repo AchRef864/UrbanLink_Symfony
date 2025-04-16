@@ -590,7 +590,7 @@ class __TwigTemplate_3e62a8c30eb638fcd17bf03983bb1055 extends Template
                     yield from                     $this->unwrap()->yieldBlock("attributes", $context, $blocks);
                     $context = $_v2;
                 }
-                if (( !((array_key_exists("render_preferred_choices", $context)) ? (Twig\Extension\CoreExtension::default((isset($context["render_preferred_choices"]) || array_key_exists("render_preferred_choices", $context) ? $context["render_preferred_choices"] : (function () { throw new RuntimeError('Variable "render_preferred_choices" does not exist.', 88, $this->source); })()), false)) : (false)) && Symfony\Bridge\Twig\Extension\twig_is_selected_choice($context["choice"], (isset($context["value"]) || array_key_exists("value", $context) ? $context["value"] : (function () { throw new RuntimeError('Variable "value" does not exist.', 88, $this->source); })())))) {
+                if ((( !((array_key_exists("render_preferred_choices", $context)) ? (Twig\Extension\CoreExtension::default((isset($context["render_preferred_choices"]) || array_key_exists("render_preferred_choices", $context) ? $context["render_preferred_choices"] : (function () { throw new RuntimeError('Variable "render_preferred_choices" does not exist.', 88, $this->source); })()), false)) : (false)) ||  !(((array_key_exists("duplicate_preferred_choices", $context) &&  !(null === $context["duplicate_preferred_choices"]))) ? ($context["duplicate_preferred_choices"]) : (true))) && Symfony\Bridge\Twig\Extension\twig_is_selected_choice($context["choice"], (isset($context["value"]) || array_key_exists("value", $context) ? $context["value"] : (function () { throw new RuntimeError('Variable "value" does not exist.', 88, $this->source); })())))) {
                     yield " selected=\"selected\"";
                 }
                 yield ">";
@@ -2293,7 +2293,7 @@ $context["attrvalue"] === false)) {
                 {{- block('choice_widget_options') -}}
             </optgroup>
         {%- else -%}
-            <option value=\"{{ choice.value }}\"{% if choice.attr %}{% with { attr: choice.attr } %}{{ block('attributes') }}{% endwith %}{% endif %}{% if not render_preferred_choices|default(false) and choice is selectedchoice(value) %} selected=\"selected\"{% endif %}>{{ choice_translation_domain is same as(false) ? choice.label : choice.label|trans(choice.labelTranslationParameters, choice_translation_domain) }}</option>
+            <option value=\"{{ choice.value }}\"{% if choice.attr %}{% with { attr: choice.attr } %}{{ block('attributes') }}{% endwith %}{% endif %}{% if (not render_preferred_choices|default(false) or not (duplicate_preferred_choices ?? true)) and choice is selectedchoice(value) %} selected=\"selected\"{% endif %}>{{ choice_translation_domain is same as(false) ? choice.label : choice.label|trans(choice.labelTranslationParameters, choice_translation_domain) }}</option>
         {%- endif -%}
     {% endfor %}
 {%- endblock choice_widget_options -%}

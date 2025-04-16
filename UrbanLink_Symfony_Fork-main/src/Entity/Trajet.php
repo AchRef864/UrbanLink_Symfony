@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\TrajetRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TrajetRepository::class)]
@@ -29,7 +31,7 @@ class Trajet
     )]
     private ?string $departure = null;
 
-    #[ORM\Column(length: 100, nullable: true)] // nullable added here
+    #[ORM\Column(length: 100, nullable: true)]
     #[Assert\NotBlank(message: 'Veuillez saisir une destination')]
     #[Assert\Length(
         min: 2,
@@ -96,6 +98,14 @@ class Trajet
     )]
     private ?string $typeTransport = null;
 
+    #[ORM\OneToMany(mappedBy: 'trajet', targetEntity: Reservation::class)]
+    private Collection $reservations;
+
+    public function __construct()
+    {
+        $this->reservations = new ArrayCollection();
+    }
+
     public function calculateArrivalTime(): \DateTimeInterface
     {
         if (!$this->departureTime) {
@@ -105,20 +115,16 @@ class Trajet
         [$hours, $minutes] = $this->getDurationParts();
         $departure = $this->departureTime;
 
-        // Calculate total minutes from midnight
         $departureMinutes = ((int)$departure->format('H') * 60) + (int)$departure->format('i');
         $durationMinutes = ($hours * 60) + $minutes;
         $arrivalMinutes = $departureMinutes + $durationMinutes;
 
-        // Calculate days to add (if duration spans multiple days)
         $daysToAdd = (int)($arrivalMinutes / (24 * 60));
         $arrivalMinutes = $arrivalMinutes % (24 * 60);
 
-        // Calculate new time components
         $arrivalHour = (int)($arrivalMinutes / 60);
         $arrivalMinute = $arrivalMinutes % 60;
 
-        // Create new DateTime from components
         $arrivalDate = sprintf(
             '%s-%s-%s %02d:%02d:%s',
             $departure->format('Y'),
@@ -180,4 +186,33 @@ class Trajet
     public function setVehicleId(?int $vehicleId): self { $this->vehicleId = $vehicleId; return $this; }
     public function getTypeTransport(): ?string { return $this->typeTransport; }
     public function setTypeTransport(string $typeTransport): self { $this->typeTransport = $typeTransport; return $this; }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): self
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setTrajet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): self
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            if ($reservation->getTrajet() === $this) {
+                $reservation->setTrajet(null);
+            }
+        }
+
+        return $this;
+    }
 }

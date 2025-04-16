@@ -1,4 +1,5 @@
 <?php
+// src/Entity/Reservation.php
 
 namespace App\Entity;
 
@@ -20,10 +21,9 @@ class Reservation
     #[ORM\JoinColumn(
         name: 'trajet_id', 
         referencedColumnName: 'id',
-        nullable: false,
-        onDelete: 'CASCADE'
+        nullable: true,  // Changed to true to allow NULL when trajet is deleted
+        onDelete: 'SET NULL'  // Changed from CASCADE to preserve reservations
     )]
-    #[Assert\NotNull]
     private ?Trajet $trajet = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reservations')]
@@ -54,6 +54,25 @@ class Reservation
     #[ORM\Column(length: 20)]
     #[Assert\Choice(['Confirmed', 'Pending', 'Canceled'])]
     private ?string $status = 'Pending';
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isCancelled = false;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $cancellationReason = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $cancellationDate = null;
+
+    // Fields to track trajet deletion
+    #[ORM\Column(type: 'boolean')]
+    private bool $trajetDeleted = false;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $trajetDeletedAt = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $trajetDeletedInfo = null;
 
     public function getId(): ?int
     {
@@ -126,4 +145,69 @@ class Reservation
         return $this;
     }
 
+    public function isCancelled(): bool
+    {
+        return $this->isCancelled;
+    }
+
+    public function setIsCancelled(bool $isCancelled): static
+    {
+        $this->isCancelled = $isCancelled;
+        return $this;
+    }
+
+    public function getCancellationReason(): ?string
+    {
+        return $this->cancellationReason;
+    }
+
+    public function setCancellationReason(?string $cancellationReason): static
+    {
+        $this->cancellationReason = $cancellationReason;
+        return $this;
+    }
+
+    public function getCancellationDate(): ?\DateTimeInterface
+    {
+        return $this->cancellationDate;
+    }
+
+    public function setCancellationDate(?\DateTimeInterface $cancellationDate): static
+    {
+        $this->cancellationDate = $cancellationDate;
+        return $this;
+    }
+
+    public function isTrajetDeleted(): bool
+    {
+        return $this->trajetDeleted;
+    }
+
+    public function setTrajetDeleted(bool $trajetDeleted): static
+    {
+        $this->trajetDeleted = $trajetDeleted;
+        return $this;
+    }
+
+    public function getTrajetDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->trajetDeletedAt;
+    }
+
+    public function setTrajetDeletedAt(?\DateTimeInterface $trajetDeletedAt): static
+    {
+        $this->trajetDeletedAt = $trajetDeletedAt;
+        return $this;
+    }
+
+    public function getTrajetDeletedInfo(): ?string
+    {
+        return $this->trajetDeletedInfo;
+    }
+
+    public function setTrajetDeletedInfo(?string $trajetDeletedInfo): static
+    {
+        $this->trajetDeletedInfo = $trajetDeletedInfo;
+        return $this;
+    }
 }
