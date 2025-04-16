@@ -26,8 +26,8 @@ doctrine:
 when@test:
     doctrine:
         dbal:
+            # "TEST_TOKEN" is typically set by ParaTest
             dbname_suffix: '_test%env(default::TEST_TOKEN)%'
-            # mapping_types here is OK too for tests, but it's already in main now
 
 when@prod:
     doctrine:

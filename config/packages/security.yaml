@@ -1,10 +1,9 @@
+# config/packages/security.yaml
 security:
     password_hashers:
-        # Hash the User entity passwords automatically
         App\Entity\User:
             algorithm: auto
-        # Keep for other cases (like PasswordAuthenticatedUserInterface)
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+            cost: 12
 
     providers:
         app_user_provider:
@@ -16,7 +15,6 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
         main:
             lazy: true
             provider: app_user_provider
@@ -32,6 +30,8 @@ security:
             logout:
                 path: app_logout
                 target: app_login
+            user_checker: App\Security\UserChecker
+
 
     role_hierarchy:
         ROLE_ADMIN: [ ROLE_DRIVER, ROLE_TAXI, ROLE_CLIENT, ROLE_USER ]

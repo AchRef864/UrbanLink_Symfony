@@ -9,11 +9,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\DBAL\Types\Types;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
-#[UniqueEntity(fields: ['email'], message: 'Il existe déjà un compte avec cet email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -36,10 +36,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Email]
     private ?string $email = null;
 
-    #[ORM\Column(length: 15)]
+    #[ORM\Column]
     #[Assert\NotBlank]
-    #[Assert\Length(min: 8, max: 15)]
-    private ?string $phone = null;
+    #[Assert\Length(min: 8)]
+    private ?string $phone = null;  // Changed from int to string
 
     #[ORM\Column]
     private ?string $password = null;
@@ -53,11 +53,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private bool $isBlocked = false;
 
-    public function __construct()
-    {
-        $this->avis = new ArrayCollection();
-        $this->reponse = new ArrayCollection();
-    }
     
     public function getId(): ?int
     {
@@ -123,7 +118,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
         return $this;
@@ -134,7 +129,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): static
     {
         $this->email = $email;
         return $this;
@@ -145,7 +140,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->phone;
     }
 
-    public function setPhone(string $phone): self
+    public function setPhone(string $phone): static
     {
         $this->phone = $phone;
         return $this;
@@ -156,7 +151,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): static
     {
         $this->password = $password;
         return $this;
@@ -167,7 +162,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->role;
     }
 
-    public function setRole(string $role): self
+    public function setRole(string $role): static
     {
         $this->role = $role;
         return $this;
@@ -178,9 +173,51 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->code;
     }
 
-    public function setCode(?int $code): self
+    public function setCode(?int $code): static
     {
         $this->code = $code;
+        return $this;
+    }
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $license = null;
+
+    #[ORM\Column(type: 'datetime')]
+    private \DateTimeInterface $joiningDate;
+
+    public function __construct()
+    {
+        $this->joiningDate = new \DateTime(); // Initialize in constructor
+        $this->avis = new ArrayCollection();
+        $this->reponse = new ArrayCollection();
+    }
+
+    public function getLicense(): ?string
+    {
+        return $this->license;
+    }
+
+    public function setLicense(?string $license): self
+    {
+        $this->license = $license;
+        return $this;
+    }
+
+    // Modified joining date handling
+    #[ORM\PrePersist]
+    public function setJoiningDateValue(): void
+    {
+        $this->joiningDate = new \DateTime();
+    }
+
+    public function getJoiningDate(): \DateTimeInterface
+    {
+        return $this->joiningDate;
+    }
+
+    // Optional setter only if you need to override the date
+    public function setJoiningDate(\DateTimeInterface $joiningDate): self
+    {
+        $this->joiningDate = $joiningDate;
         return $this;
     }
 
@@ -195,23 +232,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRoles(): array
+     public function getRoles(): array
     {
-        $roles = ['ROLE_USER'];
+        $roles = ['ROLE_USER']; // All users get this
 
-        switch ($this->role) {
-            case 'admin':
-                $roles[] = 'ROLE_ADMIN';
-                break;
-            case 'driver':
-                $roles[] = 'ROLE_DRIVER';
-                break;
-            case 'taxi':
-                $roles[] = 'ROLE_TAXI';
-                break;
-            case 'client':
-                $roles[] = 'ROLE_CLIENT';
-                break;
+        // Add only their specific role (not inherited ones)
+        switch($this->role) { // Assuming you have a $role property
+            case 'admin': $roles[] = 'ROLE_ADMIN'; break;
+            case 'driver': $roles[] = 'ROLE_DRIVER'; break;
+            case 'taxi': $roles[] = 'ROLE_TAXI'; break;
+            case 'client': $roles[] = 'ROLE_CLIENT'; break;
         }
 
         return array_unique($roles);
@@ -219,7 +249,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function eraseCredentials(): void
     {
-        // Si vous stockez des données sensibles temporaires, nettoyez-les ici.
+        // Clear any temporary sensitive data
     }
 
     public function getUserIdentifier(): string
@@ -228,7 +258,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @deprecated depuis Symfony 5.3, utilisez getUserIdentifier() à la place.
+     * @deprecated since Symfony 5.3, use getUserIdentifier instead
      */
     public function getUsername(): string
     {

@@ -9,16 +9,24 @@ parameters:
     twilio_token: '%env(TWILIO_AUTH_TOKEN)%'
     twilio_number: '%env(TWILIO_PHONE_NUMBER)%'
 
+    recaptcha.site_key: '%env(RECAPTCHA_SITE_KEY)%'
+    recaptcha.secret_key: '%env(RECAPTCHA_SECRET_KEY)%'
+
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
+        autoconfigure: true
+        # Automatically registers your services as commands, event subscribers, etc.
     App\EventSubscriber\AuthenticationSubscriber:
         tags:
             - { name: kernel.event_subscriber }
+    App\EventListener\UserListener:
+        tags:
+            - { name: doctrine.orm.entity_listener, event: prePersist }
 
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
         exclude:
@@ -34,3 +42,12 @@ services:
             $twilioSid: '%twilio_sid%'
             $twilioToken: '%twilio_token%'
             $twilioNumber: '%twilio_number%'
+    App\Service\RecaptchaValidator:
+        arguments:
+            $secretKey: '%recaptcha.secret_key%'
+            $httpClient: '@Symfony\Contracts\HttpClient\HttpClientInterface'
+
+    App\Controller\Auth\LoginController:
+        arguments:
+                $recaptchaSiteKey: '%env(RECAPTCHA_SITE_KEY)%'
+
