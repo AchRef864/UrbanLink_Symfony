@@ -21,19 +21,31 @@ final class AvisController extends AbstractController
     public function index(AvisRepository $avisRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $searchTerm = $request->query->get('search', '');
-    
+        
         $queryBuilder = $avisRepository->createQueryBuilder('a')
-        ->leftJoin('a.taxi', 't');
+            ->leftJoin('a.taxi', 't')
+            ->addSelect('t') // Ensure we load taxi relationship
+            ->leftJoin('a.vehicle', 'v')
+            ->addSelect('v') // Also handle vehicle relationship
+            ->where('t.id IS NOT NULL OR a.taxi IS NULL') // Handle deleted taxis
+            ->andWhere('v.id IS NOT NULL OR a.vehicle IS NULL'); // Handle deleted vehicles
     
         if (!empty($searchTerm)) {
-            $queryBuilder->where('a.type LIKE :search OR a.commentaire LIKE :search OR a.statut LIKE :search OR a.date_avis LIKE :search OR t.immatriculation LIKE :search')
-                        ->setParameter('search', '%' . $searchTerm . '%');
+            $queryBuilder->andWhere(
+                'a.type LIKE :search OR 
+                a.commentaire LIKE :search OR 
+                a.statut LIKE :search OR 
+                a.date_avis LIKE :search OR 
+                t.immatriculation LIKE :search OR 
+                v.licensePlate LIKE :search'
+            )
+            ->setParameter('search', '%' . $searchTerm . '%');
         }
     
         $pagination = $paginator->paginate(
             $queryBuilder,
-            $request->query->getInt('page', 1), // Current page number
-            5 // Items per page
+            $request->query->getInt('page', 1),
+            5
         );
     
         return $this->render('avis/index.html.twig', [
@@ -41,7 +53,6 @@ final class AvisController extends AbstractController
             'search' => $searchTerm
         ]);
     }
-    
     
 
     #[Route('/new', name: 'app_avis_new', methods: ['GET', 'POST'])]

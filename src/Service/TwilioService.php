@@ -1,32 +1,40 @@
 <?php
+// src/Service/TwilioService.php
 
 namespace App\Service;
 
+use Psr\Log\LoggerInterface;
 use Twilio\Rest\Client;
+use Twilio\Exceptions\TwilioException;
 
 class TwilioService
 {
-    private string $twilioSid;
-    private string $twilioToken;
-    private string $twilioNumber;
+    private Client $client;
+    private string $from;
+    private LoggerInterface $logger;
 
-    public function __construct(string $twilioSid, string $twilioToken, string $twilioNumber)
+    public function __construct(string $sid, string $token, string $from, LoggerInterface $logger)
     {
-        $this->twilioSid = $twilioSid;
-        $this->twilioToken = $twilioToken;
-        $this->twilioNumber = $twilioNumber;
+        $this->client = new Client($sid, $token);
+        $this->from   = $from;
+        $this->logger = $logger;
     }
 
     public function sendSms(string $to, string $message): void
     {
-        $client = new Client($this->twilioSid, $this->twilioToken);
+        if (0 !== strpos($to, '+')) {
+            $to = '+1'.$to;
+        }
 
-        $client->messages->create($to, [
-            'from' => $this->twilioNumber,
-            'body' => $message,
-        ]);
+        try {
+            $sent = $this->client->messages->create($to, [
+                'from' => $this->from,
+                'body' => $message,
+            ]);
+            $this->logger->info("Twilio queued SMS {$sent->sid} → {$to}");
+        } catch (TwilioException $e) {
+            $this->logger->error("Twilio error sending to {$to}: ".$e->getMessage());
+            throw $e;
+        }
     }
 }
-
-
-

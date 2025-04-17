@@ -6,129 +6,206 @@
 <style>
     .container {
         font-family: 'Arial', sans-serif;
-        max-width: 600px;
-        margin: 50px auto;
+        width: 100%;
+        margin: 0;
         padding: 0 15px;
     }
 
-    .card {
-        background-color: #ffffff;
-        border-radius: 16px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        padding: 30px;
-        margin-top: 30px;
+    .form-card {
+        background: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 0.5rem;
+        border: 1px solid #e5e7eb;
+        margin: 2rem 0;
+        width: 100%;
     }
 
-    h2 {
-        font-size: 28px;
+    .form-header {
+        background-color: rgb(163, 209, 207);
+        padding: 1.5rem;
+        border-radius: 0.5rem 0.5rem 0 0;
+    }
+
+    .form-title {
+        color: rgb(0, 11, 222);
+        font-size: 1.5rem;
         font-weight: bold;
-        color: #333;
-        margin-bottom: 20px;
-        text-align: center;
+        margin: 0;
+    }
+
+    .form-content {
+        padding: 2rem;
+        width: 100%;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 1.5rem;
+        width: 100%;
+    }
+
+    @media (min-width: 768px) {
+        .form-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .container {
+            padding: 0;
+        }
     }
 
     .form-label {
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: #555;
-        font-size: 16px;
+        display: block;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #374151;
     }
 
-    .form-select, .form-control {
+    .form-input {
         width: 100%;
-        padding: 12px;
-        border-radius: 8px;
-        border: 1px solid #ced4da;
-        font-size: 16px;
-        background-color: #f9f9f9;
-        transition: border-color 0.3s, box-shadow 0.3s;
+        padding: 0.75rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.375rem;
+        background-color: #f9fafb;
+        box-sizing: border-box;
     }
 
-    .form-select:focus, .form-control:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.2);
-        background-color: #fff;
+    .form-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
 
-    /* Sky blue color for the button */
-    .btn-primary {
-        background-color: #87CEEB;
+    .error-message {
+        color: #ef4444;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+
+    .submit-btn {
+        background-color: #FFEB3B;
+        color: #1f2937;
+        font-weight: bold;
+        padding: 0.75rem 1.5rem;
         border: none;
-        padding: 12px 24px;
-        font-size: 18px;
-        border-radius: 50px;
-        transition: background-color 0.3s, transform 0.2s;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        width: 100%;
     }
 
-    .btn-primary:hover {
-        background-color: #5b9bd5;
-        transform: translateY(-2px);
+    @media (min-width: 768px) {
+        .submit-btn {
+            width: auto;
+        }
     }
 
-    .text-center {
+    .submit-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-link {
+        color: #6b7280;
+        font-size: 0.875rem;
+        text-decoration: none;
+        transition: color 0.2s;
+        display: block;
+        margin-top: 1rem;
         text-align: center;
     }
 
-    .mb-4 {
-        margin-bottom: 1.5rem;
+    @media (min-width: 768px) {
+        .back-link {
+            display: inline;
+            margin-top: 0;
+            text-align: left;
+        }
     }
 
-    .mt-4 {
-        margin-top: 1.5rem;
+    .back-link:hover {
+        color: #374151;
+        text-decoration: underline;
     }
-    
-    /* Initially hide the taxi and vehicle fields */
+
     .taxi-field-container,
     .vehicle-field-container {
         display: none;
+    }
+
+    .description-field {
+        grid-column: 1 / -1;
+    }
+
+    /* Ensure full width layout */
+    body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
     }
 </style>
 {% endblock %}
 
 {% block body %}
 <div class="container">
-    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
-
-    <div class="card">
-        <h2>Leave a Complaint</h2>
-
-        {# Complaint Type Field #}
-        <div class="mb-4">
-            {{ form_label(form.type, 'Complaint Type', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.type, {'attr': {'class': 'form-select complaint-type-select'}}) }}
-            {{ form_errors(form.type) }}
+    <div class="form-card">
+        <div class="form-header">
+            <h1 class="form-title">Leave a Complaint</h1>
         </div>
 
-        {# Taxi Immatriculation Field (initially hidden) #}
-        <div class="mb-4 taxi-field-container">
-            {{ form_label(form.taxi, 'Taxi Immatriculation', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.taxi, {'attr': {'class': 'form-select'}}) }}
-            {{ form_errors(form.taxi) }}
-        </div>
+        <div class="form-content">
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            
+            <div class="form-grid">
+                <!-- Complaint Type -->
+                <div class="mb-4">
+                    {{ form_label(form.type, 'Complaint Type', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.type, {'attr': {'class': 'form-input complaint-type-select'}}) }}
+                    <div class="error-message">{{ form_errors(form.type) }}</div>
+                </div>
 
-        {# Vehicle License Plate Field (initially hidden) #}
-        <div class="mb-4 vehicle-field-container">
-            {{ form_label(form.vehicle, 'Vehicle License Plate', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.vehicle, {'attr': {'class': 'form-select'}}) }}
-            {{ form_errors(form.vehicle) }}
-        </div>
+                <!-- Taxi Field -->
+                <div class="mb-4 taxi-field-container">
+                    {{ form_label(form.taxi, 'Taxi Registration', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.taxi, {'attr': {'class': 'form-input'}}) }}
+                    <div class="error-message">{{ form_errors(form.taxi) }}</div>
+                </div>
 
-        {# Comment Field #}
-        <div class="mb-4">
-            {{ form_label(form.commentaire, 'Description', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.commentaire, {'attr': {'class': 'form-control', 'placeholder': 'Write your description here...'}}) }}
-            {{ form_errors(form.commentaire) }}
-        </div>
+                <!-- Vehicle Field -->
+                <div class="mb-4 vehicle-field-container">
+                    {{ form_label(form.vehicle, 'Vehicle License', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.vehicle, {'attr': {'class': 'form-input'}}) }}
+                    <div class="error-message">{{ form_errors(form.vehicle) }}</div>
+                </div>
 
-        {# Submit Button #}
-        <div class="text-center mt-4">
-            <button type="submit" class="btn btn-primary">
-                {{ button_label|default('Submit') }}
-            </button>
+                <!-- Description -->
+                <div class="mb-4 description-field">
+                    {{ form_label(form.commentaire, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.commentaire, {
+                        'attr': {
+                            'class': 'form-input',
+                            'rows': 4,
+                            'placeholder': 'Describe your complaint in detail...'
+                        }
+                    }) }}
+                    <div class="error-message">{{ form_errors(form.commentaire) }}</div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="mt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+                <button type="submit" class="submit-btn">
+                    {{ button_label|default('Submit Complaint') }}
+                </button>
+                <a href="{{ path('app_avis_index') }}" class="back-link">
+                    ← Back to complaints list
+                </a>
+            </div>
+
+            {{ form_end(form) }}
         </div>
     </div>
-
-    {{ form_end(form) }}
 </div>
 
 <script>
@@ -142,27 +219,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedText = selectedOption ? selectedOption.text.trim().toLowerCase() : '';
         const selectedValue = typeSelect.value;
 
-        // Show taxi field if "taxi complaint" is chosen
-        if (selectedText.includes('taxi') || selectedValue.includes('taxi')) {
-            taxiContainer.style.display = 'block';
-            vehicleContainer.style.display = 'none';
-        } 
-        // Show vehicle field if "vehicle complaint" is chosen
-        else if (selectedText.includes('vehicle') || selectedValue.includes('vehicle')) {
-            vehicleContainer.style.display = 'block';
-            taxiContainer.style.display = 'none';
-        } 
-        // Hide both if neither
-        else {
-            taxiContainer.style.display = 'none';
-            vehicleContainer.style.display = 'none';
-        }
+        taxiContainer.style.display = (selectedText.includes('taxi') || selectedValue.includes('taxi')) 
+            ? 'block' : 'none';
+        vehicleContainer.style.display = (selectedText.includes('vehicle') || selectedValue.includes('vehicle')) 
+            ? 'block' : 'none';
     }
 
-    // Run the check initially
     checkComplaintType();
-
-    // Add event listener for changes
     typeSelect.addEventListener('change', checkComplaintType);
 });
 </script>
