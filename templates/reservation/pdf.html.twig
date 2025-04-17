@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Détails de Réservation #{{ reservation.id }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .header { text-align: center; margin-bottom: 30px; position: relative; }
+        .header h1 { color: #3498db; }
+        .info-section { margin-bottom: 20px; }
+        .info-section h2 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .info-item { margin-bottom: 10px; }
+        .info-label { font-weight: bold; color: #7f8c8d; }
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: white;
+        }
+        .status-confirmed { background-color: #2ecc71; }
+        .status-pending { background-color: #f39c12; }
+        .status-canceled { background-color: #e74c3c; }
+        .footer { 
+            margin-top: 50px; 
+            text-align: center; 
+            font-size: 0.8em; 
+            color: #7f8c8d;
+        }
+        .qr-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+            text-align: center;
+            border: 1px solid #eee;
+            padding: 10px;
+        }
+        .qr-code {
+            width: 100px;
+            height: 100px;
+        }
+        .qr-label {
+            font-size: 0.8em;
+            margin-top: 5px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="qr-container">
+            <img class="qr-code" src="{{ qrCodeImage }}" alt="QR Code de la réservation">
+            <div class="qr-label">Scan this QR code</div>
+        </div>
+        <h1>Confirmation de Réservation</h1>
+        <p>Référence: #{{ reservation.id }}</p>
+        <p>Date d'émission: {{ "now"|date('d/m/Y H:i') }}</p>
+    </div>
+
+    <div class="info-section">
+        <h2>Informations Client</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">Nom:</span> {{ reservation.user.name }}
+            </div>
+            <div class="info-item">
+                <span class="info-label">Email:</span> {{ reservation.user.email }}
+            </div>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h2>Détails du Trajet</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">Départ:</span> {{ reservation.trajet.departure }}
+            </div>
+            <div class="info-item">
+                <span class="info-label">Destination:</span> {{ reservation.trajet.destination }}
+            </div>
+            <div class="info-item">
+                <span class="info-label">Date/Heure:</span> {{ reservation.trajet.departureTime|date('d/m/Y H:i') }}
+            </div>
+            <div class="info-item">
+                <span class="info-label">Durée:</span> {{ reservation.trajet.duration }}
+            </div>
+            <div class="info-item">
+                <span class="info-label">Type de transport:</span> {{ reservation.trajet.typeTransport }}
+            </div>
+            <div class="info-item">
+                <span class="info-label">Prix unitaire:</span> {{ reservation.trajet.price }} DT
+            </div>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h2>Détails de Réservation</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">Date réservation:</span> {{ reservation.reservationDate|date('d/m/Y H:i') }}
+            </div>
+            <div class="info-item">
+                <span class="info-label">Nombre de places:</span> {{ reservation.numberOfSeats }}
+            </div>
+            <div class="info-item">
+                <span class="info-label">Prix total:</span> {{ reservation.totalPrice }} DT
+            </div>
+            <div class="info-item">
+                <span class="info-label">Statut:</span>
+                <span class="status-badge status-{{ reservation.status|lower }}">
+                    {{ reservation.status }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Merci d'avoir choisi notre service de réservation</p>
+        <p>Pour toute question, contactez-nous à Urbanlink@gmail.com</p>
+    </div>
+</body>
+</html>

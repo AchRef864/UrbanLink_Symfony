@@ -1,4 +1,3 @@
-{# templates/auth/login/login.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Log in!{% endblock %}
@@ -13,7 +12,72 @@
     <link href="{{ asset('assets/css/argon-dashboard-tailwind.css') }}" rel="stylesheet" />
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <!-- reCAPTCHA v2 script -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const response = grecaptcha.getResponse();
+            if (response.length === 0) {
+                e.preventDefault();
+                alert('Please complete the reCAPTCHA verification');
+                return false;
+            }
+            return true;
+        });
+
+        // Show blocked user popup if flash message exists
+        document.addEventListener('DOMContentLoaded', function() {
+            const blockedPopup = document.getElementById('blockedPopup');
+            if (blockedPopup) {
+                blockedPopup.classList.remove('hidden');
+
+                // Close after 5 seconds
+                setTimeout(() => {
+                    blockedPopup.classList.add('hidden');
+                }, 5000);
+            }
+        });
+    </script>
+
+    <!-- Argon Dashboard JS -->
+    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/js/argon-dashboard-tailwind.js') }}"></script>
+{% endblock %}
+
 {% block body %}
+
+    {% for flash in app.flashes('blocked') %}
+        <div id="blockedPopup" class="fixed top-4 right-4 z-50">
+            <div class="flex items-center p-4 mb-4 text-sm text-yellow bg-red-500 rounded-lg shadow-lg" role="alert">
+                <svg class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="sr-only">Info</span>
+                <div>
+                    <span class="font-medium">Account Blocked!</span> {{ flash }}
+                </div>
+                <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-red-500 text-yellow rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-600 inline-flex h-8 w-8" onclick="document.getElementById('blockedPopup').remove()">
+                    <span class="sr-only">Close</span>
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <script>
+            // Auto-close after 5 seconds
+            setTimeout(() => {
+                const popup = document.getElementById('blockedPopup');
+                if (popup) popup.remove();
+            }, 5000);
+        </script>
+    {% endfor %}
+
+
     <div class="container sticky top-0 z-sticky">
         <div class="flex flex-wrap -mx-3">
             <div class="w-full max-w-full px-3 flex-0">
@@ -45,7 +109,26 @@
             </div>
         </div>
     </div>
-
+    <!-- Blocked User Popup -->
+    {% for message in app.flashes('blocked') %}
+        <div id="blockedPopup" class="fixed top-4 right-4 z-50 hidden">
+            <div class="flex items-center p-4 mb-4 text-sm text-yellow bg-red-500 rounded-lg shadow-lg" role="alert">
+                <svg class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="sr-only">Info</span>
+                <div>
+                    <span class="font-medium">Account Blocked!</span> {{ message }}
+                </div>
+                <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-red-500 text-yellow rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-600 inline-flex h-8 w-8" onclick="document.getElementById('blockedPopup').classList.add('hidden')">
+                    <span class="sr-only">Close</span>
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    {% endfor %}
     <main class="mt-0 transition-all duration-200 ease-in-out">
         <section class="min-h-screen">
             <div class="relative flex items-center min-h-screen p-0 overflow-hidden bg-center bg-cover">
@@ -60,8 +143,8 @@
 
                                 <div class="flex-auto p-6">
                                     {% if error %}
-                                        <div class="relative px-4 py-3 mb-4 text-sm text-white bg-red-500 rounded-lg" role="alert">
-                                            {{ error }}
+                                        <div class="relative px-4 py-3 mb-4 text-sm text-red-500 bg-red-500 rounded-lg" role="alert">
+                                            {{ error.messageKey|trans(error.messageData, 'security') }}
                                         </div>
                                     {% endif %}
 
@@ -71,16 +154,16 @@
                                         </div>
                                     {% endif %}
 
-                                    <form method="post" novalidate>
+                                    <form method="post" id="loginForm">
                                         <div class="mb-4">
                                             <label for="inputEmail" class="inline-block mb-2 ml-1 text-xs font-bold text-slate-700">Email</label>
                                             <input
-                                                    type="email"
-                                                    value="{{ last_username }}"
                                                     name="_username"
                                                     id="inputEmail"
-                                                    class="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"
+                                                    class="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-yellow/80 dark:text-yellow/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"
                                                     placeholder="Email"
+                                                    value="{{ last_username }}"
+                                                    autofocus
                                             >
                                             {% if form_errors is defined and form_errors['_username'] is defined %}
                                                 <div class="text-red-500 text-xs mt-1">{{ form_errors['_username'] }}</div>
@@ -90,10 +173,9 @@
                                         <div class="mb-4">
                                             <label for="inputPassword" class="inline-block mb-2 ml-1 text-xs font-bold text-slate-700">Password</label>
                                             <input
-                                                    type="password"
                                                     name="_password"
                                                     id="inputPassword"
-                                                    class="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"
+                                                    class="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-yellow/80 dark:text-yellow/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"
                                                     placeholder="Password"
                                             >
                                             {% if form_errors is defined and form_errors['_password'] is defined %}
@@ -101,12 +183,18 @@
                                             {% endif %}
                                         </div>
 
+                                        <!-- reCAPTCHA v2 Widget -->
+                                        <div class="g-recaptcha mb-4" data-sitekey="{{ recaptcha_site_key }}"></div>
+                                        {% for flashError in app.flashes('error') %}
+                                            <div class="text-red-500 text-xs mt-1">{{ flashError }}</div>
+                                        {% endfor %}
+
                                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                                         <div class="text-center">
                                             <button
                                                     type="submit"
-                                                    class="inline-block w-full px-16 py-3.5 mt-6 mb-0 font-bold leading-normal text-center text-white align-middle transition-all bg-blue-500 border-0 rounded-lg cursor-pointer hover:-translate-y-px active:opacity-85 hover:shadow-xs text-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25"
+                                                    class="inline-block w-full px-16 py-3.5 mt-6 mb-0 font-bold leading-normal text-center text-yellow align-middle transition-all bg-blue-500 border-0 rounded-lg cursor-pointer hover:-translate-y-px active:opacity-85 hover:shadow-xs text-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25"
                                             >
                                                 Sign in
                                             </button>
@@ -129,8 +217,8 @@
                         <div class="absolute top-0 right-0 flex-col justify-center hidden w-6/12 h-full max-w-full px-3 pr-0 my-auto text-center flex-0 lg:flex">
                             <div class="relative flex flex-col justify-center h-full bg-cover px-24 m-4 overflow-hidden bg-[url('{{ asset('assets/img/signin-ill.jpg') }}'] rounded-xl">
                                 <span class="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-blue-500 to-violet-500 opacity-60"></span>
-                                <h4 class="z-20 mt-12 font-bold text-white text-4xl">"URBANLINK"</h4>
-                                <p class="z-20 text-white">"All transport, one app. No worries—just easy, joyful journeys every time!"</p>
+                                <h4 class="z-20 mt-12 font-bold text-yellow text-4xl">"URBANLINK"</h4>
+                                <p class="z-20 text-yellow">"All transport, one app. No worries—just easy, joyful journeys every time!"</p>
                             </div>
                         </div>
                     </div>
@@ -154,11 +242,4 @@
             </div>
         </div>
     </footer>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <!-- Argon Dashboard JS -->
-    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/argon-dashboard-tailwind.js') }}"></script>
 {% endblock %}
