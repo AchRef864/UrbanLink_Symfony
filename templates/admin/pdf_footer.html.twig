@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            color: #666;
+            width: 100%;
+        }
+        .footer-logo { height: 30px; }
+        .page-info { text-align: center; }
+    </style>
+</head>
+<body>
+<div class="footer-content">
+    <div>
+        <img src="{{ absolute_url(asset('assets/img/logo.png')) }}" class="footer-logo" alt="UrbanLink Logo">
+    </div>
+    <div class="page-info">
+        Page <span class="pageNumber"></span> of <span class="totalPages"></span>
+    </div>
+    <div>
+        <img src="{{ absolute_url(asset('assets/img/esprit.png')) }}" class="footer-logo" alt="Esprit Logo">
+    </div>
+</div>
+</body>
+</html>
