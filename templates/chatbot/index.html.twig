@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Assistant d'Urgence</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #fdfbfb, #ebedee);
+        }
+
+        .chat-container {
+            max-width: 500px;
+            height: 90vh;
+            margin: 30px auto;
+            background-color: #fff;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .chat-header {
+            background-color: #dc3545;
+            color: white;
+            padding: 20px;
+            font-size: 20px;
+            text-align: center;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #fafafa;
+        }
+
+        .message {
+            padding: 12px 18px;
+            margin: 10px 0;
+            border-radius: 20px;
+            max-width: 80%;
+            word-wrap: break-word;
+            position: relative;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .bot-message {
+            background-color: #f0f0f0;
+            align-self: flex-start;
+        }
+
+        .user-message {
+            background-color: #dc3545;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            background-color: #fff;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            outline: none;
+        }
+
+        .chat-input button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            margin-left: 10px;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .chat-input button:hover {
+            background-color: #bb2d3b;
+        }
+
+        .suggestions {
+            padding: 10px 15px;
+            background-color: #fff;
+            border-top: 1px solid #eee;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .suggestion-btn {
+            padding: 10px 15px;
+            border-radius: 25px;
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .suggestion-btn:hover {
+            background-color: #e2e6ea;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sos-button {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220,53,69, 0.4); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(220,53,69, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220,53,69, 0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">
+        🆘 Assistant d'Urgence
+    </div>
+    <div class="chat-messages" id="chat-messages">
+        <div class="message bot-message">
+            👋 Bonjour ! Je suis votre assistant pour les situations d'urgence. Posez-moi une question ou cliquez sur un des boutons ci-dessous.
+        </div>
+    </div>
+    <div class="chat-input">
+        <input type="text" id="user-input" placeholder="Écrivez ici...">
+        <button id="send-button">Envoyer</button>
+    </div>
+    <div class="suggestions">
+        <button class="suggestion-btn" onclick="sendSuggestion('Brûlure')">🔥 Brûlure</button>
+        <button class="suggestion-btn" onclick="sendSuggestion('Saignement')">🩸 Saignement</button>
+        <button class="suggestion-btn" onclick="sendSuggestion('Inconscience')">😵 Inconscience</button>
+        <button class="suggestion-btn" onclick="sendSuggestion('Appeler les secours')">🚑 Appeler les secours</button>
+        <button class="suggestion-btn" onclick="sendSuggestion('Premiers secours')">🩺 Premiers secours</button>
+    </div>
+</div>
+
+<button class="sos-button" onclick="sendSuggestion('SOS')">SOS</button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const messagesContainer = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+
+        function sendMessage() {
+            const messageText = userInput.value.trim();
+            if (messageText === '') return;
+
+            addMessage(messageText, 'user-message');
+            userInput.value = '';
+
+            const formData = new FormData();
+            formData.append('message', messageText);
+
+            fetch('/chatbot/message', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    addMessage(data.message, 'bot-message');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                addMessage("Désolé, une erreur est survenue.", 'bot-message');
+            });
+        }
+
+        function addMessage(text, className) {
+            const msg = document.createElement('div');
+            msg.className = 'message ' + className;
+            msg.innerHTML = text; // ✅ Utilise innerHTML pour interpréter <br>
+            messagesContainer.appendChild(msg);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        window.sendSuggestion = function (text) {
+            userInput.value = text;
+            sendMessage();
+        };
+
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    });
+</script>
+
+</body>
+</html>

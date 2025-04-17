@@ -3,8 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="apple-touch-icon" sizes="76x76" href="{{asset('assets/img/apple-icon.png')}}" />
-  <link rel="icon" type="image/png" href="{{asset('assets/img/favicon.png')}}" />
   <title>{% block title %}Argon Dashboard 2 Tailwind{% endblock %}</title>
   <!-- Fonts and icons -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -126,9 +124,14 @@
             </a>
           </li>
 
-
-
-          <!--generate pdf -->
+          <li class="mt-0.5 w-full">
+            <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('trajet_affichage') }}">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
+                <i class="relative top-0 text-sm leading-normal text-emerald-500 ni ni-credit-card"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Trajet</span>
+            </a>
+          </li>
 
 
         {% endif %}

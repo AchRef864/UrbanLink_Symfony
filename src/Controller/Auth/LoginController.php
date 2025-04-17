@@ -8,12 +8,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Service\RecaptchaValidator;
-use App\Entity\User;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class LoginController extends AbstractController
 {
     public function __construct(
-        private string $recaptchaSiteKey
+        private ParameterBagInterface $params
     ) {}
 
     #[Route('/login', name: 'app_login')]
@@ -39,7 +39,8 @@ class LoginController extends AbstractController
         return $this->render('auth/login/login.html.twig', [
             'last_username' => $authenticationUtils->getLastUsername(),
             'error' => $error,
-            'recaptcha_site_key' => $this->recaptchaSiteKey,
+            'recaptcha_site_key' => $this->params->get('recaptcha.site_key'), // Fetch from parameters
         ]);
     }
 }
+

@@ -1,27 +1,19 @@
-# This file is the entry point to configure your own services.
-# Files in the packages/ subdirectory configure your dependencies.
+# config/services.yaml
 
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     MAILER_FROM: '%env(MAILER_FROM)%'
     twilio_sid: '%env(TWILIO_SID)%'
     twilio_token: '%env(TWILIO_AUTH_TOKEN)%'
     twilio_number: '%env(TWILIO_PHONE_NUMBER)%'
-
     recaptcha.site_key: '%env(RECAPTCHA_SITE_KEY)%'
     recaptcha.secret_key: '%env(RECAPTCHA_SECRET_KEY)%'
 
 services:
-    # default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-    App\EventSubscriber\AuthenticationSubscriber:
-        tags:
-            - { name: kernel.event_subscriber }
-    # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
+        autowire: true
+        autoconfigure: true
+
+    # Makes all classes in src/ available as services
     App\:
         resource: '../src/'
         exclude:
@@ -29,20 +21,29 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
-
+    # Explicit service definitions (when autowiring isn't enough)
     App\Service\TwilioService:
         arguments:
             $twilioSid: '%twilio_sid%'
             $twilioToken: '%twilio_token%'
             $twilioNumber: '%twilio_number%'
+
     App\Service\RecaptchaValidator:
         arguments:
             $secretKey: '%recaptcha.secret_key%'
             $httpClient: '@Symfony\Contracts\HttpClient\HttpClientInterface'
 
+    # Explicitly configure LoginController with the recaptcha site key
     App\Controller\Auth\LoginController:
         arguments:
-                $recaptchaSiteKey: '%env(RECAPTCHA_SITE_KEY)%'
+            $recaptchaSiteKey: '%recaptcha.site_key%'
 
+    # Controllers are registered as services
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    # Repositories are registered as services
+    App\Repository\:
+        resource: '../src/Repository/'
+        tags: ['doctrine.repository_service']
