@@ -1,0 +1,317 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Vehicle{% endblock %}
+
+{% block body %}
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #560bad;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--gray);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            color: var(--dark);
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 0.2rem rgba(72, 149, 239, 0.25);
+            outline: 0;
+        }
+        
+        input[type="file"].form-control {
+            padding: 0.5rem;
+        }
+        
+        input[type="color"].form-control {
+            height: 45px;
+            padding: 0.25rem;
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px;
+            padding-right: 3rem;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin: 0.5rem 0;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 0.5rem;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 0.9rem;
+        }
+        
+        .btn svg {
+            margin-right: 0.5rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary {
+            background-color: var(--light);
+            color: var(--dark);
+            border: 1px solid #dee2e6;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e9ecef;
+        }
+        
+        .image-preview {
+            margin-top: 1rem;
+            border-radius: 6px;
+            overflow: hidden;
+            max-width: 200px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .current-image {
+            margin-top: 1rem;
+            border-radius: 6px;
+            overflow: hidden;
+            max-width: 200px;
+            border: 1px solid #dee2e6;
+        }
+    </style>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 20h9"></path>
+                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                    </svg>
+                    Edit Vehicle
+                </h1>
+            </div>
+            
+            <div class="card-body">
+                <form action="{{ path('vehicle_edit', { id: vehicle.id }) }}" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label class="form-label" for="type">Type</label>
+                        <input type="text" name="type" id="type" class="form-control" value="{{ vehicle.type }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="brand">Brand</label>
+                        <input type="text" name="brand" id="brand" class="form-control" value="{{ vehicle.brand }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="model">Model</label>
+                        <input type="text" name="model" id="model" class="form-control" value="{{ vehicle.model }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="licensePlate">License Plate</label>
+                        <input type="text" name="licensePlate" id="licensePlate" class="form-control" value="{{ vehicle.licenseplate }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="seats">Seats</label>
+                        <input type="number" name="seats" id="seats" class="form-control" value="{{ vehicle.seats }}" min="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="color">Color</label>
+                        <input type="color" name="color" id="color" class="form-control" value="{{ vehicle.color ?? '#000000' }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="year">Year</label>
+                        <input type="number" name="year" id="year" class="form-control" value="{{ vehicle.year }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="image">Vehicle Image</label>
+                        <input type="file" name="image" id="image" class="form-control" accept="image/*" onchange="previewImage(event)">
+                        
+                        {% if vehicle.image %}
+                            <div class="current-image">
+                                <img src="{{ vehicle.image }}" alt="Current Image" style="max-width: 100%;" />
+                                <p class="form-label" style="margin-top: 0.5rem; font-size: 0.75rem;">Current image</p>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="image-preview">
+                            <img id="image-preview" src="#" alt="Image Preview" style="display:none; max-width: 100%;" />
+                            <p id="preview-label" class="form-label" style="display:none; margin-top: 0.5rem; font-size: 0.75rem;">New image preview</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="driverId">Driver</label>
+                        <select name="driverId" id="driverId" class="form-control">
+                            <option value="">Select Driver</option>
+                            {% for driver in drivers %}
+                                <option value="{{ driver.id }}" {% if vehicle.driver and vehicle.driver.id == driver.id %}selected{% endif %}>{{ driver.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Additional Features</label>
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="airConditioning" id="airConditioning" {% if vehicle.airconditioning %}checked{% endif %}>
+                            <label for="airConditioning">Air Conditioning</label>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                <polyline points="7 3 7 8 15 8"></polyline>
+                            </svg>
+                            Update Vehicle
+                        </button>
+                        <a href="{{ path('vehicle_index') }}" class="btn btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            Back to list
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script>
+function previewImage(event) {
+    const input = event.target;
+    const preview = document.getElementById('image-preview');
+    const previewLabel = document.getElementById('preview-label');
+    
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+            previewLabel.style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        preview.style.display = 'none';
+        previewLabel.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}

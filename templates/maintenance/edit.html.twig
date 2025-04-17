@@ -1,0 +1,307 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Maintenance{% endblock %}
+
+{% block body %}
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #560bad;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--gray);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            color: var(--dark);
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 0.2rem rgba(72, 149, 239, 0.25);
+            outline: 0;
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px;
+            padding-right: 3rem;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 0.9rem;
+        }
+        
+        .btn svg {
+            margin-right: 0.5rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary {
+            background-color: var(--light);
+            color: var(--dark);
+            border: 1px solid #dee2e6;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e9ecef;
+        }
+        
+        /* Hide the service provider group initially */
+        #serviceProviderGroup { 
+            display: none; 
+        }
+    </style>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                    </svg>
+                    Edit Maintenance #{{ maintenance.id }}
+                </h1>
+            </div>
+            
+            <div class="card-body">
+                <form action="{{ path('maintenance_edit', {'id': maintenance.id}) }}" method="POST">
+                    <div class="form-group">
+                        <label class="form-label" for="vehicleId">Vehicle</label>
+                        <select id="vehicleId" name="vehicleId" class="form-control" required>
+                            <option value="" disabled>Select a vehicle</option>
+                            {% for vehicle in vehicles %}
+                                <option value="{{ vehicle.id }}" {{ vehicle.id == maintenance.vehicle.id ? 'selected' : '' }}>
+                                    {{ vehicle.type }} {{ vehicle.brand }} {{ vehicle.model }} ({{ vehicle.licensePlate }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="maintenanceDate">Maintenance Date</label>
+                        <input type="datetime-local" id="maintenanceDate" name="maintenanceDate" class="form-control"
+                               value="{{ maintenance.maintenanceDate|date('Y-m-d\\TH:i') }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="serviceType">Service Type</label>
+                        <select id="serviceType" name="serviceType" class="form-control" required>
+                            <option value="" disabled>Select a service</option>
+                            {% for serviceType, serviceData in services %}
+                                <option value="{{ serviceType }}" 
+                                        data-price="{{ serviceData.price }}"
+                                        {{ serviceType == maintenance.serviceType ? 'selected' : '' }}>
+                                    {{ serviceType }} (€{{ serviceData.price }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="serviceProviderGroup">
+                        <label class="form-label" for="serviceProvider">Service Provider</label>
+                        <select id="serviceProvider" name="serviceProvider" class="form-control" required>
+                            <option value="" disabled>Select a provider</option>
+                            {% if maintenance.serviceType %}
+                                {% for provider in services[maintenance.serviceType].providers %}
+                                    <option value="{{ provider.id }}" 
+                                            {{ provider.id == currentProviderId ? 'selected' : '' }}>
+                                        {{ provider.name }}
+                                    </option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="cost">Cost</label>
+                        <input type="number" id="cost" name="cost" step="0.01" class="form-control"
+                               value="{{ maintenance.cost }}" required readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="description">Description</label>
+                        <textarea id="description" name="description" class="form-control" required>{{ maintenance.description }}</textarea>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                <polyline points="7 3 7 8 15 8"></polyline>
+                            </svg>
+                            Update Maintenance
+                        </button>
+                        <a href="{{ path('maintenance_index') }}" class="btn btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            Back to list
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const serviceTypeSelect = document.getElementById('serviceType');
+    const serviceProviderGroup = document.getElementById('serviceProviderGroup');
+    const serviceProviderSelect = document.getElementById('serviceProvider');
+    const costInput = document.getElementById('cost');
+    
+    const servicesData = {
+        {% for serviceType, serviceData in services %}
+            '{{ serviceType }}': {
+                price: {{ serviceData.price }},
+                providers: {{ serviceData.providers|json_encode|raw }}
+            },
+        {% endfor %}
+    };
+    
+    // Show provider dropdown if there's already a selected service
+    if (serviceTypeSelect.value) {
+        serviceProviderGroup.style.display = 'block';
+        costInput.value = servicesData[serviceTypeSelect.value].price;
+    }
+    
+    serviceTypeSelect.addEventListener('change', function() {
+        const selectedService = this.value;
+        
+        if (selectedService) {
+            serviceProviderGroup.style.display = 'block';
+            serviceProviderSelect.innerHTML = '';
+            
+            // Add default option
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.disabled = true;
+            defaultOption.textContent = 'Select a provider';
+            serviceProviderSelect.appendChild(defaultOption);
+            
+            // Add providers for selected service
+            const providers = servicesData[selectedService].providers;
+            providers.forEach(provider => {
+                const option = document.createElement('option');
+                option.value = provider.id;
+                option.textContent = provider.name;
+                serviceProviderSelect.appendChild(option);
+            });
+            
+            costInput.value = servicesData[selectedService].price;
+        } else {
+            serviceProviderGroup.style.display = 'none';
+            costInput.value = '';
+        }
+    });
+});
+</script>
+{% endblock %}
+{% endblock %}

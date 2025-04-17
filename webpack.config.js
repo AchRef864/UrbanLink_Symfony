@@ -20,9 +20,7 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .setManifestKeyPrefix('build/')
     .addEntry('app', './assets/app.js')
-    .addEntry('three_app', './assets/three_app.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -64,7 +62,7 @@ Encore
     // uncomment if you use React
     //.enableReactPreset()
 
-    // uncomment to get integrity="..." attributes on your script & link tags
+    // uncomment to get integrity= "..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher
     //.enableIntegrityHashes(Encore.isProduction())
 

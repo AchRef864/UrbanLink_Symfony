@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Entity;
+use App\Entity\User;
 
 use App\Repository\VehicleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: VehicleRepository::class)]
 #[ORM\Table(name: 'Vehicle')]
@@ -15,27 +18,54 @@ class Vehicle
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, name: 'type')]
+    #[Assert\NotBlank(message: "Vehicle type is required.")]
+    #[Assert\Length(max: 255, maxMessage: "Vehicle type must be at most {{ limit }} characters.")]
     private $type;
 
     #[ORM\Column(type: 'string', length: 50, name: 'model')]
+    #[Assert\NotBlank(message: "Model is required.")]
+    #[Assert\Length(max: 50, maxMessage: "Model must be at most {{ limit }} characters.")]
     private $model;
 
     #[ORM\Column(type: 'string', length: 50, name: 'brand')]
+    #[Assert\NotBlank(message: "Brand is required.")]
+    #[Assert\Length(max: 50, maxMessage: "Brand must be at most {{ limit }} characters.")]
     private $brand;
 
     #[ORM\Column(type: 'string', length: 50, name: 'licensePlate')]
+    #[Assert\NotBlank(message: "License plate is required.")]
+    #[Assert\Regex(
+        pattern: '/^[A-Z0-9\- ]+$/',
+        message: "Invalid license plate format. Use uppercase letters, numbers, dashes or spaces."
+    )]
     private $licensePlate;
 
     #[ORM\Column(type: 'integer', name: 'seats')]
+    #[Assert\Range(
+        min: 1,
+        max: 60,
+        notInRangeMessage: "Seats must be between {{ min }} and {{ max }}."
+    )]
     private $seats;
 
     #[ORM\Column(type: 'string', length: 255, name: 'image')]
+    #[Assert\NotBlank(message: "Image path is required.")]
+    #[Assert\Regex(
+        pattern: '/\.(jpg|jpeg|png|gif)$/i',
+        message: "Image must be in JPG, JPEG, PNG, or GIF format."
+    )]
     private $image;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true, name: 'color')]
+    #[Assert\Length(max: 50, maxMessage: "Color must be at most {{ limit }} characters.")]
     private $color;
 
     #[ORM\Column(type: 'integer', name: 'year')]
+    #[Assert\Range(
+        min: 1900,
+        maxPropertyPath: 'thisYear',
+        notInRangeMessage: "Year must be between {{ min }} and {{ max }}."
+    )]
     private $year;
 
     #[ORM\Column(type: 'boolean', name: 'airConditioning')]
@@ -44,11 +74,19 @@ class Vehicle
     #[ORM\Column(type: 'boolean', name: 'isAvailable')]
     private $isAvailable;
 
-    #[ORM\Column(type: 'integer', nullable: true, name: 'driverID')]
-    private $driverID;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'driverID', referencedColumnName: 'user_id', nullable: true, onDelete: 'SET NULL')]
+    private $driver;
 
     #[ORM\Column(type: 'boolean', name: 'isVerified')]
     private $isVerified;
+
+    #[Assert\Callback]
+    public function validateAvailability(int $status): void
+    {
+        // Exemple de logique métier
+        $this->setIsavailable($status === 1 && $this->getDriver() === null);
+    }
 
     public function getId(): ?int
     {
@@ -175,14 +213,14 @@ class Vehicle
         return $this;
     }
 
-    public function getDriverid(): ?int
+    public function getDriver(): ?User
     {
-        return $this->driverID;
+        return $this->driver;
     }
 
-    public function setDriverid(null|int $driverID): self
+    public function setDriver(?User $driver): self
     {
-        $this->driverID = $driverID;
+        $this->driver = $driver;
 
         return $this;
     }

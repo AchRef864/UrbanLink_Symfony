@@ -1,0 +1,486 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Maintenance{% endblock %}
+
+{% block body %}
+    <style>
+        :root {
+            --primary: #5e60ce;
+            --primary-dark: #4a4bd1;
+            --secondary: #6930c3;
+            --accent: #64dfdf;
+            --accent-light: #80ffdb;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --success: #06d6a0;
+            --danger: #ef476f;
+            --warning: #ffd166;
+            --info: #118ab2;
+            --card-shadow: 0 10px 30px rgba(94, 96, 206, 0.15);
+            --input-shadow: 0 4px 10px rgba(94, 96, 206, 0.07);
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7ff 0%, #e9f0ff 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem 0;
+        }
+        
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: 800;
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+        }
+        
+        .card-header {
+            padding: 2rem 2.5rem 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            position: relative;
+        }
+        
+        .card-header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--primary);
+        }
+        
+        .card-body {
+            padding: 2rem 2.5rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            font-size: 1rem;
+            color: var(--dark);
+            background-color: #fff;
+            border: 2px solid rgba(94, 96, 206, 0.1);
+            border-radius: 10px;
+            box-shadow: var(--input-shadow);
+            transition: all 0.2s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(94, 96, 206, 0.15);
+            outline: 0;
+        }
+        
+        /* Input icon styling */
+        .input-icon {
+            position: absolute;
+            top: 2.6rem;
+            right: 1rem;
+            color: var(--gray);
+            pointer-events: none;
+            transition: color 0.2s ease;
+        }
+        
+        .form-control:focus + .input-icon {
+            color: var(--primary);
+        }
+        
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px;
+            padding-right: 3rem;
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+        
+        .tooltip-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgba(94, 96, 206, 0.1);
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: help;
+        }
+        
+        .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--dark);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 0.5rem;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+            font-weight: normal;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Button styling */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2.5rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.85rem 1.75rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 1rem;
+            flex: 1;
+        }
+        
+        .btn svg {
+            margin-right: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(94, 96, 206, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(94, 96, 206, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.6s;
+        }
+        
+        .btn-primary:hover::after {
+            left: 100%;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid rgba(94, 96, 206, 0.15);
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(94, 96, 206, 0.05);
+            border-color: rgba(94, 96, 206, 0.3);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .card-header, .card-body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title">Fleet Management System</h1>
+        
+        <div class="card">
+            <div class="card-header">
+                <h1>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                    </svg>
+                    Create New Maintenance
+                </h1>
+            </div>
+            
+            <div class="card-body">
+                <form action="{{ path('maintenance_new') }}" method="POST">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="vehicleId">Vehicle</label>
+                            <select id="vehicleId" name="vehicleId" class="form-control" required>
+                                <option value="" disabled selected>-- Select Vehicle --</option>
+                                {% for vehicle in vehicles %}
+                                    <option value="{{ vehicle.id }}" {{ vehicle.id == app.request.request.get('vehicleId') ? 'selected' : '' }}>
+                                        {{ vehicle.type }} {{ vehicle.brand }} {{ vehicle.model }} ({{ vehicle.licensePlate }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <div class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="1" y="3" width="15" height="13"></rect>
+                                    <polyline points="16 8 20 8 23 11 23 16 20 16 20 18 9 18"></polyline>
+                                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="maintenanceDate">Maintenance Date</label>
+                            <input type="datetime-local" id="maintenanceDate" name="maintenanceDate" class="form-control"
+                               value="{{ app.request.request.get('maintenanceDate') ?? 'now'|date('Y-m-d\\TH:i') }}" required>
+                            <div class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="serviceType">
+                                Service Type
+                                <span class="tooltip">
+                                    <span class="tooltip-icon">i</span>
+                                    <span class="tooltip-text">Select the type of service needed for this maintenance</span>
+                                </span>
+                            </label>
+                            <select id="serviceType" name="serviceType" class="form-control" required>
+                                <option value="" disabled selected>-- Select Service Type --</option>
+                                {% for serviceType, serviceData in services %}
+                                    <option value="{{ serviceType }}" data-price="{{ serviceData.price }}">
+                                        {{ serviceType }} (€{{ serviceData.price }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <div class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" id="serviceProviderGroup">
+                            <label class="form-label" for="serviceProvider">Service Provider</label>
+                            <select id="serviceProvider" name="serviceProvider" class="form-control" required>
+                                <option value="" disabled selected>-- Select Provider --</option>
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                            <div class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="cost">Cost (€)</label>
+                            <input type="number" id="cost" name="cost" step="0.01" class="form-control" required readonly>
+                            <div class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label class="form-label" for="description">
+                                Description
+                                <span class="tooltip">
+                                    <span class="tooltip-icon">i</span>
+                                    <span class="tooltip-text">Provide details about the maintenance service needed</span>
+                                </span>
+                            </label>
+                            <textarea id="description" name="description" class="form-control" required>{{ app.request.request.get('description') }}</textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                <polyline points="7 3 7 8 15 8"></polyline>
+                            </svg>
+                            Create Maintenance
+                        </button>
+                        <a href="{{ path('maintenance_index') }}" class="btn btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            Back to list
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const serviceTypeSelect = document.getElementById('serviceType');
+    const serviceProviderGroup = document.getElementById('serviceProviderGroup');
+    const serviceProviderSelect = document.getElementById('serviceProvider');
+    const costInput = document.getElementById('cost');
+    
+    const servicesData = {
+        {% for serviceType, serviceData in services %}
+            '{{ serviceType }}': {
+                price: {{ serviceData.price }},
+                providers: {{ serviceData.providers|json_encode|raw }}
+            },
+        {% endfor %}
+    };
+    
+    // Initially hide the service provider group
+    serviceProviderGroup.style.display = 'none';
+    
+    serviceTypeSelect.addEventListener('change', function() {
+        const selectedService = this.value;
+        
+        if (selectedService) {
+            serviceProviderGroup.style.display = 'block';
+            serviceProviderSelect.innerHTML = '';
+            
+            // Add default option
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            defaultOption.textContent = '-- Select Provider --';
+            serviceProviderSelect.appendChild(defaultOption);
+            
+            // Add providers for selected service
+            const providers = servicesData[selectedService].providers;
+            providers.forEach(provider => {
+                const option = document.createElement('option');
+                option.value = provider.id;
+                option.textContent = provider.name;
+                serviceProviderSelect.appendChild(option);
+            });
+            
+            costInput.value = servicesData[selectedService].price;
+        } else {
+            serviceProviderGroup.style.display = 'none';
+            costInput.value = '';
+        }
+    });
+    
+    // Initialize form if returning with errors
+    if (serviceTypeSelect.value) {
+        serviceTypeSelect.dispatchEvent(new Event('change'));
+        
+        // Reselect previously selected provider
+        {% if app.request.request.get('serviceProvider') %}
+            serviceProviderSelect.value = '{{ app.request.request.get('serviceProvider') }}';
+        {% endif %}
+    }
+});
+</script>
+</body>
+{% endblock %}

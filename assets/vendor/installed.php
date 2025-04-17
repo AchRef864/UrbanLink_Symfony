@@ -19,4 +19,24 @@
     array (
     ),
   ),
+  'perfect-scrollbar' => 
+  array (
+    'version' => '1.5.6',
+    'dependencies' => 
+    array (
+    ),
+    'extraFiles' => 
+    array (
+    ),
+  ),
+  'perfect-scrollbar/css/perfect-scrollbar.min.css' => 
+  array (
+    'version' => '1.5.6',
+    'dependencies' => 
+    array (
+    ),
+    'extraFiles' => 
+    array (
+    ),
+  ),
 );

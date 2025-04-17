@@ -9,12 +9,6 @@
       "css": [
         "/build/app.css"
       ]
-    },
-    "three_app": {
-      "js": [
-        "/build/runtime.js",
-        "/build/three_app.js"
-      ]
     }
   }
 }
