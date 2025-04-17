@@ -9,16 +9,19 @@ use Psr\Container\ContainerInterface;
 
 class MappingDriver implements MappingDriverInterface
 {
-    public function __construct(
-        private readonly MappingDriverInterface $driver,
-        private readonly ContainerInterface $idGeneratorLocator,
-    ) {
+    private MappingDriverInterface $driver;
+    private ContainerInterface $idGeneratorLocator;
+
+    public function __construct(MappingDriverInterface $driver, ContainerInterface $idGeneratorLocator)
+    {
+        $this->driver             = $driver;
+        $this->idGeneratorLocator = $idGeneratorLocator;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getAllClassNames(): array
+    public function getAllClassNames()
     {
         return $this->driver->getAllClassNames();
     }

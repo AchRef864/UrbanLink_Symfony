@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
 
+use function get_class;
 use function gettype;
 use function is_object;
 use function sprintf;
@@ -14,6 +15,8 @@ use function trim;
 /** @final */
 class ContainerEntityListenerResolver implements EntityListenerServiceResolver
 {
+    private ContainerInterface $container;
+
     /** @var object[] Map to store entity listener instances. */
     private array $instances = [];
 
@@ -21,9 +24,9 @@ class ContainerEntityListenerResolver implements EntityListenerServiceResolver
     private array $serviceIds = [];
 
     /** @param ContainerInterface $container a service locator for listeners */
-    public function __construct(
-        private readonly ContainerInterface $container,
-    ) {
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
     }
 
     /**
@@ -51,7 +54,7 @@ class ContainerEntityListenerResolver implements EntityListenerServiceResolver
             throw new InvalidArgumentException(sprintf('An object was expected, but got "%s".', gettype($object)));
         }
 
-        $className = $this->normalizeClassName($object::class);
+        $className = $this->normalizeClassName(get_class($object));
 
         $this->instances[$className] = $object;
     }

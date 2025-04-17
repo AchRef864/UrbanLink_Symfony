@@ -236,17 +236,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isBlocked(): bool
-    {
-        return $this->isBlocked;
-    }
-
-    public function setIsBlocked(bool $isBlocked): self
-    {
-        $this->isBlocked = $isBlocked;
-        return $this;
-    }
-
      public function getRoles(): array
     {
         $roles = ['ROLE_USER'];

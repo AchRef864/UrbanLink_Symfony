@@ -124,16 +124,6 @@ isNull
 
     $collection->matching(new Criteria($expression));
 
-isNotNull
----------
-
-.. code-block:: php
-    $expressionBuilder = Criteria::expr();
-
-    $expression = $expressionBuilder->isNotNull('foo');
-
-    $collection->matching(new Criteria($expression));
-
 in
 ---
 

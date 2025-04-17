@@ -11,10 +11,7 @@ use ReturnTypeWillChange;
 use Stringable;
 use Traversable;
 
-use function array_all;
-use function array_any;
 use function array_filter;
-use function array_find;
 use function array_key_exists;
 use function array_keys;
 use function array_map;
@@ -43,18 +40,18 @@ use const ARRAY_FILTER_USE_BOTH;
  * serialize a collection use {@link toArray()} and reconstruct the collection
  * manually.
  *
- * @phpstan-template TKey of array-key
- * @phpstan-template T
+ * @psalm-template TKey of array-key
+ * @psalm-template T
  * @template-implements Collection<TKey,T>
  * @template-implements Selectable<TKey,T>
- * @phpstan-consistent-constructor
+ * @psalm-consistent-constructor
  */
 class ArrayCollection implements Collection, Selectable, Stringable
 {
     /**
      * An array containing the entries of this collection.
      *
-     * @phpstan-var array<TKey,T>
+     * @psalm-var array<TKey,T>
      * @var mixed[]
      */
     private array $elements = [];
@@ -62,7 +59,7 @@ class ArrayCollection implements Collection, Selectable, Stringable
     /**
      * Initializes a new ArrayCollection.
      *
-     * @phpstan-param array<TKey,T> $elements
+     * @psalm-param array<TKey,T> $elements
      */
     public function __construct(array $elements = [])
     {
@@ -92,13 +89,13 @@ class ArrayCollection implements Collection, Selectable, Stringable
      * instance should be created when constructor semantics have changed.
      *
      * @param array $elements Elements.
-     * @phpstan-param array<K,V> $elements
+     * @psalm-param array<K,V> $elements
      *
      * @return static
-     * @phpstan-return static<K,V>
+     * @psalm-return static<K,V>
      *
-     * @phpstan-template K of array-key
-     * @phpstan-template V
+     * @psalm-template K of array-key
+     * @psalm-template V
      */
     protected function createFrom(array $elements)
     {
@@ -248,19 +245,22 @@ class ArrayCollection implements Collection, Selectable, Stringable
      */
     public function exists(Closure $p)
     {
-        return array_any(
-            $this->elements,
-            static fn (mixed $element, mixed $key): bool => (bool) $p($key, $element),
-        );
+        foreach ($this->elements as $key => $element) {
+            if ($p($key, $element)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
      * {@inheritDoc}
      *
-     * @phpstan-param TMaybeContained $element
+     * @psalm-param TMaybeContained $element
      *
      * @return int|string|false
-     * @phpstan-return (TMaybeContained is T ? TKey|false : false)
+     * @psalm-return (TMaybeContained is T ? TKey|false : false)
      *
      * @template TMaybeContained
      */
@@ -315,6 +315,8 @@ class ArrayCollection implements Collection, Selectable, Stringable
     /**
      * {@inheritDoc}
      *
+     * @psalm-suppress InvalidPropertyAssignmentValue
+     *
      * This breaks assumptions about the template type, but it would
      * be a backwards-incompatible change to remove this method
      */
@@ -335,7 +337,7 @@ class ArrayCollection implements Collection, Selectable, Stringable
      * {@inheritDoc}
      *
      * @return Traversable<int|string, mixed>
-     * @phpstan-return Traversable<TKey, T>
+     * @psalm-return Traversable<TKey, T>
      */
     #[ReturnTypeWillChange]
     public function getIterator()
@@ -346,12 +348,12 @@ class ArrayCollection implements Collection, Selectable, Stringable
     /**
      * {@inheritDoc}
      *
-     * @phpstan-param Closure(T):U $func
+     * @psalm-param Closure(T):U $func
      *
      * @return static
-     * @phpstan-return static<TKey, U>
+     * @psalm-return static<TKey, U>
      *
-     * @phpstan-template U
+     * @psalm-template U
      */
     public function map(Closure $func)
     {
@@ -369,10 +371,10 @@ class ArrayCollection implements Collection, Selectable, Stringable
     /**
      * {@inheritDoc}
      *
-     * @phpstan-param Closure(T, TKey):bool $p
+     * @psalm-param Closure(T, TKey):bool $p
      *
      * @return static
-     * @phpstan-return static<TKey,T>
+     * @psalm-return static<TKey,T>
      */
     public function filter(Closure $p)
     {
@@ -384,10 +386,13 @@ class ArrayCollection implements Collection, Selectable, Stringable
      */
     public function findFirst(Closure $p)
     {
-        return array_find(
-            $this->elements,
-            static fn (mixed $element, mixed $key): bool => (bool) $p($key, $element),
-        );
+        foreach ($this->elements as $key => $element) {
+            if ($p($key, $element)) {
+                return $element;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -395,10 +400,13 @@ class ArrayCollection implements Collection, Selectable, Stringable
      */
     public function forAll(Closure $p)
     {
-        return array_all(
-            $this->elements,
-            static fn (mixed $element, mixed $key): bool => (bool) $p($key, $element),
-        );
+        foreach ($this->elements as $key => $element) {
+            if (! $p($key, $element)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -447,7 +455,7 @@ class ArrayCollection implements Collection, Selectable, Stringable
         return array_slice($this->elements, $offset, $length, true);
     }
 
-    /** @phpstan-return Collection<TKey, T>&Selectable<TKey,T> */
+    /** @psalm-return Collection<TKey, T>&Selectable<TKey,T> */
     public function matching(Criteria $criteria)
     {
         $expr     = $criteria->getWhereExpression();

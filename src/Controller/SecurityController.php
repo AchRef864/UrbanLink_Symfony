@@ -8,7 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Form\LoginFormType;
 
-
 class SecurityController extends AbstractController
 {
     #[Route('/login', name: 'app_login')]
@@ -24,13 +23,31 @@ class SecurityController extends AbstractController
 
         // Get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
+        $customErrorMessage = null;
+
+        if ($error) {
+            // Map security errors to more user-friendly messages
+            switch ($error->getMessageKey()) {
+                case 'Invalid credentials.':
+                    $customErrorMessage = 'Invalid email or password';
+                    break;
+                case 'Account is disabled.':
+                    $customErrorMessage = 'Your account is disabled';
+                    break;
+                case 'Account is blocked.':
+                    $customErrorMessage = 'Your account is blocked. Please contact the administrator.';
+                    break;
+                default:
+                    $customErrorMessage = 'Login failed. Please try again';
+            }
+        }
 
         // Last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('auth/login.html.twig', [
             'last_username' => $lastUsername,
-            'error' => $error,
+            'error' => $customErrorMessage,
             'loginForm' => $this->createForm(LoginFormType::class)->createView()
         ]);
     }

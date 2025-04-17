@@ -15,7 +15,7 @@ use function strtoupper;
 /**
  * Criteria for filtering Selectable collections.
  *
- * @phpstan-consistent-constructor
+ * @psalm-consistent-constructor
  */
 class Criteria
 {

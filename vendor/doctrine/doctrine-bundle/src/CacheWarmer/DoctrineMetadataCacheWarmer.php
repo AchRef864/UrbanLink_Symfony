@@ -3,6 +3,7 @@
 namespace Doctrine\Bundle\DoctrineBundle\CacheWarmer;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\Mapping\AbstractClassMetadataFactory;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\CacheWarmer\AbstractPhpFileCacheWarmer;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
@@ -12,10 +13,14 @@ use function is_file;
 /** @final since 2.11 */
 class DoctrineMetadataCacheWarmer extends AbstractPhpFileCacheWarmer
 {
-    public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly string $phpArrayFile,
-    ) {
+    private EntityManagerInterface $entityManager;
+    private string $phpArrayFile;
+
+    public function __construct(EntityManagerInterface $entityManager, string $phpArrayFile)
+    {
+        $this->entityManager = $entityManager;
+        $this->phpArrayFile  = $phpArrayFile;
+
         parent::__construct($phpArrayFile);
     }
 
@@ -27,7 +32,7 @@ class DoctrineMetadataCacheWarmer extends AbstractPhpFileCacheWarmer
         return false;
     }
 
-    protected function doWarmUp(string $cacheDir, ArrayAdapter $arrayAdapter, string|null $buildDir = null): bool
+    protected function doWarmUp(string $cacheDir, ArrayAdapter $arrayAdapter, ?string $buildDir = null): bool
     {
         // cache already warmed up, no needs to do it again
         if (is_file($this->phpArrayFile)) {
@@ -35,7 +40,7 @@ class DoctrineMetadataCacheWarmer extends AbstractPhpFileCacheWarmer
         }
 
         $metadataFactory = $this->entityManager->getMetadataFactory();
-        if ($metadataFactory->getLoadedMetadata()) {
+        if ($metadataFactory instanceof AbstractClassMetadataFactory && $metadataFactory->getLoadedMetadata()) {
             throw new LogicException('DoctrineMetadataCacheWarmer must load metadata first, check priority of your warmers.');
         }
 

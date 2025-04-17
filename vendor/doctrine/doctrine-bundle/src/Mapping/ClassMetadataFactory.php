@@ -23,7 +23,6 @@ class ClassMetadataFactory extends BaseClassMetadataFactory
             return;
         }
 
-        /** @phpstan-ignore function.impossibleType, instanceof.alwaysFalse */
         assert($customGeneratorDefinition['instance'] instanceof AbstractIdGenerator);
 
         $class->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_CUSTOM);

@@ -67,7 +67,7 @@ EOT);
         unset($params['dbname'], $params['path'], $params['url']);
 
         if ($connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
-            /** @phpstan-ignore nullCoalesce.offset (needed for DBAL < 4) */
+            /** @psalm-suppress InvalidArrayOffset It's still available in DBAL 3.x that we need to support */
             $params['dbname'] = $params['default_dbname'] ?? 'postgres';
         }
 

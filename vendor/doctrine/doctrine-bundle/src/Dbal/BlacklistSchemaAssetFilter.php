@@ -9,10 +9,13 @@ use function in_array;
 /** @deprecated Implement your own include/exclude mechanism */
 class BlacklistSchemaAssetFilter
 {
+    /** @var string[] */
+    private array $blacklist;
+
     /** @param string[] $blacklist */
-    public function __construct(
-        private readonly array $blacklist,
-    ) {
+    public function __construct(array $blacklist)
+    {
+        $this->blacklist = $blacklist;
     }
 
     /** @param string|AbstractAsset $assetName */

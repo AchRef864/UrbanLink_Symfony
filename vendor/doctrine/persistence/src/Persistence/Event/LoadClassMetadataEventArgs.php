@@ -17,21 +17,34 @@ use Doctrine\Persistence\ObjectManager;
 class LoadClassMetadataEventArgs extends EventArgs
 {
     /**
+     * @var ClassMetadata
+     * @phpstan-var TClassMetadata
+     */
+    private $classMetadata;
+
+    /**
+     * @var ObjectManager
+     * @phpstan-var TObjectManager
+     */
+    private $objectManager;
+
+    /**
      * @phpstan-param TClassMetadata $classMetadata
      * @phpstan-param TObjectManager $objectManager
      */
-    public function __construct(
-        private readonly ClassMetadata $classMetadata,
-        private readonly ObjectManager $objectManager,
-    ) {
+    public function __construct(ClassMetadata $classMetadata, ObjectManager $objectManager)
+    {
+        $this->classMetadata = $classMetadata;
+        $this->objectManager = $objectManager;
     }
 
     /**
      * Retrieves the associated ClassMetadata.
      *
+     * @return ClassMetadata
      * @phpstan-return TClassMetadata
      */
-    public function getClassMetadata(): ClassMetadata
+    public function getClassMetadata()
     {
         return $this->classMetadata;
     }
@@ -39,9 +52,9 @@ class LoadClassMetadataEventArgs extends EventArgs
     /**
      * Retrieves the associated ObjectManager.
      *
-     * @phpstan-return TObjectManager
+     * @return TObjectManager
      */
-    public function getObjectManager(): ObjectManager
+    public function getObjectManager()
     {
         return $this->objectManager;
     }

@@ -7,7 +7,11 @@ namespace Doctrine\Persistence;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\Mapping\ClassMetadataFactory;
 
-/** Contract for a Doctrine persistence layer ObjectManager class to implement. */
+/**
+ * Contract for a Doctrine persistence layer ObjectManager class to implement.
+ *
+ * @method bool isUninitializedObject(mixed $value) Implementing this method will be mandatory in version 4.
+ */
 interface ObjectManager
 {
     /**
@@ -24,7 +28,7 @@ interface ObjectManager
      *
      * @template T of object
      */
-    public function find(string $className, mixed $id): object|null;
+    public function find(string $className, $id);
 
     /**
      * Tells the ObjectManager to make an instance managed and persistent.
@@ -35,8 +39,10 @@ interface ObjectManager
      * this ObjectManager as NEW. Do not pass detached objects to the persist operation.
      *
      * @param object $object The instance to make managed and persistent.
+     *
+     * @return void
      */
-    public function persist(object $object): void;
+    public function persist(object $object);
 
     /**
      * Removes an object instance.
@@ -44,14 +50,18 @@ interface ObjectManager
      * A removed object will be removed from the database as a result of the flush operation.
      *
      * @param object $object The object instance to remove.
+     *
+     * @return void
      */
-    public function remove(object $object): void;
+    public function remove(object $object);
 
     /**
      * Clears the ObjectManager. All objects that are currently managed
      * by this ObjectManager become detached.
+     *
+     * @return void
      */
-    public function clear(): void;
+    public function clear();
 
     /**
      * Detaches an object from the ObjectManager, causing a managed object to
@@ -61,23 +71,29 @@ interface ObjectManager
      * reference it.
      *
      * @param object $object The object to detach.
+     *
+     * @return void
      */
-    public function detach(object $object): void;
+    public function detach(object $object);
 
     /**
      * Refreshes the persistent state of an object from the database,
      * overriding any local changes that have not yet been persisted.
      *
      * @param object $object The object to refresh.
+     *
+     * @return void
      */
-    public function refresh(object $object): void;
+    public function refresh(object $object);
 
     /**
      * Flushes all changes to objects that have been queued up to now to the database.
      * This effectively synchronizes the in-memory state of managed objects with the
      * database.
+     *
+     * @return void
      */
-    public function flush(): void;
+    public function flush();
 
     /**
      * Gets the repository for a class.
@@ -88,7 +104,7 @@ interface ObjectManager
      *
      * @template T of object
      */
-    public function getRepository(string $className): ObjectRepository;
+    public function getRepository(string $className);
 
     /**
      * Returns the ClassMetadata descriptor for a class.
@@ -102,27 +118,28 @@ interface ObjectManager
      *
      * @template T of object
      */
-    public function getClassMetadata(string $className): ClassMetadata;
+    public function getClassMetadata(string $className);
 
     /**
      * Gets the metadata factory used to gather the metadata of classes.
      *
      * @phpstan-return ClassMetadataFactory<ClassMetadata<object>>
      */
-    public function getMetadataFactory(): ClassMetadataFactory;
+    public function getMetadataFactory();
 
     /**
      * Helper method to initialize a lazy loading proxy or persistent collection.
      *
      * This method is a no-op for other objects.
+     *
+     * @return void
      */
-    public function initializeObject(object $obj): void;
-
-    /** Helper method to check whether a lazy loading proxy or persistent collection has been initialized. */
-    public function isUninitializedObject(mixed $value): bool;
+    public function initializeObject(object $obj);
 
     /**
      * Checks if the object is part of the current UnitOfWork and therefore managed.
+     *
+     * @return bool
      */
-    public function contains(object $object): bool;
+    public function contains(object $object);
 }
