@@ -62,7 +62,6 @@ app_reset_password:
     requirements:
         code: '\d+'
 
-# config/routes.yaml
 test_email:
     path: /test/email
     controller: App\Controller\TestEmailController::testEmail
