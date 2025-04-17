@@ -14,10 +14,13 @@ use function trigger_deprecation;
  */
 trait OrmProxyCommand
 {
-    public function __construct(
-        private readonly EntityManagerProvider|null $entityManagerProvider = null,
-    ) {
+    private ?EntityManagerProvider $entityManagerProvider;
+
+    public function __construct(?EntityManagerProvider $entityManagerProvider = null)
+    {
         parent::__construct($entityManagerProvider);
+
+        $this->entityManagerProvider = $entityManagerProvider;
 
         trigger_deprecation(
             'doctrine/doctrine-bundle',
@@ -31,7 +34,6 @@ trait OrmProxyCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (! $this->entityManagerProvider) {
-            /* @phpstan-ignore argument.type (ORM < 3 specific) */
             DoctrineCommandHelper::setApplicationEntityManager($this->getApplication(), $input->getOption('em'));
         }
 

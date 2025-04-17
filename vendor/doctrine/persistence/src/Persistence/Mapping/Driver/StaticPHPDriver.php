@@ -10,6 +10,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ReflectionClass;
 
+use function array_merge;
 use function array_unique;
 use function get_declared_classes;
 use function in_array;
@@ -28,7 +29,7 @@ class StaticPHPDriver implements MappingDriver
      *
      * @var array<int, string>
      */
-    private array $paths = [];
+    private $paths = [];
 
     /**
      * Map of all class names.
@@ -36,21 +37,28 @@ class StaticPHPDriver implements MappingDriver
      * @var array<int, string>
      * @phpstan-var list<class-string>
      */
-    private array|null $classNames = null;
+    private $classNames;
 
     /** @param array<int, string>|string $paths */
-    public function __construct(array|string $paths)
+    public function __construct($paths)
     {
         $this->addPaths((array) $paths);
     }
 
-    /** @param array<int, string> $paths */
-    public function addPaths(array $paths): void
+    /**
+     * @param array<int, string> $paths
+     *
+     * @return void
+     */
+    public function addPaths(array $paths)
     {
-        $this->paths = array_unique([...$this->paths, ...$paths]);
+        $this->paths = array_unique(array_merge($this->paths, $paths));
     }
 
-    public function loadMetadataForClass(string $className, ClassMetadata $metadata): void
+    /**
+     * {@inheritDoc}
+     */
+    public function loadMetadataForClass(string $className, ClassMetadata $metadata)
     {
         $className::loadMetadata($metadata);
     }
@@ -61,7 +69,7 @@ class StaticPHPDriver implements MappingDriver
      * @todo Same code exists in ColocatedMappingDriver, should we re-use it
      * somehow or not worry about it?
      */
-    public function getAllClassNames(): array
+    public function getAllClassNames()
     {
         if ($this->classNames !== null) {
             return $this->classNames;
@@ -81,7 +89,7 @@ class StaticPHPDriver implements MappingDriver
 
             $iterator = new RecursiveIteratorIterator(
                 new RecursiveDirectoryIterator($path),
-                RecursiveIteratorIterator::LEAVES_ONLY,
+                RecursiveIteratorIterator::LEAVES_ONLY
             );
 
             foreach ($iterator as $file) {
@@ -114,7 +122,10 @@ class StaticPHPDriver implements MappingDriver
         return $classes;
     }
 
-    public function isTransient(string $className): bool
+    /**
+     * {@inheritDoc}
+     */
+    public function isTransient(string $className)
     {
         return ! method_exists($className, 'loadMetadata');
     }

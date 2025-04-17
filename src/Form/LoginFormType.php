@@ -13,6 +13,8 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Karser\Recaptcha3Bundle\Form\Recaptcha3Type;
+use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3;
 
 class LoginFormType extends AbstractType
 {
@@ -60,6 +62,11 @@ class LoginFormType extends AbstractType
                     ]),
                     new Callback([$this, 'validatePasswordStrength']),
                 ],
+            ])
+            ->add('recaptcha', Recaptcha3Type::class, [
+                'constraints' => new Recaptcha3(),
+                'action_name' => 'login',
+                'locale' => 'en',
             ]);
     }
 

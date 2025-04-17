@@ -9,16 +9,19 @@ use Symfony\Bridge\Doctrine\Middleware\IdleConnection\Driver as IdleConnectionDr
 
 class IdleConnectionMiddleware implements Middleware, ConnectionNameAwareInterface
 {
+    private ArrayObject $connectionExpiries;
+    /** @var array<string, int> */
+    private array $ttlByConnection;
     private string $connectionName;
 
     /**
      * @param ArrayObject<string, int> $connectionExpiries
      * @param array<string, int>       $ttlByConnection
      */
-    public function __construct(
-        private readonly ArrayObject $connectionExpiries,
-        private readonly array $ttlByConnection,
-    ) {
+    public function __construct(ArrayObject $connectionExpiries, array $ttlByConnection)
+    {
+        $this->connectionExpiries = $connectionExpiries;
+        $this->ttlByConnection    = $ttlByConnection;
     }
 
     public function setConnectionName(string $name): void
@@ -28,11 +31,6 @@ class IdleConnectionMiddleware implements Middleware, ConnectionNameAwareInterfa
 
     public function wrap(Driver $driver): IdleConnectionDriver
     {
-        return new IdleConnectionDriver(
-            $driver,
-            $this->connectionExpiries,
-            $this->ttlByConnection[$this->connectionName],
-            $this->connectionName,
-        );
+        return new IdleConnectionDriver($driver, $this->connectionExpiries, $this->ttlByConnection[$this->connectionName], $this->connectionName);
     }
 }

@@ -18,8 +18,8 @@ use function array_unshift;
 use function assert;
 use function class_exists;
 use function ltrim;
-use function str_contains;
 use function str_replace;
+use function strpos;
 use function strrpos;
 use function substr;
 
@@ -35,29 +35,37 @@ use function substr;
  */
 abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
 {
-    /** Salt used by specific Object Manager implementation. */
-    protected string $cacheSalt = '__CLASSMETADATA__';
+    /**
+     * Salt used by specific Object Manager implementation.
+     *
+     * @var string
+     */
+    protected $cacheSalt = '__CLASSMETADATA__';
 
-    private CacheItemPoolInterface|null $cache = null;
+    /** @var CacheItemPoolInterface|null */
+    private $cache;
 
     /**
      * @var array<string, ClassMetadata>
      * @phpstan-var CMTemplate[]
      */
-    private array $loadedMetadata = [];
+    private $loadedMetadata = [];
 
-    protected bool $initialized = false;
+    /** @var bool */
+    protected $initialized = false;
 
-    private ReflectionService|null $reflectionService = null;
+    /** @var ReflectionService|null */
+    private $reflectionService = null;
 
-    private ProxyClassNameResolver|null $proxyClassNameResolver = null;
+    /** @var ProxyClassNameResolver|null */
+    private $proxyClassNameResolver = null;
 
     public function setCache(CacheItemPoolInterface $cache): void
     {
         $this->cache = $cache;
     }
 
-    final protected function getCache(): CacheItemPoolInterface|null
+    final protected function getCache(): ?CacheItemPoolInterface
     {
         return $this->cache;
     }
@@ -68,7 +76,7 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
      * @return ClassMetadata[]
      * @phpstan-return CMTemplate[]
      */
-    public function getLoadedMetadata(): array
+    public function getLoadedMetadata()
     {
         return $this->loadedMetadata;
     }
@@ -76,7 +84,7 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
     /**
      * {@inheritDoc}
      */
-    public function getAllMetadata(): array
+    public function getAllMetadata()
     {
         if (! $this->initialized) {
             $this->initialize();
@@ -99,31 +107,41 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
     /**
      * Lazy initialization of this stuff, especially the metadata driver,
      * since these are not needed at all when a metadata cache is active.
+     *
+     * @return void
      */
-    abstract protected function initialize(): void;
+    abstract protected function initialize();
 
-    /** Returns the mapping driver implementation. */
-    abstract protected function getDriver(): MappingDriver;
+    /**
+     * Returns the mapping driver implementation.
+     *
+     * @return MappingDriver
+     */
+    abstract protected function getDriver();
 
     /**
      * Wakes up reflection after ClassMetadata gets unserialized from cache.
      *
      * @phpstan-param CMTemplate $class
+     *
+     * @return void
      */
     abstract protected function wakeupReflection(
         ClassMetadata $class,
-        ReflectionService $reflService,
-    ): void;
+        ReflectionService $reflService
+    );
 
     /**
      * Initializes Reflection after ClassMetadata was constructed.
      *
      * @phpstan-param CMTemplate $class
+     *
+     * @return void
      */
     abstract protected function initializeReflection(
         ClassMetadata $class,
-        ReflectionService $reflService,
-    ): void;
+        ReflectionService $reflService
+    );
 
     /**
      * Checks whether the class metadata is an entity.
@@ -131,8 +149,10 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
      * This method should return false for mapped superclasses or embedded classes.
      *
      * @phpstan-param CMTemplate $class
+     *
+     * @return bool
      */
-    abstract protected function isEntity(ClassMetadata $class): bool;
+    abstract protected function isEntity(ClassMetadata $class);
 
     /**
      * Removes the prepended backslash of a class string to conform with how php outputs class names
@@ -152,7 +172,7 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
      * @throws ReflectionException
      * @throws MappingException
      */
-    public function getMetadataFor(string $className): ClassMetadata
+    public function getMetadataFor(string $className)
     {
         $className = $this->normalizeClassName($className);
 
@@ -164,7 +184,7 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
             throw MappingException::classIsAnonymous($className);
         }
 
-        if (! class_exists($className, false) && str_contains($className, ':')) {
+        if (! class_exists($className, false) && strpos($className, ':') !== false) {
             throw MappingException::nonExistingClass($className);
         }
 
@@ -186,8 +206,8 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
                 } else {
                     $loadedMetadata = $this->loadMetadata($realClassName);
                     $classNames     = array_combine(
-                        array_map($this->getCacheKey(...), $loadedMetadata),
-                        $loadedMetadata,
+                        array_map([$this, 'getCacheKey'], $loadedMetadata),
+                        $loadedMetadata
                     );
 
                     foreach ($this->cache->getItems(array_keys($classNames)) as $item) {
@@ -222,7 +242,10 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
         return $this->loadedMetadata[$className];
     }
 
-    public function hasMetadataFor(string $className): bool
+    /**
+     * {@inheritDoc}
+     */
+    public function hasMetadataFor(string $className)
     {
         $className = $this->normalizeClassName($className);
 
@@ -236,8 +259,10 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
      *
      * @phpstan-param class-string $className
      * @phpstan-param CMTemplate $class
+     *
+     * @return void
      */
-    public function setMetadataFor(string $className, ClassMetadata $class): void
+    public function setMetadataFor(string $className, ClassMetadata $class)
     {
         $this->loadedMetadata[$this->normalizeClassName($className)] = $class;
     }
@@ -250,7 +275,7 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
      * @return string[]
      * @phpstan-return list<class-string>
      */
-    protected function getParentClasses(string $name): array
+    protected function getParentClasses(string $name)
     {
         // Collect parent classes, ignoring transient (not-mapped) classes.
         $parentClasses = [];
@@ -282,7 +307,7 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
      * @return array<int, string>
      * @phpstan-return list<string>
      */
-    protected function loadMetadata(string $name): array
+    protected function loadMetadata(string $name)
     {
         if (! $this->initialized) {
             $this->initialize();
@@ -340,9 +365,10 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
      *
      * Override this method to implement a fallback strategy for failed metadata loading
      *
+     * @return ClassMetadata|null
      * @phpstan-return CMTemplate|null
      */
-    protected function onNotFoundMetadata(string $className): ClassMetadata|null
+    protected function onNotFoundMetadata(string $className)
     {
         return null;
     }
@@ -354,13 +380,15 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
      * @param list<class-string> $nonSuperclassParents All parent class names that are not marked as mapped superclasses, with the direct parent class being the first and the root entity class the last element.
      * @phpstan-param CMTemplate $class
      * @phpstan-param CMTemplate|null $parent
+     *
+     * @return void
      */
     abstract protected function doLoadMetadata(
         ClassMetadata $class,
-        ClassMetadata|null $parent,
+        ?ClassMetadata $parent,
         bool $rootEntityFound,
-        array $nonSuperclassParents,
-    ): void;
+        array $nonSuperclassParents
+    );
 
     /**
      * Creates a new ClassMetadata instance for the given class name.
@@ -372,9 +400,12 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
      *
      * @template T of object
      */
-    abstract protected function newClassMetadataInstance(string $className): ClassMetadata;
+    abstract protected function newClassMetadataInstance(string $className);
 
-    public function isTransient(string $className): bool
+    /**
+     * {@inheritDoc}
+     */
+    public function isTransient(string $className)
     {
         if (! $this->initialized) {
             $this->initialize();
@@ -384,7 +415,7 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
             return false;
         }
 
-        if (! class_exists($className, false) && str_contains($className, ':')) {
+        if (! class_exists($className, false) && strpos($className, ':') !== false) {
             throw MappingException::nonExistingClass($className);
         }
 
@@ -392,14 +423,22 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
         return $this->getDriver()->isTransient($className);
     }
 
-    /** Sets the reflectionService. */
-    public function setReflectionService(ReflectionService $reflectionService): void
+    /**
+     * Sets the reflectionService.
+     *
+     * @return void
+     */
+    public function setReflectionService(ReflectionService $reflectionService)
     {
         $this->reflectionService = $reflectionService;
     }
 
-    /** Gets the reflection service associated with this metadata factory. */
-    public function getReflectionService(): ReflectionService
+    /**
+     * Gets the reflection service associated with this metadata factory.
+     *
+     * @return ReflectionService
+     */
+    public function getReflectionService()
     {
         if ($this->reflectionService === null) {
             $this->reflectionService = new RuntimeReflectionService();

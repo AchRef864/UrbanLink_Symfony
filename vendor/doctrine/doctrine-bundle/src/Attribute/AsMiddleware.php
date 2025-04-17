@@ -10,7 +10,7 @@ class AsMiddleware
     /** @param string[] $connections */
     public function __construct(
         public array $connections = [],
-        public int|null $priority = null,
+        public ?int $priority = null,
     ) {
     }
 }

@@ -12,6 +12,7 @@ use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\MiddlewaresPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\RemoveLoggingMiddlewarePass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\RemoveProfilerControllerPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\ServiceRepositoryCompilerPass;
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\WellKnownSchemaFilterPass;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Proxy\Autoloader;
 use Doctrine\ORM\Proxy\DefaultProxyClassNameResolver;
@@ -27,6 +28,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 use function assert;
+use function class_exists;
 use function clearstatcache;
 use function dirname;
 use function spl_autoload_unregister;
@@ -34,7 +36,7 @@ use function spl_autoload_unregister;
 /** @final since 2.9 */
 class DoctrineBundle extends Bundle
 {
-    private Closure|null $autoloader = null;
+    private ?Closure $autoloader = null;
 
     /** @return void */
     public function build(ContainerBuilder $container)
@@ -67,11 +69,17 @@ class DoctrineBundle extends Bundle
         $container->addCompilerPass(new EntityListenerPass());
         $container->addCompilerPass(new ServiceRepositoryCompilerPass());
         $container->addCompilerPass(new IdGeneratorPass());
+        $container->addCompilerPass(new WellKnownSchemaFilterPass());
         $container->addCompilerPass(new DbalSchemaFilterPass());
         $container->addCompilerPass(new CacheSchemaSubscriberPass(), PassConfig::TYPE_BEFORE_REMOVING, -10);
         $container->addCompilerPass(new RemoveProfilerControllerPass());
         $container->addCompilerPass(new RemoveLoggingMiddlewarePass());
         $container->addCompilerPass(new MiddlewaresPass());
+
+        if (! class_exists(RegisterUidTypePass::class)) {
+            return;
+        }
+
         $container->addCompilerPass(new RegisterUidTypePass());
     }
 

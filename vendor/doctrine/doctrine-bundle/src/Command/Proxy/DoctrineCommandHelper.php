@@ -28,7 +28,8 @@ abstract class DoctrineCommandHelper
         $em = $application->getKernel()->getContainer()->get('doctrine')->getManager($emName);
         assert($em instanceof EntityManagerInterface);
         $helperSet = $application->getHelperSet();
-        /* @phpstan-ignore class.notFound, argument.type (ORM < 3 specific) */
+        /** @psalm-suppress InvalidArgument ORM < 3 specific */
+        /* @phpstan-ignore class.notFound */
         $helperSet->set(new EntityManagerHelper($em), 'em');
 
         trigger_deprecation(

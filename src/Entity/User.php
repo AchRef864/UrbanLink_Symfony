@@ -9,8 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 
 
@@ -244,17 +242,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setJoiningDate(\DateTimeInterface $joiningDate): self
     {
         $this->joiningDate = $joiningDate;
-        return $this;
-    }
-
-    public function isBlocked(): bool
-    {
-        return $this->isBlocked;
-    }
-
-    public function setIsBlocked(bool $isBlocked): self
-    {
-        $this->isBlocked = $isBlocked;
         return $this;
     }
 
