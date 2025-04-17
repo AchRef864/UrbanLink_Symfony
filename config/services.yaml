@@ -1,15 +1,12 @@
 # This file is the entry point to configure your own services.
 # Files in the packages/ subdirectory configure your dependencies.
 
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     MAILER_FROM: '%env(MAILER_FROM)%'
-    twilio_sid: '%env(TWILIO_SID)%'
+    twilio_sid:   '%env(TWILIO_SID)%'
     twilio_token: '%env(TWILIO_AUTH_TOKEN)%'
     twilio_number: '%env(TWILIO_PHONE_NUMBER)%'
-
-    recaptcha.site_key: '%env(RECAPTCHA_SITE_KEY)%'
+    recaptcha.site_key:   '%env(RECAPTCHA_SITE_KEY)%'
     recaptcha.secret_key: '%env(RECAPTCHA_SECRET_KEY)%'
 
 services:
@@ -17,11 +14,12 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
     App\EventSubscriber\AuthenticationSubscriber:
         tags:
             - { name: kernel.event_subscriber }
+
     # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
         exclude:
@@ -29,14 +27,14 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
-
+    # explicit service definitions
     App\Service\TwilioService:
         arguments:
-            $twilioSid: '%twilio_sid%'
-            $twilioToken: '%twilio_token%'
-            $twilioNumber: '%twilio_number%'
+            $sid:    '%twilio_sid%'
+            $token:  '%twilio_token%'
+            $from:   '%twilio_number%'
+            $logger: '@logger'
+
     App\Service\RecaptchaValidator:
         arguments:
             $secretKey: '%recaptcha.secret_key%'
@@ -44,5 +42,4 @@ services:
 
     App\Controller\Auth\LoginController:
         arguments:
-                $recaptchaSiteKey: '%env(RECAPTCHA_SITE_KEY)%'
-
+            $recaptchaSiteKey: '%env(RECAPTCHA_SITE_KEY)%'
