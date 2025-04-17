@@ -176,12 +176,8 @@
               <td>{{ course.user ? course.user.name : '—' }}</td>
               <td>{{ course.dateCourse ? course.dateCourse|date('d/m/Y H:i') : '—' }}</td>
               {# Modification sur les colonnes Départ et Arrivée #}
-              <td>
-  {{ course.presentationVilleDepart is defined ? course.presentationVilleDepart : course.villeDepart }}
-</td>
-<td>
-  {{ course.presentationVilleArrivee is defined ? course.presentationVilleArrivee : course.villeArrivee }}
-</td>
+              <td>{{ presentation[course.id].depart }}</td>
+              <td>{{ presentation[course.id].arrivee }}</td>
               <td>{{ course.distanceKm }} km</td>
               <td>{{ course.montant }} DT</td>
               <td>
@@ -240,42 +236,7 @@
       });
 
       // Fonction de reverse geocoding via Nominatim
-      function reverseGeocode(coords, element) {
-        var parts = coords.split(',');
-        if(parts.length !== 2) {
-          element.innerText = "Coordonnées invalides";
-          return;
-        }
-        var lat = parts[0].trim();
-        var lon = parts[1].trim();
-        var url = "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + encodeURIComponent(lat) + "&lon=" + encodeURIComponent(lon) + "&accept-language=en";
-        // Appel à l'API avec fetch
-        fetch(url, {
-          headers: { "User-Agent": "VotreNomApplication" }
-        })
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(data) {
-          var address = data.address || {};
-          var city = address.city || address.town || address.village || "Ville inconnue";
-          var road = address.road || "Rue inconnue";
-          element.innerText = city + " - " + road;
-        })
-        .catch(function(error) {
-          console.error("Erreur lors du reverse geocoding:", error);
-          element.innerText = "Erreur de géolocalisation";
-        });
-      }
-
-      // Parcourir tous les éléments ayant la classe reverse-geocode
-      var elems = document.querySelectorAll(".reverse-geocode");
-      elems.forEach(function(elem) {
-        var coords = elem.getAttribute("data-coords");
-        if(coords) {
-          reverseGeocode(coords, elem);
-        }
-      });
-    });
+      
+      
   </script>
 {% endblock %}

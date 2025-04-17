@@ -53,7 +53,21 @@ class Course
 
     #[ORM\Column(type: 'string', length: 20, options: ['default' => 'En attente'])]
     private string $statut = 'En attente';
-
+    #[ORM\PrePersist]
+    public function prePersistCheck(): void
+    {
+        if (null === $this->villeDepart || null === $this->villeArrivee) {
+            throw new \LogicException('Les villes de départ et d\'arrivée doivent être définies');
+        }
+    
+        if (!preg_match('/^-?\d+\.\d+,-?\d+\.\d+$/', $this->villeDepart)) {
+            throw new \InvalidArgumentException('Format de coordonnées invalide pour le départ');
+        }
+    
+        if (!preg_match('/^-?\d+\.\d+,-?\d+\.\d+$/', $this->villeArrivee)) {
+            throw new \InvalidArgumentException('Format de coordonnées invalide pour l\'arrivée');
+        }
+    }
     public function __construct()
     {
         $this->dateReservation = new \DateTime();
