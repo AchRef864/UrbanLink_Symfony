@@ -7,17 +7,24 @@ parameters:
     twilio_number: '%env(TWILIO_PHONE_NUMBER)%'
     recaptcha.site_key: '%env(RECAPTCHA_SITE_KEY)%'
     recaptcha.secret_key: '%env(RECAPTCHA_SECRET_KEY)%'
+    stripe_public_key: '%env(STRIPE_PUBLIC_KEY)%'
+    stripe_secret_key: '%env(STRIPE_SECRET_KEY)%'
     opencage.api_key: '%env(OPENCAGE_API_KEY)%'
+
+
+twig:
+    globals:
+        stripe_public_key: '%env(STRIPE_PUBLIC_KEY)%'
+        stripe_secret_key: '%env(STRIPE_SECRET_KEY)%'
+
 services:
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        autowire: true
+        autoconfigure: true
     App\EventSubscriber\AuthenticationSubscriber:
         tags:
             - { name: kernel.event_subscriber }
-    # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
-    
+    # Makes all classes in src/ available as services
     App\:
         resource: '../src/'
         exclude:
@@ -25,13 +32,7 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
-
-    App\Service\OpenCageGeocoder:
-        arguments:
-            $apiKey: '%env(OPENCAGE_API_KEY)%'
-
+    # Explicit service definitions (when autowiring isn't enough)
     App\Service\TwilioService:
         arguments:
             $twilioSid: '%twilio_sid%'

@@ -140,7 +140,7 @@ driver_dashboard:
 
 taxi_dashboard:
     path: /taxi/dashboard
-    controller: App\Controller\Taxi\DashboardController::index
+    controller: App\Controller\TaxisteController::dashboard
 
 client_profile:
     path: /profile
