@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Maintenance;
+use Symfony\Component\Form\FormError;
 use App\Entity\Vehicle;
 use App\Entity\ServiceTypes;
+use App\Form\MaintenanceType;
 use App\Repository\MaintenanceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -63,72 +65,48 @@ class MaintenanceController extends AbstractController
     #[Route('/new', name: 'maintenance_new', methods: ['GET', 'POST'])]
     public function create(Request $request, EntityManagerInterface $em): Response
     {
-        $vehicles = $em->getRepository(Vehicle::class)->findAll();
-        $servicesMap = ServiceTypes::getServicesMap();
-    
-        if ($request->isMethod('POST')) {
-            $maintenance = new Maintenance();
-    
-            // Retrieve Vehicle by ID
-            $vehicleId = $request->request->get('vehicleId');
-            $vehicle = $em->getRepository(Vehicle::class)->find($vehicleId);
-    
-            if (!$vehicle) {
-                return $this->render('maintenance/error.html.twig', [
-                    'message' => 'Vehicle not found'
-                ]);
-            }
-    
-            $maintenance->setVehicle($vehicle);
-    
-            // Set the other maintenance fields
-            $serviceType = $request->request->get('serviceType');
-            $maintenance->setMaintenanceDate(new \DateTime($request->request->get('maintenanceDate')));
-            $maintenance->setServiceType($serviceType);
-            $maintenance->setDescription($request->request->get('description'));
-    
-            if (isset($servicesMap[$serviceType])) {
-                $service = $servicesMap[$serviceType];
-                $cost = $service['price'];
-                $maintenance->setCost($cost);
-    
-                // Handle service provider (now as single selection)
-                $serviceProviderId = $request->request->get('serviceProvider');
-                if ($serviceProviderId) {
-                    // Find the provider name by ID
-                    $providerName = null;
-                    foreach ($service['providers'] as $provider) {
-                        if ($provider['id'] == $serviceProviderId) {
-                            $providerName = $provider['name'];
-                            break;
-                        }
-                    }
-                    
-                    if ($providerName) {
-                        $maintenance->setServiceProvider($providerName);
-                    } else {
-                        return $this->render('maintenance/error.html.twig', [
-                            'message' => 'Invalid service provider'
-                        ]);
-                    }
+        $maintenance = new Maintenance();
+        $form = $this->createForm(MaintenanceType::class, $maintenance);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if (!$form->isValid()) {
+                foreach ($form->getErrors(true) as $error) {
+                    $this->addFlash('error', $error->getMessage());
                 }
-            } else {
-                return $this->render('maintenance/error.html.twig', [
-                    'message' => 'Invalid service type'
-                ]);
             }
-    
-            $maintenance->setStatus(); // Déduit automatiquement à partir de la date
-    
-            $em->persist($maintenance);
-            $em->flush();
-    
-            return $this->redirectToRoute('maintenance_index', ['id' => $maintenance->getId()]);
+            // Get all services data
+            $servicesMap = ServiceTypes::getServicesMap();
+            $serviceType = $maintenance->getServiceType();
+            
+            if ($form->isValid()) {
+                try {
+                    // Set cost based on service type
+                    if (isset($servicesMap[$serviceType])) {
+                        $service = $servicesMap[$serviceType];
+                        $maintenance->setCost($service['price']);
+                        
+                        // Set status automatically based on date
+                        $maintenance->setStatus();
+                        
+                        $em->persist($maintenance);
+                        $em->flush();
+                        
+                        $this->addFlash('success', 'Maintenance created successfully!');
+                        return $this->redirectToRoute('maintenance_index');
+                    } else {
+                        throw new \Exception('Invalid service type');
+                    }
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'An error occurred: '.$e->getMessage());
+                }
+            }
         }
-    
+
         return $this->render('maintenance/new.html.twig', [
-            'vehicles' => $vehicles,
-            'services' => $servicesMap,
+            'form' => $form->createView(),
+            'vehicles' => $em->getRepository(Vehicle::class)->findAll(),
+            'services' => ServiceTypes::getServicesMap(),
         ]);
     }
 
@@ -171,7 +149,7 @@ class MaintenanceController extends AbstractController
                 // Set the cost based on the service type
                 $service = $servicesMap[$serviceType];
                 $cost = $service['price'];
-                $maintenance->setCost($cost);
+                $maintenance->setCost($request->request->get('cost'));
 
                 // Handle service provider (single selection)
                 $serviceProviderId = $request->request->get('serviceProvider');

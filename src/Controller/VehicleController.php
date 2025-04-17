@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User; // Import the Driver entity, not the Controller
 use App\Entity\Vehicle;
 use App\Service\ImageUploadService;
+use App\Form\VehicleType;
 use App\Repository\VehicleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

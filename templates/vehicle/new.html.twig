@@ -620,7 +620,7 @@
                         
                         <div class="form-group">
                             <label class="form-label" for="driverId">Assigned Driver</label>
-                            <select name="driverId" id="driverId" class="form-control">
+                            <select name="driverId" id="driverId" class="form-control" required>
                                 <option value="" disabled selected>-- Select Driver --</option>
                                 {% for driver in drivers %}
                                     <option value="{{ driver.id }}">{{ driver.name }}</option>
