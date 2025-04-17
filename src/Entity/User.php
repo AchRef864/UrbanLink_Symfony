@@ -72,16 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->reponse = new ArrayCollection();
     }
 
-    public function isBlocked(): bool
-    {
-        return $this->isBlocked;
-    }
-
-    public function setIsBlocked(bool $isBlocked): self
-    {
-        $this->isBlocked = $isBlocked;
-        return $this;
-    }
+   
 
     public function getId(): ?int
     {
