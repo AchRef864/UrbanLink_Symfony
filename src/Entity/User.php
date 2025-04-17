@@ -63,6 +63,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Rating::class, cascade: ['persist', 'remove'])]
     private Collection $ratings;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reservation::class, cascade: ['persist', 'remove'])]
+    private Collection $reservations;
+
     public function __construct()
     {
         $this->taxis = new ArrayCollection();
