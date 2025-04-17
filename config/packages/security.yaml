@@ -1,9 +1,7 @@
-# config/packages/security.yaml
 security:
     password_hashers:
         App\Entity\User:
             algorithm: auto
-            cost: 12
 
     providers:
         app_user_provider:
@@ -30,8 +28,6 @@ security:
             logout:
                 path: app_logout
                 target: app_login
-            user_checker: App\Security\UserChecker
-
 
     role_hierarchy:
         ROLE_ADMIN: [ ROLE_DRIVER, ROLE_TAXI, ROLE_CLIENT, ROLE_USER ]
@@ -46,9 +42,7 @@ security:
         - { path: ^/admin/users/edit, roles: ROLE_ADMIN }
         - { path: ^/admin/users/block, roles: ROLE_ADMIN }
         - { path: ^/admin/users/unblock, roles: ROLE_ADMIN }
-        - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/driver, roles: ROLE_DRIVER }
-        - { path: ^/taxi, roles: ROLE_TAXI }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/client, roles: ROLE_CLIENT }
         - { path: ^/avis/edit, roles:  ROLE_CLIENT }

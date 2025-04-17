@@ -14,11 +14,11 @@
     <div class="container flex items-center justify-between py-0 flex-wrap-inherit">
       <a class="py-1.75 ml-4 mr-4 font-bold text-white text-sm whitespace-nowrap lg:ml-0" href="{{ path('app_home') }}">UrbanLink</a>
       <button navbar-trigger class="px-3 py-1 ml-2 leading-none transition-all ease-in-out bg-transparent border border-transparent border-solid rounded-lg shadow-none cursor-pointer text-lg lg:hidden" type="button" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="inline-block mt-2 align-middle bg-center bg-no-repeat bg-cover w-6 h-6 bg-none">
-          <span bar1 class="w-5.5 rounded-xs duration-350 relative my-0 mx-auto block h-px bg-white transition-all"></span>
-          <span bar2 class="w-5.5 rounded-xs mt-1.75 duration-350 relative my-0 mx-auto block h-px bg-white transition-all"></span>
-          <span bar3 class="w-5.5 rounded-xs mt-1.75 duration-350 relative my-0 mx-auto block h-px bg-white transition-all"></span>
-        </span>
+            <span class="inline-block mt-2 align-middle bg-center bg-no-repeat bg-cover w-6 h-6 bg-none">
+                <span bar1 class="w-5.5 rounded-xs duration-350 relative my-0 mx-auto block h-px bg-white transition-all"></span>
+                <span bar2 class="w-5.5 rounded-xs mt-1.75 duration-350 relative my-0 mx-auto block h-px bg-white transition-all"></span>
+                <span bar3 class="w-5.5 rounded-xs mt-1.75 duration-350 relative my-0 mx-auto block h-px bg-white transition-all"></span>
+            </span>
       </button>
       <div navbar-menu class="items-center flex-grow transition-all ease duration-350 lg-max:bg-white lg-max:max-h-0 lg-max:overflow-hidden basis-full rounded-2xl lg:flex lg:basis-auto">
         <ul class="flex flex-col pl-0 mx-auto mb-0 list-none lg-max:py-2 lg:flex-row xl:ml-auto">
@@ -65,123 +65,59 @@
               <div class="p-6 mb-0 text-center bg-white border-b-0 rounded-t-2xl">
                 <h5>Register</h5>
               </div>
-
               <div class="flex-auto p-6">
-                {{ form_start(registrationForm, {
-                  'attr': {
-                    'class': 'text-left',
-                    'role': 'form',
-                    'novalidate': 'novalidate'
-                  }
-                }) }}
-
-                {# Name Field #}
+                {{ form_start(registrationForm, {'attr': {'class': 'text-left', 'role': 'form'}}) }}
                 <div class="mb-4">
-                  <label class="inline-block mb-2 ml-1 text-xs font-bold text-slate-700">Full Name</label>
-                  <input
-                          type="text"
-                          name="{{ registrationForm.name.vars.full_name }}"
-                          class="placeholder:text-gray-500 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-3 font-normal text-gray-700 transition-all focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
-                          placeholder="Full Name"
-                          value="{{ registrationForm.name.vars.value }}"
-                  >
-                  {% if registrationForm.name.vars.errors|length > 0 %}
-                    <div class="text-red-500 text-xs mt-1">{{ registrationForm.name.vars.errors|first.message }}</div>
-                  {% endif %}
+                  {{ form_row(registrationForm.name, {
+                    'attr': {
+                      'class': 'placeholder:text-gray-500 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-3 font-normal text-gray-700 transition-all focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow',
+                      'placeholder': 'Full Name'
+                    },
+                    'label': false
+                  }) }}
                 </div>
 
-                {# Email Field #}
                 <div class="mb-4">
-                  <label class="inline-block mb-2 ml-1 text-xs font-bold text-slate-700">Email</label>
-                  <input
-                          type="text"
-                          name="{{ registrationForm.email.vars.full_name }}"
-                          class="placeholder:text-gray-500 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-3 font-normal text-gray-700 transition-all focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
-                          placeholder="Email"
-                          value="{{ registrationForm.email.vars.value }}"
-                  >
-                  {% if registrationForm.email.vars.errors|length > 0 %}
-                    <div class="text-red-500 text-xs mt-1">{{ registrationForm.email.vars.errors|first.message }}</div>
-                  {% endif %}
+                  {{ form_row(registrationForm.email, {
+                    'attr': {
+                      'class': 'placeholder:text-gray-500 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-3 font-normal text-gray-700 transition-all focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow',
+                      'placeholder': 'Email'
+                    },
+                    'label': false
+                  }) }}
                 </div>
 
-                {# Phone Field #}
                 <div class="mb-4">
-                  <label class="inline-block mb-2 ml-1 text-xs font-bold text-slate-700">Phone Number</label>
-                  <div class="flex">
-                    <select
-                            id="countrySelect"
-                            class="w-1/3 mr-2 placeholder:text-gray-500 text-sm focus:shadow-primary-outline leading-5.6 ease appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-3 font-normal text-gray-700 transition-all focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
-                    >
-                      <option value="US" data-code="+1">United States (+1)</option>
-                      <option value="TN" data-code="+216">Tunisia (+216)</option>
-                      <option value="FR" data-code="+33">France (+33)</option>
-                      <option value="DE" data-code="+49">Germany (+49)</option>
-                      <option value="GB" data-code="+44">UK (+44)</option>
-                      <!-- Add more countries as needed -->
-                    </select>
-                    <input
-                            type="text"
-                            name="{{ registrationForm.phone.vars.full_name }}"
-                            id="phoneInput"
-                            class="w-full placeholder:text-gray-500 text-sm focus:shadow-primary-outline leading-5.6 ease appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-3 font-normal text-gray-700 transition-all focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
-                            placeholder="Phone number"
-                            value="{{ registrationForm.phone.vars.value }}"
-                    >
-                  </div>
-                  {% if registrationForm.phone.vars.errors|length > 0 %}
-                    <div class="text-red-500 text-xs mt-1">{{ registrationForm.phone.vars.errors|first.message }}</div>
-                  {% endif %}
+                  {{ form_row(registrationForm.phone, {
+                    'attr': {
+                      'class': 'placeholder:text-gray-500 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-3 font-normal text-gray-700 transition-all focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow',
+                      'placeholder': 'Phone'
+                    },
+                    'label': false
+                  }) }}
                 </div>
 
-                {# License Field #}
                 <div class="mb-4">
-                  <label class="inline-block mb-2 ml-1 text-xs font-bold text-slate-700">License</label>
-                  <input
-                          type="text"
-                          name="{{ registrationForm.license.vars.full_name }}"
-                          id="licenseInput"
-                          class="w-full placeholder:text-gray-500 text-sm focus:shadow-primary-outline leading-5.6 ease appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-3 font-normal text-gray-700 transition-all focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
-                          placeholder="Enter your license"
-                          value="{{ registrationForm.license.vars.value }}"
-                  >
-                  {% if registrationForm.license.vars.errors|length > 0 %}
-                    <div class="text-red-500 text-xs mt-1">{{ registrationForm.license.vars.errors|first.message }}</div>
-                  {% endif %}
+                  {{ form_row(registrationForm.plainPassword, {
+                    'attr': {
+                      'class': 'placeholder:text-gray-500 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-3 font-normal text-gray-700 transition-all focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow',
+                      'placeholder': 'Password'
+                    },
+                    'label': false
+                  }) }}
                 </div>
 
-                {# Password Field #}
-                <div class="mb-4">
-                  <label class="inline-block mb-2 ml-1 text-xs font-bold text-slate-700">Password</label>
-                  <input
-                          type="password"
-                          name="{{ registrationForm.plainPassword.vars.full_name }}"
-                          class="placeholder:text-gray-500 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-3 font-normal text-gray-700 transition-all focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
-                          placeholder="Password"
-                  >
-                  {% if registrationForm.plainPassword.vars.errors|length > 0 %}
-                    <div class="text-red-500 text-xs mt-1">{{ registrationForm.plainPassword.vars.errors|first.message }}</div>
-                  {% endif %}
+                <div class="min-h-6 pl-7 mb-0.5 block">
+                  {{ form_row(registrationForm.agreeTerms, {
+                    'label_attr': {
+                      'class': 'mb-2 ml-1 font-normal cursor-pointer text-sm text-slate-700'
+                    },
+                    'attr': {
+                      'class': 'w-4.8 h-4.8 ease -ml-7 rounded-1.4 checked:bg-gradient-to-tl checked:from-blue-500 checked:to-violet-500 after:text-xxs after:font-awesome after:duration-250 after:ease-in-out duration-250 relative float-left mt-1 cursor-pointer appearance-none border border-solid border-slate-200 bg-white bg-contain bg-center bg-no-repeat align-top transition-all after:absolute after:flex after:h-full after:w-full after:items-center after:justify-center after:text-white after:opacity-0 after:transition-all after:content-["\f00c"] checked:border-0 checked:border-transparent checked:bg-transparent checked:after:opacity-100'
+                    }
+                  }) }}
                 </div>
 
-                {# Terms Checkbox - Correctly Implemented #}
-                <div class="min-h-6 pl-7 mb-4">
-                  <input
-                          type="checkbox"
-                          name="{{ registrationForm.agreeTerms.vars.full_name }}"
-                          id="agreeTerms"
-                          class="w-4.8 h-4.8 ease -ml-7 rounded-1.4 checked:bg-gradient-to-tl checked:from-blue-500 checked:to-violet-500 after:text-xxs after:font-awesome after:duration-250 after:ease-in-out duration-250 relative float-left mt-1 cursor-pointer appearance-none border border-solid border-slate-200 bg-white bg-contain bg-center bg-no-repeat align-top transition-all after:absolute after:flex after:h-full after:w-full after:items-center after:justify-center after:text-white after:opacity-0 after:transition-all after:content-['\f00c'] checked:border-0 checked:border-transparent checked:bg-transparent checked:after:opacity-100"
-                          {% if registrationForm.agreeTerms.vars.checked %}checked{% endif %}
-                  >
-                  <label for="agreeTerms" class="mb-2 ml-1 font-normal cursor-pointer text-sm text-slate-700">
-                    I agree to the <a href="#" class="font-bold">Terms and Conditions</a>
-                  </label>
-                  {% if registrationForm.agreeTerms.vars.errors|length > 0 %}
-                    <div class="text-red-500 text-xs mt-1">{{ registrationForm.agreeTerms.vars.errors|first.message }}</div>
-                  {% endif %}
-                </div>
-
-                {# Submit Button #}
                 <div class="text-center">
                   <button type="submit" class="inline-block w-full px-5 py-2.5 mt-6 mb-2 font-bold text-center text-white align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer active:opacity-85 hover:-translate-y-px hover:shadow-xs leading-normal text-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25 bg-gradient-to-tl from-zinc-800 to-zinc-700 hover:border-slate-700 hover:bg-slate-700 hover:text-white">
                     Sign up
@@ -192,11 +128,7 @@
                   Already have an account?
                   <a href="{{ path('app_login') }}" class="font-bold text-slate-700">Sign in</a>
                 </p>
-
-                {# CSRF Token #}
-                <input type="hidden" name="{{ registrationForm._token.vars.full_name }}" value="{{ registrationForm._token.vars.value }}">
-
-                {{ form_end(registrationForm, {'render_rest': false}) }}
+                {{ form_end(registrationForm) }}
               </div>
             </div>
           </div>
@@ -209,24 +141,5 @@
     {{ parent() }}
     <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/js/argon-dashboard-tailwind.js') }}"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const countrySelect = document.getElementById('countrySelect');
-        const phoneInput = document.getElementById('phoneInput');
-        const form = document.querySelector('form');
-
-        // Update the phone number with country code before form submission
-        form.addEventListener('submit', function(e) {
-          const selectedOption = countrySelect.options[countrySelect.selectedIndex];
-          const countryCode = selectedOption.getAttribute('data-code');
-          const phoneNumber = phoneInput.value;
-
-          // Only prepend country code if it's not already there
-          if (!phoneNumber.startsWith(countryCode)) {
-            phoneInput.value = countryCode + phoneNumber;
-          }
-        });
-      });
-    </script>
   {% endblock %}
 {% endblock %}

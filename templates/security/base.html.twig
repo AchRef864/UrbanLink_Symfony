@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Connexion{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    {% block css %}{% endblock %}
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    {% block body %}{% endblock %}
+    <script src="{{ asset('build/app.js') }}"></script>
+    {% block js %}{% endblock %}
+</body>
+</html>

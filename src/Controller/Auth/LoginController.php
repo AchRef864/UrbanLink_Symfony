@@ -1,45 +1,80 @@
 <?php
-// src/Controller/Auth/LoginController.php
+
 namespace App\Controller\Auth;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use App\Service\RecaptchaValidator;
-use App\Entity\User;
 
 class LoginController extends AbstractController
 {
-    public function __construct(
-        private string $recaptchaSiteKey
-    ) {}
-
     #[Route('/login', name: 'app_login')]
-    public function index(
-        Request $request,
-        AuthenticationUtils $authenticationUtils,
-        RecaptchaValidator $recaptchaValidator
-    ): Response {
-        if ($this->getUser()) {
-            return $this->redirectToRoute('app_dashboard');
-        }
-
-        if ($request->isMethod('POST') && !$recaptchaValidator->verify($request)) {
-            $this->addFlash('error', 'Please complete the reCAPTCHA verification');
-            return $this->redirectToRoute('app_login');
-        }
-
+    public function index(AuthenticationUtils $authenticationUtils): Response
+    {
+        // Custom error handling
         $error = $authenticationUtils->getLastAuthenticationError();
-        if ($error && $error->getMessageKey() === 'Your account has been blocked. Please contact support.') {
-            $this->addFlash('blocked', $error->getMessage());
+        $customErrorMessage = null;
+
+        if ($error) {
+            // Map security errors to more user-friendly messages
+            switch ($error->getMessageKey()) {
+                case 'Invalid credentials.':
+                    $customErrorMessage = 'Invalid email or password';
+                    break;
+                case 'Account is disabled.':
+                    $customErrorMessage = 'Your account is disabled';
+                    break;
+                default:
+                    $customErrorMessage = 'Login failed. Please try again';
+            }
         }
 
         return $this->render('auth/login/login.html.twig', [
             'last_username' => $authenticationUtils->getLastUsername(),
-            'error' => $error,
-            'recaptcha_site_key' => $this->recaptchaSiteKey,
+            'error' => $customErrorMessage,
+            'form_errors' => [], // Will be populated by form validation
         ]);
     }
+
+    /*
+   #[Route('/login', name: 'app_login')]
+   public function login(
+       Request $request,
+       AuthenticationUtils $authenticationUtils
+   ): Response {
+       // Redirect if already logged in
+       if ($this->getUser()) {
+           return $this->redirectToRoute('app_dashboard');
+       }
+
+       // Create form
+       $form = $this->createForm(LoginFormType::class);
+       $form->handleRequest($request);
+
+       // Get login error if there is one
+       $error = $authenticationUtils->getLastAuthenticationError();
+       $lastUsername = $authenticationUtils->getLastUsername();
+
+       // Handle form submission and validation
+       $formErrors = [];
+       if ($form->isSubmitted()) {
+           if (!$form->isValid()) {
+               // Form validation errors
+               foreach ($form->getErrors(true) as $error) {
+                   $formErrors[] = $error->getMessage();
+               }
+           } elseif ($error instanceof AuthenticationException) {
+               // Authentication errors
+               $formErrors[] = 'Invalid email or password';
+           }
+       }
+
+       return $this->render('auth/login.html.twig', [
+           'loginForm' => $form->createView(),
+           'last_username' => $lastUsername,
+           'formErrors' => $formErrors,
+           'error' => $error
+       ]);
+   }*/
 }

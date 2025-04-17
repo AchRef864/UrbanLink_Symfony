@@ -26,26 +26,20 @@
             "./migrations/.gitignore"
         ]
     },
-    "karser/karser-recaptcha3-bundle": {
-        "version": "0.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "main",
-            "version": "0.1",
-            "ref": "c51ce07c10331d506762efe25b6f5843c1a5ea17"
-        }
-    },
     "knplabs/knp-paginator-bundle": {
         "version": "v6.7.0"
     },
-    "knplabs/knp-snappy-bundle": {
-        "version": "1.10",
+    "php-http/discovery": {
+        "version": "1.20",
         "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
+            "repo": "github.com/symfony/recipes",
             "branch": "main",
-            "version": "1.5",
-            "ref": "c81bdcf4a9d4e7b1959071457f9608631865d381"
-        }
+            "version": "1.18",
+            "ref": "f45b5dd173a27873ab19f5e3180b2f661c21de02"
+        },
+        "files": [
+            "./config/packages/http_discovery.yaml"
+        ]
     },
     "phpunit/phpunit": {
         "version": "9.6",
@@ -144,15 +138,6 @@
             "./config/packages/mailer.yaml"
         ]
     },
-    "symfony/mailgun-mailer": {
-        "version": "6.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "4.4",
-            "ref": "addcb559b32d9dbb4843826b063565e1b15a2a57"
-        }
-    },
     "symfony/maker-bundle": {
         "version": "1.62",
         "recipe": {
@@ -213,15 +198,6 @@
             "./tests/bootstrap.php"
         ]
     },
-    "symfony/postmark-mailer": {
-        "version": "6.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "4.4",
-            "ref": "631f81f2fbf58126ae699a04b1d0984442613a19"
-        }
-    },
     "symfony/routing": {
         "version": "6.4",
         "recipe": {
@@ -247,15 +223,6 @@
             "./config/packages/security.yaml",
             "./config/routes/security.yaml"
         ]
-    },
-    "symfony/sendgrid-mailer": {
-        "version": "6.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "4.4",
-            "ref": "224aedffb66812dc2b0965dabc14d5f800941da6"
-        }
     },
     "symfony/stimulus-bundle": {
         "version": "2.23",
@@ -329,22 +296,6 @@
         "files": [
             "./config/packages/web_profiler.yaml",
             "./config/routes/web_profiler.yaml"
-        ]
-    },
-    "symfony/webpack-encore-bundle": {
-        "version": "2.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "2.0",
-            "ref": "20af60d17dc26c2f2b67f8ee1038cd2da1ca8fb3"
-        },
-        "files": [
-            "./assets/app.js",
-            "./assets/styles/app.css",
-            "./config/packages/webpack_encore.yaml",
-            "./package.json",
-            "./webpack.config.js"
         ]
     },
     "twig/extra-bundle": {

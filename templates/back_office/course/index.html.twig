@@ -1,0 +1,281 @@
+{# templates/back_office/course/index.html.twig #}
+{% extends 'back_office/base.html.twig' %}
+
+{% block title %}Gestion des Courses{% endblock %}
+{% block page_title %}Courses{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  {# DataTables CSS via CDN #}
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+  <style>
+    /* Carte avec effet 3D */
+    .card-3d {
+      background: #fff;
+      border-radius: 0.75rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+    }
+    .card-3d:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    }
+    /* En-tête avec dégradé et titre blanc */
+    .header-3d {
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, #2D3748, #4A5568);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-3d h6 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0;
+      color: #fff;
+    }
+    /* Bouton Ajouter une Course, style texte et bordure blancs */
+    .btn-add {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background: transparent;
+      border: 2px solid #fff;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 0.75rem;
+      color: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    .btn-add:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+    }
+    /* Container de la table */
+    .table-3d {
+      padding: 1rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.75rem; /* Texte plus petit pour optimiser l'espace */
+      min-width: 1200px;  /* Largeur minimale pour éviter le chevauchement */
+    }
+    thead {
+      background-color: #edf2f7;
+    }
+    th, td {
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+    th {
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #4a5568;
+    }
+    td {
+      color: #718096;
+    }
+    tbody tr:hover {
+      background-color: #f7fafc;
+    }
+    /* Boutons actions avec effet 3D et même taille */
+    .btn-action {
+      display: inline-block;
+      padding: 0.35rem 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 0.65rem;
+      color: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      width: 100%;
+    }
+    .btn-edit {
+      background: #00007d;
+    }
+    .btn-delete {
+      background: #b91c1c;
+    }
+    .btn-action:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+    }
+    /* Conteneur vertical pour les boutons d'actions */
+    .actions-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      max-width: 100px;
+      margin: 0 auto;
+    }
+    /* Responsivité du conteneur pour permettre le défilement horizontal */
+    .responsive-table {
+      overflow-x: auto;
+    }
+    /* Fixation de la colonne Actions pour qu'elle reste visible */
+    th.actions, td.actions {
+      position: sticky;
+      right: 0;
+      background: #fff;
+      z-index: 2;
+      box-shadow: -2px 0 4px rgba(0,0,0,0.1);
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+<div class="container mx-auto p-6">
+  <div class="card-3d">
+    <div class="header-3d">
+      <h6>Liste des Courses</h6>
+      <a href="{{ path('course_new') }}">
+        <button type="button" class="btn-add">
+          + Ajouter une Course
+        </button>
+      </a>
+    </div>
+    <div class="table-3d responsive-table">
+      <table id="datatable-courses">
+        <thead>
+          <tr>
+            <th>Nom Taxiste</th>
+            <th>Marque Taxi</th>
+            <th>Modèle Taxi</th>
+            <th>Immatriculation</th>
+            <th>Client</th>
+            <th>Chauffeur</th>
+            <th>Nom Client</th>
+            <th>Date</th>
+            <th>Départ</th>
+            <th>Arrivée</th>
+            <th>Distance</th>
+            <th>Montant</th>
+            <th>Statut</th>
+            <th class="actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for course in courses %}
+            <tr>
+              <td>{{ course.taxi ? course.taxi.user.name : '—' }}</td>
+              <td>{{ course.taxi ? course.taxi.marque : '—' }}</td>
+              <td>{{ course.taxi ? course.taxi.modele : '—' }}</td>
+              <td>{{ course.taxi ? course.taxi.immatriculation : '—' }}</td>
+              <td>{{ course.user ? course.user.name : '—' }}</td>
+              <td>{{ course.taxi ? course.taxi.user.name : '—' }}</td>
+              <td>{{ course.user ? course.user.name : '—' }}</td>
+              <td>{{ course.dateCourse ? course.dateCourse|date('d/m/Y H:i') : '—' }}</td>
+              {# Modification sur les colonnes Départ et Arrivée #}
+              <td>
+  {{ course.presentationVilleDepart is defined ? course.presentationVilleDepart : course.villeDepart }}
+</td>
+<td>
+  {{ course.presentationVilleArrivee is defined ? course.presentationVilleArrivee : course.villeArrivee }}
+</td>
+              <td>{{ course.distanceKm }} km</td>
+              <td>{{ course.montant }} DT</td>
+              <td>
+                {% if course.statut == 'Acceptée' %}
+                  <span class="text-green-600 font-semibold">Acceptée</span>
+                {% elseif course.statut == 'Refusée' %}
+                  <span class="text-red-500 font-semibold">Refusée</span>
+                {% else %}
+                  <span class="text-yellow-500 font-semibold">En attente</span>
+                {% endif %}
+              </td>
+              <td class="actions">
+                <div class="actions-container">
+                  <a href="{{ path('course_edit', {'id': course.id}) }}">
+                    <button type="button" class="btn-action btn-edit">Modifier</button>
+                  </a>
+                  <form method="post" action="{{ path('course_delete', {'id': course.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ course.id) }}">
+                    <button type="submit" class="btn-action btn-delete">Supprimer</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="14" class="text-center text-slate-400">Aucune course trouvée.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Initialisation de DataTables
+      $('#datatable-courses').DataTable({
+        language: {
+          search: "Rechercher:",
+          lengthMenu: "Afficher _MENU_ entrées",
+          info: "Affichage de _START_ à _END_ sur _TOTAL_ entrées",
+          paginate: {
+            previous: "Précédent",
+            next: "Suivant"
+          },
+          zeroRecords: "Aucun enregistrement correspondant trouvé"
+        },
+        responsive: true,
+        autoWidth: false
+      });
+
+      // Fonction de reverse geocoding via Nominatim
+      function reverseGeocode(coords, element) {
+        var parts = coords.split(',');
+        if(parts.length !== 2) {
+          element.innerText = "Coordonnées invalides";
+          return;
+        }
+        var lat = parts[0].trim();
+        var lon = parts[1].trim();
+        var url = "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + encodeURIComponent(lat) + "&lon=" + encodeURIComponent(lon) + "&accept-language=en";
+        // Appel à l'API avec fetch
+        fetch(url, {
+          headers: { "User-Agent": "VotreNomApplication" }
+        })
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data) {
+          var address = data.address || {};
+          var city = address.city || address.town || address.village || "Ville inconnue";
+          var road = address.road || "Rue inconnue";
+          element.innerText = city + " - " + road;
+        })
+        .catch(function(error) {
+          console.error("Erreur lors du reverse geocoding:", error);
+          element.innerText = "Erreur de géolocalisation";
+        });
+      }
+
+      // Parcourir tous les éléments ayant la classe reverse-geocode
+      var elems = document.querySelectorAll(".reverse-geocode");
+      elems.forEach(function(elem) {
+        var coords = elem.getAttribute("data-coords");
+        if(coords) {
+          reverseGeocode(coords, elem);
+        }
+      });
+    });
+  </script>
+{% endblock %}
