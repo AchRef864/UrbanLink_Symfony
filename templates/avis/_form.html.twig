@@ -1,0 +1,169 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Leave a Complaint{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .container {
+        font-family: 'Arial', sans-serif;
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 0 15px;
+    }
+
+    .card {
+        background-color: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin-top: 30px;
+    }
+
+    h2 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #555;
+        font-size: 16px;
+    }
+
+    .form-select, .form-control {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        font-size: 16px;
+        background-color: #f9f9f9;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-select:focus, .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.2);
+        background-color: #fff;
+    }
+
+    /* Sky blue color for the button */
+    .btn-primary {
+        background-color: #87CEEB;
+        border: none;
+        padding: 12px 24px;
+        font-size: 18px;
+        border-radius: 50px;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+        background-color: #5b9bd5;
+        transform: translateY(-2px);
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .mb-4 {
+        margin-bottom: 1.5rem;
+    }
+
+    .mt-4 {
+        margin-top: 1.5rem;
+    }
+    
+    /* Initially hide the taxi and vehicle fields */
+    .taxi-field-container,
+    .vehicle-field-container {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+
+    <div class="card">
+        <h2>Leave a Complaint</h2>
+
+        {# Complaint Type Field #}
+        <div class="mb-4">
+            {{ form_label(form.type, 'Complaint Type', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.type, {'attr': {'class': 'form-select complaint-type-select'}}) }}
+            {{ form_errors(form.type) }}
+        </div>
+
+        {# Taxi Immatriculation Field (initially hidden) #}
+        <div class="mb-4 taxi-field-container">
+            {{ form_label(form.taxi, 'Taxi Immatriculation', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.taxi, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.taxi) }}
+        </div>
+
+        {# Vehicle License Plate Field (initially hidden) #}
+        <div class="mb-4 vehicle-field-container">
+            {{ form_label(form.vehicle, 'Vehicle License Plate', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.vehicle, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.vehicle) }}
+        </div>
+
+        {# Comment Field #}
+        <div class="mb-4">
+            {{ form_label(form.commentaire, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.commentaire, {'attr': {'class': 'form-control', 'placeholder': 'Write your description here...'}}) }}
+            {{ form_errors(form.commentaire) }}
+        </div>
+
+        {# Submit Button #}
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">
+                {{ button_label|default('Submit') }}
+            </button>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const typeSelect = document.querySelector('.complaint-type-select');
+    const taxiContainer = document.querySelector('.taxi-field-container');
+    const vehicleContainer = document.querySelector('.vehicle-field-container');
+
+    function checkComplaintType() {
+        const selectedOption = typeSelect.options[typeSelect.selectedIndex];
+        const selectedText = selectedOption ? selectedOption.text.trim().toLowerCase() : '';
+        const selectedValue = typeSelect.value;
+
+        // Show taxi field if "taxi complaint" is chosen
+        if (selectedText.includes('taxi') || selectedValue.includes('taxi')) {
+            taxiContainer.style.display = 'block';
+            vehicleContainer.style.display = 'none';
+        } 
+        // Show vehicle field if "vehicle complaint" is chosen
+        else if (selectedText.includes('vehicle') || selectedValue.includes('vehicle')) {
+            vehicleContainer.style.display = 'block';
+            taxiContainer.style.display = 'none';
+        } 
+        // Hide both if neither
+        else {
+            taxiContainer.style.display = 'none';
+            vehicleContainer.style.display = 'none';
+        }
+    }
+
+    // Run the check initially
+    checkComplaintType();
+
+    // Add event listener for changes
+    typeSelect.addEventListener('change', checkComplaintType);
+});
+</script>
+{% endblock %}

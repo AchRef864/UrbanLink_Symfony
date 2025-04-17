@@ -45,3 +45,17 @@ security:
         - { path: ^/driver, roles: ROLE_DRIVER }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/client, roles: ROLE_CLIENT }
+        - { path: ^/avis/edit, roles:  ROLE_CLIENT }
+        - { path: ^/avis/new, roles:  ROLE_CLIENT }
+        - { path: ^/avis, roles: [ROLE_ADMIN, ROLE_CLIENT] }
+
+
+
+when@test:
+    security:
+        password_hashers:
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # bcrypt
+                time_cost: 3 # argon
+                memory_cost: 10 # argon

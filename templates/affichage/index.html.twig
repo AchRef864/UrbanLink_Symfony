@@ -1,7 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home {% endblock %}
+{% block title %}Home{% endblock %}
+
+{% set show_vr = false %}
+{% set show_docs = false %} 
+
+{% block sidebar %} 
+    {{ parent() }} {# This keeps the sidebar from base.html.twig #}
+{% endblock %}
 
 {% block body %}
-
+    {% include 'dashboard/index.html.twig' %}
 {% endblock %}

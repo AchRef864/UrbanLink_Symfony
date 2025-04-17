@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3ff6ace-9c39-41ab-a0c6-16829ca68c2e" name="Changes" comment="" />
+    <list default="true" id="a3ff6ace-9c39-41ab-a0c6-16829ca68c2e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/routes.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/pages/billing.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/pages/dashboard.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/pages/profile.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/pages/rtl.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/pages/sign-in.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/pages/sign-up.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/pages/tables.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/pages/virtual-reality.html" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,6 +24,9 @@
   <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="PhpDebugGeneral" listening_started="true" />
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\xampp\php\php.exe">
@@ -99,7 +113,6 @@
       <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-migrations-bundle" />
       <path value="$PROJECT_DIR$/vendor/phar-io/version" />
       <path value="$PROJECT_DIR$/vendor/phar-io/manifest" />
-      <path value="$PROJECT_DIR$/vendor/monolog/monolog" />
       <path value="$PROJECT_DIR$/vendor/symfony/expression-language" />
       <path value="$PROJECT_DIR$/vendor/symfony/form" />
       <path value="$PROJECT_DIR$/vendor/symfony/monolog-bundle" />
@@ -155,6 +168,8 @@
       <path value="$PROJECT_DIR$/vendor/karser/karser-recaptcha3-bundle" />
       <path value="$PROJECT_DIR$/vendor/knplabs/knp-snappy-bundle" />
       <path value="$PROJECT_DIR$/vendor/knplabs/knp-snappy" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/cache" />
+      <path value="$PROJECT_DIR$/vendor/monolog/monolog" />
     </include_path>
   </component>
   <component name="ProjectColorInfo">{
@@ -169,6 +184,7 @@
   &quot;keyToString&quot;: {
     &quot;PHPUnit.Main.executor&quot;: &quot;Coverage&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/sbiss/OneDrive - ESPRIT/Documents/urbanlink_Sy/public/assets/img&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -258,6 +274,8 @@
       <workItem from="1744562830256" duration="8417000" />
       <workItem from="1744634809313" duration="2788000" />
       <workItem from="1744749761776" duration="54000" />
+      <workItem from="1744802312931" duration="4069000" />
+      <workItem from="1744870014514" duration="3469000" />
     </task>
     <servers />
   </component>

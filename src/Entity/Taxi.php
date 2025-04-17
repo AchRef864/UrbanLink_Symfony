@@ -253,7 +253,6 @@ class Taxi
     {
         return $this->courses;
     }
-
     public function setCourses(Collection $courses): self
     {
         foreach ($courses as $course) {
@@ -264,12 +263,10 @@ class Taxi
         }
         return $this;
     }
-
     public function getUser(): ?User
     {
         return $this->user;
     }
-
     public function setUser(?User $user): self
     {
         $this->user = $user;

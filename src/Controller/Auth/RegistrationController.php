@@ -41,4 +41,17 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+
+    private function generateLicenseNumber(): string
+    {
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $license = 'UL-';
+        $max = strlen($characters) - 1;
+
+        for ($i = 0; $i < 8; $i++) {
+            $license .= $characters[random_int(0, $max)];
+        }
+
+        return $license;
+    }
 }
