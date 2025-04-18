@@ -33,6 +33,10 @@ services:
             - '../src/Kernel.php'
 
     # Explicit service definitions (when autowiring isn't enough)
+    App\Service\OpenCageGeocoder:
+        arguments:
+            $apiKey: '%env(OPENCAGE_API_KEY)%'
+            
     App\Service\TwilioService:
         arguments:
             $twilioSid: '%twilio_sid%'
