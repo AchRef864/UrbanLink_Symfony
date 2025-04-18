@@ -3,13 +3,72 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
-
-app_login:
+# Route pour la page de connexion
+app_login: 
     path: /login
     controller: App\Controller\Auth\LoginController::index
 
+
+# Route pour la déconnexion
 app_logout:
     path: /logout
+    controller: App\Controller\SecurityController::logout
+
+# Route pour le dashboard du back-office
+back_office_dashboard:
+    path: /admin
+    controller: App\Controller\BackOfficeController::dashboard
+
+# Routes pour la gestion des taxis
+taxi_index:
+    path: /admin/taxi
+    controller: App\Controller\TaxiController::index
+
+taxi_new:
+    path: /admin/taxi/new
+    controller: App\Controller\TaxiController::new
+
+taxi_edit:
+    path: /admin/taxi/{id}/edit
+    controller: App\Controller\TaxiController::edit
+
+taxi_delete:
+    path: /admin/taxi/{id}/delete
+    controller: App\Controller\TaxiController::delete
+
+taxi_rate:
+    path: /user/taxi/{id}/rate
+    controller: App\Controller\RatingController::rateTaxi
+# Routes pour la gestion des courses
+course_index:
+    path: /admin/course
+    controller: App\Controller\CourseController::index
+
+course_show:
+    path: /user/course
+    controller: App\Controller\UserCourseController::index
+
+course_new:
+    path: /course/new
+    controller: App\Controller\CourseController::new
+
+user_course_new:
+    path: /user/course/new
+    controller: App\Controller\UserCourseController::new
+
+course_edit:
+    path: /admin/course/{id}/edit
+    controller: App\Controller\CourseController::edit
+
+course_delete:
+    path: /admin/course/{id}/delete
+    controller: App\Controller\CourseController::delete
+
+course_cancel:
+    path: /user/course/{id}/cancel
+    controller: App\Controller\UserCourseController::cancel
+# Routes pour la gestion des utilisateurs
+
 
 app_dashboard:
     path: /dashboard
@@ -57,7 +116,6 @@ app_reset_password:
     requirements:
         code: '\d+'
 
-# config/routes.yaml
 test_email:
     path: /test/email
     controller: App\Controller\TestEmailController::testEmail
@@ -82,7 +140,7 @@ driver_dashboard:
 
 taxi_dashboard:
     path: /taxi/dashboard
-    controller: App\Controller\Taxi\DashboardController::index
+    controller: App\Controller\TaxisteController::dashboard
 
 client_profile:
     path: /profile
@@ -91,3 +149,6 @@ client_profile:
 client_dashboard:
     path: /client/dashboard
     controller: App\Controller\Client\DashboardController::index
+taxiste_dashboard:
+    path: /taxiste/dashboard
+    controller: App\Controller\TaxisteController::dashboard

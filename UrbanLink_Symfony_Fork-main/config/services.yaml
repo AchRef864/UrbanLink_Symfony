@@ -1,7 +1,16 @@
+# config/services.yaml
+
 parameters:
     MAILER_FROM: '%env(MAILER_FROM)%'
+    twilio_sid: '%env(TWILIO_SID)%'
+    twilio_token: '%env(TWILIO_AUTH_TOKEN)%'
+    twilio_number: '%env(TWILIO_PHONE_NUMBER)%'
+    recaptcha.site_key: '%env(RECAPTCHA_SITE_KEY)%'
+    recaptcha.secret_key: '%env(RECAPTCHA_SECRET_KEY)%'
     stripe_public_key: '%env(STRIPE_PUBLIC_KEY)%'
     stripe_secret_key: '%env(STRIPE_SECRET_KEY)%'
+    opencage.api_key: '%env(OPENCAGE_API_KEY)%'
+    abonnement_image_directory: '%kernel.project_dir%/public/uploads/images/abonnements'
 
 twig:
     globals:
@@ -13,26 +22,47 @@ services:
         autowire: true
         autoconfigure: true
 
-    annotation_reader:  # <-- CORRECT INDENTATION (4 spaces)
-        alias: 'annotations.reader'
-        public: false
-
+    # Event subscriber
     App\EventSubscriber\AuthenticationSubscriber:
         tags:
-            - { name: 'kernel.event_subscriber' }
+            - { name: kernel.event_subscriber }
 
+    # Makes all classes in src/ available as services
     App\:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-            - '../src/Tests/'
 
+    # Explicit service definitions
+    App\Service\OpenCageGeocoder:
+        arguments:
+            $apiKey: '%env(OPENCAGE_API_KEY)%'
+            
+    App\Service\TwilioService:
+        arguments:
+            $sid: '%twilio_sid%'
+            $token: '%twilio_token%'
+            $from: '%twilio_number%'
+            $logger: '@logger'
+
+    App\Service\RecaptchaValidator:
+        arguments:
+            $secretKey: '%recaptcha.secret_key%'
+            $httpClient: '@Symfony\Contracts\HttpClient\HttpClientInterface'
+
+    # Configure LoginController with recaptcha site key
+    App\Controller\Auth\LoginController:
+        arguments:
+            $recaptchaSiteKey: '%recaptcha.site_key%'
+
+    # Controllers as services
     App\Controller\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
 
+    # Repositories as services
     App\Repository\:
         resource: '../src/Repository/'
         tags: ['doctrine.repository_service']

@@ -1,0 +1,154 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Available Subscriptions{% endblock %}
+
+{% block styles %}
+<style>
+    .subscription-card {
+        transition: all 0.3s ease;
+        border-radius: 0.75rem;
+        overflow: hidden;
+    }
+    .subscription-card:hover {
+        transform: translateY(-0.25rem);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    .subscription-img-container {
+        height: 180px;
+        background-color: #f8f9fa;
+        position: relative;
+    }
+    .subscription-img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+    .subscription-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background-color: #4299e1;
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        z-index: 10;
+    }
+    .status-badge {
+        padding: 0.35rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+    .status-active {
+        background-color: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+    }
+    .status-expired {
+        background-color: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+    }
+    .status-cancelled {
+        background-color: rgba(245, 158, 11, 0.1);
+        color: #f59e0b;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="w-full px-6 py-6 mx-auto">
+    <div class="flex flex-wrap -mx-3">
+        <div class="w-full max-w-full px-3 mb-6">
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+                <div class="p-6 pb-0 mb-0 border-b-0 rounded-t-2xl">
+                    <h3 class="text-xl font-bold dark:text-white">Available Subscriptions</h3>
+                </div>
+                
+                {% for message in app.flashes('success') %}
+                    <div class="p-4 mx-6 mt-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('danger') %}
+                    <div class="p-4 mx-6 mt-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                <div class="flex-auto p-6">
+                    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {% for abonnement in abonnements %}
+                            <div class="relative subscription-card group">
+                                <div class="overflow-hidden subscription-img-container rounded-t-2xl">
+                                    {% if abonnement.image %}
+                                        <img src="{{ asset('uploads/images/abonnements/' ~ abonnement.image) }}" 
+                                             class="subscription-img" 
+                                             alt="{{ abonnement.type }}"
+                                             onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'flex items-center justify-center w-full h-full text-gray-400\'><i class=\'text-5xl fas fa-image\'></i></div>'">
+                                    {% else %}
+                                        <div class="flex items-center justify-center w-full h-full bg-gradient-to-tl from-gray-600 to-slate-300">
+                                            <i class="text-5xl text-white fas fa-image"></i>
+                                        </div>
+                                    {% endif %}
+                                    <span class="status-badge {{ 
+                                        abonnement.etat == 'actif' ? 'status-active' : 
+                                        (abonnement.etat == 'expiré' ? 'status-expired' : 'status-cancelled') 
+                                    }}">
+                                        {{ abonnement.etat }}
+                                    </span>
+                                </div>
+                                <div class="p-6 bg-white rounded-b-2xl dark:bg-slate-850">
+                                    <h5 class="mb-2 text-lg font-bold dark:text-white capitalize">{{ abonnement.type }} Plan</h5>
+                                    <p class="mb-4 text-slate-500 dark:text-white/60">
+                                        <span class="text-2xl font-bold text-blue-500">{{ abonnement.prix }} DT</span>
+                                        <span class="text-sm">/month</span>
+                                    </p>
+                                    <ul class="mb-4 space-y-2 text-sm text-slate-500 dark:text-white/60">
+                                        <li class="flex items-center">
+                                            <i class="mr-2 text-xs fas fa-calendar-day text-emerald-500"></i>
+                                            From {{ abonnement.dateDebut|date('d/m/Y') }}
+                                        </li>
+                                        <li class="flex items-center">
+                                            <i class="mr-2 text-xs fas fa-calendar-day text-emerald-500"></i>
+                                            To {{ abonnement.dateFin|date('d/m/Y') }}
+                                        </li>
+                                    </ul>
+                                    <div class="flex space-x-2">
+                                        <a href="{{ path('app_abonnement_reserve', {'id': abonnement.id}) }}" 
+                                           class="flex-1 px-4 py-2 text-sm font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            Reserve
+                                        </a>
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <a href="{{ path('abonnement_edit', {'id': abonnement.id}) }}" 
+                                               class="px-4 py-2 text-sm font-medium text-center text-white bg-yellow-500 rounded-lg hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="col-span-3">
+                                <div class="p-6 text-center bg-white rounded-2xl dark:bg-slate-850">
+                                    <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-slate-700">
+                                        <i class="text-3xl text-gray-400 fas fa-box-open"></i>
+                                    </div>
+                                    <h5 class="mb-2 text-lg font-bold dark:text-white">No subscriptions available</h5>
+                                    <p class="text-slate-500 dark:text-white/60">There are no active subscriptions at the moment.</p>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a href="{{ path('abonnement_add') }}" class="inline-block mt-4 px-6 py-2 text-sm font-medium text-white bg-gradient-to-tl from-blue-500 to-violet-500 rounded-lg hover:bg-gradient-to-tl hover:from-blue-600 hover:to-violet-600">
+                                            Add New Subscription
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

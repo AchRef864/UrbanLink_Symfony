@@ -1,0 +1,330 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Abonnements{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        :root {
+            --primary-dark: #1e40af;
+            --primary-light: #3b82f6;
+            --success-dark: #047857;
+            --success-light: #10b981;
+            --danger-dark: #b91c1c;
+            --danger-light: #ef4444;
+            --warning-dark: #b45309;
+            --warning-light: #f59e0b;
+            --dark-bg: #0f172a;
+            --dark-card: #1e293b;
+            --dark-text: #f8fafc;
+            --dark-border: #334155;
+        }
+        
+        .status-badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .status-active {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid var(--success-dark);
+        }
+        .status-expired {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid var(--danger-dark);
+        }
+        .status-cancelled {
+            background-color: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+            border: 1px solid var(--warning-dark);
+        }
+        .action-btn {
+            transition: all 0.2s ease;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .action-btn:hover {
+            background-color: rgba(0, 0, 0, 0.08);
+            transform: translateY(-1px);
+        }
+        .action-btn.edit:hover {
+            color: var(--primary-dark);
+        }
+        .action-btn.delete:hover {
+            color: var(--danger-dark);
+        }
+        
+        /* Dark mode overrides */
+        .dark .bg-white {
+            background-color: var(--dark-bg) !important;
+        }
+        .dark .bg-slate-50 {
+            background-color: var(--dark-card) !important;
+        }
+        .dark .border-gray-200 {
+            border-color: var(--dark-border) !important;
+        }
+        .dark .text-slate-500 {
+            color: var(--dark-text) !important;
+        }
+        .dark .text-slate-700 {
+            color: var(--dark-text) !important;
+        }
+        .dark .bg-gradient-to-tl {
+            background-image: linear-gradient(to top left, var(--primary-dark), #4338ca) !important;
+        }
+        .dark .shadow-soft-xl {
+            box-shadow: 0 20px 27px 0 rgba(15, 23, 42, 0.5) !important;
+        }
+        
+        /* Enhanced card styling */
+        .rounded-2xl {
+            border-radius: 1rem !important;
+            overflow: hidden;
+        }
+        .shadow-soft-xl {
+            box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Table enhancements */
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        thead {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-light));
+        }
+        thead th {
+            color: white !important;
+            font-weight: 600 !important;
+            padding-top: 1rem !important;
+            padding-bottom: 1rem !important;
+        }
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+        tbody tr:hover {
+            background-color: rgba(59, 130, 246, 0.05) !important;
+        }
+        .dark tbody tr:hover {
+            background-color: rgba(59, 130, 246, 0.1) !important;
+        }
+        
+        /* Button enhancements */
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-light));
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Empty state styling */
+        .empty-state {
+            background: rgba(241, 245, 249, 0.5);
+            border-radius: 0.75rem;
+        }
+        .dark .empty-state {
+            background: rgba(30, 41, 59, 0.5);
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="w-full px-6 py-6 mx-auto">
+    <!-- Flash messages -->
+    {% for message in app.flashes('success') %}
+        <div class="p-4 mb-4 text-sm text-green-800 bg-green-50 rounded-lg border border-green-200 dark:bg-gray-800 dark:text-green-400 dark:border-green-800">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="p-4 mb-4 text-sm text-red-800 bg-red-50 rounded-lg border border-red-200 dark:bg-gray-800 dark:text-red-400 dark:border-red-800">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <!-- Card container -->
+    <div class="flex flex-wrap -mx-3">
+        <div class="w-full max-w-full px-3 flex-0">
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 dark:bg-slate-900 shadow-soft-xl rounded-2xl bg-clip-border">
+                <!-- Card header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center p-6 pb-0 rounded-t-2xl">
+                    <div class="mb-4 md:mb-0">
+                        <h6 class="mb-0 dark:text-white text-lg font-bold text-gray-900">Liste des Abonnements</h6>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">Gérez tous les abonnements de votre système</p>
+                    </div>
+                    <a href="{{ path('abonnement_add') }}" class="btn-primary inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-normal text-xs ease-in tracking-tight-rem hover:shadow-md">
+                        <i class="fas fa-plus mr-2"></i>Nouvel Abonnement
+                    </a>
+                </div>
+
+                <!-- Table container -->
+                <div class="flex-auto p-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full mb-0 align-top border-gray-200 text-slate-500">
+                            <thead>
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Image</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Type</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Prix</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Période</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Statut</th>
+                                    <th class="px-6 py-4 text-right text-xs font-bold uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for abonnement in abonnements %}
+                                    <tr class="border-b border-gray-200 dark:border-slate-700 transition-colors">
+                                        <!-- Image -->
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="flex-shrink-0 h-10 w-10">
+                                                    {% if abonnement.image %}
+                                                        <img src="{{ asset('uploads/images/abonnements/' ~ abonnement.image) }}" 
+                                                             class="h-10 w-10 rounded-lg object-cover border border-gray-200 dark:border-slate-600" 
+                                                             alt="Abonnement {{ abonnement.type }}">
+                                                    {% else %}
+                                                        <div class="h-10 w-10 rounded-lg bg-gradient-to-tl from-gray-700 to-slate-500 flex items-center justify-center border border-gray-200 dark:border-slate-600">
+                                                            <i class="fas fa-image text-white text-sm"></i>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        
+                                        <!-- Type -->
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-semibold text-gray-900 dark:text-white capitalize">
+                                                {{ abonnement.type }}
+                                            </div>
+                                        </td>
+                                        
+                                        <!-- Price -->
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-semibold text-gray-900 dark:text-white">
+                                                {{ abonnement.prix }} TND
+                                            </div>
+                                        </td>
+                                        
+                                        <!-- Date Range -->
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-700 dark:text-slate-300">
+                                                <div>{{ abonnement.dateDebut|date('d/m/Y') }}</div>
+                                                <div class="text-xs text-slate-500 dark:text-slate-500">au</div>
+                                                <div>{{ abonnement.dateFin|date('d/m/Y') }}</div>
+                                            </div>
+                                        </td>
+                                        
+                                        <!-- Status -->
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            {% set statusClass = {
+                                                'actif': 'status-active',
+                                                'expiré': 'status-expired',
+                                                'annulé': 'status-cancelled'
+                                            } %}
+                                            <span class="status-badge {{ statusClass[abonnement.etat]|default('bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200') }}">
+                                                {{ abonnement.etat }}
+                                            </span>
+                                        </td>
+                                        
+                                        <!-- Actions -->
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                                            <div class="flex items-center justify-end space-x-2">
+                                                <!-- Edit -->
+                                                <a href="{{ path('abonnement_edit', {id: abonnement.id}) }}"
+                                                   class="action-btn edit text-gray-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"
+                                                   title="Modifier">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                
+                                                <!-- Delete Form -->
+                                                <form method="post" 
+                                                      action="{{ path('abonnement_delete', {id: abonnement.id}) }}"
+                                                      class="delete-form inline-block"
+                                                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet abonnement ?');">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ abonnement.id) }}">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <button type="submit"
+                                                            class="action-btn delete text-gray-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400"
+                                                            title="Supprimer">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="6" class="px-6 py-4 text-center">
+                                            <div class="empty-state flex flex-col items-center justify-center py-12 px-4">
+                                                <i class="fas fa-box-open text-4xl text-slate-400 dark:text-slate-600 mb-4"></i>
+                                                <p class="text-lg font-medium text-gray-700 dark:text-slate-300 mb-2">Aucun abonnement trouvé</p>
+                                                <p class="text-sm text-gray-500 dark:text-slate-500 mb-4">Commencez par créer un nouvel abonnement</p>
+                                                <a href="{{ path('abonnement_add') }}" class="btn-primary inline-block px-6 py-2 font-bold text-center text-white text-sm rounded-lg">
+                                                    <i class="fas fa-plus mr-2"></i>Créer un abonnement
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                {% if abonnements|length > 0 %}
+                    <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 rounded-b-2xl">
+                        <div class="text-sm text-slate-600 dark:text-slate-400">
+                            Affichage de <span class="font-semibold">1</span> à <span class="font-semibold">{{ abonnements|length }}</span> abonnements
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Delete confirmation with SweetAlert2
+            document.querySelectorAll('.delete-form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    Swal.fire({
+                        title: 'Confirmer la suppression',
+                        text: "Voulez-vous vraiment supprimer cet abonnement?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Oui, supprimer',
+                        cancelButtonText: 'Annuler',
+                        background: '{{ app.request.cookies.get('dark_mode') ? '#0f172a' : '#ffffff' }}',
+                        color: '{{ app.request.cookies.get('dark_mode') ? '#ffffff' : '#1e293b' }}'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+{% endblock %}

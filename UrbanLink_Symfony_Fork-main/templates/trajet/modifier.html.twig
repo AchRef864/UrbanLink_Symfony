@@ -7,7 +7,6 @@
     <h1 class="text-3xl font-bold mb-8 text-center">Modifier le Trajet</h1>
 
     {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
-    <div style="margin-left: 280px;">
         {# Departure #}
         <div class="mb-4">
             {{ form_label(form.departure, 'Lieu de départ', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
@@ -116,7 +115,6 @@
                 </button>
             {% endif %}
         </div>
-    </div>
     {{ form_end(form) }}
 
     {# Delete Form (outside the main form) #}
@@ -126,7 +124,6 @@
         </form>
     {% endif %}
 
-    <div style="margin-left: 280px;">
         <div class="mt-8 rounded-lg overflow-hidden">
             <div class="bg-gradient-to-tl from-blue-500 to-violet-500 text-white px-6 py-3">
                 <h5 class="mb-0 text-lg font-semibold">Informations calculées</h5>
@@ -148,7 +145,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </div>
 
 <!-- SweetAlert for delete confirmation -->
@@ -156,14 +152,17 @@
 <script>
 function confirmDelete(trajetId) {
     Swal.fire({
-        title: 'Êtes-vous sûr?',
-        text: "Vous ne pourrez pas annuler cette action!",
+        title: 'Êtes-vous sûr ?',
+        text: "Vous ne pourrez pas annuler cette action !",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Oui, supprimer!',
-        cancelButtonText: 'Annuler'
+        confirmButtonText: 'Oui, supprimer !',
+        cancelButtonText: 'Annuler',
+        customClass: {
+            confirmButton: 'inline-block px-6 py-3 mr-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-emerald-500 leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md',
+            cancelButton: 'inline-block px-6 py-3 mr-3 font-bold text-center text-white uppercase align-middle transition-all bg-red-600 rounded-lg cursor-pointer leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md'
+        },
+        buttonsStyling: false // important pour que les classes custom soient appliquées
     }).then((result) => {
         if (result.isConfirmed) {
             document.getElementById('delete-form-' + trajetId).submit();
@@ -171,4 +170,5 @@ function confirmDelete(trajetId) {
     });
 }
 </script>
+
 {% endblock %}

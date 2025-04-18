@@ -15,24 +15,38 @@ use Endroid\QrCode\Label\Margin\MarginInterface;
 
 final class Label implements LabelInterface
 {
-    private string $text;
-    private FontInterface $font;
-    private LabelAlignmentInterface $alignment;
-    private MarginInterface $margin;
-    private ColorInterface $textColor;
+    /** @var string */
+    private $text;
+
+    /** @var FontInterface */
+    private $font;
+
+    /** @var LabelAlignmentInterface */
+    private $alignment;
+
+    /** @var MarginInterface */
+    private $margin;
+
+    /** @var ColorInterface */
+    private $textColor;
+
+    /** @var ColorInterface */
+    private $backgroundColor;
 
     public function __construct(
         string $text,
         FontInterface $font = null,
         LabelAlignmentInterface $alignment = null,
         MarginInterface $margin = null,
-        ColorInterface $textColor = null
+        ColorInterface $textColor = null,
+        ColorInterface $backgroundColor = null
     ) {
         $this->text = $text;
-        $this->font = $font ?? new Font(__DIR__.'/../../assets/noto_sans.otf', 16);
-        $this->alignment = $alignment ?? new LabelAlignmentCenter();
-        $this->margin = $margin ?? new Margin(0, 10, 10, 10);
-        $this->textColor = $textColor ?? new Color(0, 0, 0);
+        $this->font = isset($font) ? $font : new Font(__DIR__.'/../../assets/noto_sans.otf', 16);
+        $this->alignment = isset($alignment) ? $alignment : new LabelAlignmentCenter();
+        $this->margin = isset($margin) ? $margin : new Margin(0, 10, 10, 10);
+        $this->textColor = isset($textColor) ? $textColor : new Color(0, 0, 0);
+        $this->backgroundColor = isset($backgroundColor) ? $backgroundColor : new Color(255, 255, 255);
     }
 
     public static function create(string $text): self
@@ -96,6 +110,18 @@ final class Label implements LabelInterface
     public function setTextColor(ColorInterface $textColor): self
     {
         $this->textColor = $textColor;
+
+        return $this;
+    }
+
+    public function getBackgroundColor(): ColorInterface
+    {
+        return $this->backgroundColor;
+    }
+
+    public function setBackgroundColor(ColorInterface $backgroundColor): self
+    {
+        $this->backgroundColor = $backgroundColor;
 
         return $this;
     }

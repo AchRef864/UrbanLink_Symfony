@@ -6,7 +6,8 @@ namespace Endroid\QrCode\Encoding;
 
 final class Encoding implements EncodingInterface
 {
-    private string $value;
+    /** @var string */
+    private $value;
 
     public function __construct(string $value)
     {

@@ -1,0 +1,251 @@
+{# templates/abonnement/add.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un Abonnement{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        :root {
+            --primary-dark: #1e40af;
+            --primary-light: #3b82f6;
+            --success-dark: #047857;
+            --success-light: #10b981;
+            --danger-dark: #b91c1c;
+            --danger-light: #ef4444;
+            --warning-dark: #b45309;
+            --warning-light: #f59e0b;
+            --dark-bg: #0f172a;
+            --dark-card: #1e293b;
+            --dark-text: #f8fafc;
+            --dark-border: #334155;
+        }
+        
+        .status-badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .status-active {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid var(--success-dark);
+        }
+        .status-expired {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid var(--danger-dark);
+        }
+        .status-cancelled {
+            background-color: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+            border: 1px solid var(--warning-dark);
+        }
+        
+        /* Dark mode overrides */
+        .dark .bg-white {
+            background-color: var(--dark-bg) !important;
+        }
+        .dark .bg-slate-50 {
+            background-color: var(--dark-card) !important;
+        }
+        .dark .border-gray-200 {
+            border-color: var(--dark-border) !important;
+        }
+        .dark .text-slate-500 {
+            color: var(--dark-text) !important;
+        }
+        .dark .text-slate-700 {
+            color: var(--dark-text) !important;
+        }
+        .dark .bg-gradient-to-tl {
+            background-image: linear-gradient(to top left, var(--primary-dark), #4338ca) !important;
+        }
+        .dark .shadow-soft-xl {
+            box-shadow: 0 20px 27px 0 rgba(15, 23, 42, 0.5) !important;
+        }
+        
+        /* Enhanced card styling */
+        .rounded-2xl {
+            border-radius: 1rem !important;
+            overflow: hidden;
+        }
+        .shadow-soft-xl {
+            box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Button enhancements */
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-light));
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Form input styling */
+        .form-input {
+            transition: all 0.3s ease;
+            border: 1px solid #d1d5db;
+        }
+        .form-input:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .dark .form-input {
+            background-color: var(--dark-card);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+        .dark .form-input:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        
+        /* Image preview styling */
+        .image-preview {
+            transition: all 0.3s ease;
+            border: 1px dashed #d1d5db;
+        }
+        .dark .image-preview {
+            border-color: var(--dark-border);
+        }
+        .image-preview:hover {
+            border-color: var(--primary-light);
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="w-full px-6 py-6 mx-auto">
+    <!-- Flash messages -->
+    {% for message in app.flashes('success') %}
+        <div class="p-4 mb-4 text-sm text-green-800 bg-green-50 rounded-lg border border-green-200 dark:bg-gray-800 dark:text-green-400 dark:border-green-800">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="p-4 mb-4 text-sm text-red-800 bg-red-50 rounded-lg border border-red-200 dark:bg-gray-800 dark:text-red-400 dark:border-red-800">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <!-- Card container -->
+    <div class="flex flex-wrap -mx-3">
+        <div class="w-full max-w-full px-3 flex-0">
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 dark:bg-slate-900 shadow-soft-xl rounded-2xl bg-clip-border">
+                <!-- Card header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center p-6 pb-0 rounded-t-2xl">
+                    <div class="mb-4 md:mb-0">
+                        <h6 class="mb-0 dark:text-white text-lg font-bold text-gray-900">Ajouter un Abonnement</h6>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">Remplissez le formulaire pour créer un nouvel abonnement</p>
+                    </div>
+                    <a href="{{ path('abonnement_list') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-tl from-gray-500 to-gray-700 text-white font-bold text-sm uppercase rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+                        <i class="fas fa-arrow-left mr-2"></i> Retour à la liste
+                    </a>
+                </div>
+
+                <!-- Form container -->
+                <div class="flex-auto p-6">
+                    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'space-y-6'}}) }}
+
+                    <!-- Type -->
+                    <div class="mb-4">
+                        {{ form_label(form.type, null, {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2'}}) }}
+                        {{ form_widget(form.type, {'attr': {'class': 'form-input focus:shadow-soft-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none'}}) }}
+                        <div class="text-red-500 text-sm mt-1">{{ form_errors(form.type) }}</div>
+                    </div>
+
+                    <!-- Prix -->
+                    <div class="mb-4">
+                        {{ form_label(form.prix, null, {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2'}}) }}
+                        <div class="relative">
+                            <span class="absolute left-3 top-2 text-slate-500 dark:text-slate-400">TND</span>
+                            {{ form_widget(form.prix, {'attr': {'class': 'form-input focus:shadow-soft-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-10 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none', 'placeholder': '0.00'}}) }}
+                        </div>
+                        <div class="text-red-500 text-sm mt-1">{{ form_errors(form.prix) }}</div>
+                    </div>
+
+                    <!-- Dates -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                        <div>
+                            {{ form_label(form.date_debut, null, {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2'}}) }}
+                            {{ form_widget(form.date_debut, {'attr': {'class': 'form-input focus:shadow-soft-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none'}}) }}
+                            <div class="text-red-500 text-sm mt-1">{{ form_errors(form.date_debut) }}</div>
+                        </div>
+                        <div>
+                            {{ form_label(form.date_fin, null, {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2'}}) }}
+                            {{ form_widget(form.date_fin, {'attr': {'class': 'form-input focus:shadow-soft-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none'}}) }}
+                            <div class="text-red-500 text-sm mt-1">{{ form_errors(form.date_fin) }}</div>
+                        </div>
+                    </div>
+
+                    <!-- État -->
+                    <div class="mb-4">
+                        {{ form_label(form.etat, null, {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2'}}) }}
+                        {{ form_widget(form.etat, {'attr': {'class': 'form-input focus:shadow-soft-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none'}}) }}
+                        <div class="text-red-500 text-sm mt-1">{{ form_errors(form.etat) }}</div>
+                    </div>
+
+                    <!-- Image -->
+                    <div class="mb-6">
+                        {{ form_label(form.imageFile, null, {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2'}}) }}
+                        <div class="mt-1 flex items-center">
+                            <span class="image-preview inline-block h-16 w-16 rounded-lg overflow-hidden bg-gray-100 dark:bg-slate-700 mr-4 flex items-center justify-center">
+                                {% if form.vars.value and form.vars.value.image %}
+                                    <img id="preview-image" src="{{ asset('uploads/images/abonnements/' ~ form.vars.value.image) }}" class="h-full w-full object-cover">
+                                {% else %}
+                                    <div id="preview-image" class="h-full w-full flex items-center justify-center text-gray-400 dark:text-slate-400">
+                                        <i class="fas fa-image text-2xl"></i>
+                                    </div>
+                                {% endif %}
+                            </span>
+                            <div class="flex-1">
+                                {{ form_widget(form.imageFile, {'attr': {'class': 'form-input focus:shadow-soft-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none', 'onchange': 'previewImage(this)'}}) }}
+                                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">PNG, JPG ou JPEG (Max. 2MB)</p>
+                            </div>
+                        </div>
+                        <div class="text-red-500 text-sm mt-1">{{ form_errors(form.imageFile) }}</div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="pt-4 text-right">
+                        <button type="submit" class="btn-primary inline-flex items-center px-6 py-3 text-white font-bold uppercase rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+                            <i class="fas fa-save mr-2"></i> Enregistrer
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function previewImage(input) {
+            const preview = document.getElementById('preview-image');
+            const file = input.files[0];
+            const reader = new FileReader();
+
+            if (file) {
+                reader.onloadend = function () {
+                    preview.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    img.className = 'h-full w-full object-cover';
+                    preview.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+{% endblock %}

@@ -6,30 +6,28 @@ namespace Endroid\QrCode\Writer\Result;
 
 use Endroid\QrCode\Label\LabelInterface;
 use Endroid\QrCode\Logo\LogoInterface;
-use Endroid\QrCode\Matrix\MatrixInterface;
 use Endroid\QrCode\QrCodeInterface;
 
 final class DebugResult extends AbstractResult
 {
-    private QrCodeInterface $qrCode;
-    private ?LogoInterface $logo;
-    private ?LabelInterface $label;
+    /** @var QrCodeInterface */
+    private $qrCode;
+
+    /** @var LogoInterface|null */
+    private $logo;
+
+    /** @var LabelInterface|null */
+    private $label;
 
     /** @var array<mixed> */
-    private array $options;
+    private $options;
 
-    private bool $validateResult = false;
+    /** @var bool */
+    private $validateResult = false;
 
     /** @param array<mixed> $options */
-    public function __construct(
-        MatrixInterface $matrix,
-        QrCodeInterface $qrCode,
-        LogoInterface $logo = null,
-        LabelInterface $label = null,
-        array $options = []
-    ) {
-        parent::__construct($matrix);
-
+    public function __construct(QrCodeInterface $qrCode, LogoInterface $logo = null, LabelInterface $label = null, array $options = [])
+    {
         $this->qrCode = $qrCode;
         $this->logo = $logo;
         $this->label = $label;
@@ -60,8 +58,8 @@ final class DebugResult extends AbstractResult
 
         if (isset($this->logo)) {
             $debugLines[] = 'Logo path: '.$this->logo->getPath();
-            $debugLines[] = 'Logo resize to width: '.$this->logo->getResizeToWidth();
-            $debugLines[] = 'Logo resize to height: '.$this->logo->getResizeToHeight();
+            $debugLines[] = 'Logo target width: '.$this->logo->getTargetWidth();
+            $debugLines[] = 'Logo target height: '.$this->logo->getTargetHeight();
         }
 
         if (isset($this->label)) {
@@ -71,6 +69,7 @@ final class DebugResult extends AbstractResult
             $debugLines[] = 'Label alignment: '.get_class($this->label->getAlignment());
             $debugLines[] = 'Label margin: ['.implode(', ', $this->label->getMargin()->toArray()).']';
             $debugLines[] = 'Label text color: ['.implode(', ', $this->label->getTextColor()->toArray()).']';
+            $debugLines[] = 'Label background color: ['.implode(', ', $this->label->getBackgroundColor()->toArray()).']';
         }
 
         $debugLines[] = 'Validate result: '.($this->validateResult ? 'true' : 'false');

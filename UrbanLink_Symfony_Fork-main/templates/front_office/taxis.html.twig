@@ -1,0 +1,40 @@
+{% extends 'back_office/base.html.twig' %}
+
+{% block title %}Taxis disponibles{% endblock %}
+
+{% block body %}
+  <h1 class="text-2xl font-bold mb-4">Taxis disponibles</h1>
+
+  <table class="table-auto w-full border-collapse border border-gray-300">
+    <thead>
+      <tr class="bg-gray-200">
+        <th class="border border-gray-300 px-4 py-2">Nom Taxiste</th>
+        <th class="border border-gray-300 px-4 py-2">Immatriculation</th>
+        <th class="border border-gray-300 px-4 py-2">Marque</th>
+        <th class="border border-gray-300 px-4 py-2">Modèle</th>
+        <th class="border border-gray-300 px-4 py-2">Année</th>
+        <th class="border border-gray-300 px-4 py-2">Capacité</th>
+        <th class="border border-gray-300 px-4 py-2">Zone</th>
+        <th class="border border-gray-300 px-4 py-2">Statut</th>
+        <th class="border border-gray-300 px-4 py-2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for taxi in taxis %}
+        <tr>
+          <td class="border border-gray-300 px-4 py-2">{{ taxi.user.name }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ taxi.immatriculation }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ taxi.marque }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ taxi.modele }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ taxi.anneeFabrication }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ taxi.capacite }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ taxi.zoneDesserte }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ taxi.statut }}</td>
+          <td class="border border-gray-300 px-4 py-2">
+            <a href="{{ path('course_new', { taxiId: taxi.id }) }}" class="text-blue-500 hover:underline">Réserver</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

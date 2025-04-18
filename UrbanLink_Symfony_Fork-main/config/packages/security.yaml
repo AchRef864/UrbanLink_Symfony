@@ -1,4 +1,3 @@
-# config/packages/security.yaml
 security:
     password_hashers:
         App\Entity\User:
@@ -14,7 +13,6 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
         main:
             lazy: true
             provider: app_user_provider
@@ -30,9 +28,10 @@ security:
             logout:
                 path: app_logout
                 target: app_login
+            user_checker: App\Security\UserChecker
 
     role_hierarchy:
-        ROLE_ADMIN: [ROLE_DRIVER, ROLE_TAXI, ROLE_CLIENT, ROLE_USER]
+        ROLE_ADMIN: [ ROLE_DRIVER, ROLE_TAXI, ROLE_CLIENT, ROLE_USER ]
         ROLE_DRIVER: ROLE_TAXI
         ROLE_TAXI: ROLE_CLIENT
         ROLE_CLIENT: ROLE_USER
@@ -44,8 +43,20 @@ security:
         - { path: ^/admin/users/edit, roles: ROLE_ADMIN }
         - { path: ^/admin/users/block, roles: ROLE_ADMIN }
         - { path: ^/admin/users/unblock, roles: ROLE_ADMIN }
-        - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/driver, roles: ROLE_DRIVER }
-        - { path: ^/taxi, roles: ROLE_TAXI }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/client, roles: ROLE_CLIENT }
+        - { path: ^/avis/edit, roles:  ROLE_CLIENT }
+        - { path: ^/avis/new, roles:  ROLE_CLIENT }
+        - { path: ^/avis, roles: [ROLE_ADMIN, ROLE_CLIENT] }
+
+
+
+when@test:
+    security:
+        password_hashers:
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # bcrypt
+                time_cost: 3 # argon
+                memory_cost: 10 # argon

@@ -1,0 +1,91 @@
+{# templates/datatables_example.html.twig #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Exemple DataTables</title>
+  <!-- CSS DataTables via CDN -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+  <!-- Optionnel : vos propres feuilles de style -->
+  <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="container mx-auto">
+    <div class="relative flex flex-col w-full min-w-0 break-words bg-white border-0 shadow-xl rounded-2xl bg-clip-border">
+      <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
+        <h6 class="text-lg font-semibold text-slate-700">Exemple de Table avec DataTables</h6>
+      </div>
+      <div class="flex-auto px-0 pt-0 pb-2">
+        <div class="p-0 overflow-x-auto">
+          <table id="datatable-search" class="w-full items-center mb-0 align-top border-gray-200 text-slate-500">
+            <thead class="bg-transparent">
+              <tr>
+                <th class="px-6 py-3 font-bold text-left uppercase border-b border-gray-200 text-xxs whitespace-nowrap text-slate-400 opacity-70">
+                  Nom
+                </th>
+                <th class="px-6 py-3 font-bold text-left uppercase border-b border-gray-200 text-xxs whitespace-nowrap text-slate-400 opacity-70">
+                  Position
+                </th>
+                <th class="px-6 py-3 font-bold text-left uppercase border-b border-gray-200 text-xxs whitespace-nowrap text-slate-400 opacity-70">
+                  Bureau
+                </th>
+                <th class="px-6 py-3 font-bold text-left uppercase border-b border-gray-200 text-xxs whitespace-nowrap text-slate-400 opacity-70">
+                  Âge
+                </th>
+                <th class="px-6 py-3 font-bold text-left uppercase border-b border-gray-200 text-xxs whitespace-nowrap text-slate-400 opacity-70">
+                  Salaire
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="p-2 border-b whitespace-nowrap">Tiger Nixon</td>
+                <td class="p-2 border-b whitespace-nowrap">System Architect</td>
+                <td class="p-2 border-b whitespace-nowrap">Edinburgh</td>
+                <td class="p-2 border-b whitespace-nowrap">61</td>
+                <td class="p-2 border-b whitespace-nowrap">$320,800</td>
+              </tr>
+              <tr>
+                <td class="p-2 border-b whitespace-nowrap">Garrett Winters</td>
+                <td class="p-2 border-b whitespace-nowrap">Accountant</td>
+                <td class="p-2 border-b whitespace-nowrap">Tokyo</td>
+                <td class="p-2 border-b whitespace-nowrap">63</td>
+                <td class="p-2 border-b whitespace-nowrap">$170,750</td>
+              </tr>
+              <tr>
+                <td class="p-2 border-b whitespace-nowrap">Ashton Cox</td>
+                <td class="p-2 border-b whitespace-nowrap">Junior Technical Author</td>
+                <td class="p-2 border-b whitespace-nowrap">San Francisco</td>
+                <td class="p-2 border-b whitespace-nowrap">66</td>
+                <td class="p-2 border-b whitespace-nowrap">$86,000</td>
+              </tr>
+              <!-- Ajoutez d'autres lignes ici si nécessaire -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- jQuery requis par DataTables (via CDN) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- JS DataTables via CDN -->
+  <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#datatable-search').DataTable({
+        language: {
+          search: "Rechercher:",
+          lengthMenu: "Afficher _MENU_ entrées",
+          info: "Affichage de _START_ à _END_ sur _TOTAL_ entrées",
+          paginate: {
+            previous: "Précédent",
+            next: "Suivant"
+          },
+          zeroRecords: "Aucun enregistrement correspondant trouvé"
+        }
+      });
+    });
+  </script>
+</body>
+</html>

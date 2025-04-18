@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Reponse{% endblock %}
+
+{% block body %}
+<div style="margin-left: 280px;">
+    <h1>Create new Reponse</h1>
+
+    {{ include('reponse/_form.html.twig', {'button_label': 'Create'}) }}
+
+    <a href="{{ path('app_avis_reponses', {'id': reponse.avis.id}) }}" class="btn btn-secondary">Back to Responses</a>
+</div>
+{% endblock %}

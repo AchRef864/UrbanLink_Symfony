@@ -12,8 +12,8 @@
         }
     ],
     "require": {
-        "php": "^7.4||^8.0",
-        "bacon/bacon-qr-code": "^2.0.5"
+        "php": "^7.3||^8.0",
+        "bacon/bacon-qr-code": "^2.0"
     },
     "require-dev": {
         "ext-gd": "*",
@@ -25,7 +25,8 @@
         "ext-gd": "Enables you to write PNG images",
         "khanamiryan/qrcode-detector-decoder": "Enables you to use the image validator",
         "roave/security-advisories": "Makes sure package versions with known security issues are not installed",
-        "setasign/fpdf": "Enables you to use the PDF writer"
+        "setasign/fpdf": "Enables you to use the PDF writer.",
+        "symfony/security-checker": "Checks your composer.lock for vulnerabilities"
     },
     "autoload": {
         "psr-4": {
@@ -38,10 +39,7 @@
         }
     },
     "config": {
-        "sort-packages": true,
-        "preferred-install": {
-            "endroid/*": "source"
-        }
+        "sort-packages": true
     },
     "extra": {
         "branch-alias": {
