@@ -13,6 +13,10 @@ namespace Doctrine\Persistence;
  */
 interface NotifyPropertyChanged
 {
-    /** Adds a listener that wants to be notified about property changes. */
-    public function addPropertyChangedListener(PropertyChangedListener $listener): void;
+    /**
+     * Adds a listener that wants to be notified about property changes.
+     *
+     * @return void
+     */
+    public function addPropertyChangedListener(PropertyChangedListener $listener);
 }

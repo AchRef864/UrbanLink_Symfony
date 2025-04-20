@@ -15,15 +15,28 @@ use Doctrine\Persistence\ObjectManager;
  */
 class LifecycleEventArgs extends EventArgs
 {
+    /**
+     * @var ObjectManager
+     * @phpstan-var TObjectManager
+     */
+    private $objectManager;
+
+    /** @var object */
+    private $object;
+
     /** @phpstan-param TObjectManager $objectManager */
-    public function __construct(
-        private readonly object $object,
-        private readonly ObjectManager $objectManager,
-    ) {
+    public function __construct(object $object, ObjectManager $objectManager)
+    {
+        $this->object        = $object;
+        $this->objectManager = $objectManager;
     }
 
-    /** Retrieves the associated object. */
-    public function getObject(): object
+    /**
+     * Retrieves the associated object.
+     *
+     * @return object
+     */
+    public function getObject()
     {
         return $this->object;
     }
@@ -31,9 +44,10 @@ class LifecycleEventArgs extends EventArgs
     /**
      * Retrieves the associated ObjectManager.
      *
+     * @return ObjectManager
      * @phpstan-return TObjectManager
      */
-    public function getObjectManager(): ObjectManager
+    public function getObjectManager()
     {
         return $this->objectManager;
     }

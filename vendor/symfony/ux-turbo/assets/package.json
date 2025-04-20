@@ -2,8 +2,21 @@
     "name": "@symfony/ux-turbo",
     "description": "Hotwire Turbo integration for Symfony",
     "license": "MIT",
-    "private": true,
-    "version": "0.1.0",
+    "version": "2.23.0",
+    "keywords": [
+        "symfony-ux",
+        "turbo",
+        "hotwire",
+        "javascript",
+        "turbo-stream",
+        "mercure"
+    ],
+    "homepage": "https://ux.symfony.com/turbo",
+    "repository": "https://github.com/symfony/ux-turbo",
+    "type": "module",
+    "files": [
+        "dist"
+    ],
     "main": "dist/turbo_controller.js",
     "types": "dist/turbo_controller.d.ts",
     "scripts": {
@@ -38,6 +51,7 @@
     },
     "devDependencies": {
         "@hotwired/stimulus": "^3.0.0",
-        "@hotwired/turbo": "^7.1.0 || ^8.0"
+        "@hotwired/turbo": "^7.1.0 || ^8.0",
+        "@types/hotwired__turbo": "^8.0.4"
     }
 }
