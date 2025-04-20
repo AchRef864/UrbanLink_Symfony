@@ -53,7 +53,12 @@ class Avis
     private ?string $statut = null;
     
     #[ORM\ManyToOne(targetEntity: Taxi::class)]
-    #[ORM\JoinColumn(name: "taxi_id", referencedColumnName: "id", nullable: true)] 
+    #[ORM\JoinColumn(
+        name: "taxi_id", 
+        referencedColumnName: "id", 
+        nullable: true, 
+        onDelete: "SET NULL" // Add this line
+    )]
     private ?Taxi $taxi = null;
 
     #[ORM\ManyToOne(targetEntity: Vehicle::class)]

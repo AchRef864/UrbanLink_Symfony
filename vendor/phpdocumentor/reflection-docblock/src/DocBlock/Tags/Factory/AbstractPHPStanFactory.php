@@ -73,13 +73,15 @@ class AbstractPHPStanFactory implements Factory
 
     public function create(string $tagLine, ?TypeContext $context = null): Tag
     {
-        $tokens = $this->tokenizeLine($tagLine . "\n");
+        $tokens = $this->tokenizeLine($tagLine);
         $ast = $this->parser->parseTag($tokens);
-        if (property_exists($ast->value, 'description') === true) {
-            $ast->value->setAttribute(
-                'description',
-                rtrim($ast->value->description . $tokens->joinUntil(Lexer::TOKEN_END), "\n")
-            );
+        if (class_exists(ParserConfig::class) === false) {
+            if (property_exists($ast->value, 'description') === true) {
+                $ast->value->setAttribute(
+                    'description',
+                    $ast->value->description . $tokens->joinUntil(Lexer::TOKEN_END)
+                );
+            }
         }
 
         if ($context === null) {

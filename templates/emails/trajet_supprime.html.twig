@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Trajet Supprimé</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { 
+            background-color: #D32F2F; 
+            color: white; 
+            padding: 25px; 
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content { 
+            padding: 25px; 
+            background-color: #f9f9f9;
+            border-radius: 0 0 8px 8px;
+            border: 1px solid #eee;
+        }
+        .alert-box {
+            background-color: #FFEBEE;
+            border-left: 4px solid #D32F2F;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .journey-details {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #6C5CE7;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div style="margin-left: 280px;">
+
+    <div class="container">
+        <div class="header">
+            <h1>Trajet Supprimé</h1>
+            <p>Notification d'annulation</p>
+        </div>
+        
+        <div class="content">
+            <div class="alert-box">
+                <h2 style="margin-top: 0; color: #D32F2F;">Trajet supprimé définitivement</h2>
+                <p>Le conducteur a supprimé ce trajet et il n'est plus disponible.</p>
+            </div>
+            
+            <p>Bonjour {{ user.name }},</p>
+            
+            <p>Nous vous informons que le trajet suivant a été <strong>supprimé définitivement</strong> :</p>
+            
+            <div class="journey-details">
+                <h3 style="margin-top: 0; color: #6C5CE7;">{{ trajet.departure }} → {{ trajet.destination }}</h3>
+                <p><strong>Date de départ:</strong> {{ trajet.departureTime|date('d/m/Y à H:i') }}</p>
+                <p><strong>Raison:</strong> Suppression définitive par le conducteur</p>
+            </div>
+            
+            <h3>Que faire maintenant ?</h3>
+            <ul>
+                <li>Si vous avez payé, un remboursement automatique sera initié</li>
+                <li>Consultez notre plateforme pour trouver un trajet alternatif</li>
+                <li>Contactez notre support si vous avez des questions</li>
+            </ul>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="{{ absolute_url(path('trajet_affichage')) }}" class="btn">
+                    Trouver un autre trajet
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

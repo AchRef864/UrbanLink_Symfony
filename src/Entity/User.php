@@ -9,9 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use App\Entity\Reservation;
+
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -64,26 +64,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Rating::class, cascade: ['persist', 'remove'])]
     private Collection $ratings;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reservation::class, cascade: ['persist', 'remove'])]
+    private Collection $reservations;
+
     public function __construct()
     {
         $this->taxis = new ArrayCollection();
         $this->courses = new ArrayCollection();
         $this->ratings = new ArrayCollection();
-        $this->joiningDate = new \DateTime(); // Initialize in constructor
+        $this->joiningDate = new \DateTime();
         $this->avis = new ArrayCollection();
         $this->reponse = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
 
-    public function isBlocked(): bool
-    {
-        return $this->isBlocked;
-    }
-
-    public function setIsBlocked(bool $isBlocked): self
-    {
-        $this->isBlocked = $isBlocked;
-        return $this;
-    }
+   
 
     public function getId(): ?int
     {
@@ -360,5 +355,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     // Ne tentez pas de dissocier le Rating en appelant setUser(null)
     return $this;
 }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
 
 }
