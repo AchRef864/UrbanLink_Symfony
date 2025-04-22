@@ -1,4 +1,5 @@
-{% extends 'back_office/base.html.twig' %}
+{# templates/front_office/course/index.html.twig #}
+{% extends 'basef.html.twig' %}
 
 {% block title %}Mes Courses{% endblock %}
 
@@ -41,279 +42,177 @@
 
   <!-- Boucle sur les courses -->
   {% for course in courses %}
-  <!-- Container global d'une course -->
-  <div style="
-       margin-bottom: 0.75rem;
-       border-radius: 0.5rem;
-       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-       transition: transform 0.3s;
-       font-size: 0.875rem; /* 14px environ */
-       color: #374151;
-       background-color:
-         {% if course.statut == 'Acceptée' %}
-           #ECFDF5  /* vert très clair */
-         {% elseif course.statut == 'Refusée' %}
-           #FEE2E2  /* rouge très clair */
-         {% else %}
-           #FEF3C7  /* jaune très clair */
-         {% endif %};
-       border-left: 8px solid
-         {% if course.statut == 'Acceptée' %}
-           #10B981
-         {% elseif course.statut == 'Refusée' %}
-           #EF4444
-         {% else %}
-           #FACC15
-         {% endif %};
-     ">
-    <div style="display: flex; padding: 1rem;">
-      
-      <!-- Bloc 1 : Client / Chauffeur / Date -->
-      <div style="border-right: 1px solid #E5E7EB; padding-right: 1rem; margin-right: 1rem;">
-        <div style="font-weight: 600; margin-bottom: 0.25rem;">
-          <span style="font-size: 0.75rem; color: #6B7280; display: block;">Client</span>
-          {{ course.user ? course.user.name : '--' }}
+    <div style="
+         margin-bottom: 0.75rem;
+         border-radius: 0.5rem;
+         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+         transition: transform 0.3s;
+         font-size: 0.875rem;
+         color: #374151;
+         background-color:
+           {% if course.statut == 'Acceptée' %}#ECFDF5
+           {% elseif course.statut == 'Refusée' %}#FEE2E2
+           {% else %}#FEF3C7{% endif %};
+         border-left: 8px solid
+           {% if course.statut == 'Acceptée' %}#10B981
+           {% elseif course.statut == 'Refusée' %}#EF4444
+           {% else %}#FACC15{% endif %};
+       ">
+      <div style="display: flex; padding: 1rem;">
+        
+        <!-- Bloc 1 : Client / Chauffeur / Date -->
+        <div style="border-right: 1px solid #E5E7EB; padding-right: 1rem; margin-right: 1rem;">
+          <div style="font-weight: 600; margin-bottom: 0.25rem;">
+            <span style="font-size: 0.75rem; color: #6B7280; display: block;">Client</span>
+            {{ course.user ? course.user.name : '--' }}
+          </div>
+          <div style="font-weight: 600; margin-bottom: 0.25rem;">
+            <span style="font-size: 0.75rem; color: #6B7280; display: block;">Chauffeur</span>
+            {{ course.taxi ? course.taxi.user.name : '--' }}
+          </div>
+          <div style="font-weight: 600;">
+            {{ course.dateCourse ? course.dateCourse|date('d/m/Y H:i') : '--' }}
+          </div>
         </div>
-        <div style="font-weight: 600; margin-bottom: 0.25rem;">
-          <span style="font-size: 0.75rem; color: #6B7280; display: block;">Chauffeur</span>
-          {{ course.taxi ? course.taxi.user.name : '--' }}
-        </div>
-        <div style="font-weight: 600;">
-          {% if course.dateCourse %}
-            {{ course.dateCourse|date('d/m/Y H:i') }}
-          {% else %}
-            --
-          {% endif %}
-        </div>
-      </div>
 
-      <!-- Bloc 2 : Marque / Modèle, Départ, Arrivée -->
-      <div style="flex: 1;">
-        <div style="margin-bottom: 0.5rem; padding-right: 1rem; border-right: 1px solid #E5E7EB;">
-          <div style="margin-left: 1rem; margin-bottom: 0.25rem; font-size: 1rem; font-weight: normal; color: #1F2937;">
-            {{ course.taxi ? course.taxi.marque ~ ' ' ~ course.taxi.modele : '--' }}
-          </div>
-          <div style="margin-left: 1rem; margin-bottom: 0.25rem;">
-            <span style="font-size: 0.75rem; color: #6B7280;">Départ</span>
-            <span style="margin-left: 0.5rem;">
-              {{ course.villeDepart }}
-            </span>
-          </div>
-          <div style="margin-left: 1rem;">
-            <span style="font-size: 0.75rem; color: #6B7280;">Arrivée</span>
-            <span style="margin-left: 0.5rem;">
-              {{ course.villeArrivee }}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bloc 3 : Immatriculation -->
-      <div style="border-right: 1px solid #E5E7EB; padding-right: 1rem; margin-right: 1rem;">
-        <div style="margin-left: 1rem; margin-top: 0.5rem;">
-          <div style="border: 1px solid #D1D5DB; background-color: #E5E7EB; padding: 0.25rem; border-radius: 0.25rem; text-align: center;">
-            <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 600;">Immatriculation</div>
-            <div style="font-size: 0.875rem; font-weight: 700; color: #1F2937;">
-              {{ course.taxi ? course.taxi.immatriculation : '--' }}
+        <!-- Bloc 2 : Marque / Modèle, Départ, Arrivée -->
+        <div style="flex: 1;">
+          <div style="margin-bottom: 0.5rem; padding-right: 1rem; border-right: 1px solid #E5E7EB;">
+            <div style="margin-left: 1rem; margin-bottom: 0.25rem; font-size: 1rem; font-weight: normal; color: #1F2937;">
+              {{ course.taxi ? course.taxi.marque ~ ' ' ~ course.taxi.modele : '--' }}
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bloc 4 : Distance -->
-      <div style="border-right: 1px solid #E5E7EB; padding-right: 1rem; margin-right: 1rem;">
-        <div style="margin-left: 1rem; margin-top: 0.5rem;">
-          <div style="border: 1px solid #D1D5DB; background-color: #E5E7EB; padding: 0.25rem; border-radius: 0.25rem; text-align: center;">
-            <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 600;">Distance</div>
-            <div style="font-size: 0.875rem; font-weight: 700; color: #1F2937;">
-              <span style="
-                display: inline-block; 
-                padding: 0.25rem 0.5rem; 
-                background: linear-gradient(135deg, #1E40AF, #06B6D4);
-                color: #FFFFFF;
-                text-transform: uppercase;
-                font-weight: bold;
-                border-radius: 0.25rem;
-              ">
-                {{ course.distanceKm }} km
+            <div style="margin-left: 1rem; margin-bottom: 0.25rem;">
+              <span style="font-size: 0.75rem; color: #6B7280;">Départ</span>
+              <span style="margin-left: 0.5rem;">
+                {{ presentation[course.id].depart }}
+              </span>
+            </div>
+            <div style="margin-left: 1rem;">
+              <span style="font-size: 0.75rem; color: #6B7280;">Arrivée</span>
+              <span style="margin-left: 0.5rem;">
+                {{ presentation[course.id].arrivee }}
               </span>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Bloc 5 : Montant -->
-      <div style="border-right: 1px solid #E5E7EB; padding-right: 1rem; margin-right: 1rem;">
-        <div style="margin-left: 1rem; margin-top: 0.5rem;">
-          <div style="border: 1px solid #D1D5DB; background-color: #E5E7EB; padding: 0.25rem; border-radius: 0.25rem; text-align: center;">
-            <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 600;">Montant</div>
-            <div style="font-size: 0.875rem; font-weight: 700; color: #1F2937;">
-              {{ course.montant }} TND
+        <!-- Bloc 3 : Immatriculation -->
+        <div style="border-right: 1px solid #E5E7EB; padding-right: 1rem; margin-right: 1rem;">
+          <div style="margin-left: 1rem; margin-top: 0.5rem;">
+            <div style="border: 1px solid #D1D5DB; background-color: #E5E7EB; padding: 0.25rem; border-radius: 0.25rem; text-align: center;">
+              <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 600;">Immatriculation</div>
+              <div style="font-size: 0.875rem; font-weight: 700; color: #1F2937;">
+                {{ course.taxi ? course.taxi.immatriculation : '--' }}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Bloc 6 : Statut + Boutons -->
-      <div style="margin-left: 1rem;">
-        <!-- Statut -->
-        <div style="
-          margin-top: 0.5rem;
-          width: 6rem;
-          text-align: center;
-          text-transform: uppercase;
-          font-size: 0.75rem;
-          font-weight: bold;
-          color: #FFFFFF;
-          border-radius: 0.25rem;
-          padding: 0.25rem 0;
-          background-color:
-            {% if course.statut == 'Acceptée' %}
-              #10B981
-            {% elseif course.statut == 'Refusée' %}
-              #EF4444
-            {% else %}
-              #FACC15
-            {% endif %};
-        ">
-          {{ course.statut }}
-        </div>
-
-        <!-- Boutons actions -->
-        <div style="display: flex; flex-direction: column; margin-top: 0.5rem; gap: 0.25rem;">
-          <!-- Ligne 1 : Modifier / Supprimer -->
-          <div style="display: flex; gap: 0.25rem;">
-            <a href="{{ path('course_edit', {'id': course.id}) }}"
-               style="
-                 background-color: #3B82F6;
-                 color: #FFFFFF;
-                 padding: 0.5rem 0.75rem;
-                 border-radius: 0.25rem;
-                 font-size: 0.75rem;
-                 font-weight: 600;
-                 text-decoration: none;
-               "
-               onmouseover="this.style.backgroundColor='#2563EB';"
-               onmouseout="this.style.backgroundColor='#3B82F6';"
-            >
-              Modifier
-            </a>
-            <a href="{{ path('course_delete', {'id': course.id}) }}"
-               style="
-                 background-color: #EF4444;
-                 color: #FFFFFF;
-                 padding: 0.5rem 0.75rem;
-                 border-radius: 0.25rem;
-                 font-size: 0.75rem;
-                 font-weight: 600;
-                 text-decoration: none;
-               "
-               onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette course ?')"
-               onmouseover="this.style.backgroundColor='#DC2626';"
-               onmouseout="this.style.backgroundColor='#EF4444';"
-            >
-              Supprimer
-            </a>
-          </div>
-          <!-- Ligne 2 : Annuler / Noter -->
-          <div style="display: flex; gap: 0.25rem;">
-            <a href="{{ path('course_cancel', {'id': course.id}) }}"
-               style="
-                 color: #FFFFFF;
-                 padding: 0.5rem 0.75rem;
-                 border-radius: 0.25rem;
-                 font-size: 0.75rem;
-                 font-weight: 600;
-                 text-decoration: none;
-                 background-color:
-                   {% if course.statut == 'Acceptée' %}
-                     #10B981
-                   {% elseif course.statut == 'Refusée' %}
-                     #EF4444
-                   {% else %}
-                     #FACC15
-                   {% endif %};
-                 border: 1px solid
-                   {% if course.statut == 'Acceptée' %}
-                     #059669
-                   {% elseif course.statut == 'Refusée' %}
-                     #DC2626
-                   {% else %}
-                     #EAB308
-                   {% endif %};
-               "
-               onmouseover="
-                 {% if course.statut == 'Acceptée' %}
-                   this.style.backgroundColor='#059669';
-                 {% elseif course.statut == 'Refusée' %}
-                   this.style.backgroundColor='#DC2626';
-                 {% else %}
-                   this.style.backgroundColor='#EAB308';
-                 {% endif %}
-               "
-               onmouseout="
-                 {% if course.statut == 'Acceptée' %}
-                   this.style.backgroundColor='#10B981';
-                 {% elseif course.statut == 'Refusée' %}
-                   this.style.backgroundColor='#EF4444';
-                 {% else %}
-                   this.style.backgroundColor='#FACC15';
-                 {% endif %}
-               "
-            >
-              Annuler
-            </a>
-            {% if course.statut == 'Terminée' and course.taxi is not null %}
-              <a href="{{ path('taxi_rate', {'id': course.taxi.id}) }}"
-                 style="
-                   background: linear-gradient(135deg, #3B82F6, #8B5CF6);
-                   color: #FFFFFF;
-                   padding: 0.5rem 0.75rem;
-                   border-radius: 0.25rem;
-                   font-size: 0.75rem;
-                   font-weight: 600;
-                   text-decoration: none;
-                 "
-                 onmouseover="this.style.opacity='0.85';"
-                 onmouseout="this.style.opacity='1';"
-              >
-                Noter
-              </a>
-            {% endif %}
+        <!-- Bloc 4 : Distance -->
+        <div style="border-right: 1px solid #E5E7EB; padding-right: 1rem; margin-right: 1rem;">
+          <div style="margin-left: 1rem; margin-top: 0.5rem;">
+            <div style="border: 1px solid #D1D5DB; background-color: #E5E7EB; padding: 0.25rem; border-radius: 0.25rem; text-align: center;">
+              <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 600;">Distance</div>
+              <div style="font-size: 0.875rem; font-weight: 700; color: #1F2937;">
+                <span style="
+                  display: inline-block;
+                  padding: 0.25rem 0.5rem;
+                  background: linear-gradient(135deg, #1E40AF, #06B6D4);
+                  color: #FFFFFF;
+                  text-transform: uppercase;
+                  font-weight: bold;
+                  border-radius: 0.25rem;
+                ">
+                  {{ course.distanceKm }} km
+                </span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-  {% else %}
-  <!-- Si aucune course n'est disponible -->
+
+        <!-- Bloc 5 : Montant -->
+        <div style="border-right: 1px solid #E5E7EB; padding-right: 1rem; margin-right: 1rem;">
+          <div style="margin-left: 1rem; margin-top: 0.5rem;">
+            <div style="border: 1px solid #D1D5DB; background-color: #E5E7EB; padding: 0.25rem; border-radius: 0.25rem; text-align: center;">
+              <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 600;">Montant</div>
+              <div style="font-size: 0.875rem; font-weight: 700; color: #1F2937;">
+                {{ course.montant }} TND
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bloc 6 : Statut + Boutons -->
+<div style="margin-left: 1rem;">
   <div style="
-    background-color: #E5E7EB;
-    margin: 0 auto;
-    border: 1px solid #9CA3AF;
-    border-radius: 0.375rem;
-    color: #374151;
-    margin-bottom: 1rem;
-    padding: 2rem;
+    margin-top: 0.5rem;
+    width: 6rem;
     text-align: center;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-  ">
-    <div style="margin-bottom: 1rem;">
-      <span style="
-        display: inline-block;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
-        border-radius: 0.25rem;
-        background: linear-gradient(135deg, #9CA3AF, #D1D5DB);
-        text-transform: uppercase;
-        font-weight: bold;
-        color: #374151;
-      ">
-        Aucune donnée
-      </span>
-    </div>
-    <p style="font-size: 0.875rem; color: #6B7280;">Vos courses apparaîtront ici</p>
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #FFFFFF;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0;
+    background-color:
+      {% if course.statut == 'Acceptée' %}#10B981
+      {% elseif course.statut == 'Refusée' %}#EF4444
+      {% else %}#FACC15{% endif %};  <!-- Jaune clair pour "En attente" -->
+  
+    {{ course.statut }}
   </div>
+  <div style="display: flex; flex-direction: column; margin-top: 0.5rem; gap: 0.25rem;">
+    <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem;">
+      <form method="post" action="{{ path('user_course_cancel', {'id': course.id}) }}" onsubmit="return confirm('Annuler cette course ?');">
+        <input type="hidden" name="_token" value="{{ csrf_token('cancel' ~ course.id) }}">
+        <button type="submit"
+                style="background-color: #D97706; color: #FFFFFF; padding: 0.5rem 0.75rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600; text-decoration: none; border: none; cursor: pointer;"
+                onmouseover="this.style.backgroundColor='#B45309';"
+                onmouseout="this.style.backgroundColor='#D97706';">
+          Annuler
+        </button>
+      </form>
+      {% if course.statut == 'Terminée' and course.taxi %}
+        <a href="{{ path('taxi_rate', {'id': course.taxi.id}) }}"
+           style="background: linear-gradient(135deg, #3B82F6, #8B5CF6); color: #FFFFFF; padding: 0.5rem 0.75rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600; text-decoration: none;"
+           onmouseover="this.style.opacity='0.85';"
+           onmouseout="this.style.opacity='1';">
+          Noter
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+  {% else %}
+    <div style="
+      background-color: #E5E7EB;
+      margin: 0 auto;
+      border: 1px solid #9CA3AF;
+      border-radius: 0.375rem;
+      color: #374151;
+      margin-bottom: 1rem;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    ">
+      <div style="margin-bottom: 1rem;">
+        <span style="
+          display: inline-block;
+          padding: 0.25rem 0.5rem;
+          font-size: 0.75rem;
+          border-radius: 0.25rem;
+          background: linear-gradient(135deg, #9CA3AF, #D1D5DB);
+          text-transform: uppercase;
+          font-weight: bold;
+          color: #374151;
+        ">
+          Aucune donnée
+        </span>
+      </div>
+      <p style="font-size: 0.875rem; color: #6B7280;">Vos courses apparaîtront ici</p>
+    </div>
   {% endfor %}
 
   <!-- Pied de page -->

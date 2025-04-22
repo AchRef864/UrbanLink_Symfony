@@ -23,6 +23,17 @@ final class ReponseController extends AbstractController
             'reponses' => $reponseRepository->findAll(),
         ]);
     }
+    //reponse pour user
+    #[Route('/avis/{id}', name: 'app_avis_reponsess', methods: ['GET'])]
+    public function reponsesForAvis(ReponseRepository $reponseRepository, int $id): Response
+    {
+        $reponses = $reponseRepository->findBy(['avis' => $id]);
+
+        return $this->render('front_office/Avis/reponses.html.twig', [
+            'reponses' => $reponses,
+            'avis_id' => $id,
+        ]);
+    }
 
     #[Route('/new/{avisId}', name: 'app_reponse_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, int $avisId, TwilioService $twilioService): Response

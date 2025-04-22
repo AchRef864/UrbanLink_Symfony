@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Course;
+use App\Service\OpenCageGeocoder;
 use App\Form\CourseType;
 use App\Repository\CourseRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,36 +16,39 @@ use Symfony\Component\Routing\Annotation\Route;
 class CourseController extends AbstractController
 {
     #[Route('/', name: 'course_index')]
-    public function index(CourseRepository $courseRepository): Response
-    {
-        // Récupération de toutes les courses depuis la base
-        $courses = $courseRepository->findAll();
+    public function index(CourseRepository $courseRepository, OpenCageGeocoder $geocoder): Response
+{
+    $courses = $courseRepository->findAll();
 
-        // Pour chaque course, conversion des coordonnées en adresse lisible avec Nominatim
-        foreach ($courses as $course) {
-            // Traitement de la position de départ
-            $posDepart = $course->getVilleDepart(); // par ex. "36.8304,10.1028"
-            if ($posDepart && strpos($posDepart, ',') !== false) {
-                list($lat, $lon) = explode(',', $posDepart);
-                $course->presentationVilleDepart = $this->reverseGeocode(trim($lat), trim($lon));
-            } else {
-                $course->presentationVilleDepart = "Coordonnées invalides";
-            }
+    $presentationData = [];
 
-            // Traitement de la position d'arrivée
-            $posArrivee = $course->getVilleArrivee();
-            if ($posArrivee && strpos($posArrivee, ',') !== false) {
-                list($lat, $lon) = explode(',', $posArrivee);
-                $course->presentationVilleArrivee = $this->reverseGeocode(trim($lat), trim($lon));
-            } else {
-                $course->presentationVilleArrivee = "Coordonnées invalides";
-            }
+    foreach ($courses as $course) {
+        $villeDepartLabel = "Coordonnées invalides";
+        $villeArriveeLabel = "Coordonnées invalides";
+
+        $posDepart = $course->getVilleDepart();
+        if ($posDepart && strpos($posDepart, ',') !== false) {
+            list($lat, $lon) = explode(',', $posDepart);
+            $villeDepartLabel = $geocoder->reverseGeocode(trim($lat), trim($lon));
         }
 
-        return $this->render('back_office/course/index.html.twig', [
-            'courses' => $courses,
-        ]);
+        $posArrivee = $course->getVilleArrivee();
+        if ($posArrivee && strpos($posArrivee, ',') !== false) {
+            list($lat, $lon) = explode(',', $posArrivee);
+            $villeArriveeLabel = $geocoder->reverseGeocode(trim($lat), trim($lon));
+        }
+
+        $presentationData[$course->getId()] = [
+            'depart' => $villeDepartLabel,
+            'arrivee' => $villeArriveeLabel,
+        ];
     }
+
+    return $this->render('back_office/course/index.html.twig', [
+        'courses' => $courses,
+        'presentation' => $presentationData,
+    ]);
+}
 
     /**
      * Effectue un reverse geocoding via Nominatim pour retourner l'adresse au format "City - Road".
@@ -82,51 +86,45 @@ class CourseController extends AbstractController
     }
 
     #[Route('/new', name: 'course_new')]
-    public function new(Request $request, EntityManagerInterface $em): Response
-    {
-        $course = new Course();
+public function new(Request $request, EntityManagerInterface $em): Response
+{
+    $course = new Course();
+    $course->setDateCourse(new \DateTime());
 
-        // Initialisation de la date de course
-        $course->setDateCourse(new \DateTime());
+    $form = $this->createForm(CourseType::class, $course, [
+        'show_statut' => false,
+        'auto_calculate_montant' => true,
+    ]);
 
-        // Création du formulaire avec certaines options
-        $form = $this->createForm(CourseType::class, $course, [
-            'show_statut' => false,
-            'auto_calculate_montant' => true,
-        ]);
+    $form->handleRequest($request);
 
-        $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Récupération des données du formulaire
+        $villeDepart = $form->get('villeDepart')->getData();
+        $villeArrivee = $form->get('villeArrivee')->getData();
+        
+        $course->setVilleDepart($villeDepart);
+        $course->setVilleArrivee($villeArrivee);
+        $course->setStatut('En attente');
+        $course->setUser($this->getUser());
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $course->setStatut('En attente');
-
-            // Récupération des coordonnées envoyées depuis le formulaire
-            $villeDepart = $request->request->get('villeDepart');
-            $villeArrivee = $request->request->get('villeArrivee');
-
-            $course->setVilleDepart($villeDepart);
-            $course->setVilleArrivee($villeArrivee);
-
-            // Affectation de l'utilisateur connecté
-            $course->setUser($this->getUser());
-
-            // Mise à jour du montant en fonction du taxi sélectionné et de la distance
-            $taxi = $course->getTaxi();
-            if ($taxi) {
-                $montant = $taxi->getTarifKm() * $course->getDistanceKm();
-                $course->setMontant($montant);
-            }
-
-            $em->persist($course);
-            $em->flush();
-
-            return $this->redirectToRoute('course_index');
+        $taxi = $course->getTaxi();
+        if ($taxi) {
+            $montant = $taxi->getTarifKm() * $course->getDistanceKm();
+            $course->setMontant($montant);
         }
 
-        return $this->render('back_office/course/new.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        $em->persist($course);
+        $em->flush();
+
+        $this->addFlash('success', 'Course créée avec succès');
+        return $this->redirectToRoute('course_index');
     }
+
+    return $this->render('back_office/course/new.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
 
     #[Route('/{id}/edit', name: 'course_edit')]
     public function edit(Request $request, Course $course, EntityManagerInterface $em): Response

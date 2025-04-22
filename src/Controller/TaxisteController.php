@@ -11,10 +11,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class TaxisteController extends AbstractController
 {
-    #[Route('/taxiste/dashboard', name: 'taxiste_dashboard')]
+    #[Route('/dashboard', name: 'taxi_dashboard')]
     public function dashboard(EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
@@ -253,7 +254,7 @@ public function finishCourse(Request $request, Course $course, EntityManagerInte
                 break;
             case 'Occupé':
                 $newStatus = 'Disponible';
-                break;
+                break;  
             default:
                 $newStatus = 'Disponible';
                 break;

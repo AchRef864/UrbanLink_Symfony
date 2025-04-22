@@ -10,23 +10,64 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\OpenCageGeocoder;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/user/courses')]
 class UserCourseController extends AbstractController
 {
     #[Route('/', name: 'user_courses')]
-    public function index(CourseRepository $courseRepository): Response
-    {
+    public function index(
+        CourseRepository $courseRepository,
+        OpenCageGeocoder $geocoder
+    ): Response {
         $user = $this->getUser();
         if (!$user) {
             throw $this->createAccessDeniedException('Vous devez être connecté.');
         }
-        
-        // Récupérer uniquement les courses de l'utilisateur connecté
-        $courses = $courseRepository->findBy(['user' => $user]);
+
+        // Récupérer uniquement les courses de l’utilisateur
+        $courses = $courseRepository->findBy(
+            ['user' => $user],
+            ['dateCourse' => 'DESC']
+        );
+
+        // Construire le tableau de présentation (city - road) pour chaque course
+        $presentation = [];
+        foreach ($courses as $course) {
+            // Valeurs par défaut
+            $departLabel  = 'Coordonnées invalides';
+            $arriveeLabel = 'Coordonnées invalides';
+
+            // Ville départ
+            $posDep = $course->getVilleDepart();
+            if ($posDep && strpos($posDep, ',') !== false) {
+                list($lat, $lon) = explode(',', $posDep);
+                $departLabel = $geocoder->reverseGeocode(
+                    trim($lat),
+                    trim($lon)
+                );
+            }
+
+            // Ville arrivée
+            $posArr = $course->getVilleArrivee();
+            if ($posArr && strpos($posArr, ',') !== false) {
+                list($lat, $lon) = explode(',', $posArr);
+                $arriveeLabel = $geocoder->reverseGeocode(
+                    trim($lat),
+                    trim($lon)
+                );
+            }
+
+            $presentation[$course->getId()] = [
+                'depart'  => $departLabel,
+                'arrivee' => $arriveeLabel,
+            ];
+        }
 
         return $this->render('front_office/course/index.html.twig', [
-            'courses' => $courses,
+            'courses'      => $courses,
+            'presentation' => $presentation,
         ]);
     }
 

@@ -89,9 +89,80 @@ final class AvisController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    //affichage liste avis pour front
+    #[Route('/avisFront', name: 'app_avis_front', methods: ['GET'])]
+    public function indexFront(AvisRepository $avisRepository, PaginatorInterface $paginator, Request $request): Response
+    {
+        $searchTerm = $request->query->get('search', '');
+        
+        $queryBuilder = $avisRepository->createQueryBuilder('a')
+            ->leftJoin('a.taxi', 't')
+            ->addSelect('t') // Ensure we load taxi relationship
+            ->leftJoin('a.vehicle', 'v')
+            ->addSelect('v') // Also handle vehicle relationship
+            ->where('t.id IS NOT NULL OR a.taxi IS NULL') // Handle deleted taxis
+            ->andWhere('v.id IS NOT NULL OR a.vehicle IS NULL'); // Handle deleted vehicles
     
+        if (!empty($searchTerm)) {
+            $queryBuilder->andWhere(
+                'a.type LIKE :search OR 
+                a.commentaire LIKE :search OR 
+                a.statut LIKE :search OR 
+                a.date_avis LIKE :search OR 
+                t.immatriculation LIKE :search OR 
+                v.licensePlate LIKE :search'
+            )
+            ->setParameter('search', '%' . $searchTerm . '%');
+        }
+    
+        $pagination = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            5
+        );
+    
+        return $this->render('front_office/Avis/index.html.twig', [
+            'avis' => $pagination,
+            'search' => $searchTerm
+        ]);
+    }
+    //ajouter avis pour front
+    #[Route('/avisFront/new', name: 'app_avis_new_front', methods: ['GET', 'POST'])]
+    public function newFront(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        // Check that the current user is a client
+        if (!$this->isGranted('ROLE_CLIENT')) {
+            throw $this->createAccessDeniedException('Only clients can add a new complaint.');
+        }
+    
+        $avi = new Avis(); // Create new Avis entity
+    
+        $form = $this->createForm(AvisType::class, $avi);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            if (!$user) {
+                throw $this->createAccessDeniedException('You must be logged in to leave a complaint.');
+            }
+            // Here we assume that the user is a client based on our security check.
+            $avi->setUser($user);
+            $avi->setStatut('not processed'); // Default status is set
+    
+            $entityManager->persist($avi);
+            $entityManager->flush();
+    
+            $this->addFlash('success', 'Your complaint has been submitted successfully.');
+    
+            return $this->redirectToRoute('app_avis_front', [], Response::HTTP_SEE_OTHER);
+        }
+    
+        return $this->render('front_office/Avis/_form.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 
-    
+
     
 
     #[Route('/{id}', name: 'app_avis_show', methods: ['GET'])]
