@@ -1,4 +1,4 @@
-{% extends 'basef.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Complaints{% endblock %}
 
@@ -11,7 +11,7 @@
         margin: 0 auto;
         padding: 2rem;
     }
-    
+
     .card-3d {
         background-color: #fff;
         border-radius: 0.75rem;
@@ -143,7 +143,7 @@
                     <button type="submit" class="btn-primary">Search</button>
                 </form>
                 {% if app.user and app.user.role == 'client' %}
-                    <a href="{{ path('app_avis_new_front') }}" class="btn-primary">+ New Complaint</a>
+                    <a href="{{ path('app_avis_new') }}" class="btn-primary">+ New Complaint</a>
                 {% endif %}
             </div>
         </div>
@@ -184,7 +184,7 @@
                                             Edit
                                         </a>
                                     {% endif %}
-                                    <a href="{{ path('app_avis_reponsess', {'id': avi.id}) }}" class="btn-responses">
+                                    <a href="{{ path('app_avis_reponses', {'id': avi.id}) }}" class="btn-responses">
                                         Responses
                                     </a>
                                     {% if app.user and app.user.role == 'client' and app.user.id == avi.user.id %}
@@ -209,7 +209,9 @@
     </div>
 
     <div class="card-3d" style="margin-top: 1.5rem;">
-        
+        <div class="header-3d">
+            <h2>Statistics</h2>
+        </div>
         <div style="padding: 1.5rem;">
             {{ knp_pagination_render(avis) }}
         </div>

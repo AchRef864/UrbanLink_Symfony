@@ -73,7 +73,7 @@
 {% block body %}
 <div class="card-3d">
     <div class="header-3d">
-        <h6>Responses for Complaint #{{ avis_id }}</h6>
+        <h6>Responses for Complaint</h6>
         {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
             <a href="{{ path('app_reponse_new', {'avisId': avis_id}) }}" class="btn-add">
                 + New Response
