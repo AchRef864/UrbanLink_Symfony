@@ -1,0 +1,55 @@
+{% extends 'basef.html.twig' %}
+
+{% block title %}Mes Réservations{% endblock %}
+
+{% block body %}
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Mes Réservations</h1>
+
+        {% if reservations is empty %}
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                <p class="text-blue-700">Vous n'avez aucune réservation pour le moment.</p>
+            </div>
+        {% else %}
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {% for reservation in reservations %}
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-xl font-semibold text-gray-800">{{ reservation.abonnement.type }}</h3>
+                                <span class="px-3 py-1 rounded-full text-sm font-medium 
+                                    {% if reservation.statut == 'Confirmé' %}bg-green-100 text-green-800
+                                    {% elseif reservation.statut == 'En attente' %}bg-yellow-100 text-yellow-800
+                                    {% elseif reservation.statut == 'Annulé' %}bg-red-100 text-red-800
+                                    {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                    {{ reservation.statut }}
+                                </span>
+                            </div>
+                            
+                            <div class="space-y-3 text-gray-600">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <span>Du {{ reservation.dateDebut|date('d/m/Y') }}</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <span>Au {{ reservation.dateFin|date('d/m/Y') }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 pt-4 border-t border-gray-100">
+                                <a href="#" class="text-blue-600 hover:text-blue-800 font-medium text-sm hover:underline">
+                                    Voir les détails →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
