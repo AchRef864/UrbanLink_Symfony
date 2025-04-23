@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques Chauffeurs{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  {# aucun style additionnel requis #}
+{% endblock %}
+
+{% block body %}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
+
+  <!-- Top 5 par nombre de courses -->
+  <div class="bg-white p-4 rounded shadow">
+    <h6 class="font-semibold mb-2">Top 5 Chauffeurs (Nombre de courses)</h6>
+    <canvas id="chart-count" height="200"></canvas>
+  </div>
+
+  <!-- Top 5 par revenu total -->
+  <div class="bg-white p-4 rounded shadow">
+    <h6 class="font-semibold mb-2">Top 5 Chauffeurs (Revenu total)</h6>
+    <canvas id="chart-revenue" height="200"></canvas>
+  </div>
+
+  <!-- Sous‑performants -->
+  <div class="bg-white p-4 rounded shadow">
+    <h6 class="font-semibold mb-2">Taxis sous‑performants (&lt; 3 courses/semaine)</h6>
+    <ul class="list-disc pl-5">
+      {% for t in underperformers %}
+        <li>{{ t.name }} — {{ t.count }} courses la semaine dernière</li>
+      {% else %}
+        <li>Aucun taxi sous‑performant.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Taux d'acceptation -->
+  <div class="bg-white p-4 rounded shadow">
+    <h6 class="font-semibold mb-2">Taux d’acceptation des courses</h6>
+    <canvas id="chart-donut" height="200"></canvas>
+    <p class="mt-2 text-sm">
+      Acceptées : <strong>{{ accepted }}</strong> /
+      Refusées : <strong>{{ refused }}</strong>
+    </p>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('assets/js/plugins/chartjs.min.js') }}"></script>
+  <script>
+    // Préparer les données transmises par Twig
+    const topCountLabels   = {{ topCount|map(t => t.name)|json_encode|raw }};
+    const topCountData     = {{ topCount|map(t => t.count)|json_encode|raw }};
+    const topRevLabels     = {{ topRevenue|map(t => t.name)|json_encode|raw }};
+    const topRevData       = {{ topRevenue|map(t => t.revenue)|json_encode|raw }};
+    const acceptData       = {{ [accepted, refused]|json_encode|raw }};
+
+    // Chart.js bar - nombre de courses
+    new Chart(document.getElementById('chart-count'), {
+      type: 'bar',
+      data: {
+        labels: topCountLabels,
+        datasets: [{
+          label: 'Nombre de courses',
+          data: topCountData,
+          backgroundColor: 'rgba(54, 162, 235, 0.6)'
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+
+    // Chart.js bar - revenu total
+    new Chart(document.getElementById('chart-revenue'), {
+      type: 'bar',
+      data: {
+        labels: topRevLabels,
+        datasets: [{
+          label: 'Revenu total (TND)',
+          data: topRevData,
+          backgroundColor: 'rgba(75, 192, 192, 0.6)'
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+
+    // Chart.js doughnut - taux d’acceptation
+    new Chart(document.getElementById('chart-donut'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Acceptées', 'Refusées'],
+        datasets: [{
+          data: acceptData,
+          backgroundColor: ['rgba(40, 167, 69, 0.6)', 'rgba(220, 53, 69, 0.6)']
+        }]
+      },
+      options: {
+        responsive: true,
+        cutout: '70%'
+      }
+    });
+  </script>
+{% endblock %}
