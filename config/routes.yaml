@@ -149,6 +149,15 @@ client_profile:
 client_dashboard:
     path: /client/dashboard
     controller: App\Controller\Client\DashboardController::index
+    
 taxiste_dashboard:
     path: /taxiste/dashboard
     controller: App\Controller\TaxisteController::dashboard
+
+course_map:
+    path: /admin/course/zones
+    controller: App\Controller\CourseController::zonesMap
+
+course_stats:
+    path: /admin/course/stats
+    controller: App\Controller\CourseController::stats

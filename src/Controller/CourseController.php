@@ -214,4 +214,122 @@ public function new(Request $request, EntityManagerInterface $em): Response
             'courses' => $courses,
         ]);
     }
+    #[Route('/admin/course/zones', name: 'course_zones_map')]
+    public function zonesMap(CourseRepository $courseRepository): Response
+    {
+        // 1. Récupérer toutes les courses
+        $courses = $courseRepository->findAll();
+
+        // 2. Compter les occurences de chaque coordonnée (départ+arrivée)
+        $counts = [];
+        foreach ($courses as $course) {
+            foreach (['getVilleDepart', 'getVilleArrivee'] as $getter) {
+                $coord = $course->{$getter}();      // ex. "36.82,10.17"
+                if ($coord && strpos($coord, ',') !== false) {
+                    [$lat, $lon] = array_map('trim', explode(',', $coord));
+                    $key = "{$lat},{$lon}";
+                    $counts[$key] = ($counts[$key] ?? 0) + 1;
+                }
+            }
+        }
+
+        // 3. Construire le tableau de points agrégés
+        $points    = [];
+        $objectId  = 1;
+        foreach ($counts as $key => $count) {
+            [$lat, $lon] = explode(',', $key);
+            $points[] = [
+                'objectId'  => $objectId++,
+                'lat'       => (float) $lat,
+                'lon'       => (float) $lon,
+                'count'     => $count,
+            ];
+        }
+
+        // 4. Trouver le maximum pour l'échelle de taille/couleur
+        $maxCount = !empty($counts) ? max($counts) : 1;
+
+        // 5. Rendre le template avec les données
+        return $this->render('back_office/course/map.html.twig', [
+            'zonePoints' => $points,
+            'maxCount'   => $maxCount,
+        ]);
+    }
+
+    #[Route('/admin/course/stats', name: 'course_stats')]
+    public function stats(CourseRepository $courseRepository): Response
+    {
+        $courses = $courseRepository->findAll();
+
+        // 1. Top chauffeurs (count & revenue)
+        $drivers = [];
+        foreach ($courses as $c) {
+            if (!$c->getTaxi()) {
+                continue;
+            }
+            $user = $c->getTaxi()->getUser();
+            $id   = $user->getId();
+            $name = $user->getName();
+
+            if (!isset($drivers[$id])) {
+                $drivers[$id] = [
+                    'name'    => $name,
+                    'count'   => 0,
+                    'revenue' => 0.0,
+                ];
+            }
+            $drivers[$id]['count']++;
+            $drivers[$id]['revenue'] += (float) $c->getMontant();
+        }
+        // trier et prendre top 5 par count
+        $byCount   = $drivers;
+        usort($byCount, fn($a, $b) => $b['count'] <=> $a['count']);
+        $topCount  = array_slice($byCount, 0, 5);
+        // trier et prendre top 5 par revenue
+        $byRevenue  = $drivers;
+        usort($byRevenue, fn($a, $b) => $b['revenue'] <=> $a['revenue']);
+        $topRevenue = array_slice($byRevenue, 0, 5);
+
+        // 2. Taxis sous‑performants (dernier 7 jours, seuil = 3)
+        $oneWeekAgo = new \DateTime('-7 days');
+        $weekCounts = [];
+        foreach ($courses as $c) {
+            if ($c->getDateCourse() < $oneWeekAgo || !$c->getTaxi()) {
+                continue;
+            }
+            $uid = $c->getTaxi()->getUser()->getId();
+            $weekCounts[$uid] = ($weekCounts[$uid] ?? 0) + 1;
+        }
+        // seuil
+        $threshold = 3;
+        $underperformers = [];
+        foreach ($drivers as $uid => $info) {
+            $count = $weekCounts[$uid] ?? 0;
+            if ($count < $threshold) {
+                $underperformers[] = [
+                    'name'  => $info['name'],
+                    'count' => $count,
+                ];
+            }
+        }
+
+        // 3. Taux d’acceptation vs refus
+        $accepted = 0;
+        $refused  = 0;
+        foreach ($courses as $c) {
+            if ($c->getStatut() === 'Acceptée') {
+                $accepted++;
+            } elseif ($c->getStatut() === 'Refusée') {
+                $refused++;
+            }
+        }
+
+        return $this->render('back_office/course/stats.html.twig', [
+            'topCount'        => $topCount,
+            'topRevenue'      => $topRevenue,
+            'underperformers' => $underperformers,
+            'accepted'        => $accepted,
+            'refused'         => $refused,
+        ]);
+    }
 }
