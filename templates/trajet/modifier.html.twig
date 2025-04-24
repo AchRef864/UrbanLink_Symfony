@@ -1,0 +1,204 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Trajet - {{ trajet.departure }} vers {{ trajet.destination }}{% endblock %}
+
+{% block body %}
+<div class="container mx-auto px-4 py-8 max-w-3xl">
+    <h1 class="text-3xl font-bold mb-8 text-center">Modifier le Trajet</h1>
+
+    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate', 'id': 'trajet-form'}}) }}
+        {% set input_class = 'w-full px-4 py-2 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500' %}
+        {% set label_class = 'block mb-2 text-sm font-medium text-gray-900' %}
+        {% set error_class = 'text-red-600 font-bold text-sm mt-1' %}
+
+        {# Departure #}
+        <div class="mb-4">
+            {{ form_label(form.departure, 'Lieu de départ', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.departure, {'attr': {'class': input_class}}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.departure) }}</div>
+        </div>
+        
+        {# Destination #}
+        <div class="mb-4">
+            {{ form_label(form.destination, 'Destination', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.destination, {'attr': {'class': input_class}}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.destination) }}</div>
+        </div>
+        
+        {# Distance #}
+        <div class="mb-4">
+            {{ form_label(form.distance, 'Distance (km)', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.distance, {'attr': {'class': input_class}}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.distance) }}</div>
+        </div>
+        
+        {# Duration #}
+        <div class="mb-4">
+            {{ form_label(form.duration, 'Durée (HH:MM)', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.duration, {'attr': {
+                'class': input_class,
+                'placeholder': 'Ex: 01:30 pour 1 heure 30 minutes'
+            }}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.duration) }}</div>
+            <p class="text-sm text-gray-500 mt-1">Format: HH:MM (format 24 heures)</p>
+        </div>
+        
+        {# Departure Time #}
+        <div class="mb-4">
+            {{ form_label(form.departureTime, 'Heure de départ', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.departureTime, {'attr': {'class': input_class}}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.departureTime) }}</div>
+        </div>
+        
+        {# Price #}
+        <div class="mb-4">
+            {{ form_label(form.price, 'Prix (TND)', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.price, {'attr': {'class': input_class}}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.price) }}</div>
+        </div>
+
+        {# Available Seats #}
+        <div class="mb-4">
+            {{ form_label(form.availableSeats, 'Places disponibles', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.availableSeats, {'attr': {
+                'class': input_class,
+                'min': 1
+            }}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.availableSeats) }}</div>
+        </div>
+
+        {# Transport Type #}
+        <div class="mb-4">
+            {{ form_label(form.typeTransport, 'Type de transport', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.typeTransport, {'attr': {
+                'class': input_class,
+                'data-vehicle-target': 'typeTransport'
+            }}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.typeTransport) }}</div>
+        </div>
+
+        {# Vehicle Field - Only shown for Carpooling #}
+        <div class="mb-4" id="vehicle-field" style="display: none;">
+            {{ form_label(form.vehicle, 'Véhicule', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.vehicle, {'attr': {'class': input_class}}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.vehicle) }}</div>
+            <p class="text-sm text-gray-500 mt-1">Seuls les véhicules disponibles sont affichés</p>
+        </div>
+
+        {# Hidden arrivalTime field #}
+        {% if form.arrivalTime is defined %}
+            {{ form_widget(form.arrivalTime, {'attr': {'class': 'hidden'}}) }}
+        {% endif %}
+
+        <div class="mt-6 flex justify-between">
+            <button type="submit" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-500 to-violet-500 leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md">
+                Enregistrer
+            </button>
+            <a href="{{ path('trajet_affichage') }}" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-gray-500 to-gray-700 leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md">
+                Annuler
+            </a>
+            {% if trajet.id %}
+                <button type="button" onclick="confirmDelete({{ trajet.id }})" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-red-500 to-red-700 leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md">
+                    Supprimer
+                </button>
+            {% endif %}
+        </div>
+    {{ form_end(form) }}
+
+    {# Delete Form (outside the main form) #}
+    {% if trajet.id %}
+        <form id="delete-form-{{ trajet.id }}" action="{{ path('trajet_supprimer', {'id': trajet.id}) }}" method="POST" style="display: none;">
+            <input type="hidden" name="_method" value="DELETE">
+        </form>
+    {% endif %}
+
+    <div class="mt-8 rounded-lg overflow-hidden">
+        <div class="bg-gradient-to-tl from-blue-500 to-violet-500 text-white px-6 py-3">
+            <h5 class="mb-0 text-lg font-semibold">Informations calculées</h5>
+        </div>
+        <div class="bg-white px-6 py-4 shadow">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="font-medium text-gray-700">Heure de départ:</p>
+                    <p>{{ trajet.departureTime ? trajet.departureTime|date('d/m/Y H:i') : 'Non définie' }}</p>
+                </div>
+                <div>
+                    <p class="font-medium text-gray-700">Heure d'arrivée estimée:</p>
+                    <p>{{ trajet.arrivalTime ? trajet.arrivalTime|date('d/m/Y H:i') : 'Non calculée' }}</p>
+                </div>
+                <div>
+                    <p class="font-medium text-gray-700">Places disponibles:</p>
+                    <p>{{ trajet.availableSeats ?? 'Non spécifié' }}</p>
+                </div>
+                {% if trajet.typeTransport == 'Carpooling' and trajet.vehicle %}
+                <div>
+                    <p class="font-medium text-gray-700">Véhicule:</p>
+                    <p>{{ trajet.vehicle.brand }} {{ trajet.vehicle.model }} ({{ trajet.vehicle.licensePlate }})</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SweetAlert for delete confirmation -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Vehicle field toggle
+    const typeTransportSelect = document.querySelector('[data-vehicle-target="typeTransport"]');
+    const vehicleField = document.getElementById('vehicle-field');
+    const vehicleSelect = document.getElementById('{{ form.vehicle.vars.id }}');
+    const seatsInput = document.getElementById('{{ form.availableSeats.vars.id }}');
+
+    function toggleVehicleField() {
+        if (typeTransportSelect?.value === 'Carpooling') {
+            vehicleField.style.display = 'block';
+        } else {
+            vehicleField.style.display = 'none';
+        }
+    }
+
+    // Initialize based on current value
+    toggleVehicleField();
+    
+    // Add event listener for changes
+    typeTransportSelect?.addEventListener('change', toggleVehicleField);
+
+    // Update seats limit when vehicle changes
+    if (vehicleSelect && seatsInput) {
+        vehicleSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const maxSeats = selectedOption.getAttribute('data-max-seats');
+            if (maxSeats) {
+                seatsInput.max = maxSeats;
+                if (parseInt(seatsInput.value) > parseInt(maxSeats)) {
+                    seatsInput.value = maxSeats;
+                }
+            }
+        });
+    }
+
+    // Delete confirmation
+    window.confirmDelete = function(trajetId) {
+        Swal.fire({
+            title: 'Êtes-vous sûr ?',
+            text: "Vous ne pourrez pas annuler cette action !",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Oui, supprimer !',
+            cancelButtonText: 'Annuler',
+            customClass: {
+                confirmButton: 'inline-block px-6 py-3 mr-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-emerald-500 leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md',
+                cancelButton: 'inline-block px-6 py-3 mr-3 font-bold text-center text-white uppercase align-middle transition-all bg-red-600 rounded-lg cursor-pointer leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md'
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + trajetId).submit();
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

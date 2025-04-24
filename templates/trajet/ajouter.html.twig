@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un Trajet{% endblock %}
+
+{% block body %}
+<div class="container mx-auto px-4 py-8 max-w-3xl">
+    <h1 class="text-3xl font-bold mb-8 text-center">Ajouter un Trajet</h1>
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'id': 'trajet-form'}}) }}
+
+        {% set input_class = 'w-full px-4 py-2 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500' %}
+        {% set label_class = 'block mb-2 text-sm font-medium text-gray-900' %}
+        {% set error_class = 'text-red-600 font-bold' %}
+
+        {# Departure #}
+        <div class="mb-4">
+            {{ form_label(form.departure, 'Lieu de départ', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.departure, {'attr': {'class': input_class}}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.departure) }}</div>
+        </div>
+
+        {# Destination #}
+        <div class="mb-4">
+            {{ form_label(form.destination, 'Destination', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.destination, {'attr': {'class': input_class}}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.destination) }}</div>
+        </div>
+
+        {# Distance #}
+        <div class="mb-4">
+            {{ form_label(form.distance, 'Distance (km)', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.distance, {'attr': {'class': input_class}}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.distance) }}</div>
+        </div>
+
+        {# Duration #}
+        <div class="mb-4">
+            {{ form_label(form.duration, 'Durée (HH:MM)', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.duration, {'attr': {'class': input_class, 'placeholder': 'Ex: 01:30 pour 1 heure 30 minutes'}}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.duration) }}</div>
+            <p class="text-sm text-gray-500 mt-1">Format: HH:MM (format 24 heures)</p>
+        </div>
+
+        {# Departure Time #}
+        <div class="mb-4">
+            {{ form_label(form.departureTime, 'Heure de départ', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.departureTime, {'attr': {'class': input_class}}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.departureTime) }}</div>
+        </div>
+
+        {# Price #}
+        <div class="mb-4">
+            {{ form_label(form.price, 'Prix (TND)', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.price, {'attr': {'class': input_class}}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.price) }}</div>
+        </div>
+
+        {# Available Seats #}
+        <div class="mb-4">
+            {{ form_label(form.availableSeats, 'Places disponibles', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.availableSeats, {'attr': {'class': input_class, 'min': 1}}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.availableSeats) }}</div>
+        </div>
+
+        {# Transport Type #}
+        <div class="mb-4">
+            {{ form_label(form.typeTransport, 'Type de transport', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.typeTransport, {'attr': {'class': input_class, 'data-vehicle-target': 'typeTransport'}}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.typeTransport) }}</div>
+        </div>
+
+        {# Vehicle #}
+        <div class="mb-4" id="vehicle-field" style="display: none;">
+            {{ form_label(form.vehicle, 'Véhicule', {'label_attr': {'class': label_class}}) }}
+            {{ form_widget(form.vehicle, {'attr': {'class': input_class}}) }}
+            <div class="{{ error_class }}">{{ form_errors(form.vehicle) }}</div>
+            <p class="text-sm text-gray-500 mt-1">Seuls les véhicules disponibles sont affichés</p>
+        </div>
+
+        {# Catch hidden or undefined fields like arrivalTime #}
+        {{ form_rest(form) }}
+
+        <div class="mt-6">
+            <button type="submit" class="inline-block w-full px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-500 to-violet-500 leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md">
+                Ajouter
+            </button>
+        </div>
+    {{ form_end(form) }}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const typeTransportSelect = document.querySelector('[data-vehicle-target="typeTransport"]');
+    const vehicleField = document.getElementById('vehicle-field');
+    const vehicleSelect = document.getElementById('{{ form.vehicle.vars.id }}');
+    const seatsInput = document.getElementById('{{ form.availableSeats.vars.id }}');
+
+    function toggleVehicleField() {
+        if (typeTransportSelect?.value === 'Carpooling') {
+            vehicleField.style.display = 'block';
+        } else {
+            vehicleField.style.display = 'none';
+        }
+    }
+
+    toggleVehicleField();
+    typeTransportSelect?.addEventListener('change', toggleVehicleField);
+
+    if (vehicleSelect && seatsInput) {
+        vehicleSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const maxSeats = selectedOption.getAttribute('data-max-seats');
+            if (maxSeats) {
+                seatsInput.max = maxSeats;
+                if (parseInt(seatsInput.value) > parseInt(maxSeats)) {
+                    seatsInput.value = maxSeats;
+                }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'basef.html.twig' %}
+
+{% block body %}
+  <div class="container mx-auto px-4 py-6">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h1 class="text-2xl font-bold mb-4">Réserver: {{ trajet.departure }} → {{ trajet.destination }}</h1>
+      
+      {# Détails du trajet #}
+      <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+        <h2 class="text-lg font-semibold mb-3">Détails du trajet</h2>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-sm text-gray-600"><span class="font-medium">Départ:</span> {{ trajet.departure }}</p>
+            <p class="text-sm text-gray-600"><span class="font-medium">Destination:</span> {{ trajet.destination }}</p>
+            <p class="text-sm text-gray-600"><span class="font-medium">Date/Heure:</span> {{ trajet.departureTime|date('d/m/Y H:i') }}</p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600"><span class="font-medium">Type:</span> {{ trajet.typeTransport }}</p>
+            <p class="text-sm text-gray-600"><span class="font-medium">Prix par place:</span> {{ trajet.price|number_format(2, ',', ' ') }} €</p>
+            <p class="text-sm text-gray-600"><span class="font-medium">Places disponibles:</span> {{ trajet.availableSeats }}</p>
+          </div>
+        </div>
+      </div>
+
+      {# Formulaire de réservation #}
+      {{ form_start(form, { 'attr': { 'id': 'reservation-form', 'class': 'space-y-4' } }) }}
+
+        <div class="mb-4">
+          {{ form_label(form.numberOfSeats, 'Nombre de places', {
+            'label_attr': { 'class': 'block text-sm font-medium text-gray-700 mb-1' }
+          }) }}
+
+          {{ form_widget(form.numberOfSeats, {
+            'attr': {
+              'class': 'mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm',
+              'min': 1,
+              'max': trajet.availableSeats,
+              'oninput': 'updateTotalPrice(this.value)'
+            }
+          }) }}
+
+          {{ form_errors(form.numberOfSeats) }}
+        </div>
+
+        {# Aperçu du paiement #}
+        <div class="p-3 bg-blue-50 rounded-lg mb-4">
+          <p class="text-sm text-gray-700">
+            <span class="font-medium">Total à payer:</span>
+            <strong id="total-price-preview">
+              {{ (trajet.price * (form.numberOfSeats.vars.data|default(1)))|number_format(2, ',', ' ') }} €
+            </strong>
+            <span id="place-count"> (pour {{ form.numberOfSeats.vars.data|default(1) }} place{{ form.numberOfSeats.vars.data > 1 ? 's' : '' }})</span>
+          </p>
+        </div>
+
+        <div class="flex justify-end space-x-4">
+          <a href="{{ path('reservation_affichage') }}" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500">
+            Annuler
+          </a>
+          <button type="submit" class="inline-block px-6 py-3 font-bold text-white uppercase transition-all rounded-lg bg-gradient-to-tl from-blue-800 to-blue-500 hover:shadow-lg hover:-translate-y-0.5 active:opacity-85">
+          Payer maintenant
+        </button>
+        
+        </div>
+
+      {{ form_end(form) }}
+    </div>
+  </div>
+
+<script>
+// Get the exact price from PHP to avoid floating point issues
+const pricePerSeat = {{ trajet.price }};
+const maxSeats = {{ trajet.availableSeats }};
+
+function updateTotalPrice(seats) {
+    // Ensure seats is within valid range
+    let count = parseInt(seats) || 1;
+    count = Math.max(1, Math.min(count, maxSeats));
+    
+    // Calculate total price (same calculation as in PHP)
+    const total = pricePerSeat * count;
+    
+    // Format for display
+    const formattedTotal = total.toLocaleString('fr-FR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
+    // Update display
+    document.getElementById('total-price-preview').textContent = formattedTotal + ' €';
+    document.getElementById('place-count').textContent = `(pour ${count} place${count > 1 ? 's' : ''})`;
+    
+    // Update input value in case it was corrected
+    document.getElementById('{{ form.numberOfSeats.vars.id }}').value = count;
+}
+
+// Initialize event listener
+document.addEventListener('DOMContentLoaded', function() {
+    const seatsInput = document.getElementById('{{ form.numberOfSeats.vars.id }}');
+    seatsInput.addEventListener('input', function() {
+        updateTotalPrice(this.value);
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanLink | Smart Carpooling & Public Transport</title>
+        <link href="{{asset('Frontoffice/styles.css')}}" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="cursor"></div>
+    
+    <header class="glass-header">
+        <nav>
+            <div class="logo">
+                <span class="logo-icon"><i class="fas fa-bus"></i></span>
+                <span>UrbanLink</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="hover-effect">Home</a></li>
+                <li><a href="#" class="hover-effect">Carpool</a></li>
+                <li><a href="#" class="hover-effect">Transit</a></li>
+                <li><a href="#" class="hover-effect">Pricing</a></li>
+                <li><a href="#" class="hover-effect">About</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="#" class="btn-secondary">Log In</a>
+                <a href="#" class="btn-primary">Sign Up</a>
+            </div>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Smart Mobility <span>Reinvented</span></h1>
+                <p class="subtitle">Seamlessly combine carpooling with public transport for your daily commute. Save money, reduce traffic, and help the environment.</p>
+                <div class="search-container">
+                    <div class="search-tabs">
+                        <button class="tab active" data-tab="carpool">Find a Ride</button>
+                        <button class="tab" data-tab="transit">Plan Transit</button>
+                    </div>
+                    <div class="search-box">
+                        <div class="input-group">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" placeholder="From...">
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-flag"></i>
+                            <input type="text" placeholder="To...">
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-calendar"></i>
+                            <input type="text" placeholder="When...">
+                        </div>
+                        <button class="search-btn">Search Routes</button>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Modern transportation">
+                <div class="floating-elements">
+                    <div class="element bus"><i class="fas fa-bus"></i></div>
+                    <div class="element car"><i class="fas fa-car"></i></div>
+                    <div class="element train"><i class="fas fa-train"></i></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="benefits">
+            <div class="section-header">
+                <h2>Why Choose UrbanLink</h2>
+                <p>We're revolutionizing urban mobility with smart solutions</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="icon-container">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Eco-Friendly</h3>
+                    <p>Reduce your carbon footprint by sharing rides and using public transport.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="icon-container">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3>Cost Effective</h3>
+                    <p>Save up to 60% compared to driving alone or using ride-hailing services.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="icon-container">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Time Saving</h3>
+                    <p>Optimized routes combine carpooling with the fastest transit options.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="icon-container">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community</h3>
+                    <p>Connect with reliable commuters and build your trusted network.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-it-works">
+            <div class="section-header">
+                <h2>How It Works</h2>
+                <p>Get started in just a few simple steps</p>
+            </div>
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Create Your Profile</h3>
+                        <p>Set up your account with your preferences and regular routes.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Find or Offer a Ride</h3>
+                        <p>Search for available carpools or list your own vehicle.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Plan Your Journey</h3>
+                        <p>Combine carpool segments with public transport for the best route.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Travel Smart</h3>
+                        <p>Enjoy your commute while saving money and the environment.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="app-showcase">
+            <div class="app-content">
+                <h2>Download Our Mobile App</h2>
+                <p>Access all UrbanLink features on the go. Get real-time updates, notifications, and seamless payment options.</p>
+                <div class="app-badges">
+                    <a href="#" class="app-badge">
+                        <i class="fab fa-apple"></i>
+                        <div>
+                            <span>Download on the</span>
+                            <span>App Store</span>
+                        </div>
+                    </a>
+                    <a href="#" class="app-badge">
+                        <i class="fab fa-google-play"></i>
+                        <div>
+                            <span>Get it on</span>
+                            <span>Google Play</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="app-image">
+                <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1528&q=80" alt="Mobile app">
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <div class="section-header">
+                <h2>What Our Users Say</h2>
+                <p>Join thousands of happy commuters</p>
+            </div>
+            <div class="testimonial-cards">
+                <div class="testimonial-card">
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"UrbanLink cut my commute costs in half and I've met some great people along the way!"</p>
+                    <div class="user">
+                        <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Sarah J.">
+                        <div>
+                            <h4>Sarah J.</h4>
+                            <span>Daily Commuter</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"The route optimization is amazing. I get to work faster than when I drove myself!"</p>
+                    <div class="user">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael T.">
+                        <div>
+                            <h4>Michael T.</h4>
+                            <span>UrbanLink Member</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p>"As someone who cares about the environment, UrbanLink aligns perfectly with my values."</p>
+                    <div class="user">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Priya K.">
+                        <div>
+                            <h4>Priya K.</h4>
+                            <span>Environmentalist</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="cta-content">
+                <h2>Ready to Transform Your Commute?</h2>
+                <p>Join thousands of smart commuters today and experience the future of urban mobility.</p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn-primary">Sign Up Free</a>
+                    <a href="#" class="btn-secondary">Learn More</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">
+                    <span class="logo-icon"><i class="fas fa-bus"></i></span>
+                    <span>UrbanLink</span>
+                </div>
+                <p>Smart mobility solutions for modern cities.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">Carpool Matching</a></li>
+                    <li><a href="#">Transit Planning</a></li>
+                    <li><a href="#">Route Optimization</a></li>
+                    <li><a href="#">Enterprise Solutions</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Safety</a></li>
+                    <li><a href="#">Community Guidelines</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 UrbanLink. All rights reserved.</p>
+            <div class="legal-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+<script src="{{asset('Frontoffice/script.js')}}"></script>
+</body>
+</html>
