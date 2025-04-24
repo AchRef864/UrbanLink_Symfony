@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ReponseRepository;
 use App\Entity\Reponse;
 use Knp\Component\Pager\PaginatorInterface;
+use Knp\Snappy\Pdf; 
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 #[Route('/avis')]
 final class AvisController extends AbstractController
@@ -250,5 +252,30 @@ final class AvisController extends AbstractController
             'reponses' => $reponses,
             'avis_id' => $id,
         ]);
+    }
+    
+    #[Route('/export/pdf', name: 'app_avis_pdf', methods: ['GET'])]
+    public function exportPdf(AvisRepository $avisRepository, Pdf $knpSnappyPdf): Response
+    {
+        // fetch all complaints (or apply same search/pagination as you like)
+        $avis = $avisRepository->findAll();
+
+        // render the same table into an “export” Twig template
+        $html = $this->renderView('avis/pdf.html.twig', [
+            'avis' => $avis,
+        ]);
+
+        $filename = 'complaints_' . date('Ymd_His') . '.pdf';
+
+        return new Response(
+            $knpSnappyPdf->getOutputFromHtml($html),
+            200,
+            [
+                'Content-Type'        => 'application/pdf',
+                'Content-Disposition' => $this->container
+                    ->get('serializer')
+                    ->encode($filename, 'json'),
+            ]
+        );
     }
 }

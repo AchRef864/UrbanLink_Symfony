@@ -106,7 +106,6 @@
             max-height: 250px;
             margin: 0 auto;
         }
-
     </style>
 {% endblock %}
 
@@ -131,12 +130,19 @@
             <h6>Complaints Management</h6>
             <div class="flex items-center gap-2">
                 <form method="get" action="{{ path('app_avis_index') }}" class="search-form">
-                    <input type="text" name="search" id="search" value="{{ search }}" placeholder="Search complaints..." class="mr-2">
+                    <input type="text" name="search" id="search"
+                           value="{{ search }}"
+                           placeholder="Search complaints..."
+                           class="mr-2">
                     <button type="submit" class="btn-add">Search</button>
                 </form>
+
                 {% if app.user and app.user.role == 'client' %}
                     <a href="{{ path('app_avis_new') }}" class="btn-add">+ New Complaint</a>
                 {% endif %}
+
+                {# ← New PDF button #}
+                <a href="{{ path('app_avis_pdf') }}" target="_blank" class="btn-add">Export PDF</a>
             </div>
         </div>
 
@@ -172,30 +178,40 @@
                             <td class="px-6 py-3">{{ avi.vehicle and avi.vehicle.id ? avi.vehicle.licensePlate : 'N/A' }}</td>
                             <td class="px-6 py-3 space-x-2">
                                 {% if app.user and app.user.id == avi.user.id %}
-                                    <a href="{{ path('app_avis_edit', {'id': avi.id}) }}" class="inline-block px-4 py-1.5 font-bold text-xs text-white rounded-lg" style="background: #00007d;">Edit</a>
+                                    <a href="{{ path('app_avis_edit', {'id': avi.id}) }}"
+                                       class="inline-block px-4 py-1.5 font-bold text-xs text-white rounded-lg"
+                                       style="background: #00007d;">Edit</a>
                                 {% endif %}
-                                <a href="{{ path('app_avis_reponses', {'id': avi.id}) }}" class="inline-block px-4 py-1.5 font-bold text-xs text-white rounded-lg" style="background: #28a745;">Responses</a>
+                                <a href="{{ path('app_avis_reponses', {'id': avi.id}) }}"
+                                   class="inline-block px-4 py-1.5 font-bold text-xs text-white rounded-lg"
+                                   style="background: #28a745;">Responses</a>
                                 {% if app.user and app.user.role == 'client' and app.user.id == avi.user.id %}
-                                    <form method="post" action="{{ path('app_avis_delete', {'id': avi.id}) }}" class="inline">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ avi.id) }}">
-                                        <button type="submit" class="inline-block px-4 py-1.5 font-bold text-xs text-white rounded-lg" style="background: #b91c1c;" onclick="return confirm('Are you sure?')">Delete</button>
+                                    <form method="post"
+                                          action="{{ path('app_avis_delete', {'id': avi.id}) }}"
+                                          class="inline">
+                                        <input type="hidden" name="_token"
+                                               value="{{ csrf_token('delete' ~ avi.id) }}">
+                                        <button type="submit"
+                                                class="inline-block px-4 py-1.5 font-bold text-xs text-white rounded-lg"
+                                                style="background: #b91c1c;"
+                                                onclick="return confirm('Are you sure?')">Delete
+                                        </button>
                                     </form>
                                 {% endif %}
                             </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="7" class="px-6 py-1 text-center text-gray-500">No complaints found</td>
+                            <td colspan="7" class="px-6 py-3 text-center text-gray-500">No complaints found</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
 
-        {# Pie chart inserted directly under the table #}
         <div class="chart-container">
             <h6 class="mb-4">Complaint Types Breakdown</h6>
-            <canvas id="complaintTypesChart" width="400" height="400"></canvas>
+            <canvas id="complaintTypesChart"></canvas>
         </div>
     </div>
 
@@ -212,7 +228,6 @@
 
     <script>
         $(document).ready(function() {
-            // initialize DataTable
             $('#datatable-search').DataTable({
                 searching: false,
                 info: false,
@@ -221,7 +236,6 @@
                 autoWidth: false
             });
 
-            // JavaFX-style pie chart logic adapted to Symfony/Chart.js
             const counts = [
                 {{ stats['taxi complaint'] }},
                 {{ stats['subscription complaint'] }},
@@ -234,13 +248,11 @@
             ];
             const total = counts.reduce((sum, c) => sum + c, 0) || 1;
 
-            // build labels with percentages
             const labelsWithPct = counts.map((count, i) => {
-                const pct = ((count * 100.0) / total).toFixed(1);
+                const pct = ((count * 100) / total).toFixed(1);
                 return `${baseLabels[i]} (${pct}%)`;
             });
 
-            // render pie chart
             const ctx = document.getElementById('complaintTypesChart').getContext('2d');
             new Chart(ctx, {
                 type: 'pie',
