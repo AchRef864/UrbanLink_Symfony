@@ -10,6 +10,7 @@ parameters:
     stripe_public_key: '%env(STRIPE_PUBLIC_KEY)%'
     stripe_secret_key: '%env(STRIPE_SECRET_KEY)%'
     opencage.api_key: '%env(OPENCAGE_API_KEY)%'
+    app.user_image_upload_path: '%kernel.project_dir%/public/uploads/users/images'
 
 
 twig:

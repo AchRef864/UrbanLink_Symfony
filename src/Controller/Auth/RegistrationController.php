@@ -8,10 +8,12 @@ use App\Form\RegistrationFormType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class RegistrationController extends AbstractController
 {
@@ -19,7 +21,8 @@ class RegistrationController extends AbstractController
     public function register(
         Request                     $request,
         UserPasswordHasherInterface $passwordHasher,
-        EntityManagerInterface      $entityManager
+        EntityManagerInterface      $entityManager,
+        SluggerInterface            $slugger
     ): Response
     {
         $user = new User();
@@ -35,6 +38,23 @@ class RegistrationController extends AbstractController
             // Set license if not already set
             if (empty($user->getLicense())) {
                 $user->setLicense($this->generateLicenseNumber());
+            }
+
+            // Handle image upload
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                try {
+                    $uploadDir = $this->getParameter('app.user_image_upload_path');
+                    $imageFile->move($uploadDir, $newFilename);
+                    $user->setImage('uploads/users/images/' . $newFilename);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Could not upload the image. Please try again.');
+                    return $this->redirectToRoute('app_register');
+                }
             }
 
             // Hash password

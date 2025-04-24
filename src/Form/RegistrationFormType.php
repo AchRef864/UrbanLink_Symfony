@@ -6,11 +6,13 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -52,6 +54,28 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Phone number must start with + followed by 8-15 digits'
                     ])
                 ]
+            ])
+            ->add('homeAddress', TextType::class, [
+                'label' => false,
+                'constraints' => [
+                    new NotBlank(['message' => 'Please enter your home address']),
+                ],
+            ])
+            ->add('image', FileType::class, [
+                'label' => false,
+                'mapped' => false, // This field is not directly mapped to the User entity
+                'constraints' => [
+                    new NotBlank(['message' => 'Please upload an image']),
+                    new File([
+                        'maxSize' => '2M', // Adjust as needed
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/gif',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid image file (JPEG, PNG, GIF)',
+                    ]),
+                ],
             ])
             ->add('plainPassword', PasswordType::class, [
                 'label' => false,
