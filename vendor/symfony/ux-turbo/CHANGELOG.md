@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.24.0
+
+-   Add Twig Extensions for `meta` tags
+-   Add support for authentication to the EventSource via `turbo_stream_listen`
+
 ## 2.22.0
 
 -   Add `<twig:Turbo:Stream>` component
