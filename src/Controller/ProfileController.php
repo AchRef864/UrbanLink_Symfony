@@ -30,6 +30,39 @@ class ProfileController extends AbstractController
         ]);
     }
 
+    #[Route('/myprofile', name: 'app_profile_myprofile')]
+    #[IsGranted('ROLE_USER')]
+    public function myProfile(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher
+    ): Response {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException('You must be logged in to view this page.');
+        }
+
+        $form = $this->createForm(ProfileFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->has('plainPassword') && $plainPassword = $form->get('plainPassword')->getData()) {
+                $user->setPassword($passwordHasher->hashPassword($user, $plainPassword));
+            }
+
+            $entityManager->flush();
+            $this->addFlash('success', 'Profile updated.');
+            return $this->redirectToRoute('app_profile_myprofile');
+        }
+
+        return $this->render('profile/myprofile.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user,
+        ]);
+    }
+
+
+
     #[Route('/edit', name: 'app_profile_edit')]
     #[IsGranted('ROLE_USER')]
     public function edit(
@@ -89,4 +122,33 @@ class ProfileController extends AbstractController
         $this->addFlash('error', 'Invalid CSRF token.');
         return $this->redirectToRoute('app_profile');
     }
+
+    #[Route('/change-password', name: 'app_change_password')]
+    #[IsGranted('ROLE_USER')]
+    public function changePassword(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException('You must be logged in to change your password.');
+        }
+
+        // You can reuse the form or create a dedicated ChangePasswordFormType
+        $form = $this->createForm(ProfileFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->has('plainPassword') && $plainPassword = $form->get('plainPassword')->getData()) {
+                $user->setPassword($passwordHasher->hashPassword($user, $plainPassword));
+            }
+
+            $entityManager->flush();
+            $this->addFlash('success', 'Password changed successfully!');
+            return $this->redirectToRoute('app_profile');
+        }
+
+        return $this->render('profile/change_password.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
 }

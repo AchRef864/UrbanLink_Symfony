@@ -161,3 +161,6 @@ course_map:
 course_stats:
     path: /admin/course/stats
     controller: App\Controller\CourseController::stats
+my_profile:
+    path: /profile/myprofile
+    controller: App\Controller\ProfileController::myProfile

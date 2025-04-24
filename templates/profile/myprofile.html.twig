@@ -1,0 +1,277 @@
+{% extends 'basef.html.twig' %}
+
+{% block title %}Edit Profile - UrbanLink{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        .input-field {
+            transition: all 0.3s ease;
+            border: 1px solid #d1d5db;
+        }
+        .input-field:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .input-field:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            outline: none;
+        }
+        .password-field {
+            border: 1px solid #d1d5db;
+            transition: all 0.3s ease;
+        }
+        .password-field:hover, .password-field:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        .section-header {
+            position: relative;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .section-header:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 3rem;
+            height: 3px;
+            background: #3b82f6;
+            border-radius: 3px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="min-h-screen bg-gray-50">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-500 shadow">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <h1 class="text-3xl font-bold text-white">
+                    Edit Your Profile
+                </h1>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="py-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+                    <div class="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
+                        <!-- Sidebar Navigation -->
+                        <aside class="py-6 lg:col-span-3">
+                            <nav class="space-y-1">
+                                <a href="{{ path('app_profile_edit') }}" class="border-l-4 border-blue-600 bg-blue-50 text-blue-700 group flex items-center px-3 py-2 text-sm font-medium">
+                                    <i class="fas fa-user-edit text-blue-500 group-hover:text-blue-600 flex-shrink-0 -ml-1 mr-3 h-6 w-6"></i>
+                                    <span class="truncate">Edit Profile</span>
+                                </a>
+                            </nav>
+                        </aside>
+
+                        <!-- Profile Edit Form -->
+                        <div class="lg:col-span-9 p-8">
+                            {% for flash in app.flashes('success') %}
+                                <div class="rounded-md bg-green-50 p-4 mb-6">
+                                    <div class="flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-check-circle h-5 w-5 text-green-400"></i>
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm font-medium text-green-800">{{ flash }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            {% for flash in app.flashes('error') %}
+                                <div class="rounded-md bg-red-50 p-4 mb-6">
+                                    <div class="flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-exclamation-circle h-5 w-5 text-red-400"></i>
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm font-medium text-red-800">{{ flash }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            {{ form_start(form, {'attr': {'class': 'space-y-8'}}) }}
+
+                            <!-- Personal Information Section -->
+                            <div class="space-y-6">
+                                <div>
+                                    <h2 class="section-header text-2xl font-semibold leading-7 text-gray-900">Personal Information</h2>
+                                    <p class="mt-2 text-sm text-gray-600">Update your personal details to keep your account information current.</p>
+                                </div>
+
+                                <div class="grid grid-cols-1 gap-y-6 gap-x-6 sm:grid-cols-6">
+                                    <!-- Name -->
+                                    <div class="sm:col-span-3">
+                                        {{ form_label(form.name, 'Full Name', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
+                                        <div class="relative rounded-md shadow-sm">
+                                            {{ form_widget(form.name, {'attr': {'class': 'input-field pl-10 block w-full rounded-md py-2 px-3 shadow-sm sm:text-sm'}}) }}
+                                        </div>
+                                        <div class="mt-1 text-sm text-red-600">
+                                            {{ form_errors(form.name) }}
+                                        </div>
+                                    </div>
+
+                                    <!-- Email -->
+                                    <div class="sm:col-span-4">
+                                        {{ form_label(form.email, 'Email Address', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
+                                        <div class="relative rounded-md shadow-sm">
+                                            {{ form_widget(form.email, {'attr': {'class': 'input-field pl-10 block w-full rounded-md py-2 px-3 shadow-sm sm:text-sm'}}) }}
+                                        </div>
+                                        <div class="mt-1 text-sm text-red-600">
+                                            {{ form_errors(form.email) }}
+                                        </div>
+                                    </div>
+
+                                    <!-- Phone -->
+                                    <div class="sm:col-span-4">
+                                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                                        <div class="flex rounded-md shadow-sm">
+                                            <select id="countryCode" class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-gray-500 sm:text-sm">
+                                                <option value="+1">US +1</option>
+                                                <option value="+216">TN +216</option>
+                                                <option value="+33">FR +33</option>
+                                                <option value="+49">DE +49</option>
+                                                <option value="+44">UK +44</option>
+                                            </select>
+                                            <div class="relative flex-grow">
+                                                {{ form_widget(form.phone, {'attr': {'class': 'input-field pl-10 block w-full min-w-0 flex-1 rounded-none rounded-r-md py-2 px-3 sm:text-sm', 'id': 'phone'}}) }}
+                                            </div>
+                                        </div>
+                                        <div class="mt-1 text-sm text-red-600">
+                                            {{ form_errors(form.phone) }}
+                                        </div>
+                                    </div>
+
+                                    <!-- Password Section -->
+                                    {% if form.plainPassword is defined %}
+                                        <div class="sm:col-span-6 pt-6 border-t border-gray-200">
+                                            <h3 class="text-lg font-medium text-gray-900 mb-4">Password Update</h3>
+
+                                            <!-- New Password -->
+                                            <div class="sm:col-span-4 mb-4">
+                                                {{ form_label(form.plainPassword.first, 'New Password', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
+                                                <div class="relative rounded-md shadow-sm">
+                                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                        <i class="fas fa-lock text-gray-400"></i>
+                                                    </div>
+                                                    {{ form_widget(form.plainPassword.first, {'attr': {'class': 'password-field pl-10 block w-full rounded-md py-2 px-3 shadow-sm sm:text-sm'}}) }}
+                                                </div>
+                                                <div class="mt-1 text-sm text-red-600">
+                                                    {{ form_errors(form.plainPassword.first) }}
+                                                </div>
+                                            </div>
+
+                                            <!-- Repeat Password -->
+                                            <div class="sm:col-span-4">
+                                                {{ form_label(form.plainPassword.second, 'Repeat Password', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
+                                                <div class="relative rounded-md shadow-sm">
+                                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                        <i class="fas fa-lock text-gray-400"></i>
+                                                    </div>
+                                                    {{ form_widget(form.plainPassword.second, {'attr': {'class': 'password-field pl-10 block w-full rounded-md py-2 px-3 shadow-sm sm:text-sm'}}) }}
+                                                </div>
+                                                <div class="mt-1 text-sm text-red-600">
+                                                    {{ form_errors(form.plainPassword.second) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- License Section (if applicable) -->
+                            {% if form.license is defined %}
+                                <div class="pt-8 border-t border-gray-200">
+                                    <div>
+                                        <h2 class="section-header text-xl font-semibold leading-6 text-gray-900">License Information</h2>
+                                        <p class="mt-2 text-sm text-gray-600">Your driving license details for verification purposes.</p>
+                                    </div>
+
+                                    <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                                        <div class="sm:col-span-4">
+                                            {{ form_label(form.license, 'License Number', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
+                                            <div class="relative rounded-md shadow-sm">
+                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                    <i class="fas fa-id-card text-gray-400"></i>
+                                                </div>
+                                                {{ form_widget(form.license, {'attr': {'class': 'input-field pl-10 block w-full rounded-md py-2 px-3 shadow-sm sm:text-sm'}}) }}
+                                            </div>
+                                            <div class="mt-1 text-sm text-red-600">
+                                                {{ form_errors(form.license) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <!-- Save Button -->
+                            <div class="pt-8 border-t border-gray-200">
+                                <div class="flex justify-end">
+                                    <button type="submit" class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 py-2 px-6 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
+                                        <i class="fas fa-save mr-2"></i> Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set the country code based on the current phone number
+            const phoneInput = document.getElementById('phone');
+            const countryCodeSelect = document.getElementById('countryCode');
+
+            if (phoneInput.value) {
+                // Extract country code from phone number
+                const phoneValue = phoneInput.value;
+                const plusIndex = phoneValue.indexOf('+');
+
+                if (plusIndex !== -1) {
+                    const spaceIndex = phoneValue.indexOf(' ');
+                    const code = phoneValue.substring(plusIndex, spaceIndex !== -1 ? spaceIndex : undefined);
+
+                    // Find matching option
+                    for (let i = 0; i < countryCodeSelect.options.length; i++) {
+                        if (countryCodeSelect.options[i].value === code) {
+                            countryCodeSelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+
+                    // Remove country code from display
+                    if (spaceIndex !== -1) {
+                        phoneInput.value = phoneValue.substring(spaceIndex + 1);
+                    } else if (plusIndex === 0) {
+                        phoneInput.value = '';
+                    }
+                }
+            }
+
+            // Update phone number with country code before form submission
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function() {
+                const selectedCode = countryCodeSelect.options[countryCodeSelect.selectedIndex].value;
+                if (!phoneInput.value.startsWith(selectedCode)) {
+                    phoneInput.value = selectedCode + ' ' + phoneInput.value;
+                }
+            });
+        });
+    </script>
+{% endblock %}
