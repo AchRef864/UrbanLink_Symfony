@@ -364,4 +364,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->reservations;
     }
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $homeAddress = null;
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+        return $this;
+    }
+
+    public function getHomeAddress(): ?string
+    {
+        return $this->homeAddress;
+    }
+
+    public function setHomeAddress(?string $homeAddress): self
+    {
+        $this->homeAddress = $homeAddress;
+        return $this;
+    }
+
 }
