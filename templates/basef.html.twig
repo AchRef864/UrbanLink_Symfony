@@ -327,9 +327,11 @@
                         </ul>
                     </li>
 
-                    {# Bouton de Connexion (non modifié en dropdown) #}
+                    {# Logout Button #}
                     <li class="nav-item ms-lg-3 my-2 my-lg-0">
-                        <a class="nav-link btn btn-accent rounded-pill px-3" href="#"><i class="fas fa-user me-1"></i> Connexion</a>
+                        <a class="nav-link btn btn-accent rounded-pill px-3" href="{{ path('app_logout') }}">
+                            <i class="fas fa-sign-out-alt me-1"></i> Déconnexion
+                        </a>
                     </li>
 
                 </ul>
