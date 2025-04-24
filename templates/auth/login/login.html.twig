@@ -10,6 +10,9 @@
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/argon-dashboard-tailwind.css') }}" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
 {% endblock %}
 
 {% block javascripts %}
@@ -17,12 +20,19 @@
     <!-- reCAPTCHA v2 script -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             const response = grecaptcha.getResponse();
             if (response.length === 0) {
                 e.preventDefault();
-                alert('Please complete the reCAPTCHA verification');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'reCAPTCHA Required',
+                    text: 'Please complete the reCAPTCHA verification',
+                    confirmButtonColor: '#3085d6',
+                });
                 return false;
             }
             return true;
@@ -50,6 +60,18 @@
 {% block body %}
 
     {% for flash in app.flashes('blocked') %}
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Account Blocked',
+                    text: '{{ flash }}',
+                    confirmButtonColor: '#3085d6',
+                });
+            });
+        </script>
+
         <div id="blockedPopup" class="fixed top-4 right-4 z-50">
             <div class="flex items-center p-4 mb-4 text-sm text-yellow bg-red-500 rounded-lg shadow-lg" role="alert">
                 <svg class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -143,9 +165,16 @@
 
                                 <div class="flex-auto p-6">
                                     {% if error %}
-                                        <div class="relative px-4 py-3 mb-4 text-sm text-red-500 bg-red-500 rounded-lg" role="alert">
-                                            {{ error.messageKey|trans(error.messageData, 'security') }}
-                                        </div>
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Login Failed',
+                                                    text: '{{ error.messageKey|trans(error.messageData, 'security') }}',
+                                                    confirmButtonColor: '#3085d6',
+                                                });
+                                            });
+                                        </script>
                                     {% endif %}
 
                                     {% if app.user %}
@@ -166,7 +195,9 @@
                                                     autofocus
                                             >
                                             {% if form_errors is defined and form_errors['_username'] is defined %}
-                                                <div class="text-red-500 text-xs mt-1">{{ form_errors['_username'] }}</div>
+                                                <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
+                                                    {{ form_errors['_username'] }}
+                                                </div>
                                             {% endif %}
                                         </div>
 
@@ -180,7 +211,9 @@
                                                     type="password"
                                             >
                                             {% if form_errors is defined and form_errors['_password'] is defined %}
-                                                <div class="text-red-500 text-xs mt-1">{{ form_errors['_password'] }}</div>
+                                                <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
+                                                    {{ form_errors['_password'] }}
+                                                </div>
                                             {% endif %}
                                         </div>
 
