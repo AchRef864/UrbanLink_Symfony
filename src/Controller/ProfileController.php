@@ -7,11 +7,13 @@ use App\Entity\User;
 use App\Form\ProfileFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/profile')]
 class ProfileController extends AbstractController
@@ -35,7 +37,8 @@ class ProfileController extends AbstractController
     public function myProfile(
         Request $request,
         EntityManagerInterface $entityManager,
-        UserPasswordHasherInterface $passwordHasher
+        UserPasswordHasherInterface $passwordHasher,
+        SluggerInterface $slugger
     ): Response {
         $user = $this->getUser();
         if (!$user instanceof User) {
@@ -46,8 +49,26 @@ class ProfileController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Handle password change if provided
             if ($form->has('plainPassword') && $plainPassword = $form->get('plainPassword')->getData()) {
                 $user->setPassword($passwordHasher->hashPassword($user, $plainPassword));
+            }
+
+            // Handle image update
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+
+                try {
+                    $uploadDir = $this->getParameter('app.user_image_upload_path');
+                    $imageFile->move($uploadDir, $newFilename);
+                    $user->setImage('uploads/users/images/' . $newFilename);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Could not upload the new image. Please try again.');
+                    return $this->redirectToRoute('app_profile_myprofile');
+                }
             }
 
             $entityManager->flush();
@@ -68,7 +89,8 @@ class ProfileController extends AbstractController
     public function edit(
         Request $request,
         EntityManagerInterface $entityManager,
-        UserPasswordHasherInterface $passwordHasher
+        UserPasswordHasherInterface $passwordHasher,
+        SluggerInterface $slugger
     ): Response {
         $user = $this->getUser();
         if (!$user instanceof User) {
@@ -84,6 +106,23 @@ class ProfileController extends AbstractController
                 $user->setPassword(
                     $passwordHasher->hashPassword($user, $plainPassword)
                 );
+            }
+
+            // Handle image update
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+
+                try {
+                    $uploadDir = $this->getParameter('app.user_image_upload_path');
+                    $imageFile->move($uploadDir, $newFilename);
+                    $user->setImage('uploads/users/images/' . $newFilename);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Could not upload the new image. Please try again.');
+                    return $this->redirectToRoute('app_profile_edit');
+                }
             }
 
             $entityManager->flush();
@@ -150,5 +189,4 @@ class ProfileController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
 }

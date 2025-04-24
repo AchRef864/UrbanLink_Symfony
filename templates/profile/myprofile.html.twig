@@ -47,7 +47,6 @@
 
 {% block body %}
     <div class="min-h-screen bg-gray-50">
-        <!-- Header -->
         <div class="bg-gradient-to-r from-blue-600 to-blue-500 shadow">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 <h1 class="text-3xl font-bold text-white">
@@ -56,12 +55,10 @@
             </div>
         </div>
 
-        <!-- Main Content -->
         <main class="py-8">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="bg-white shadow-xl rounded-lg overflow-hidden">
                     <div class="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
-                        <!-- Sidebar Navigation -->
                         <aside class="py-6 lg:col-span-3">
                             <nav class="space-y-1">
                                 <a href="{{ path('app_profile_edit') }}" class="border-l-4 border-blue-600 bg-blue-50 text-blue-700 group flex items-center px-3 py-2 text-sm font-medium">
@@ -71,7 +68,6 @@
                             </nav>
                         </aside>
 
-                        <!-- Profile Edit Form -->
                         <div class="lg:col-span-9 p-8">
                             {% for flash in app.flashes('success') %}
                                 <div class="rounded-md bg-green-50 p-4 mb-6">
@@ -99,9 +95,8 @@
                                 </div>
                             {% endfor %}
 
-                            {{ form_start(form, {'attr': {'class': 'space-y-8'}}) }}
+                            {{ form_start(form, {'attr': {'class': 'space-y-8', 'enctype': 'multipart/form-data'}}) }}
 
-                            <!-- Personal Information Section -->
                             <div class="space-y-6">
                                 <div>
                                     <h2 class="section-header text-2xl font-semibold leading-7 text-gray-900">Personal Information</h2>
@@ -109,29 +104,26 @@
                                 </div>
 
                                 <div class="grid grid-cols-1 gap-y-6 gap-x-6 sm:grid-cols-6">
-                                    <!-- Name -->
                                     <div class="sm:col-span-3">
                                         {{ form_label(form.name, 'Full Name', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
                                         <div class="relative rounded-md shadow-sm">
-                                            {{ form_widget(form.name, {'attr': {'class': 'input-field pl-10 block w-full rounded-md py-2 px-3 shadow-sm sm:text-sm'}}) }}
+                                            {{ form_widget(form.name, {'attr': {'class': 'input-field pl-3 block w-full rounded-md py-2 px-3 shadow-sm sm:text-sm'}}) }}
                                         </div>
                                         <div class="mt-1 text-sm text-red-600">
                                             {{ form_errors(form.name) }}
                                         </div>
                                     </div>
 
-                                    <!-- Email -->
                                     <div class="sm:col-span-4">
                                         {{ form_label(form.email, 'Email Address', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
                                         <div class="relative rounded-md shadow-sm">
-                                            {{ form_widget(form.email, {'attr': {'class': 'input-field pl-10 block w-full rounded-md py-2 px-3 shadow-sm sm:text-sm'}}) }}
+                                            {{ form_widget(form.email, {'attr': {'class': 'input-field pl-3 block w-full rounded-md py-2 px-3 shadow-sm sm:text-sm'}}) }}
                                         </div>
                                         <div class="mt-1 text-sm text-red-600">
                                             {{ form_errors(form.email) }}
                                         </div>
                                     </div>
 
-                                    <!-- Phone -->
                                     <div class="sm:col-span-4">
                                         <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
                                         <div class="flex rounded-md shadow-sm">
@@ -143,7 +135,7 @@
                                                 <option value="+44">UK +44</option>
                                             </select>
                                             <div class="relative flex-grow">
-                                                {{ form_widget(form.phone, {'attr': {'class': 'input-field pl-10 block w-full min-w-0 flex-1 rounded-none rounded-r-md py-2 px-3 sm:text-sm', 'id': 'phone'}}) }}
+                                                {{ form_widget(form.phone, {'attr': {'class': 'input-field pl-3 block w-full min-w-0 flex-1 rounded-none rounded-r-md py-2 px-3 sm:text-sm', 'id': 'phone'}}) }}
                                             </div>
                                         </div>
                                         <div class="mt-1 text-sm text-red-600">
@@ -151,44 +143,55 @@
                                         </div>
                                     </div>
 
-                                    <!-- Password Section -->
+                                    <div class="sm:col-span-6">
+                                        {{ form_label(form.homeAddress, 'Home Address', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
+                                        <div class="relative rounded-md shadow-sm">
+                                            {{ form_widget(form.homeAddress, {'attr': {'class': 'input-field block w-full rounded-md py-2 px-3 shadow-sm sm:text-sm'}}) }}
+                                        </div>
+                                        <div class="mt-1 text-sm text-red-600">
+                                            {{ form_errors(form.homeAddress) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="sm:col-span-6">
+                                        {{ form_label(form.image, 'Profile Image', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
+                                        <div class="mt-1 relative rounded-md shadow-sm">
+                                            {{ form_widget(form.image, {'attr': {'class': 'input-field block w-full rounded-md py-2 px-3 shadow-sm sm:text-sm'}}) }}
+                                        </div>
+                                        <p class="mt-1 text-sm text-gray-500">Upload a new profile picture (JPEG, PNG, GIF - max 2MB).</p>
+                                        <div class="mt-1 text-sm text-red-600">
+                                            {{ form_errors(form.image) }}
+                                        </div>
+                                        {% if app.user.image %}
+                                            <div class="mt-2">
+                                                <img src="{{ asset(app.user.image) }}" alt="Current Profile Picture" class="rounded-full h-16 w-16 object-cover shadow-sm">
+                                                <p class="text-xs text-gray-500">Current profile picture</p>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
                                     {% if form.plainPassword is defined %}
                                         <div class="sm:col-span-6 pt-6 border-t border-gray-200">
                                             <h3 class="text-lg font-medium text-gray-900 mb-4">Password Update</h3>
 
-                                            <!-- New Password -->
                                             <div class="sm:col-span-4 mb-4">
-                                                {{ form_label(form.plainPassword.first, 'New Password', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
+                                                {{ form_label(form.plainPassword, 'New Password', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
                                                 <div class="relative rounded-md shadow-sm">
                                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                         <i class="fas fa-lock text-gray-400"></i>
                                                     </div>
-                                                    {{ form_widget(form.plainPassword.first, {'attr': {'class': 'password-field pl-10 block w-full rounded-md py-2 px-3 shadow-sm sm:text-sm'}}) }}
+                                                    {{ form_widget(form.plainPassword, {'attr': {'class': 'password-field pl-10 block w-full rounded-md py-2 px-3 shadow-sm sm:text-sm'}}) }}
                                                 </div>
                                                 <div class="mt-1 text-sm text-red-600">
-                                                    {{ form_errors(form.plainPassword.first) }}
-                                                </div>
-                                            </div>
-
-                                            <!-- Repeat Password -->
-                                            <div class="sm:col-span-4">
-                                                {{ form_label(form.plainPassword.second, 'Repeat Password', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
-                                                <div class="relative rounded-md shadow-sm">
-                                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                        <i class="fas fa-lock text-gray-400"></i>
-                                                    </div>
-                                                    {{ form_widget(form.plainPassword.second, {'attr': {'class': 'password-field pl-10 block w-full rounded-md py-2 px-3 shadow-sm sm:text-sm'}}) }}
-                                                </div>
-                                                <div class="mt-1 text-sm text-red-600">
-                                                    {{ form_errors(form.plainPassword.second) }}
+                                                    {{ form_errors(form.plainPassword) }}
                                                 </div>
                                             </div>
                                         </div>
                                     {% endif %}
+
                                 </div>
                             </div>
 
-                            <!-- License Section (if applicable) -->
                             {% if form.license is defined %}
                                 <div class="pt-8 border-t border-gray-200">
                                     <div>
@@ -203,7 +206,7 @@
                                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                     <i class="fas fa-id-card text-gray-400"></i>
                                                 </div>
-                                                {{ form_widget(form.license, {'attr': {'class': 'input-field pl-10 block w-full rounded-md py-2 px-3 shadow-sm sm:text-sm'}}) }}
+                                                {{ form_widget(form.license, {'attr': {'class': 'input-field pl-3 block w-full rounded-md py-2 px-3 shadow-sm sm:text-sm'}}) }}
                                             </div>
                                             <div class="mt-1 text-sm text-red-600">
                                                 {{ form_errors(form.license) }}
@@ -213,7 +216,6 @@
                                 </div>
                             {% endif %}
 
-                            <!-- Save Button -->
                             <div class="pt-8 border-t border-gray-200">
                                 <div class="flex justify-end">
                                     <button type="submit" class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 py-2 px-6 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">

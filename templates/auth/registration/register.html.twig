@@ -206,13 +206,11 @@
     const phoneInput = document.getElementById('phoneInput');
     const form = document.querySelector('form');
 
-    // Update the phone number with country code before form submission
-    form.addEventListener('submit', function(e) {
+      form.addEventListener('submit', function(e) {
       const selectedOption = countrySelect.options[countrySelect.selectedIndex];
       const countryCode = selectedOption.getAttribute('data-code');
       const phoneNumber = phoneInput.value;
 
-      // Only prepend country code if it's not already there
       if (!phoneNumber.startsWith(countryCode)) {
         phoneInput.value = countryCode + phoneNumber;
       }
