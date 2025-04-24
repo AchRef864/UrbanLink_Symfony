@@ -25,12 +25,18 @@ taxi_index:
     controller: App\Controller\TaxiController::index
 
 taxi_new:
-    path: /admin/taxi/new
+    path: /admin/taxi/new/{userId}
     controller: App\Controller\TaxiController::new
+    methods: [GET,POST]
+    requirements:
+        userId: '\d+'
 
 taxi_edit:
     path: /admin/taxi/{id}/edit
     controller: App\Controller\TaxiController::edit
+    methods: [GET,POST]
+    requirements:
+        id: '\d+'
 
 taxi_delete:
     path: /admin/taxi/{id}/delete

@@ -290,6 +290,101 @@
           <a href="{{ path('trajet_affichage') }}" class="{{ app.request.get('_route') starts with 'trajet_' ? 'active' : '' }}">
             <i class="fas fa-route"></i> Trajets
           </a>
+
+        {# Admin Specific Navigation #}
+        {% if app.user.role == 'admin' %}
+          <li class="mt-0.5 w-full">
+            <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('admin_user_manage') }}">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <i class="relative top-0 text-sm leading-normal text-orange-500 ni ni-settings-gear-65"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Manage Users</span>
+            </a>
+          </li>
+          <li class="mt-0.5 w-full">
+            <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('admin_user_delete') }}">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <i class="relative top-0 text-sm leading-normal text-cyan-500 ni ni-single-copy-04"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Edit Profiles</span>
+            </a>
+          </li>
+          <li class="mt-0.5 w-full">
+            <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('admin_statistics') }}">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <i class="relative top-0 text-sm leading-normal text-purple-500 ni ni-chart-bar-32"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Statistics</span>
+            </a>
+          </li>
+          <!--generate pdf -->
+          <li class="mt-0.5 w-full">
+            <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('admin_pdf_generator') }}">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <i class="relative top-0 text-sm leading-normal text-red-500 ni ni-single-copy-04"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Generate PDF</span>
+            </a>
+          </li>
+        <li class="mt-0.5 w-full">
+            <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('taxi_index') }}">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <i class="ni ni-bus-front-12 mr-2"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Gestion Taxis</span>
+            </a>
+          </li>
+          <li class="mt-0.5 w-full">
+            <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('course_stats') }}">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <i class="relative top-0 text-sm leading-normal text-purple-500 ni ni-chart-bar-32"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Statistiques courses et taxi </span>
+            </a>
+          </li>
+          <li class="mt-0.5 w-full">
+            <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('course_index') }}">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <i class="ni ni-delivery-fast mr-2"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Gestion Courses</span>
+            </a>
+          </li>
+          <li class="mt-0.5 w-full">
+            <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('course_map') }}">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <i class="relative top-0 text-sm leading-normal text-purple-500 ni ni-bold-up"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Top zone active</span>
+            </a>
+          </li>
+          <li class="mt-0.5 w-full">
+            <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('app_avis_index') }}">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <i class="relative top-0 text-sm leading-normal text-blue-500 ni ni-notification-70"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Complaints</span>
+            </a>
+          </li>
+
+          <li class="mt-0.5 w-full">
+            <a class="dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ path('trajet_affichage') }}">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
+                <i class="relative top-0 text-sm leading-normal text-emerald-500 ni ni-credit-card"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Trajet</span>
+            </a>
+          </li>
+
+          <!--generate pdf -->
+
+
+        {% endif %}
+
+        <!-- Account Section -->
+        <li class="w-full">
+          <hr class="h-px mt-2 mb-2 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent" />
+          <h6 class="pl-6 text-xs font-bold uppercase text-slate-500 dark:text-white/60">Account pages</h6>
         </li>
         <li>
           <a href="{{ path('app_avis_index') }}" class="{{ app.request.get('_route') starts with 'app_avis_' ? 'active' : '' }}">
