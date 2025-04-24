@@ -72,7 +72,8 @@
                 'attr': {
                   'class': 'text-left',
                   'role': 'form',
-                  'novalidate': 'novalidate'
+                  'novalidate': 'novalidate',
+                  'enctype': 'multipart/form-data'
                 }
               }) }}
 
@@ -137,6 +138,18 @@
                 {{ form_errors(registrationForm.homeAddress, { 'attr': {'class': 'text-red-500 text-xs mt-1'} }) }}
               </div>
 
+              {# License Field #}
+              <div class="mb-4">
+                <label class="inline-block mb-2 ml-1 text-xs font-bold text-slate-700">License Number</label>
+                {{ form_widget(registrationForm.license, {
+                  'attr': {
+                    'class': 'placeholder:text-gray-500 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-3 font-normal text-gray-700 transition-all focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow',
+                    'placeholder': 'Enter your license number'
+                  }
+                }) }}
+                {{ form_errors(registrationForm.license, { 'attr': {'class': 'text-red-500 text-xs mt-1'} }) }}
+              </div>
+
               {# Image Upload Field #}
               <div class="mb-4">
                 <label class="inline-block mb-2 ml-1 text-xs font-bold text-slate-700">Profile Image</label>
@@ -145,7 +158,7 @@
                     'class': 'text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-3 font-normal text-gray-700 transition-all focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow',
                   }
                 }) }}
-                <p class="mt-1 text-xs text-gray-500">Allowed file types: JPEG, PNG, GIF. Max size: 2MB.</p>
+                <p class="mt-1 text-xs text-gray-500">Allowed file types: Any image format. Max size: 50MB.</p>
                 {{ form_errors(registrationForm.image, { 'attr': {'class': 'text-red-500 text-xs mt-1'} }) }}
               </div>
 
@@ -196,26 +209,26 @@
   </section>
 </main>
 
-{% block javascripts %}
+  {% block javascripts %}
     {{ parent() }}
-<script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
-<script src="{{ asset('assets/js/argon-dashboard-tailwind.js') }}"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const countrySelect = document.getElementById('countrySelect');
-    const phoneInput = document.getElementById('phoneInput');
-    const form = document.querySelector('form');
+    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/js/argon-dashboard-tailwind.js') }}"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const countrySelect = document.getElementById('countrySelect');
+        const phoneInput = document.getElementById('phoneInput');
+        const form = document.querySelector('form');
 
-      form.addEventListener('submit', function(e) {
-      const selectedOption = countrySelect.options[countrySelect.selectedIndex];
-      const countryCode = selectedOption.getAttribute('data-code');
-      const phoneNumber = phoneInput.value;
+        form.addEventListener('submit', function(e) {
+          const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+          const countryCode = selectedOption.getAttribute('data-code');
+          const phoneNumber = phoneInput.value;
 
-      if (!phoneNumber.startsWith(countryCode)) {
-        phoneInput.value = countryCode + phoneNumber;
-      }
-    });
-  });
-</script>
-{% endblock %}
+          if (!phoneNumber.startsWith(countryCode)) {
+            phoneInput.value = countryCode + phoneNumber;
+          }
+        });
+      });
+    </script>
+  {% endblock %}
 {% endblock %}

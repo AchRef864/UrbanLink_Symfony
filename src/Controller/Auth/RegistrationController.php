@@ -30,55 +30,40 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Set joining date if not already set
-            if ($user->getJoiningDate() === null) {
-                $user->setJoiningDate(new \DateTime());
-            }
+            try {
+                // Handle image upload
+                $imageFile = $form->get('image')->getData();
+                if ($imageFile) {
+                    $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
 
-            // Set license if not already set
-            if (empty($user->getLicense())) {
-                $user->setLicense($this->generateLicenseNumber());
-            }
-
-            // Handle image upload
-            $imageFile = $form->get('image')->getData();
-            if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-
-                try {
                     $uploadDir = $this->getParameter('app.user_image_upload_path');
                     $imageFile->move($uploadDir, $newFilename);
                     $user->setImage('uploads/users/images/' . $newFilename);
-                } catch (FileException $e) {
-                    $this->addFlash('error', 'Could not upload the image. Please try again.');
-                    return $this->redirectToRoute('app_register');
                 }
-            }
 
-            // Hash password
-            $user->setPassword(
-                $passwordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
+                // Hash password
+                $user->setPassword(
+                    $passwordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
 
-            try {
                 $entityManager->persist($user);
                 $entityManager->flush();
 
-                // Redirect after successful registration
                 return $this->redirectToRoute('app_home');
+
+            } catch (FileException $e) {
+                $this->addFlash('error', 'Could not upload the image. Please try again.');
             } catch (UniqueConstraintViolationException $e) {
-                if (strpos($e->getMessage(), 'users.UNIQ_1483A5E9E7927C74') !== false) {
-                    $form->get('email')->addError(
-                        new \Symfony\Component\Form\FormError('This email is already in use. Please use a different email.')
-                    );
-                } else {
-                    $this->addFlash('error', 'There was an error with your registration. Please try again.');
-                }
+                $form->get('email')->addError(
+                    new FormError('This email is already in use. Please use a different email.')
+                );
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'There was an error with your registration. Please try again.');
             }
         }
 
