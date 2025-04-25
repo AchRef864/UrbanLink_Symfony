@@ -1,0 +1,196 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Leave a Response{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .container {
+        font-family: 'Arial', sans-serif;
+        width: 100%;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .form-card {
+        background: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 0.5rem;
+        border: 1px solid #e5e7eb;
+        margin: 2rem 0;
+        width: 100%;
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, #2D3748, #4A5568);
+        padding: 1.5rem;
+        border-radius: 0.5rem 0.5rem 0 0;
+    }
+
+    .form-title {
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
+        text-align: center;
+    }
+
+    .form-content {
+        padding: 2rem;
+        width: 100%;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #374151;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.375rem;
+        background-color: #f9fafb;
+        box-sizing: border-box;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .error-message {
+        color: #ef4444;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+
+    .submit-btn {
+        background-color: #FFEB3B;
+        color: #1f2937;
+        font-weight: bold;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        width: 100%;
+    }
+
+    @media (min-width: 768px) {
+        .submit-btn {
+            width: auto;
+        }
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-link {
+        color: #6b7280;
+        font-size: 0.875rem;
+        text-decoration: none;
+        transition: color 0.2s;
+        display: block;
+        margin-top: 1rem;
+        text-align: center;
+    }
+
+    @media (min-width: 768px) {
+        .back-link {
+            display: inline;
+            margin-top: 0;
+            text-align: left;
+        }
+    }
+
+    .back-link:hover {
+        color: #374151;
+        text-decoration: underline;
+    }
+
+    /* Pagination styles (if needed) */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding: 1rem 0;
+        list-style: none;
+    }
+
+    .pagination li {
+        margin: 0 5px;
+    }
+
+    .pagination a {
+        display: inline-block;
+        padding: 8px 12px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #007bff;
+        text-decoration: none;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .pagination a:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .pagination .active a {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    .pagination .disabled a {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: #f8f9fa;
+        border-color: #dee2e6;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="form-card">
+        <div class="form-header">
+            <h1 class="form-title">Leave a Response</h1>
+        </div>
+
+        <div class="form-content">
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+            
+            <div class="mb-4">
+                {{ form_label(form.commentaire, 'Your Response', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.commentaire, {
+                    'attr': {
+                        'class': 'form-input',
+                        'rows': 5,
+                        'placeholder': 'Type your response here...'
+                    }
+                }) }}
+                <div class="error-message">{{ form_errors(form.commentaire) }}</div>
+            </div>
+
+            <div class="mt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+                <button type="submit" class="submit-btn">
+                    {{ button_label|default('Save Response') }}
+                </button>
+                <a href="{{ path('app_avis_index') }}" class="back-link">
+                    ← Back to complaints list
+                </a>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

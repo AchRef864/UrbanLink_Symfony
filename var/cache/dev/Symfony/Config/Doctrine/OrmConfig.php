@@ -65,7 +65,7 @@ class OrmConfig
     }
 
     /**
-     * @default '%kernel.cache_dir%/doctrine/orm/Proxies'
+     * @default '%kernel.build_dir%/doctrine/orm/Proxies'
      * @param ParamConfigurator|mixed $value
      * @return $this
      */

@@ -1,0 +1,10 @@
+{% block title %}Edit complaint{% endblock %}
+
+{% block body %}
+
+    <h3>Edit complaint</h3>
+
+    {{ include('front_office/Avis/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_avis_front') }}">back to list</a>
+{% endblock %}

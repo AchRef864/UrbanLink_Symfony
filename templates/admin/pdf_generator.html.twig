@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PDF Generator{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h1 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Generate Users PDF Report</h1>
+
+            <div class="flex justify-center">
+                <a href="{{ path('admin_users_pdf') }}"
+                   class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 flex items-center">
+                    <i class="ni ni-single-copy-04 mr-2"></i>
+                    Generate Complete Users Report
+                </a>
+            </div>
+
+            <div class="mt-8 text-center text-gray-600 dark:text-gray-300">
+                <p>All filtering options are available in the generated PDF document.</p>
+                <p>The report will include user details, roles, and status information.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

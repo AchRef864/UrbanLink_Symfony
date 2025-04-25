@@ -1,0 +1,235 @@
+{% extends 'basef.html.twig' %}
+
+{% block title %}Complaints{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+<style>
+    .course-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .card-3d {
+        background-color: #fff;
+        border-radius: 0.75rem;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+
+    .header-3d {
+        padding: 1.25rem;
+        background: linear-gradient(135deg, #2D3748, #4A5568);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+        border-radius: 0.75rem 0.75rem 0 0;
+    }
+
+    .btn-primary {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        background: linear-gradient(135deg, #06B6D4, #0284C7);
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font-size: 0.875rem;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .status-badge {
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        font-weight: bold;
+        border-radius: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        text-align: center;
+    }
+
+    .status-processed { background-color: #10B981; color: #fff; }
+    .status-pending { background-color: #FACC15; color: #1F2937; }
+    .status-na { background-color: #EF4444; color: #fff; }
+
+    .search-form input {
+        padding: 0.5rem 1rem;
+        border: 2px solid #fff;
+        border-radius: 0.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+    }
+
+    table.dataTable {
+        width: 100% !important;
+        margin: 1rem 0 !important;
+        border-collapse: collapse;
+    }
+
+    table.dataTable thead th {
+        padding: 1rem;
+        background-color: #F8FAFC;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        color: #6B7280;
+    }
+
+    table.dataTable tbody td {
+        padding: 1rem;
+        border-bottom: 1px solid #E5E7EB;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-edit {
+        background: linear-gradient(135deg, #00007d, #1E40AF);
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .btn-responses {
+        background: linear-gradient(135deg, #28a745, #10B981);
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .btn-delete {
+        background: linear-gradient(135deg, #b91c1c, #EF4444);
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="course-container">
+    <div class="card-3d">
+        <div class="header-3d">
+            <h2>Complaints Management</h2>
+            <div class="flex items-center gap-2">
+                <form method="get" action="{{ path('app_avis_index') }}" class="search-form">
+                    <input type="text" name="search" id="search" value="{{ search }}" 
+                           placeholder="Search complaints..." class="mr-2">
+                    <button type="submit" class="btn-primary">Search</button>
+                </form>
+                {% if app.user and app.user.role == 'client' %}
+                    <a href="{{ path('app_avis_new_front') }}" class="btn-primary">+ New Complaint</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div style="padding: 1.5rem;">
+            <table id="datatable-search" class="w-full text-sm text-left">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th class="text-center">Status</th>
+                        <th>Taxi Registration</th>
+                        <th>Vehicle License</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for avi in avis %}
+                        <tr>
+                            <td>{{ avi.type }}</td>
+                            <td>{{ avi.commentaire }}</td>
+                            <td>{{ avi.dateAvis ? avi.dateAvis|date('Y-m-d') : '' }}</td>
+                            <td class="text-center">
+                                <span class="status-badge 
+                                    {% if avi.statut == 'processed' %}status-processed
+                                    {% elseif avi.statut == 'not processed' %}status-pending
+                                    {% else %}status-na{% endif %}">
+                                    {{ avi.statut|capitalize }}
+                                </span>
+                            </td>
+                            <td>{{ avi.taxi ? avi.taxi.immatriculation : 'N/A' }}</td>
+                            <td>{{ avi.vehicle ? avi.vehicle.licensePlate : 'N/A' }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    {% if app.user and app.user.id == avi.user.id %}
+                                        <a href="{{ path('app_avis_edit', {'id': avi.id}) }}" class="btn-edit">
+                                            Edit
+                                        </a>
+                                    {% endif %}
+                                    <a href="{{ path('app_avis_reponsess', {'id': avi.id}) }}" class="btn-responses">
+                                        Responses
+                                    </a>
+                                    {% if app.user and app.user.role == 'client' and app.user.id == avi.user.id %}
+                                        <form method="post" action="{{ path('app_avis_delete', {'id': avi.id}) }}" class="inline">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ avi.id) }}">
+                                            <button type="submit" class="btn-delete" onclick="return confirm('Are you sure?')">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-gray-500">No complaints found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card-3d" style="margin-top: 1.5rem;">
+        
+        <div style="padding: 1.5rem;">
+            {{ knp_pagination_render(avis) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#datatable-search').DataTable({
+            searching: false,
+            info: false,
+            paging: false,
+            responsive: true,
+            autoWidth: false
+        });
+    });
+</script>
+{% endblock %}
