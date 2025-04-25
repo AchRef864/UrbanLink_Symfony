@@ -69,3 +69,9 @@ services:
     App\Repository\:
         resource: '../src/Repository/'
         tags: ['doctrine.repository_service']
+
+    App\Service\GeminiService:
+        arguments:
+            $apiKey: '%env(GEMINI_API_KEY)%'
+            $connection: '@doctrine.dbal.default_connection'
+            $modelName: '%gemini.model_name%'

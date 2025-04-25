@@ -164,3 +164,7 @@ course_stats:
 my_profile:
     path: /profile/myprofile
     controller: App\Controller\ProfileController::myProfile
+urban_talk:
+    path: /urban-talk
+    controller: App\Controller\UrbanTalkController::chat
+    methods: POST
