@@ -122,6 +122,7 @@ return [
     'course_map' => [[], ['_controller' => 'App\\Controller\\CourseController::zonesMap'], [], [['text', '/admin/course/zones']], [], [], []],
     'course_stats' => [[], ['_controller' => 'App\\Controller\\CourseController::stats'], [], [['text', '/admin/course/stats']], [], [], []],
     'my_profile' => [[], ['_controller' => 'App\\Controller\\ProfileController::myProfile'], [], [['text', '/profile/myprofile']], [], [], []],
+    'urban_talk' => [[], ['_controller' => 'App\\Controller\\UrbanTalkController::chat'], [], [['text', '/urban-talk']], [], [], []],
     'vehicle_index' => [[], ['_controller' => 'App\\Controller\\VehicleController::index'], [], [['text', '/admin/vehicles']], [], [], []],
     'vehicle_new' => [[], ['_controller' => 'App\\Controller\\VehicleController::new'], [], [['text', '/admin/vehicles/new']], [], [], []],
     'vehicle_edit' => [['id'], ['_controller' => 'App\\Controller\\VehicleController::edit'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/admin/vehicles/edit']], [], [], []],
