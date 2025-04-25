@@ -115,7 +115,11 @@ class GelfMessageFormatter extends NormalizerFormatter
         }
 
         foreach ($extra as $key => $val) {
+<<<<<<< HEAD
             $key = (string) preg_replace('#[^\w\.\-]#', '-', $key);
+=======
+            $key = (string) preg_replace('#[^\w.-]#', '-', (string) $key);
+>>>>>>> 6b6acd745018e2d087955773f989759bbc6059a6
             $val = \is_scalar($val) || null === $val ? $val : $this->toJson($val);
             $len = \strlen($this->extraPrefix . $key . $val);
             if ($len > $this->maxLength) {
@@ -127,7 +131,11 @@ class GelfMessageFormatter extends NormalizerFormatter
         }
 
         foreach ($context as $key => $val) {
+<<<<<<< HEAD
             $key = (string) preg_replace('#[^\w\.\-]#', '-', $key);
+=======
+            $key = (string) preg_replace('#[^\w.-]#', '-', (string) $key);
+>>>>>>> 6b6acd745018e2d087955773f989759bbc6059a6
             $val = \is_scalar($val) || null === $val ? $val : $this->toJson($val);
             $len = \strlen($this->contextPrefix . $key . $val);
             if ($len > $this->maxLength) {

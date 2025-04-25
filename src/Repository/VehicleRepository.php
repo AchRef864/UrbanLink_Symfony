@@ -1,5 +1,5 @@
 <?php
-
+// src/Repository/VehicleRepository.php
 namespace App\Repository;
 
 use App\Entity\Vehicle;
@@ -71,4 +71,13 @@ class VehicleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAvailableVehicles(): array
+{
+    return $this->createQueryBuilder('v')
+        ->where('v.seats > 0') // Use the correct field name here
+        ->getQuery()
+        ->getResult();
+}
+    
 }

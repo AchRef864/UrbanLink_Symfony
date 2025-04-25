@@ -266,9 +266,9 @@
 {# Admin Sidebar (only shown for admin users) #}
 {% if is_granted('ROLE_ADMIN') and not is_auth_page %}
   <aside class="argon-sidebar">
-    <div class="sidebar-logo">
-      <img src="{{ asset('assets/img/logo-ct-dark.png') }}" alt="UrbanLink Logo">
-      <span>Admin Panel</span>
+    <div class="sidebar-logo" style="display: flex; align-items: center; padding: 20px 15px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+      <img src="{{ asset('assets/img/logo.png') }}" alt="UrbanLink Logo" style="width: 50px; height: auto; margin-right: 15px;">
+      <span style="font-size: 18px; font-weight: 600; color: black;">Admin Panel</span>
     </div>
     <div class="sidebar-content">
       <ul class="sidebar-menu">
@@ -282,20 +282,36 @@
         <div class="sidebar-heading">Gestion du Transport</div>
 
         <li>
-          <a href="#" class="{{ app.request.get('_route') starts with 'vehicule_' ? 'active' : '' }}">
-            <i class="fas fa-car"></i> Véhicules
+          <a href="{{ path('vehicle_index') }}" class="{{ app.request.get('_route') starts with 'vehicule_' ? 'active' : '' }}">
+            <i class="fas fa-car"></i> Vehicles
           </a>
         </li>
+
+        <li>
+          <a href="{{ path('admin_maintenances_index') }}" class="{{ app.request.get('_route') starts with 'maintenance_' ? 'active' : '' }}">
+            <i class="fa-solid fa-screwdriver-wrench"></i> Maintenance
+          </a>
+        </li>
+
         <li>
           <a href="{{ path('trajet_affichage') }}" class="{{ app.request.get('_route') starts with 'trajet_' ? 'active' : '' }}">
-            <i class="fas fa-route"></i> Trajets
+            <i class="fas fa-route"></i> Tracks
           </a>
         </li>
+
+        <li>
+          <a href="{{ path('admin_reservations') }}" class="{{ app.request.get('_route') starts with 'booking_' ? 'active' : '' }}">
+            <i class="fa-solid fa-bookmark"></i> Booking
+          </a>
+        </li>
+        
+        <!-- Account Section -->
         <li>
           <a href="{{ path('app_avis_index') }}" class="{{ app.request.get('_route') starts with 'app_avis_' ? 'active' : '' }}">
-            <i class="fas fa-comment-dots"></i> Avis
+            <i class="fas fa-comment-dots"></i> Rate
           </a>
         </li>
+
         <li>
           <a href="{{ path('taxi_index') }}" class="{{ app.request.get('_route') starts with 'taxi_' ? 'active' : '' }}">
             <i class="fas fa-taxi"></i> Taxis
@@ -308,7 +324,7 @@
         </li>
         <li>
           <a href="#" class="{{ app.request.get('_route') starts with 'abonnement_' ? 'active' : '' }}">
-            <i class="fas fa-id-card"></i> Abonnements
+            <i class="fas fa-id-card"></i> Subscriptions
           </a>
         </li>
 
@@ -325,22 +341,22 @@
 
         <li>
           <a href="{{ path('admin_user_manage') }}" class="{{ app.request.get('_route') starts with 'admin_user_' ? 'active' : '' }}">
-            <i class="fas fa-users"></i> Utilisateurs
+            <i class="fas fa-users"></i> Users
           </a>
         </li>
         <li>
           <a href="{{ path('admin_user_delete') }}" class="{{ app.request.get('_route') == 'admin_user_delete' ? 'active' : '' }}">
-            <i class="fas fa-user-minus"></i> Modifier Profils
+            <i class="fas fa-user-minus"></i> Update Profiles
           </a>
         </li>
         <li>
           <a href="{{ path('admin_statistics') }}" class="{{ app.request.get('_route') == 'admin_statistics' ? 'active' : '' }}">
-            <i class="fas fa-chart-bar"></i> Statistiques
+            <i class="fas fa-chart-bar"></i> Statistics
           </a>
         </li>
         <li>
           <a href="{{ path('admin_pdf_generator') }}" class="{{ app.request.get('_route') == 'admin_pdf_generator' ? 'active' : '' }}">
-            <i class="fas fa-file-pdf"></i> Générer PDF
+            <i class="fas fa-file-pdf"></i> Generates PDF
           </a>
         </li>
 
@@ -348,12 +364,12 @@
 
         <li>
           <a href="{{ path('app_profile_edit') }}" class="{{ app.request.get('_route') == 'app_profile_edit' ? 'active' : '' }}">
-            <i class="fas fa-user-edit"></i> Mon profil
+            <i class="fas fa-user-edit"></i> My profile
           </a>
         </li>
         <li>
           <a href="{{ path('app_logout') }}" class="text-red-500">
-            <i class="fas fa-sign-out-alt"></i> Déconnexion
+            <i class="fas fa-sign-out-alt"></i> Logout
           </a>
         </li>
       </ul>
@@ -363,17 +379,8 @@
 
 {# Header with Navbar (shown on all pages except login/register) #}
 {% if not is_auth_page %}
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <nav>
     <div class="container">
-      {# Logo/Brand #}
-      <a class="navbar-brand" href="{{ path('app_home') }}">
-        <i class="fas fa-bus"></i> UrbanLInk
-      </a>
-      {# Toggle Button #}
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
 
       {# Regular user navigation - only show if not admin #}
       {% if not is_granted('ROLE_ADMIN') %}

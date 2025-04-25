@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use App\Repository\UserRepository;
+use App\Repository\TaxiRepository;
+use App\Repository\CourseRepository;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class TaxisteController extends AbstractController
@@ -29,6 +32,16 @@ class TaxisteController extends AbstractController
         return $this->render('taxiste/dashboard.html.twig', [
             'taxi' => $taxi,
             'courses' => $courses,
+        ]);
+    }
+    #[Route('/admin/taxiste', name: 'taxiste_liste')]
+    public function taxiste(UserRepository $userRepo): Response
+    {
+        // On récupère tous les users dont le champ "role" vaut "taxi"
+        $drivers = $userRepo->findBy(['role' => 'taxi']);
+
+        return $this->render('taxiste/liste.html.twig', [
+            'drivers' => $drivers,
         ]);
     }
     

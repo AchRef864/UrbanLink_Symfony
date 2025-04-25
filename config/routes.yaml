@@ -25,12 +25,18 @@ taxi_index:
     controller: App\Controller\TaxiController::index
 
 taxi_new:
-    path: /admin/taxi/new
+    path: /admin/taxi/new/{userId}
     controller: App\Controller\TaxiController::new
+    methods: [GET,POST]
+    requirements:
+        userId: '\d+'
 
 taxi_edit:
     path: /admin/taxi/{id}/edit
     controller: App\Controller\TaxiController::edit
+    methods: [GET,POST]
+    requirements:
+        id: '\d+'
 
 taxi_delete:
     path: /admin/taxi/{id}/delete
@@ -168,3 +174,55 @@ urban_talk:
     path: /urban-talk
     controller: App\Controller\UrbanTalkController::chat
     methods: POST
+vehicle_index:
+    path: /admin/vehicles
+    controller: App\Controller\VehicleController::index
+
+vehicle_new:
+    path: /admin/vehicles/new
+    controller: App\Controller\VehicleController::new
+
+vehicle_edit:
+    path: /admin/vehicles/edit/{id}
+    controller: App\Controller\VehicleController::edit
+    methods: ['GET', 'POST']
+
+vehicle_show:
+    path: /admin/vehicles/{id}
+    controller: App\Controller\VehicleController::show
+    requirements:
+        id: '\d+'
+
+vehicle_delete:
+    path: /admin/vehicles/delete/{id}
+    controller: App\Controller\VehicleController::delete
+    methods: POST
+
+maintenance_index:
+    path: /admin/maintenances
+    controller: App\Controller\MaintenanceController::index
+
+maintenance_show:
+    path: /admin/maintenances/{id}
+    controller: App\Controller\MaintenanceController::show
+    requirements:
+        id: '\d+'
+
+maintenance_new:
+    path: /admin/maintenances/new
+    controller: App\Controller\MaintenanceController::create
+    methods: ['GET', 'POST']
+
+maintenance_edit:
+    path: /admin/maintenances/edit/{id}
+    controller: App\Controller\MaintenanceController::update
+    methods: ['GET', 'POST']
+
+maintenance_delete:
+    path: /admin/maintenances/delete/{id}
+    controller: App\Controller\MaintenanceController::delete
+    methods: POST
+
+maintenance_by_vehicle:
+    path: /admin/maintenances/vehicle/{vehicleId}
+    controller: App\Controller\MaintenanceController::findByVehicleId

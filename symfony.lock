@@ -277,7 +277,7 @@
         ]
     },
     "symfony/ux-turbo": {
-        "version": "2.23",
+        "version": "2.24",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",

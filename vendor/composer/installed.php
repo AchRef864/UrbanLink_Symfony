@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '73058d2d32f022fac692b3a34a09e61efb9d2b0c',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '9384ab05bbdf1e784ca632467080fae0ca751cc4',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '73058d2d32f022fac692b3a34a09e61efb9d2b0c',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '9384ab05bbdf1e784ca632467080fae0ca751cc4',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -314,9 +314,9 @@
             'dev_requirement' => false,
         ),
         'monolog/monolog' => array(
-            'pretty_version' => '3.8.1',
-            'version' => '3.8.1.0',
-            'reference' => 'aef6ee73a77a66e404dd6540934a9ef1b3c855b4',
+            'pretty_version' => '3.9.0',
+            'version' => '3.9.0.0',
+            'reference' => '10d85740180ecba7896c87e06a166e0c95a0e3b6',
             'type' => 'library',
             'install_path' => __DIR__ . '/../monolog/monolog',
             'aliases' => array(),
@@ -1418,9 +1418,9 @@
             ),
         ),
         'symfony/stimulus-bundle' => array(
-            'pretty_version' => 'v2.23.0',
-            'version' => '2.23.0.0',
-            'reference' => '254f4e05cbaa349d4ae68b9b2e6a22995e0887f9',
+            'pretty_version' => 'v2.24.0',
+            'version' => '2.24.0.0',
+            'reference' => 'e09840304467cda3324cc116c7f4ee23c8ff227c',
             'type' => 'symfony-bundle',
             'install_path' => __DIR__ . '/../symfony/stimulus-bundle',
             'aliases' => array(),

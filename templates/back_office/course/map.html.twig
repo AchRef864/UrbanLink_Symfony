@@ -8,13 +8,14 @@
   <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
   <style>
     #viewDiv {
-      width: 100%;
-      height: 600px;
+      width: 90%;
+      height: 750px;
     }
   </style>
 {% endblock %}
 
 {% block body %}
+<div style="margin-left: 50px;">
   <h1 class="mb-4">Zones de réservation</h1>
   <div id="viewDiv"></div>
 {% endblock %}
@@ -96,4 +97,5 @@
       map.add(layer);
     });
   </script>
+  </div>
 {% endblock %}

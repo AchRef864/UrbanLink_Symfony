@@ -49,6 +49,7 @@ security:
         - { path: ^/avis/edit, roles:  ROLE_CLIENT }
         - { path: ^/avis/new, roles:  ROLE_CLIENT }
         - { path: ^/avis, roles: [ROLE_ADMIN, ROLE_CLIENT] }
+        - { path: ^/vehicles/my-vehicle, roles: ROLE_DRIVER }
 
 
 
