@@ -72,6 +72,6 @@ services:
 
     App\Service\GeminiService:
         arguments:
-            $apiKey: '%env(GEMINI_API_KEY)%'
-            $connection: '@doctrine.dbal.default_connection'
-
+            $client: '@http_client'  # Or the name of your HttpClient service
+            $apiKey: '%env(GEMINI_API_KEY)%' # Assuming you store your API key in .env
+            $doctrine: '@doctrine'
