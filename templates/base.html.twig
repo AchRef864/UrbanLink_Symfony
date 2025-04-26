@@ -20,6 +20,10 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
   {# Nucleo Icons (from admin template) #}
@@ -306,6 +310,10 @@
         </li>
         
         <!-- Account Section -->
+        <li class="w-full">
+          <hr class="h-px mt-2 mb-2 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent" />
+          <h6 class="pl-6 text-xs font-bold uppercase text-slate-500 dark:text-white/60">Account pages</h6>
+        </li>
         <li>
           <a href="{{ path('app_avis_index') }}" class="{{ app.request.get('_route') starts with 'app_avis_' ? 'active' : '' }}">
             <i class="fas fa-comment-dots"></i> Rate
@@ -317,7 +325,6 @@
             <i class="fas fa-taxi"></i> Taxis
           </a>
         </li>
-        <li>
           <a href="{{ path('course_index') }}" class="{{ app.request.get('_route') starts with 'course_' ? 'active' : '' }}">
             <i class="fas fa-bus"></i> Courses
           </a>
@@ -325,6 +332,14 @@
         <li>
           <a href="#" class="{{ app.request.get('_route') starts with 'abonnement_' ? 'active' : '' }}">
             <i class="fas fa-id-card"></i> Subscriptions
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#"
+             id="urbanTalkTrigger"
+             class="nav-link {{ app.request.get('_route') starts with 'urbantalk_' ? 'active' : '' }}">
+            <i class="fas fa-robot mr-2"></i> UrbanTalk
           </a>
         </li>
 
@@ -342,8 +357,18 @@
           </a>
         </li>
         <li>
+          <a href="{{ path('course_stats') }}" class="{{ app.request.get('_route') starts with 'course_' ? 'active' : '' }}">
+            <i class="fas fa-chart-line"></i> Statistiques courses et taxis
+          </a>
+        </li>
+        <li>
+          <a href="{{ path('course_map') }}" class="{{ app.request.get('_route') == 'course_map' ? 'active' : '' }}">
+            <i class="fas fa-map"></i> Carte des courses
+          </a>
+        </li>
+        <li>
           <a href="{{ path('admin_statistics') }}" class="{{ app.request.get('_route') == 'admin_statistics' ? 'active' : '' }}">
-            <i class="fas fa-chart-bar"></i> Statistics
+            <i class="fas fa-chart-bar"></i> Statistiques users
           </a>
         </li>
         <li>
@@ -521,5 +546,12 @@
     });
   </script>
 {% endblock %}
+
+{{ include('urbanTalk.html.twig') }}
+
+{# Existing scripts #}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{{ encore_entry_script_tags('app') }}
+
 </body>
 </html>

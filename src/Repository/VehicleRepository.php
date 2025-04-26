@@ -62,6 +62,16 @@ class VehicleRepository extends ServiceEntityRepository
     }
 
     // 🔍 Optional: Find all vehicles by driver
+    public function findByDriver(int $driverId): array
+    {
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.driverID = :driverId')
+            ->setParameter('driverId', $driverId)
+            ->orderBy('v.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAvailableVehicles(): array
 {
     return $this->createQueryBuilder('v')
