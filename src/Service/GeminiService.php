@@ -12,15 +12,17 @@ class GeminiService
         private Connection $connection
     ) {}
 
+    // In App\Service\GeminiService.php
+
     public function ask(string $question): string
     {
         $schema = $this->getDatabaseContext();
 
         $response = $this->client->request(
             'POST',
-            'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent',
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent', // Updated endpoint
             [
-                'query' => ['key' => $this->apiKey],
+                'query' => ['key' => $this->apiKey], // Make sure $this->apiKey is correctly set
                 'json' => [
                     'contents' => [[
                         'parts' => [[

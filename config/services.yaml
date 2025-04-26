@@ -11,7 +11,7 @@ parameters:
     stripe_secret_key: '%env(STRIPE_SECRET_KEY)%'
     opencage.api_key: '%env(OPENCAGE_API_KEY)%'
     app.user_image_upload_path: '%kernel.project_dir%/public/uploads/users/images'
-
+    gemini_api_key: '%env(GEMINI_API_KEY)%'
 
 twig:
     globals:
