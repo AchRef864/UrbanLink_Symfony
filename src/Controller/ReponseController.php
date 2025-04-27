@@ -29,10 +29,12 @@ final class ReponseController extends AbstractController
     public function reponsesForAvis(ReponseRepository $reponseRepository, int $id): Response
     {
         $reponses = $reponseRepository->findBy(['avis' => $id]);
-
-        return $this->render('front_office/Avis/reponses.html.twig', [
+        $globalRatingStats = $reponseRepository->getGlobalRatingStats();
+    
+        return $this->render('avis/reponses.html.twig', [
             'reponses' => $reponses,
             'avis_id' => $id,
+            'globalRatingStats' => $globalRatingStats
         ]);
     }
 
@@ -152,4 +154,13 @@ final class ReponseController extends AbstractController
             'id' => $reponse->getAvis()->getId()
         ]);
     }
+    
+    #[Route('/stats/global', name: 'app_reponse_global_stats', methods: ['GET'])]
+    public function globalStats(ReponseRepository $reponseRepository): Response
+    {
+        return $this->json([
+            'stats' => $reponseRepository->getGlobalRatingStats()
+        ]);
+    }
+
 }

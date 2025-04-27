@@ -258,9 +258,22 @@ final class AvisController extends AbstractController
     public function viewReponses(int $id, ReponseRepository $reponseRepository): Response
     {
         $reponses = $reponseRepository->findBy(['avis' => $id]);
+        
+        // Calculate rating statistics
+        $ratingStats = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
+        foreach ($reponses as $reponse) {
+            if ($reponse->getRate() !== null) {
+                $rating = (int)$reponse->getRate();
+                if (isset($ratingStats[$rating])) {
+                    $ratingStats[$rating]++;
+                }
+            }
+        }
+    
         return $this->render('avis/reponses.html.twig', [
             'reponses' => $reponses,
-            'avis_id'  => $id,
+            'avis_id' => $id,
+            'ratingStats' => $ratingStats
         ]);
     }
 
