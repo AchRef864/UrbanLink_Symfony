@@ -153,9 +153,9 @@
                         <th class="px-6 py-3 uppercase tracking-wider">Type</th>
                         <th class="px-6 py-3 uppercase tracking-wider">Description</th>
                         <th class="px-6 py-3 uppercase tracking-wider">Date</th>
-                        <th class="px-6 py-3 uppercase tracking-wider text-center">Status</th>
                         <th class="px-6 py-3 uppercase tracking-wider">Taxi Registration</th>
                         <th class="px-6 py-3 uppercase tracking-wider">Vehicle License</th>
+                        <th class="px-6 py-3 uppercase tracking-wider text-center">Status</th>
                         <th class="px-6 py-3 uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
@@ -165,6 +165,8 @@
                             <td class="px-6 py-3">{{ avi.type }}</td>
                             <td class="px-6 py-3">{{ avi.commentaire }}</td>
                             <td class="px-6 py-3">{{ avi.dateAvis ? avi.dateAvis|date('Y-m-d') : '' }}</td>
+                            <td class="px-6 py-3">{{ avi.taxi and avi.taxi.id ? avi.taxi.immatriculation : 'N/A' }}</td>
+                            <td class="px-6 py-3">{{ avi.vehicle and avi.vehicle.id ? avi.vehicle.licensePlate : 'N/A' }}</td>
                             <td class="px-6 py-3 text-center">
                                 {% if avi.statut == 'processed' %}
                                     <span class="bg-green-500 text-white py-1 px-3 rounded-full text-xs font-bold uppercase">Processed</span>
@@ -174,8 +176,6 @@
                                     <span class="bg-red-500 text-white py-1 px-3 rounded-full text-xs font-bold uppercase">N/A</span>
                                 {% endif %}
                             </td>
-                            <td class="px-6 py-3">{{ avi.taxi and avi.taxi.id ? avi.taxi.immatriculation : 'N/A' }}</td>
-                            <td class="px-6 py-3">{{ avi.vehicle and avi.vehicle.id ? avi.vehicle.licensePlate : 'N/A' }}</td>
                             <td class="px-6 py-3 space-x-2">
                                 {% if app.user and app.user.id == avi.user.id %}
                                     <a href="{{ path('app_avis_edit', {'id': avi.id}) }}"
