@@ -5,21 +5,21 @@ namespace App\Controller;
 use App\Entity\Avis;
 use App\Form\AvisType;
 use App\Repository\AvisRepository;
+use App\Repository\ReponseRepository;
+use App\Service\GeminiService;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\ReponseRepository;
-use App\Entity\Reponse;
-use Knp\Component\Pager\PaginatorInterface;
-use Knp\Snappy\Pdf; 
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/avis')]
 final class AvisController extends AbstractController
 {
-    #[Route(name: 'app_avis_index', methods: ['GET'])]
+    #[Route('', name: 'app_avis_index', methods: ['GET'])]
     public function index(
         AvisRepository $avisRepository,
         PaginatorInterface $paginator,
@@ -27,13 +27,13 @@ final class AvisController extends AbstractController
         EntityManagerInterface $em
     ): Response {
         $searchTerm = $request->query->get('search', '');
-    
+
         $qb = $avisRepository->createQueryBuilder('a')
             ->leftJoin('a.taxi', 't')->addSelect('t')
             ->leftJoin('a.vehicle', 'v')->addSelect('v')
             ->where('t.id IS NOT NULL OR a.taxi IS NULL')
             ->andWhere('v.id IS NOT NULL OR a.vehicle IS NULL');
-    
+
         if ($searchTerm) {
             $qb->andWhere(
                 'a.type LIKE :search OR
@@ -45,23 +45,23 @@ final class AvisController extends AbstractController
             )
             ->setParameter('search', '%'.$searchTerm.'%');
         }
-    
+
         $pagination = $paginator->paginate(
             $qb,
             $request->query->getInt('page', 1),
             5
         );
-    
-        // Complaint type stats
+
+        // Statistiques par type
         $dql = 'SELECT a.type AS type, COUNT(a.id) AS cnt
                 FROM App\Entity\Avis a
                 GROUP BY a.type';
         $rawStats = $em->createQuery($dql)->getResult();
-    
+
         $stats = [
-            'taxi complaint' => 0,
+            'taxi complaint'         => 0,
             'subscription complaint' => 0,
-            'vehicle complaint' => 0,
+            'vehicle complaint'      => 0,
         ];
         foreach ($rawStats as $row) {
             if (isset($stats[$row['type']])) {
@@ -69,21 +69,20 @@ final class AvisController extends AbstractController
             }
         }
         $totalComplaints = array_sum($stats);
-    
-        // New: Count processed and pending
+
+        // Comptage processed / pending
         $processedCount = $avisRepository->count(['statut' => 'processed']);
-        $pendingCount = $avisRepository->count(['statut' => 'not processed']);
-    
+        $pendingCount   = $avisRepository->count(['statut' => 'not processed']);
+
         return $this->render('avis/index.html.twig', [
-            'avis' => $pagination,
-            'search' => $searchTerm,
-            'stats' => $stats,
-            'totalComplaints' => $totalComplaints,
-            'processedCount' => $processedCount,
-            'pendingCount' => $pendingCount,
+            'avis'             => $pagination,
+            'search'           => $searchTerm,
+            'stats'            => $stats,
+            'totalComplaints'  => $totalComplaints,
+            'processedCount'   => $processedCount,
+            'pendingCount'     => $pendingCount,
         ]);
     }
-    
 
     #[Route('/new', name: 'app_avis_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -92,7 +91,7 @@ final class AvisController extends AbstractController
             throw $this->createAccessDeniedException('Only clients can add a new complaint.');
         }
 
-        $avi = new Avis();
+        $avi  = new Avis();
         $form = $this->createForm(AvisType::class, $avi);
         $form->handleRequest($request);
 
@@ -102,8 +101,8 @@ final class AvisController extends AbstractController
                 throw $this->createAccessDeniedException('You must be logged in to leave a complaint.');
             }
 
-            $avi->setUser($user);
-            $avi->setStatut('not processed');
+            $avi->setUser($user)
+                ->setStatut('not processed');
 
             $entityManager->persist($avi);
             $entityManager->flush();
@@ -118,13 +117,17 @@ final class AvisController extends AbstractController
         ]);
     }
 
-    #[Route('/avisFront', name: 'app_avis_front', methods: ['GET'])]
-    public function indexFront(AvisRepository $avisRepository, PaginatorInterface $paginator, Request $request): Response
-    {
-        $user = $this->getUser();
+    #[Route('/avisFront', name: 'app_avis_front', methods: ['GET', 'POST'])]
+    public function indexFront(
+        AvisRepository $avisRepository,
+        PaginatorInterface $paginator,
+        Request $request,
+        GeminiService $geminiService
+    ): Response {
+        $user       = $this->getUser();
         $searchTerm = $request->query->get('search', '');
 
-        $queryBuilder = $avisRepository->createQueryBuilder('a')
+        $qb = $avisRepository->createQueryBuilder('a')
             ->leftJoin('a.taxi', 't')->addSelect('t')
             ->leftJoin('a.vehicle', 'v')->addSelect('v')
             ->where('a.user = :user')
@@ -132,27 +135,39 @@ final class AvisController extends AbstractController
             ->andWhere('v.id IS NOT NULL OR a.vehicle IS NULL')
             ->setParameter('user', $user);
 
-        if (!empty($searchTerm)) {
-            $queryBuilder->andWhere(
-                'a.type LIKE :search OR 
-                a.commentaire LIKE :search OR 
-                a.statut LIKE :search OR 
-                a.date_avis LIKE :search OR 
-                t.immatriculation LIKE :search OR 
-                v.licensePlate LIKE :search'
+        if ($searchTerm) {
+            $qb->andWhere(
+                'a.type LIKE :search OR
+                 a.commentaire LIKE :search OR
+                 a.statut LIKE :search OR
+                 a.date_avis LIKE :search OR
+                 t.immatriculation LIKE :search OR
+                 v.licensePlate LIKE :search'
             )
-            ->setParameter('search', '%' . $searchTerm . '%');
+            ->setParameter('search', '%'.$searchTerm.'%');
         }
 
         $pagination = $paginator->paginate(
-            $queryBuilder,
+            $qb,
             $request->query->getInt('page', 1),
             5
         );
 
+        // ==== Chatbot ====
+        $chatMessage = '';
+        $botResponse = null;
+        if ($request->isMethod('POST')) {
+            $chatMessage = $request->request->get('chat_message', '');
+            if ($chatMessage) {
+                $botResponse = $geminiService->getChatResponse($chatMessage);
+            }
+        }
+
         return $this->render('front_office/Avis/index.html.twig', [
-            'avis' => $pagination,
-            'search' => $searchTerm
+            'avis'        => $pagination,
+            'search'      => $searchTerm,
+            'chatMessage' => $chatMessage,
+            'botResponse' => $botResponse,
         ]);
     }
 
@@ -163,7 +178,7 @@ final class AvisController extends AbstractController
             throw $this->createAccessDeniedException('Only clients can add a new complaint.');
         }
 
-        $avi = new Avis();
+        $avi  = new Avis();
         $form = $this->createForm(AvisType::class, $avi);
         $form->handleRequest($request);
 
@@ -173,8 +188,8 @@ final class AvisController extends AbstractController
                 throw $this->createAccessDeniedException('You must be logged in to leave a complaint.');
             }
 
-            $avi->setUser($user);
-            $avi->setStatut('not processed');
+            $avi->setUser($user)
+                ->setStatut('not processed');
 
             $entityManager->persist($avi);
             $entityManager->flush();
@@ -203,7 +218,6 @@ final class AvisController extends AbstractController
         if (!$this->isGranted('ROLE_CLIENT')) {
             throw $this->createAccessDeniedException('Only clients can edit complaints.');
         }
-
         if ($avi->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException('You can only edit your own complaints.');
         }
@@ -213,14 +227,13 @@ final class AvisController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
             $this->addFlash('success', 'Your complaint has been updated successfully.');
 
             return $this->redirectToRoute('app_avis_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('avis/edit.html.twig', [
-            'avi' => $avi,
+            'avi'  => $avi,
             'form' => $form->createView(),
         ]);
     }
@@ -228,16 +241,14 @@ final class AvisController extends AbstractController
     #[Route('/{id}', name: 'app_avis_delete', methods: ['POST'])]
     public function delete(Request $request, Avis $avi, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $avi->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$avi->getId(), $request->request->get('_token'))) {
             $reponses = $entityManager->getRepository(Reponse::class)->findBy(['avis' => $avi->getId()]);
             foreach ($reponses as $reponse) {
                 $entityManager->remove($reponse);
             }
-
             $entityManager->remove($avi);
             $entityManager->flush();
         }
-
         $this->addFlash('success', 'Avis deleted successfully.');
 
         return $this->redirectToRoute('app_avis_index', [], Response::HTTP_SEE_OTHER);
@@ -247,34 +258,25 @@ final class AvisController extends AbstractController
     public function viewReponses(int $id, ReponseRepository $reponseRepository): Response
     {
         $reponses = $reponseRepository->findBy(['avis' => $id]);
-
         return $this->render('avis/reponses.html.twig', [
             'reponses' => $reponses,
-            'avis_id' => $id,
+            'avis_id'  => $id,
         ]);
     }
-    
+
     #[Route('/export/pdf', name: 'app_avis_pdf', methods: ['GET'])]
     public function exportPdf(AvisRepository $avisRepository, Pdf $knpSnappyPdf): Response
     {
-        // fetch all complaints (or apply same search/pagination as you like)
-        $avis = $avisRepository->findAll();
-
-        // render the same table into an “export” Twig template
-        $html = $this->renderView('avis/pdf.html.twig', [
-            'avis' => $avis,
-        ]);
-
-        $filename = 'complaints_' . date('Ymd_His') . '.pdf';
+        $avis     = $avisRepository->findAll();
+        $html     = $this->renderView('avis/pdf.html.twig', ['avis' => $avis]);
+        $filename = 'complaints_'.date('Ymd_His').'.pdf';
 
         return new Response(
             $knpSnappyPdf->getOutputFromHtml($html),
             200,
             [
                 'Content-Type'        => 'application/pdf',
-                'Content-Disposition' => $this->container
-                    ->get('serializer')
-                    ->encode($filename, 'json'),
+                'Content-Disposition' => ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename="'.$filename.'"',
             ]
         );
     }

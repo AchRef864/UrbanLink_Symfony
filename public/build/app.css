@@ -575,10 +575,6 @@
   min-height: 100vh
 }
 
-.w-1\/2 {
-  width: 50%
-}
-
 .w-1\/3 {
   width: 33.333333%
 }
@@ -1118,11 +1114,6 @@
   background-color: rgb(71 85 105 / var(--tw-bg-opacity, 1))
 }
 
-.bg-slate-700 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(51 65 85 / var(--tw-bg-opacity, 1))
-}
-
 .bg-transparent {
   background-color: transparent
 }
@@ -1503,6 +1494,10 @@
   padding-bottom: 0px
 }
 
+.pb-12 {
+  padding-bottom: 3rem
+}
+
 .pb-2 {
   padding-bottom: 0.5rem
 }
@@ -1577,6 +1572,10 @@
 
 .pt-12 {
   padding-top: 3rem
+}
+
+.pt-3 {
+  padding-top: 0.75rem
 }
 
 .pt-4 {
@@ -2698,10 +2697,6 @@
 
   .dark\:text-white\/80 {
     color: rgb(255 255 255 / 0.8)
-  }
-
-  .dark\:opacity-60 {
-    opacity: 0.6
   }
 
   .dark\:opacity-80 {

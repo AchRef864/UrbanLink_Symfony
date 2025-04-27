@@ -5,6 +5,7 @@
 {% block stylesheets %}
 {{ parent() }}
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 <style>
     .card-3d {
         background-color: #fff;
@@ -67,6 +68,26 @@
 
     .text-gray-500 { color: #696969; }
     .border-gray-300 { border-color: #98FB98; }
+    
+    /* Rating styles */
+    .rate-container {
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    
+    .rating-submit-btn {
+        margin-top: 10px;
+        padding: 5px 10px;
+        background-color: #4A5568;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    .rating-submit-btn:hover {
+        background-color: #2D3748;
+    }
 </style>
 {% endblock %}
 
@@ -88,6 +109,7 @@
                     <th class="px-6 py-3 uppercase tracking-wider">Comment</th>
                     <th class="px-6 py-3 uppercase tracking-wider">Date</th>
                     <th class="px-6 py-3 uppercase tracking-wider">Admin's Email</th>
+                    <th class="px-6 py-3 uppercase tracking-wider">Rating</th>
                     {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
                         <th class="px-6 py-3 uppercase tracking-wider text-center">Actions</th>
                     {% endif %}
@@ -100,6 +122,17 @@
                         <td class="px-6 py-3">{{ reponse.dateReponse|date('Y-m-d') }}</td>
                         <td class="px-6 py-3">
                             {{ reponse.user ? reponse.user.username : 'Unknown' }}
+                        </td>
+                        <td class="px-6 py-3">
+                            <div class="rate-container">
+                                <div class="rating" id="rating-{{ reponse.id }}" data-rating="{{ reponse.rate ?? 0 }}" data-readonly="{{ reponse.rate ? 'true' : 'false' }}"></div>
+                                {% if reponse.rate is null %}
+                                    <form method="post" action="{{ path('app_reponse_rate', {'id': reponse.id}) }}">
+                                        <input type="hidden" name="rate" id="rate-value-{{ reponse.id }}" value="0">
+                                        <button type="submit" class="rating-submit-btn">Submit Rating</button>
+                                    </form>
+                                {% endif %}
+                            </div>
                         </td>
                         {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
                             <td class="px-6 py-3 space-x-2 text-center">
@@ -123,7 +156,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="{% if app.user and 'ROLE_ADMIN' in app.user.roles %}4{% else %}3{% endif %}" 
+                        <td colspan="{% if app.user and 'ROLE_ADMIN' in app.user.roles %}5{% else %}4{% endif %}" 
                             class="px-6 py-3 text-center text-gray-500">
                             No responses found for this complaint.
                         </td>
@@ -147,6 +180,7 @@
 {{ parent() }}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 <script>
     $(document).ready(function() {
         $('table').DataTable({
@@ -155,6 +189,24 @@
             paging: false,
             responsive: true,
             autoWidth: false
+        });
+        
+        // Initialize rating stars
+        $('.rating').each(function() {
+            var $this = $(this);
+            var id = $this.attr('id').split('-')[1];
+            var rating = parseFloat($this.data('rating'));
+            var readonly = $this.data('readonly') === 'true';
+            
+            $this.rateYo({
+                rating: rating,
+                fullStar: true,
+                readOnly: readonly,
+                spacing: "5px",
+                starWidth: "20px"
+            }).on("rateyo.set", function(e, data) {
+                $('#rate-value-' + id).val(data.rating);
+            });
         });
     });
 </script>
