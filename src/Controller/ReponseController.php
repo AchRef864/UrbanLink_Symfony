@@ -23,15 +23,18 @@ final class ReponseController extends AbstractController
             'reponses' => $reponseRepository->findAll(),
         ]);
     }
-    //reponse pour user
+
+    // Responses for a specific complaint
     #[Route('/avis/{id}', name: 'app_avis_reponsess', methods: ['GET'])]
     public function reponsesForAvis(ReponseRepository $reponseRepository, int $id): Response
     {
         $reponses = $reponseRepository->findBy(['avis' => $id]);
-
-        return $this->render('front_office/Avis/reponses.html.twig', [
+        $globalRatingStats = $reponseRepository->getGlobalRatingStats();
+    
+        return $this->render('avis/reponses.html.twig', [
             'reponses' => $reponses,
             'avis_id' => $id,
+            'globalRatingStats' => $globalRatingStats
         ]);
     }
 
@@ -78,7 +81,7 @@ final class ReponseController extends AbstractController
                     $this->addFlash('error', 'Failed to send SMS notification.');
                 }
             }
-            return $this->redirectToRoute('app_avis_reponses', ['id' => $avisId]);
+            return $this->redirectToRoute('app_avis_reponsess', ['id' => $avisId]);
         }
 
         return $this->render('reponse/new.html.twig', [
@@ -110,7 +113,7 @@ final class ReponseController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_avis_reponses', ['id' => $reponse->getAvis()->getId()]);
+            return $this->redirectToRoute('app_avis_reponsess', ['id' => $reponse->getAvis()->getId()]);
         }
 
         return $this->render('reponse/edit.html.twig', [
@@ -127,6 +130,37 @@ final class ReponseController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_avis_reponses', ['id' => $reponse->getAvis()->getId()]);
+        return $this->redirectToRoute('app_avis_reponsess', ['id' => $reponse->getAvis()->getId()]);
     }
+
+    #[Route('/{id}/rate', name: 'app_reponse_rate', methods: ['POST'])]
+    public function rate(
+        Request $request,
+        ReponseRepository $repo,
+        EntityManagerInterface $em,
+        int $id
+    ): Response {
+        $reponse = $repo->find($id);
+        if (!$reponse) {
+            throw $this->createNotFoundException('Response not found.');
+        }
+        $rate = (int) $request->request->get('rate', 0);
+        if ($rate >= 1 && $rate <= 5) {
+            $reponse->setRate($rate);
+            $em->flush();
+            $this->addFlash('success', 'Thank you for your rating!');
+        }
+        return $this->redirectToRoute('app_avis_reponsess', [
+            'id' => $reponse->getAvis()->getId()
+        ]);
+    }
+    
+    #[Route('/stats/global', name: 'app_reponse_global_stats', methods: ['GET'])]
+    public function globalStats(ReponseRepository $reponseRepository): Response
+    {
+        return $this->json([
+            'stats' => $reponseRepository->getGlobalRatingStats()
+        ]);
+    }
+
 }

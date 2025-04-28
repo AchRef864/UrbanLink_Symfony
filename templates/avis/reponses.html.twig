@@ -5,6 +5,7 @@
 {% block stylesheets %}
 {{ parent() }}
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 <style>
     .card-3d {
         background-color: #fff;
@@ -67,13 +68,53 @@
 
     .text-gray-500 { color: #696969; }
     .border-gray-300 { border-color: #98FB98; }
+    
+    /* Rating styles */
+    .rate-container {
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    
+    .jq-ry-container {
+        margin-bottom: 5px;
+    }
+    
+    .rating-submit-btn {
+        margin-top: 10px;
+        padding: 5px 10px;
+        background-color: #4A5568;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    .rating-submit-btn:hover {
+        background-color: #2D3748;
+    }
+
+    .chart-container {
+        margin: 1rem auto;
+        padding: 1rem;
+        max-width: 500px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        height: 350px;
+    }
+
+    #ratingsChart {
+        max-width: 100%;
+        max-height: 300px;
+        margin: 0 auto;
+    }
 </style>
 {% endblock %}
 
 {% block body %}
 <div class="card-3d">
     <div class="header-3d">
-        <h6>Responses for Complaint #{{ avis_id }}</h6>
+        <h6>Responses for Complaint</h6>
         {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
             <a href="{{ path('app_reponse_new', {'avisId': avis_id}) }}" class="btn-add">
                 + New Response
@@ -88,6 +129,7 @@
                     <th class="px-6 py-3 uppercase tracking-wider">Comment</th>
                     <th class="px-6 py-3 uppercase tracking-wider">Date</th>
                     <th class="px-6 py-3 uppercase tracking-wider">Admin's Email</th>
+                    <th class="px-6 py-3 uppercase tracking-wider">Rating</th>
                     {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
                         <th class="px-6 py-3 uppercase tracking-wider text-center">Actions</th>
                     {% endif %}
@@ -100,6 +142,19 @@
                         <td class="px-6 py-3">{{ reponse.dateReponse|date('Y-m-d') }}</td>
                         <td class="px-6 py-3">
                             {{ reponse.user ? reponse.user.username : 'Unknown' }}
+                        </td>
+                        <td class="px-6 py-3">
+                            <div class="rate-container">
+                                <div class="rating" id="rating-{{ reponse.id }}" 
+                                    data-rating="{{ reponse.rate ?? 0 }}" 
+                                    data-readonly="{{ (reponse.rate is not null or not (app.user and 'ROLE_CLIENT' in app.user.roles)) ? 'true' : 'false' }}"></div>
+                                {% if reponse.rate is null and app.user and 'ROLE_CLIENT' in app.user.roles %}
+                                    <form method="post" action="{{ path('app_reponse_rate', {'id': reponse.id}) }}" class="rating-form">
+                                        <input type="hidden" name="rate" id="rate-value-{{ reponse.id }}" value="0">
+                                        <button type="submit" class="rating-submit-btn">Submit Rating</button>
+                                    </form>
+                                {% endif %}
+                            </div>
                         </td>
                         {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
                             <td class="px-6 py-3 space-x-2 text-center">
@@ -123,7 +178,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="{% if app.user and 'ROLE_ADMIN' in app.user.roles %}4{% else %}3{% endif %}" 
+                        <td colspan="{% if app.user and 'ROLE_ADMIN' in app.user.roles %}5{% else %}4{% endif %}" 
                             class="px-6 py-3 text-center text-gray-500">
                             No responses found for this complaint.
                         </td>
@@ -131,6 +186,11 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <div class="chart-container">
+        <h6 class="mb-4 text-center">Global Rating Distribution</h6>
+        <canvas id="ratingsChart"></canvas>
     </div>
 
     <div class="text-center mt-4 mb-4">
@@ -146,16 +206,145 @@
 {% block javascripts %}
 {{ parent() }}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+
 <script>
     $(document).ready(function() {
-        $('table').DataTable({
-            searching: false,
-            info: false,
-            paging: false,
-            responsive: true,
-            autoWidth: false
+        console.log("Document ready");
+
+        // Debug - Check if jQuery and plugins are loaded
+        if (typeof $.fn.rateYo === 'undefined') {
+            console.error("RateYo plugin not loaded");
+        } else {
+            console.log("RateYo plugin loaded");
+        }
+        
+        if (typeof Chart === 'undefined') {
+            console.error("Chart.js not loaded");
+        } else {
+            console.log("Chart.js loaded");
+        }
+
+        // Initialize rateYo ratings
+        $(".rating").each(function() {
+            let $this = $(this);
+            let currentRating = parseFloat($this.data('rating')) || 0;
+            let isReadonly = $this.data('readonly') === 'true';
+            
+            console.log("Initializing rating:", $this.attr('id'), "Rating:", currentRating, "ReadOnly:", isReadonly);
+            
+            try {
+                $this.rateYo({
+                    rating: currentRating,
+                    readOnly: isReadonly,
+                    starWidth: "20px",
+                    fullStar: true,
+                    onSet: function(rating) {
+                        // Update the hidden input value when rating changes
+                        $('#rate-value-' + $this.attr('id').split('-')[1]).val(rating);
+                    }
+                });
+            } catch (e) {
+                console.error("Error initializing RateYo:", e);
+            }
         });
+
+        // Initialize Ratings Chart
+        try {
+            const ratingsCtx = document.getElementById('ratingsChart');
+            if (ratingsCtx) {
+                console.log("Ratings chart canvas found");
+                
+                {% if globalRatingStats is defined %}
+                    console.log("Global ratings stats defined");
+                    const stats = {
+                        1: {{ globalRatingStats[1] ?? 0 }},
+                        2: {{ globalRatingStats[2] ?? 0 }},
+                        3: {{ globalRatingStats[3] ?? 0 }},
+                        4: {{ globalRatingStats[4] ?? 0 }},
+                        5: {{ globalRatingStats[5] ?? 0 }}
+                    };
+                    
+                    console.log("Stats:", stats);
+                    
+                    const chartData = {
+                        labels: [
+                            '1 Star (' + stats[1] + ')',
+                            '2 Stars (' + stats[2] + ')',
+                            '3 Stars (' + stats[3] + ')',
+                            '4 Stars (' + stats[4] + ')',
+                            '5 Stars (' + stats[5] + ')'
+                        ],
+                        datasets: [{
+                            data: [stats[1], stats[2], stats[3], stats[4], stats[5]],
+                            backgroundColor: [
+                                '#ff6384', '#ff9f40', '#ffcd56', '#4bc0c0', '#36a2eb'
+                            ],
+                            borderWidth: 1
+                        }]
+                    };
+                    
+                    new Chart(ratingsCtx, {
+                        type: 'pie',
+                        data: chartData,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'right'
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                            const value = context.raw;
+                                            const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                            return `${value} ratings (${percentage}%)`;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                {% else %}
+                    console.log("Global ratings stats NOT defined");
+                    // Default chart with no data
+                    new Chart(ratingsCtx, {
+                        type: 'pie',
+                        data: {
+                            labels: ['No Rating Data Available'],
+                            datasets: [{
+                                data: [1],
+                                backgroundColor: ['#e0e0e0'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'right'
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function() {
+                                            return 'No ratings available';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                {% endif %}
+            } else {
+                console.error("Ratings chart canvas NOT found");
+            }
+        } catch (e) {
+            console.error("Error initializing chart:", e);
+        }
     });
 </script>
 {% endblock %}

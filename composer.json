@@ -16,6 +16,7 @@
         "geocoder-php/google-maps-provider": "^4.8",
         "hwi/oauth-bundle": "*",
         "knplabs/knp-paginator-bundle": "^6.7",
+        "knplabs/knp-snappy": "^1.5",
         "knplabs/knp-snappy-bundle": "^1.10",
         "nyholm/psr7": "^1.8",
         "php-http/guzzle7-adapter": "*",

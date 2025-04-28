@@ -1,4 +1,4 @@
-{% extends 'basef.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Complaints{% endblock %}
 
@@ -11,7 +11,7 @@
         margin: 0 auto;
         padding: 2rem;
     }
-    
+
     .card-3d {
         background-color: #fff;
         border-radius: 0.75rem;
@@ -62,8 +62,8 @@
     }
 
     .status-processed { background-color: #10B981; color: #fff; }
-    .status-pending { background-color: #FACC15; color: #1F2937; }
-    .status-na { background-color: #EF4444; color: #fff; }
+    .status-pending   { background-color: #FACC15; color: #1F2937; }
+    .status-na        { background-color: #EF4444; color: #fff; }
 
     .search-form input {
         padding: 0.5rem 1rem;
@@ -128,6 +128,28 @@
         border: none;
         cursor: pointer;
     }
+
+    /* === Styles du chatbot === */
+    .chatbot-card {
+        background-color: #f9fafb;
+        border-radius: 0.75rem;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        margin-top: 1.5rem;
+    }
+    .chatbot-card textarea {
+        width: 100%;
+        height: 100px;
+        padding: 0.75rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+    .chatbot-card .response {
+        background: #edf2f7;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        white-space: pre-wrap;
+    }
 </style>
 {% endblock %}
 
@@ -138,12 +160,12 @@
             <h2>Complaints Management</h2>
             <div class="flex items-center gap-2">
                 <form method="get" action="{{ path('app_avis_index') }}" class="search-form">
-                    <input type="text" name="search" id="search" value="{{ search }}" 
+                    <input type="text" name="search" id="search" value="{{ search }}"
                            placeholder="Search complaints..." class="mr-2">
                     <button type="submit" class="btn-primary">Search</button>
                 </form>
                 {% if app.user and app.user.role == 'client' %}
-                    <a href="{{ path('app_avis_new_front') }}" class="btn-primary">+ New Complaint</a>
+                    <a href="{{ path('app_avis_new') }}" class="btn-primary">+ New Complaint</a>
                 {% endif %}
             </div>
         </div>
@@ -179,20 +201,27 @@
                             <td>{{ avi.vehicle ? avi.vehicle.licensePlate : 'N/A' }}</td>
                             <td>
                                 <div class="action-buttons">
-                                    {% if app.user and app.user.id == avi.user.id %}
-                                        <a href="{{ path('app_avis_edit', {'id': avi.id}) }}" class="btn-edit">
-                                            Edit
-                                        </a>
-                                    {% endif %}
-                                    <a href="{{ path('app_avis_reponsess', {'id': avi.id}) }}" class="btn-responses">
+                                    {# Toujours visible #}
+                                    <a href="{{ path('app_avis_reponses', {'id': avi.id}) }}"
+                                       class="btn-responses">
                                         Responses
                                     </a>
-                                    {% if app.user and app.user.role == 'client' and app.user.id == avi.user.id %}
-                                        <form method="post" action="{{ path('app_avis_delete', {'id': avi.id}) }}" class="inline">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ avi.id) }}">
-                                            <button type="submit" class="btn-delete" onclick="return confirm('Are you sure?')">
-                                                Delete
-                                            </button>
+
+                                    {# Admins #}
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a href="{{ path('app_avis_edit', {'id': avi.id}) }}"
+                                           class="btn-edit">Edit</a>
+                                    {% endif %}
+
+                                    {# Propriétaire #}
+                                    {% if app.user and app.user.id == avi.user.id %}
+                                        <form method="post"
+                                              action="{{ path('app_avis_delete', {'id': avi.id}) }}"
+                                              style="display:inline-block;"
+                                              onsubmit="return confirm('Are you sure you want to delete this complaint?');">
+                                            <input type="hidden" name="_token"
+                                                   value="{{ csrf_token('delete' ~ avi.id) }}">
+                                            <button type="submit" class="btn-delete">Delete</button>
                                         </form>
                                     {% endif %}
                                 </div>
@@ -200,7 +229,9 @@
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="7" class="text-center py-4 text-gray-500">No complaints found</td>
+                            <td colspan="7" class="text-center py-4 text-gray-500">
+                                No complaints found
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -209,9 +240,22 @@
     </div>
 
     <div class="card-3d" style="margin-top: 1.5rem;">
-        
         <div style="padding: 1.5rem;">
             {{ knp_pagination_render(avis) }}
+        </div>
+    </div>
+
+    {# === Section Chatbot === #}
+    <div class="chatbot-card">
+        <div style="padding:1.5rem;">
+            <h3>Chatbot Assistance</h3>
+            <form method="post" action="{{ path('app_avis_front') }}">
+                <textarea name="chat_message" placeholder="Posez votre question…">{{ chatMessage|default('') }}</textarea>
+                <button type="submit" class="btn-primary">Envoyer</button>
+            </form>
+            {% if botResponse is defined and botResponse %}
+                <div class="response mt-4">{{ botResponse }}</div>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -224,11 +268,11 @@
 <script>
     $(document).ready(function() {
         $('#datatable-search').DataTable({
-            searching: false,
-            info: false,
-            paging: false,
+            searching:  false,
+            info:       false,
+            paging:     false,
             responsive: true,
-            autoWidth: false
+            autoWidth:  false
         });
     });
 </script>

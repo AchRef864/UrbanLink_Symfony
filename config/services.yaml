@@ -78,3 +78,7 @@ services:
             $client: '@http_client'  # Or the name of your HttpClient service
             $apiKey: '%env(GEMINI_API_KEY)%' # Assuming you store your API key in .env
             $doctrine: '@doctrine'
+
+    App\Service\BadWordFilterService:
+        arguments:
+            $endpoint: 'https://www.purgomalum.com/service/plain'

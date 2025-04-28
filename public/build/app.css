@@ -1583,6 +1583,10 @@
   padding-bottom: 0px
 }
 
+.pb-12 {
+  padding-bottom: 3rem
+}
+
 .pb-2 {
   padding-bottom: 0.5rem
 }
@@ -1665,6 +1669,10 @@
 
 .pt-12 {
   padding-top: 3rem
+}
+
+.pt-3 {
+  padding-top: 0.75rem
 }
 
 .pt-4 {
