@@ -9,12 +9,6 @@
                 "enabled": false,
                 "fetch": "eager"
             }
-        },
-        "@symfony/ux-rating": {
-            "rating": {
-                "enabled": true,
-                "fetch": "eager"
-            }
         }
     },
     "entrypoints": []

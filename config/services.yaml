@@ -75,3 +75,7 @@ services:
         arguments:
             $apiKey: '%env(GEMINI_API_KEY)%'
             $model: '%env(GEMINI_MODEL)%'
+
+    App\Service\BadWordFilterService:
+        arguments:
+            $endpoint: 'https://www.purgomalum.com/service/plain'

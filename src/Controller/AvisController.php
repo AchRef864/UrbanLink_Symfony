@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\BadWordFilterService;
 
 #[Route('/avis')]
 final class AvisController extends AbstractController
@@ -85,7 +86,7 @@ final class AvisController extends AbstractController
     }
 
     #[Route('/new', name: 'app_avis_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, BadWordFilterService $badWordFilter): Response
     {
         if (!$this->isGranted('ROLE_CLIENT')) {
             throw $this->createAccessDeniedException('Only clients can add a new complaint.');
@@ -100,6 +101,10 @@ final class AvisController extends AbstractController
             if (!$user) {
                 throw $this->createAccessDeniedException('You must be logged in to leave a complaint.');
             }
+
+            // ★★★ Bad words filtering ★★★
+            $filteredComment = $badWordFilter->filter($avi->getCommentaire());
+            $avi->setCommentaire($filteredComment);
 
             $avi->setUser($user)
                 ->setStatut('not processed');
@@ -124,7 +129,11 @@ final class AvisController extends AbstractController
         Request $request,
         GeminiService $geminiService
     ): Response {
-        $user       = $this->getUser();
+        $user = $this->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException('You must be logged in to view your complaints.');
+        }
+
         $searchTerm = $request->query->get('search', '');
 
         $qb = $avisRepository->createQueryBuilder('a')
@@ -153,7 +162,7 @@ final class AvisController extends AbstractController
             5
         );
 
-        // ==== Chatbot ====
+        // Chatbot functionality
         $chatMessage = '';
         $botResponse = null;
         if ($request->isMethod('POST')) {
