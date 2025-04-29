@@ -191,6 +191,7 @@ public function showDeletedTrajetDetails(Reservation $reservation): Response
 
         Stripe::setApiKey($this->getParameter('stripe_secret_key'));
 
+        
         // Ensure the price is correct
         $totalPrice = $reservation->getTrajet()->getPrice() * $reservation->getNumberOfSeats();
         $reservation->setTotalPrice($totalPrice);

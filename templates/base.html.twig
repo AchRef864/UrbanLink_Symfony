@@ -330,9 +330,13 @@
           </a>
         </li>
         <li>
-          <a href="#" class="{{ app.request.get('_route') starts with 'abonnement_' ? 'active' : '' }}">
+          <a href="{{ path('abonnement_list') }}" class="{{ app.request.get('_route') starts with 'abonnement_' ? 'active' : '' }}">
             <i class="fas fa-id-card"></i> Subscriptions
           </a>
+
+          <a href="{{ path('app_admin_reservations') }}" class="{{ app.request.get('_route') starts with 'abonnement_' ? 'active' : '' }}">
+        <i class="fas fa-id-card"></i> Subscriptions list
+      </a>
         </li>
 
         <li class="nav-item">
