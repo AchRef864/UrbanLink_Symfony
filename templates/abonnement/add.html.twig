@@ -1,4 +1,3 @@
-{# templates/abonnement/add.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Ajouter un Abonnement{% endblock %}
@@ -6,223 +5,337 @@
 {% block stylesheets %}
     {{ parent() }}
     <style>
+        /* Color Variables */
         :root {
-            --primary-dark: #1e40af;
-            --primary-light: #3b82f6;
-            --success-dark: #047857;
-            --success-light: #10b981;
-            --danger-dark: #b91c1c;
-            --danger-light: #ef4444;
-            --warning-dark: #b45309;
-            --warning-light: #f59e0b;
-            --dark-bg: #0f172a;
-            --dark-card: #1e293b;
-            --dark-text: #f8fafc;
-            --dark-border: #334155;
+            --primary: #4361ee;
+            --primary-dark: #3a0ca3;
+            --primary-light: #4895ef;
+            --secondary: #7209b7;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #577590;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --text: #2b2d42;
+            --text-light: #8d99ae;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --border: #dee2e6;
         }
         
+        .dark {
+            --primary: #4895ef;
+            --primary-dark: #3a0ca3;
+            --primary-light: #4cc9f0;
+            --secondary: #b5179e;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #577590;
+            --light: #343a40;
+            --dark: #f8f9fa;
+            --text: #f8f9fa;
+            --text-light: #adb5bd;
+            --bg: #212529;
+            --card-bg: #2b2d42;
+            --border: #495057;
+        }
+        
+        /* Base Styles */
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Card Styles */
+        .custom-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .dark .custom-card {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Header Styles */
+        .custom-header {
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem;
+        }
+        
+        .custom-title {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .custom-subtitle {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+        
+        /* Button Styles */
+        .custom-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .custom-btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.25);
+        }
+        
+        .custom-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(67, 97, 238, 0.35);
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+        }
+        
+        .custom-btn-secondary {
+            background-color: var(--light);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        
+        .custom-btn-secondary:hover {
+            background-color: var(--border);
+        }
+        
+        /* Form Styles */
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+            font-size: 0.875rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background-color: var(--card-bg);
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        .form-error {
+            color: var(--danger);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        /* Status Badges */
         .status-badge {
             padding: 0.35rem 0.75rem;
             border-radius: 9999px;
             font-size: 0.75rem;
             font-weight: 600;
             text-transform: capitalize;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
+        
         .status-active {
-            background-color: rgba(16, 185, 129, 0.15);
-            color: #10b981;
-            border: 1px solid var(--success-dark);
+            background-color: rgba(76, 201, 240, 0.15);
+            color: var(--success);
+            border: 1px solid var(--success);
         }
+        
         .status-expired {
-            background-color: rgba(239, 68, 68, 0.15);
-            color: #ef4444;
-            border: 1px solid var(--danger-dark);
+            background-color: rgba(247, 37, 133, 0.15);
+            color: var(--danger);
+            border: 1px solid var(--danger);
         }
+        
         .status-cancelled {
-            background-color: rgba(245, 158, 11, 0.15);
-            color: #f59e0b;
-            border: 1px solid var(--warning-dark);
+            background-color: rgba(248, 150, 30, 0.15);
+            color: var(--warning);
+            border: 1px solid var(--warning);
         }
         
-        /* Dark mode overrides */
-        .dark .bg-white {
-            background-color: var(--dark-bg) !important;
-        }
-        .dark .bg-slate-50 {
-            background-color: var(--dark-card) !important;
-        }
-        .dark .border-gray-200 {
-            border-color: var(--dark-border) !important;
-        }
-        .dark .text-slate-500 {
-            color: var(--dark-text) !important;
-        }
-        .dark .text-slate-700 {
-            color: var(--dark-text) !important;
-        }
-        .dark .bg-gradient-to-tl {
-            background-image: linear-gradient(to top left, var(--primary-dark), #4338ca) !important;
-        }
-        .dark .shadow-soft-xl {
-            box-shadow: 0 20px 27px 0 rgba(15, 23, 42, 0.5) !important;
-        }
-        
-        /* Enhanced card styling */
-        .rounded-2xl {
-            border-radius: 1rem !important;
+        /* Image Preview */
+        .image-preview-container {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 8px;
+            border: 1px dashed var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
-        }
-        .shadow-soft-xl {
-            box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.1);
+            background-color: var(--light);
         }
         
-        /* Button enhancements */
-        .btn-primary {
-            background: linear-gradient(to right, var(--primary-dark), var(--primary-light));
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-        
-        /* Form input styling */
-        .form-input {
-            transition: all 0.3s ease;
-            border: 1px solid #d1d5db;
-        }
-        .form-input:focus {
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-        .dark .form-input {
-            background-color: var(--dark-card);
-            border-color: var(--dark-border);
-            color: var(--dark-text);
-        }
-        .dark .form-input:focus {
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-        }
-        
-        /* Image preview styling */
         .image-preview {
-            transition: all 0.3s ease;
-            border: 1px dashed #d1d5db;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-        .dark .image-preview {
-            border-color: var(--dark-border);
+        
+        .image-placeholder {
+            color: var(--text-light);
+            font-size: 1.5rem;
         }
-        .image-preview:hover {
-            border-color: var(--primary-light);
+        
+        /* Flash Messages */
+        .flash-message {
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+        }
+        
+        .flash-success {
+            background-color: rgba(76, 201, 240, 0.15);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+        
+        .flash-error {
+            background-color: rgba(247, 37, 133, 0.15);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr !important;
+            }
         }
     </style>
 {% endblock %}
 
 {% block body %}
-<div class="w-full px-6 py-6 mx-auto">
+<div class="w-full px-4 py-6 mx-auto max-w-7xl">
     <!-- Flash messages -->
     {% for message in app.flashes('success') %}
-        <div class="p-4 mb-4 text-sm text-green-800 bg-green-50 rounded-lg border border-green-200 dark:bg-gray-800 dark:text-green-400 dark:border-green-800">
+        <div class="flash-message flash-success">
             {{ message }}
         </div>
     {% endfor %}
     {% for message in app.flashes('error') %}
-        <div class="p-4 mb-4 text-sm text-red-800 bg-red-50 rounded-lg border border-red-200 dark:bg-gray-800 dark:text-red-400 dark:border-red-800">
+        <div class="flash-message flash-error">
             {{ message }}
         </div>
     {% endfor %}
 
     <!-- Card container -->
-    <div class="flex flex-wrap -mx-3">
-        <div class="w-full max-w-full px-3 flex-0">
-            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 dark:bg-slate-900 shadow-soft-xl rounded-2xl bg-clip-border">
-                <!-- Card header -->
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center p-6 pb-0 rounded-t-2xl">
-                    <div class="mb-4 md:mb-0">
-                        <h6 class="mb-0 dark:text-white text-lg font-bold text-gray-900">Ajouter un Abonnement</h6>
-                        <p class="text-sm text-slate-600 dark:text-slate-300">Remplissez le formulaire pour créer un nouvel abonnement</p>
-                    </div>
-                    <a href="{{ path('abonnement_list') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-tl from-gray-500 to-gray-700 text-white font-bold text-sm uppercase rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
-                        <i class="fas fa-arrow-left mr-2"></i> Retour à la liste
-                    </a>
+    <div class="custom-card">
+        <!-- Card header -->
+        <div class="custom-header flex flex-col md:flex-row justify-between items-start md:items-center">
+            <div class="mb-4 md:mb-0">
+                <h1 class="custom-title">Ajouter un Abonnement</h1>
+                <p class="custom-subtitle">Remplissez le formulaire pour créer un nouvel abonnement</p>
+            </div>
+            <a href="{{ path('abonnement_list') }}" class="custom-btn custom-btn-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="mr-2">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+                Retour à la liste
+            </a>
+        </div>
+
+        <!-- Form container -->
+        <div class="p-6">
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'space-y-6'}}) }}
+
+            <!-- Type -->
+            <div>
+                {{ form_label(form.type, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.type, {'attr': {'class': 'form-input'}}) }}
+                <div class="form-error">{{ form_errors(form.type) }}</div>
+            </div>
+
+            <!-- Prix -->
+            <div>
+                {{ form_label(form.prix, null, {'label_attr': {'class': 'form-label'}}) }}
+                <div class="relative">
+                    <span class="absolute left-3 top-3 text-slate-500 dark:text-slate-400"></span>
+                    {{ form_widget(form.prix, {'attr': {'class': 'form-input pl-10'}}) }}
                 </div>
+                <div class="form-error">{{ form_errors(form.prix) }}</div>
+            </div>
 
-                <!-- Form container -->
-                <div class="flex-auto p-6">
-                    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'space-y-6'}}) }}
-
-                    <!-- Type -->
-                    <div class="mb-4">
-                        {{ form_label(form.type, null, {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2'}}) }}
-                        {{ form_widget(form.type, {'attr': {'class': 'form-input focus:shadow-soft-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none'}}) }}
-                        <div class="text-red-500 text-sm mt-1">{{ form_errors(form.type) }}</div>
-                    </div>
-
-                    <!-- Prix -->
-                    <div class="mb-4">
-                        {{ form_label(form.prix, null, {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2'}}) }}
-                        <div class="relative">
-                            <span class="absolute left-3 top-2 text-slate-500 dark:text-slate-400">TND</span>
-                            {{ form_widget(form.prix, {'attr': {'class': 'form-input focus:shadow-soft-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-10 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none', 'placeholder': '0.00'}}) }}
-                        </div>
-                        <div class="text-red-500 text-sm mt-1">{{ form_errors(form.prix) }}</div>
-                    </div>
-
-                    <!-- Dates -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-                        <div>
-                            {{ form_label(form.date_debut, null, {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2'}}) }}
-                            {{ form_widget(form.date_debut, {'attr': {'class': 'form-input focus:shadow-soft-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none'}}) }}
-                            <div class="text-red-500 text-sm mt-1">{{ form_errors(form.date_debut) }}</div>
-                        </div>
-                        <div>
-                            {{ form_label(form.date_fin, null, {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2'}}) }}
-                            {{ form_widget(form.date_fin, {'attr': {'class': 'form-input focus:shadow-soft-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none'}}) }}
-                            <div class="text-red-500 text-sm mt-1">{{ form_errors(form.date_fin) }}</div>
-                        </div>
-                    </div>
-
-                    <!-- État -->
-                    <div class="mb-4">
-                        {{ form_label(form.etat, null, {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2'}}) }}
-                        {{ form_widget(form.etat, {'attr': {'class': 'form-input focus:shadow-soft-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none'}}) }}
-                        <div class="text-red-500 text-sm mt-1">{{ form_errors(form.etat) }}</div>
-                    </div>
-
-                    <!-- Image -->
-                    <div class="mb-6">
-                        {{ form_label(form.imageFile, null, {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2'}}) }}
-                        <div class="mt-1 flex items-center">
-                            <span class="image-preview inline-block h-16 w-16 rounded-lg overflow-hidden bg-gray-100 dark:bg-slate-700 mr-4 flex items-center justify-center">
-                                {% if form.vars.value and form.vars.value.image %}
-                                    <img id="preview-image" src="{{ asset('uploads/images/abonnements/' ~ form.vars.value.image) }}" class="h-full w-full object-cover">
-                                {% else %}
-                                    <div id="preview-image" class="h-full w-full flex items-center justify-center text-gray-400 dark:text-slate-400">
-                                        <i class="fas fa-image text-2xl"></i>
-                                    </div>
-                                {% endif %}
-                            </span>
-                            <div class="flex-1">
-                                {{ form_widget(form.imageFile, {'attr': {'class': 'form-input focus:shadow-soft-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none', 'onchange': 'previewImage(this)'}}) }}
-                                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">PNG, JPG ou JPEG (Max. 2MB)</p>
-                            </div>
-                        </div>
-                        <div class="text-red-500 text-sm mt-1">{{ form_errors(form.imageFile) }}</div>
-                    </div>
-
-                    <!-- Submit -->
-                    <div class="pt-4 text-right">
-                        <button type="submit" class="btn-primary inline-flex items-center px-6 py-3 text-white font-bold uppercase rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
-                            <i class="fas fa-save mr-2"></i> Enregistrer
-                        </button>
-                    </div>
-
-                    {{ form_end(form) }}
+            <!-- Dates -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 form-grid">
+                <div>
+                    {{ form_label(form.date_debut, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.date_debut, {'attr': {'class': 'form-input'}}) }}
+                    <div class="form-error">{{ form_errors(form.date_debut) }}</div>
+                </div>
+                <div>
+                    {{ form_label(form.date_fin, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.date_fin, {'attr': {'class': 'form-input'}}) }}
+                    <div class="form-error">{{ form_errors(form.date_fin) }}</div>
                 </div>
             </div>
+
+            <!-- État -->
+            <div>
+                {{ form_label(form.etat, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.etat, {'attr': {'class': 'form-input'}}) }}
+                <div class="form-error">{{ form_errors(form.etat) }}</div>
+            </div>
+
+            <!-- Image -->
+            <div>
+                {{ form_label(form.imageFile, null, {'label_attr': {'class': 'form-label'}}) }}
+                <div class="flex items-center space-x-4">
+                    <div class="image-preview-container">
+                        {% if form.vars.value and form.vars.value.image %}
+                            <img id="preview-image" src="{{ asset('uploads/images/abonnements/' ~ form.vars.value.image) }}" class="image-preview">
+                        {% else %}
+                            <div id="preview-image" class="image-placeholder">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                    <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+                                </svg>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="flex-1">
+                        {{ form_widget(form.imageFile, {'attr': {'class': 'form-input', 'onchange': 'previewImage(this)'}}) }}
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">PNG, JPG ou JPEG (Max. 2MB)</p>
+                    </div>
+                </div>
+                <div class="form-error">{{ form_errors(form.imageFile) }}</div>
+            </div>
+
+            <!-- Submit -->
+            <div class="pt-4 text-right">
+                <button type="submit" class="custom-btn custom-btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="mr-2">
+                        <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+                    </svg>
+                    Enregistrer
+                </button>
+            </div>
+
+            {{ form_end(form) }}
         </div>
     </div>
 </div>
@@ -238,11 +351,17 @@
 
             if (file) {
                 reader.onloadend = function () {
-                    preview.innerHTML = '';
-                    const img = document.createElement('img');
-                    img.src = reader.result;
-                    img.className = 'h-full w-full object-cover';
-                    preview.appendChild(img);
+                    if (preview.tagName === 'DIV') {
+                        // Replace placeholder div with img element
+                        const img = document.createElement('img');
+                        img.id = 'preview-image';
+                        img.className = 'image-preview';
+                        img.src = reader.result;
+                        preview.parentNode.replaceChild(img, preview);
+                    } else {
+                        // Update existing img element
+                        preview.src = reader.result;
+                    }
                 }
                 reader.readAsDataURL(file);
             }

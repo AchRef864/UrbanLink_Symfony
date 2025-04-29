@@ -97,9 +97,11 @@ class Taxi
     private Collection $courses;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 6, nullable: true)]
+    #[Assert\NotBlank(message: "La longitude est obligatoire.")]
     private ?string $longitude = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 6, nullable: true)]
+    #[Assert\NotBlank(message: "L'atitude est obligatoire.")]
     private ?string $latitude = null;
 
     // Ajoute les getters et setters pour ces nouveaux champs

@@ -6,6 +6,7 @@ use App\Entity\Abonnement;
 use App\Entity\AbonnementReservation;
 use App\Entity\User;
 use App\Form\AbonnementReservationType;
+use App\Controller\StripeClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Stripe\Stripe;
+use Stripe\Checkout\Session;
 use Knp\Component\Pager\PaginatorInterface;
 
 
@@ -31,85 +33,116 @@ class AbonnementReservationController extends AbstractController
             'abonnements' => $abonnements,
         ]);
     }
-    #[Route('/{id}/reserve', name: 'app_abonnement_reserve', methods: ['GET', 'POST'])]
+    
+#[Route('/{id}/reserve', name: 'app_abonnement_reserve', methods: ['GET', 'POST'])]
 public function reserve(
     Request $request,
     Abonnement $abonnement,
     EntityManagerInterface $entityManager,
     UrlGeneratorInterface $urlGenerator
 ): Response {
+    // Set your secret key
+    Stripe::setApiKey($this->getParameter('stripe_secret_key'));
+
+    // User authentication check
     $user = $this->getUser();
     if (!$user instanceof User) {
         $this->addFlash('warning', 'Vous devez être connecté pour réserver.');
         return $this->redirectToRoute('app_login');
     }
 
+    // Abonnement availability check
     if ($abonnement->getEtat() !== 'actif') {
         $this->addFlash('danger', 'Cet abonnement n\'est plus disponible.');
         return $this->redirectToRoute('app_abonnement_index');
     }
 
+    // Create reservation
     $reservation = new AbonnementReservation();
     $reservation->setAbonnement($abonnement);
     $reservation->setUser($user);
     $reservation->setStatut('en attente');
-
-    $dateDebut = new \DateTime('tomorrow');
-    $dateFin = (clone $dateDebut)->modify('+1 month');
-    $reservation->setDateDebut($dateDebut);
-    $reservation->setDateFin($dateFin);
+    $reservation->setDateDebut($abonnement->getDateDebut());
+    $reservation->setDateFin($abonnement->getDateFin());
 
     $form = $this->createForm(AbonnementReservationType::class, $reservation, [
-        'abonnement' => $abonnement,
-        'user_name' => $user->getName()
+        'user_name' => $user->getName() ?? 'Nom non défini',
     ]);
 
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-        $entityManager->persist($reservation);
-        $entityManager->flush();
+        try {
+            $entityManager->persist($reservation);
+            $entityManager->flush();
 
-        // Get Stripe keys from parameters
-        $stripeSecretKey = $this->getParameter('stripe_secret_key');
-        $stripePublicKey = $this->getParameter('stripe_public_key');
-        
-        \Stripe\Stripe::setApiKey($stripeSecretKey);
-
-        $checkoutSession = \Stripe\Checkout\Session::create([
-            'payment_method_types' => ['card'],
-            'line_items' => [[
-                'price_data' => [
-                    'currency' => 'eur',
-                    'product_data' => [
-                        'name' => 'Abonnement ' . $abonnement->getType(),
+            // Create Stripe Checkout Session
+            $checkoutSession = Session::create([
+                'payment_method_types' => ['card'],
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'eur',
+                        'product_data' => [
+                            'name' => $abonnement->getType() . ' Subscription',
+                        ],
+                        'unit_amount' => $abonnement->getPrix() * 100,
                     ],
-                    'unit_amount' => $reservation->getTotalPrice() * 100, // in cents
-                ],
-                'quantity' => 1,
-            ]],
-            'mode' => 'payment',
-            'success_url' => $urlGenerator->generate('app_payment_success', [
-                'id' => $reservation->getId()
-            ], UrlGeneratorInterface::ABSOLUTE_URL),
-            'cancel_url' => $urlGenerator->generate('app_abonnement_index', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            'customer_email' => $user->getEmail(),
-            'metadata' => [
-                'reservation_id' => $reservation->getId(),
-            ],
-        ]);
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+                'success_url' => $urlGenerator->generate('app_abonnement_reserve_success', [
+                    'id' => $abonnement->getId(),
+                    'reservation_id' => $reservation->getId()
+                ], UrlGeneratorInterface::ABSOLUTE_URL),
+                'cancel_url' => $urlGenerator->generate('app_abonnement_reserve_cancel', [
+                    'id' => $abonnement->getId()
+                ], UrlGeneratorInterface::ABSOLUTE_URL),
+                'customer_email' => $user->getEmail(),
+                'metadata' => [
+                    'reservation_id' => $reservation->getId()
+                ]
+            ]);
 
-        return $this->redirect($checkoutSession->url, 303);
+            return $this->redirect($checkoutSession->url);
+            
+        } catch (\Exception $e) {
+            $this->addFlash('danger', 'Payment error: ' . $e->getMessage());
+        }
     }
-
-    // Get Stripe public key for the template
-    $stripePublicKey = $this->getParameter('stripe_public_key');
 
     return $this->render('abonnement_reservation/reserve.html.twig', [
         'abonnement' => $abonnement,
         'form' => $form->createView(),
-        'stripe_key' => $stripePublicKey
+        'stripe_key' => $this->getParameter('stripe_public_key')
     ]);
+}
+
+
+
+
+#[Route('/{id}/reserve/success/{reservation_id}', name: 'app_abonnement_reserve_success')]
+public function reserveSuccess(Abonnement $abonnement, int $reservation_id, EntityManagerInterface $entityManager): Response
+{
+    $reservation = $entityManager->getRepository(AbonnementReservation::class)->find($reservation_id);
+    
+    if (!$reservation) {
+        throw $this->createNotFoundException('Reservation not found');
+    }
+
+    $reservation->setStatut('payé');
+    $entityManager->flush();
+
+    return $this->render('abonnement_reservation/success.html.twig', [
+        'abonnement' => $abonnement,
+        'reservation' => $reservation
+    ]);
+}
+
+#[Route('/{id}/reserve/cancel', name: 'app_abonnement_reserve_cancel')]
+public function reserveCancel(Abonnement $abonnement): Response
+{
+    $this->addFlash('warning', 'Payment was cancelled. You can try again if you wish.');
+    return $this->redirectToRoute('app_abonnement_reserve', ['id' => $abonnement->getId()]);
 }
 
     #[Route('/mes-reservations', name: 'app_abonnement_mes_reservations', methods: ['GET'])]

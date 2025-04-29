@@ -25,12 +25,18 @@ taxi_index:
     controller: App\Controller\TaxiController::index
 
 taxi_new:
-    path: /admin/taxi/new
+    path: /admin/taxi/new/{userId}
     controller: App\Controller\TaxiController::new
+    methods: [GET,POST]
+    requirements:
+        userId: '\d+'
 
 taxi_edit:
     path: /admin/taxi/{id}/edit
     controller: App\Controller\TaxiController::edit
+    methods: [GET,POST]
+    requirements:
+        id: '\d+'
 
 taxi_delete:
     path: /admin/taxi/{id}/delete
@@ -149,9 +155,25 @@ client_profile:
 client_dashboard:
     path: /client/dashboard
     controller: App\Controller\Client\DashboardController::index
+    
 taxiste_dashboard:
     path: /taxiste/dashboard
     controller: App\Controller\TaxisteController::dashboard
+
+course_map:
+    path: /admin/course/zones
+    controller: App\Controller\CourseController::zonesMap
+
+course_stats:
+    path: /admin/course/stats
+    controller: App\Controller\CourseController::stats
+my_profile:
+    path: /profile/myprofile
+    controller: App\Controller\ProfileController::myProfile
+urban_talk:
+    path: /urban-talk
+    controller: App\Controller\UrbanTalkController::chat
+    methods: POST
 vehicle_index:
     path: /admin/vehicles
     controller: App\Controller\VehicleController::index

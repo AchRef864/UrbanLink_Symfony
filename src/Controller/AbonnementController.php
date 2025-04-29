@@ -51,17 +51,31 @@ final class AbonnementController extends AbstractController
         ]);
     }
     
-
-
     #[Route('/abonnements', name: 'abonnement_list')]
-    public function list(AbonnementRepository $abonnementRepository): Response
+    public function list(Request $request, AbonnementRepository $abonnementRepository): Response
     {
-        $abonnements = $abonnementRepository->findAll();
+        // Get filter parameters from the request
+        $searchTerm = $request->query->get('search', '');
+        $etat = $request->query->get('etat', '');
+        $minPrice = $request->query->get('min_price', null);
+        $maxPrice = $request->query->get('max_price', null);
+        
+        // Query abonnements with filters
+        $abonnements = $abonnementRepository->findWithFilters(
+            $searchTerm,
+            $etat,
+            $minPrice,
+            $maxPrice
+        );
+    
         return $this->render('abonnement/list.html.twig', [
             'abonnements' => $abonnements,
+            'searchTerm' => $searchTerm,
+            'etat' => $etat,
+            'minPrice' => $minPrice,
+            'maxPrice' => $maxPrice,
         ]);
     }
-
     #[Route('/abonnement/{id}', name: 'abonnement_show')]
     public function show(Abonnement $abonnement): Response
     {

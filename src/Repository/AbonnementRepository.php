@@ -21,4 +21,42 @@ class AbonnementRepository extends ServiceEntityRepository
         parent::__construct($registry, Abonnement::class);
     }
 
+
+
+
+    public function findWithFilters(
+        string $searchTerm = '', 
+        string $etat = '', 
+        ?float $minPrice = null, 
+        ?float $maxPrice = null
+    ) {
+        $qb = $this->createQueryBuilder('a');
+        
+        if ($searchTerm) {
+            $qb->andWhere('a.type LIKE :searchTerm OR a.description LIKE :searchTerm')
+               ->setParameter('searchTerm', '%'.$searchTerm.'%');
+        }
+        
+        if ($etat) {
+            $qb->andWhere('a.etat = :etat')
+               ->setParameter('etat', $etat);
+        }
+        
+        if ($minPrice !== null) {
+            $qb->andWhere('a.prix >= :minPrice')
+               ->setParameter('minPrice', $minPrice);
+        }
+        
+        if ($maxPrice !== null) {
+            $qb->andWhere('a.prix <= :maxPrice')
+               ->setParameter('maxPrice', $maxPrice);
+        }
+        
+        return $qb->getQuery()->getResult();
+    }
+
+
+
+
+
 }

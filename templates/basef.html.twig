@@ -273,10 +273,8 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownVehicules">
                             {# Exemples d'items de dropdown - Remplacez # et le texte #}
-                            <li><a class="dropdown-item" href="#">Liste des véhicules</a></li>
-                            <li><a class="dropdown-item" href="#">Ajouter un véhicule</a></li>
-                            <li><hr class="dropdown-divider"></li> {# Ligne de séparation #}
-                            <li><a class="dropdown-item" href="#">Types de véhicules</a></li>
+                            <li><a class="dropdown-item" href="{{ path('my_vehicle')}}">Liste des véhicules</a></li>
+                          
                         </ul>
                     </li>
 
@@ -292,6 +290,16 @@
                         </ul>
                     </li>
 
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTaxi" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-comment-dots me-1"></i> Avis
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownTaxi">
+                            {# Exemples d'items de dropdown - Remplacez # et le texte #}
+                            <li><a class="dropdown-item" href="{{ path('app_avis_new_front') }}">Ajouter avis</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_avis_front') }}">Historique avis</a></li>
+                        </ul>
+                    </li>
                     {# Dropdown Taxi #}
                      <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTaxi" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -311,15 +319,16 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownAbonnement">
                              {# Exemples d'items de dropdown - Remplacez # et le texte #}
-                            <li><a class="dropdown-item" href="#">Mes abonnements</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_abonnement_index')}}">Souscrire un abonnement</a></li>
-                            <li><a class="dropdown-item" href="#">Gérer les paiements</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_abonnement_mes_reservations') }}">Mes abonnements</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_abonnement_index') }}">Souscrire un abonnement</a></li>
                         </ul>
                     </li>
 
-                    {# Bouton de Connexion (non modifié en dropdown) #}
+                    {# Logout Button #}
                     <li class="nav-item ms-lg-3 my-2 my-lg-0">
-                        <a class="nav-link btn btn-accent rounded-pill px-3" href="#"><i class="fas fa-user me-1"></i> Connexion</a>
+                        <a class="nav-link btn btn-accent rounded-pill px-3" href="{{ path('app_logout') }}">
+                            <i class="fas fa-sign-out-alt me-1"></i> Déconnexion
+                        </a>
                     </li>
 
                 </ul>
@@ -359,7 +368,7 @@
                         <li><a href="#"><i class="fas fa-chevron-right"></i> Accueil</a></li>
                         <li><a href="#"><i class="fas fa-chevron-right"></i> Services</a></li>
                         <li><a href="#"><i class="fas fa-chevron-right"></i> Tarifs</a></li>
-                        <li><a href="#"><a href="#"><i class="fas fa-chevron-right"></i> À propos</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> À propos</a></li>
                         <li><a href="#"><i class="fas fa-chevron-right"></i> Contact</a></li>
                     </ul>
                 </div>

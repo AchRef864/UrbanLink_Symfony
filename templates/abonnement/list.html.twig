@@ -1,4 +1,4 @@
-{% extends 'fron.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Gestion des Abonnements{% endblock %}
 
@@ -301,7 +301,43 @@
             padding: 1rem;
             margin-bottom: 1.5rem;
         }
-        
+
+        /* Filter form styles */
+        .filter-form input,
+        .filter-form select {
+            background-color: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem;
+            width: 100%;
+        }
+
+        .filter-form input:focus,
+        .filter-form select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+
+        .filter-form label {
+            color: var(--text-light);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .filter-reset-btn {
+            background-color: var(--light);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .filter-reset-btn:hover {
+            background-color: var(--border);
+        }
+
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             .custom-table th, 
@@ -311,6 +347,10 @@
             
             .custom-title {
                 font-size: 1.25rem;
+            }
+
+            .filter-form {
+                grid-template-columns: 1fr !important;
             }
         }
     </style>
@@ -329,6 +369,62 @@
             {{ message }}
         </div>
     {% endfor %}
+
+    <!-- Filter form -->
+    <div class="custom-card mb-6">
+        <div class="p-4 md:p-6">
+            <form method="get" action="{{ path('abonnement_list') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Search input -->
+                <div>
+                    <label for="search" class="block text-sm font-medium mb-1">Recherche</label>
+                    <input type="text" id="search" name="search" value="{{ searchTerm }}"
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                           placeholder="Type ou description">
+                </div>
+                
+                <!-- Status filter -->
+                <div>
+                    <label for="etat" class="block text-sm font-medium mb-1">Statut</label>
+                    <select id="etat" name="etat" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        <option value="">Tous</option>
+                        <option value="actif" {{ etat == 'actif' ? 'selected' : '' }}>Actif</option>
+                        <option value="expiré" {{ etat == 'expiré' ? 'selected' : '' }}>Expiré</option>
+                        <option value="annulé" {{ etat == 'annulé' ? 'selected' : '' }}>Annulé</option>
+                    </select>
+                </div>
+                
+                <!-- Price range -->
+                <div>
+                    <label for="min_price" class="block text-sm font-medium mb-1">Prix min</label>
+                    <input type="number" id="min_price" name="min_price" value="{{ minPrice }}"
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                           placeholder="Prix minimum" step="0.01" min="0">
+                </div>
+                
+                <div>
+                    <label for="max_price" class="block text-sm font-medium mb-1">Prix max</label>
+                    <input type="number" id="max_price" name="max_price" value="{{ maxPrice }}"
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                           placeholder="Prix maximum" step="0.01" min="0">
+                </div>
+                
+                <!-- Form actions -->
+                <div class="md:col-span-4 flex justify-end space-x-3">
+                    <button type="submit" 
+                            class="custom-btn custom-btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="mr-2">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg>
+                        Filtrer
+                    </button>
+                    <a href="{{ path('abonnement_list') }}" 
+                       class="custom-btn filter-reset-btn">
+                        Réinitialiser
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- Card container -->
     <div class="custom-card">
@@ -510,6 +606,35 @@
                     });
                 });
             });
+
+            // Price range validation
+            const minPriceInput = document.getElementById('min_price');
+            const maxPriceInput = document.getElementById('max_price');
+            
+            if (minPriceInput && maxPriceInput) {
+                minPriceInput.addEventListener('change', function() {
+                    if (maxPriceInput.value && parseFloat(this.value) > parseFloat(maxPriceInput.value)) {
+                        this.value = maxPriceInput.value;
+                    }
+                });
+                
+                maxPriceInput.addEventListener('change', function() {
+                    if (minPriceInput.value && parseFloat(this.value) < parseFloat(minPriceInput.value)) {
+                        this.value = minPriceInput.value;
+                    }
+                });
+            }
+            
+            // Add active class to filter button when filters are applied
+            const urlParams = new URLSearchParams(window.location.search);
+            const hasFilters = urlParams.toString() !== '';
+            
+            if (hasFilters) {
+                const filterButton = document.querySelector('button[type="submit"]');
+                if (filterButton) {
+                    filterButton.classList.add('bg-primary-dark');
+                }
+            }
         });
     </script>
 {% endblock %}

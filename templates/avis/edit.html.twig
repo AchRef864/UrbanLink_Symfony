@@ -1,15 +1,10 @@
-{% extends 'base.html.twig' %}
-
 {% block title %}Edit complaint{% endblock %}
 
 {% block body %}
-<div style="margin-left: 280px;">
+
     <h3>Edit complaint</h3>
 
-    {{ include('avis/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('front_office/Avis/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_avis_index') }}">back to list</a>
-
-    {{ include('avis/_delete_form.html.twig') }}
-</div>
+    <a href="{{ path('app_avis_front') }}">back to list</a>
 {% endblock %}

@@ -10,6 +10,9 @@
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/argon-dashboard-tailwind.css') }}" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
 {% endblock %}
 
 {% block javascripts %}
@@ -17,12 +20,19 @@
     <!-- reCAPTCHA v2 script -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             const response = grecaptcha.getResponse();
             if (response.length === 0) {
                 e.preventDefault();
-                alert('Please complete the reCAPTCHA verification');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'reCAPTCHA Required',
+                    text: 'Please complete the reCAPTCHA verification',
+                    confirmButtonColor: '#3085d6',
+                });
                 return false;
             }
             return true;
@@ -47,9 +57,23 @@
     <script src="{{ asset('assets/js/argon-dashboard-tailwind.js') }}"></script>
 {% endblock %}
 
+
+
 {% block body %}
 
     {% for flash in app.flashes('blocked') %}
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Account Blocked',
+                    text: '{{ flash }}',
+                    confirmButtonColor: '#3085d6',
+                });
+            });
+        </script>
+
         <div id="blockedPopup" class="fixed top-4 right-4 z-50">
             <div class="flex items-center p-4 mb-4 text-sm text-yellow bg-red-500 rounded-lg shadow-lg" role="alert">
                 <svg class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -85,7 +109,7 @@
                 <nav class="absolute top-0 left-0 right-0 z-30 flex flex-wrap items-center px-4 py-2 m-6 mb-0 shadow-sm rounded-xl bg-white/80 backdrop-blur-2xl backdrop-saturate-200 lg:flex-nowrap lg:justify-start">
                     <div class="flex items-center justify-between w-full p-0 px-6 mx-auto flex-wrap-inherit">
                         <a class="py-1.75 text-sm mr-4 ml-4 whitespace-nowrap font-bold text-slate-700 lg:ml-0" href="{{ path('app_home') }}">
-                            <img src="{{ asset('assets/img/logo.png') }}" class="h-8 inline mr-2" alt="HomePage--Welcome--">
+                            <img src="{{"/logo.png"}}" class="h-8 inline mr-2" alt="HomePage--Welcome--">
                             UrbanLink
                         </a>
                         <div navbar-menu class="items-center flex-grow transition-all duration-500 lg-max:overflow-hidden ease lg-max:max-h-0 basis-full lg:flex lg:basis-auto">
@@ -143,9 +167,16 @@
 
                                 <div class="flex-auto p-6">
                                     {% if error %}
-                                        <div class="relative px-4 py-3 mb-4 text-sm text-red-500 bg-red-500 rounded-lg" role="alert">
-                                            {{ error.messageKey|trans(error.messageData, 'security') }}
-                                        </div>
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Login Failed',
+                                                    text: '{{ error.messageKey|trans(error.messageData, 'security') }}',
+                                                    confirmButtonColor: '#3085d6',
+                                                });
+                                            });
+                                        </script>
                                     {% endif %}
 
                                     {% if app.user %}
@@ -166,7 +197,9 @@
                                                     autofocus
                                             >
                                             {% if form_errors is defined and form_errors['_username'] is defined %}
-                                                <div class="text-red-500 text-xs mt-1">{{ form_errors['_username'] }}</div>
+                                                <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
+                                                    {{ form_errors['_username'] }}
+                                                </div>
                                             {% endif %}
                                         </div>
 
@@ -180,7 +213,9 @@
                                                     type="password"
                                             >
                                             {% if form_errors is defined and form_errors['_password'] is defined %}
-                                                <div class="text-red-500 text-xs mt-1">{{ form_errors['_password'] }}</div>
+                                                <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
+                                                    {{ form_errors['_password'] }}
+                                                </div>
                                             {% endif %}
                                         </div>
 
@@ -217,9 +252,6 @@
                         </div>
                         <div class="absolute top-0 right-0 flex-col justify-center hidden w-6/12 h-full max-w-full px-3 pr-0 my-auto text-center flex-0 lg:flex">
                             <div class="relative flex flex-col justify-center h-full bg-cover px-24 m-4 overflow-hidden bg-[url('{{ asset('assets/img/signin-ill.jpg') }}'] rounded-xl">
-                                <span class="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-blue-500 to-violet-500 opacity-60"></span>
-                                <h4 class="z-20 mt-12 font-bold text-yellow text-4xl">"URBANLINK"</h4>
-                                <p class="z-20 text-yellow">"All transport, one app. No worries—just easy, joyful journeys every time!"</p>
                             </div>
                         </div>
                     </div>

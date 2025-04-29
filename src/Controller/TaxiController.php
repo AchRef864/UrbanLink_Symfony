@@ -6,16 +6,31 @@ use App\Entity\Taxi;
 use App\Entity\Course;
 use App\Form\TaxiType;
 use App\Repository\TaxiRepository;
+use App\Repository\UserRepository;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/admin/taxi')]
 class TaxiController extends AbstractController
 {
+    #[Route('/users', name: 'taxi_user_list')]
+    public function userList(UserRepository $userRepo): Response
+    {
+        // On récupère tous les users ayant role = 'taxi'
+        $drivers = $userRepo->findBy(['role' => 'taxi']);
+
+        return $this->render('taxiste/liste.html.twig', [
+            'drivers' => $drivers,
+        ]);
+    }
+
+    // 2) Page d'accueil des taxis existants
     #[Route('/', name: 'taxi_index')]
     public function index(TaxiRepository $taxiRepository): Response
     {
@@ -24,47 +39,61 @@ class TaxiController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'taxi_new')]
-    public function new(Request $request, EntityManagerInterface $em): Response
-    {
+    // 3) Création d'un taxi pour un user donné
+    #[Route('/new/{userId}', name: 'taxi_new', methods: ['GET','POST'])]
+    public function new(
+        int $userId,
+        UserRepository $userRepo,
+        Request $request,
+        EntityManagerInterface $em
+    ): Response {
+        $user = $userRepo->find($userId);
+        if (!$user instanceof User) {
+            throw $this->createNotFoundException('Utilisateur introuvable.');
+        }
+
         $taxi = new Taxi();
-        $form = $this->createForm(TaxiType::class, $taxi);
+        $taxi->setUser($user);
+
+        $form = $this->createForm(TaxiType::class, $taxi, [
+            'user' => $user,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getUser();
-            if (!$user) {
-                throw $this->createAccessDeniedException('Vous devez être connecté pour ajouter un taxi.');
-            }
-
-            $taxi->setUser($user);
             $em->persist($taxi);
-
             try {
                 $em->flush();
-                return $this->redirectToRoute('taxi_index');
-            } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e) {
-                $this->addFlash('error', 'Une erreur est survenue : une immatriculation ou un numéro de licence existe déjà.');
+                $this->addFlash('success', 'Taxi créé pour ' . $user->getName());
+                return $this->redirectToRoute('taxi_user_list');
+            } catch (UniqueConstraintViolationException $e) {
+                $this->addFlash('error', 'Immatriculation ou licence déjà utilisée.');
             }
         }
 
         return $this->render('back_office/taxi/new.html.twig', [
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'taxi_edit')]
-    public function edit(Request $request, Taxi $taxi, EntityManagerInterface $em): Response
-    {
+    // 4) Modification d'un taxi existant
+    #[Route('/{id}/edit', name: 'taxi_edit', methods: ['GET','POST'])]
+    public function edit(
+        Taxi $taxi,
+        Request $request,
+        EntityManagerInterface $em
+    ): Response {
         $form = $this->createForm(TaxiType::class, $taxi);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $em->flush();
-                return $this->redirectToRoute('taxi_index');
-            } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e) {
-                $this->addFlash('error', 'Une erreur est survenue : une immatriculation ou un numéro de licence existe déjà.');
+                $this->addFlash('success', 'Taxi mis à jour.');
+                return $this->redirectToRoute('taxi_user_list');
+            } catch (UniqueConstraintViolationException $e) {
+                $this->addFlash('error', 'Immatriculation ou licence déjà utilisée.');
             }
         }
 
@@ -73,7 +102,6 @@ class TaxiController extends AbstractController
             'taxi' => $taxi,
         ]);
     }
-
     #[Route('/taxiste/dashboard', name: 'taxiste_dashboard')]
     public function taxisteDashboard(EntityManagerInterface $em): Response
     {

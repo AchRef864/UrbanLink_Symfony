@@ -177,6 +177,26 @@
             margin-top: 2rem;
         }
         
+        .maintenance-list {
+            margin-top: 1.5rem;
+        }
+        
+        .maintenance-item {
+            padding: 1rem;
+            background-color: var(--gray-100);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .maintenance-date {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+        
         .btn {
             display: inline-flex;
             align-items: center;
@@ -310,18 +330,39 @@
                     </div>
                 </div>
                 
-                <h2 class="section-title">Assignment</h2>
-                <div class="detail-item">
-                    <span class="detail-label">Driver</span>
-                    <span class="detail-value">
-                        {% if vehicle.driver %}
-                            {{ vehicle.driver.name }} (ID: {{ vehicle.driver.id }})
-                        {% else %}
-                            No driver assigned
-                        {% endif %}
-                    </span>
+                <h2 class="section-title">Maintenance History</h2>
+                <div class="maintenance-list">
+                    {% for maintenance in maintenances %}
+                        <div class="maintenance-item">
+                            <div>
+                                <strong>{{ maintenance.description }}</strong>
+                                <div class="maintenance-date">{{ maintenance.maintenanceDate|date('F j, Y') }}</div>
+                            </div>
+                            <span class="detail-value">
+                                {% if maintenance.cost %}
+                                    ${{ maintenance.cost|number_format(2) }}
+                                {% endif %}
+                            </span>
+                        </div>
+                    {% else %}
+                        <div class="detail-item">
+                            <span class="detail-value">No maintenance records found.</span>
+                        </div>
+                    {% endfor %}
                 </div>
-                
+                {% if is_granted('ROLE_ADMIN') %}
+                    <h2 class="section-title">Assignment</h2>
+                    <div class="detail-item">
+                        <span class="detail-label">Driver</span>
+                        <span class="detail-value">
+                            {% if vehicle.driver %}
+                                {{ vehicle.driver.name }} (ID: {{ vehicle.driver.id }})
+                            {% else %}
+                                No driver assigned
+                            {% endif %}
+                        </span> 
+                    </div>
+                {% endif %}
                 <div class="actions">
                     <a href="{{ path('vehicle_edit', {'id': vehicle.id}) }}" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -330,13 +371,23 @@
                         </svg>
                         Edit Vehicle
                     </a>
-                    <a href="{{ path('vehicle_index') }}" class="btn btn-secondary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="19" y1="12" x2="5" y2="12"></line>
-                            <polyline points="12 19 5 12 12 5"></polyline>
-                        </svg>
-                        Back to list
-                    </a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('vehicle_index') }}" class="btn btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            Back to list
+                        </a>
+                    {% else %}
+                        <a href="{{ path('my_vehicle') }}" class="btn btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            Back to list
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

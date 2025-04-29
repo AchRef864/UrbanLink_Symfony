@@ -5,8 +5,8 @@ doctrine:
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
 
-        mapping_types:           # <-- ADD THIS HERE
-            enum: string         # <-- map ENUM globally
+        mapping_types:
+            enum: string
 
     orm:
         auto_generate_proxy_classes: true
