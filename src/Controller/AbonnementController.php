@@ -76,6 +76,7 @@ final class AbonnementController extends AbstractController
             'maxPrice' => $maxPrice,
         ]);
     }
+    
     #[Route('/abonnement/{id}', name: 'abonnement_show')]
     public function show(Abonnement $abonnement): Response
     {

@@ -33,6 +33,9 @@ class AbonnementReservationController extends AbstractController
             'abonnements' => $abonnements,
         ]);
     }
+
+
+    
     
 #[Route('/{id}/reserve', name: 'app_abonnement_reserve', methods: ['GET', 'POST'])]
 public function reserve(
@@ -138,12 +141,18 @@ public function reserveSuccess(Abonnement $abonnement, int $reservation_id, Enti
     ]);
 }
 
+
+
+
 #[Route('/{id}/reserve/cancel', name: 'app_abonnement_reserve_cancel')]
 public function reserveCancel(Abonnement $abonnement): Response
 {
     $this->addFlash('warning', 'Payment was cancelled. You can try again if you wish.');
     return $this->redirectToRoute('app_abonnement_reserve', ['id' => $abonnement->getId()]);
 }
+
+
+
 
     #[Route('/mes-reservations', name: 'app_abonnement_mes_reservations', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
