@@ -4,6 +4,15 @@ controllers:
         namespace: App\Controller
     type: attribute
 # Route pour la page de connexion
+
+app_home2:
+    path: /
+    controller: App\Controller\HomeController::index
+
+app_home:
+    path: /home
+    controller: App\Controller\DashboardController::home
+
 app_login: 
     path: /login
     controller: App\Controller\Auth\LoginController::index
@@ -84,9 +93,6 @@ admin_dashboard:
     path: /admin/dashboard
     controller: App\Controller\DashboardController::adminDashboard
 
-app_home:
-    path: /home
-    controller: App\Controller\DashboardController::home
 admin_user_delete:
     path: /admin/users/delete
     controller: App\Controller\Admin\UserManagementController::deleteUsers
