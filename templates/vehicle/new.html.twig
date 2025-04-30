@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends base_template is defined ? base_template : 'base.html.twig' %}
 
 {% block title %}Add New Vehicle{% endblock %}
 

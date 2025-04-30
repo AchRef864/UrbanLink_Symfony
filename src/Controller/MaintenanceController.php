@@ -20,6 +20,7 @@ use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\PngWriter;
+use Symfony\Bundle\SecurityBundle\Security;
 
 #[Route('/admin/maintenances')]
 class MaintenanceController extends AbstractController
@@ -72,9 +73,10 @@ class MaintenanceController extends AbstractController
     }
 
     #[Route('/new', name: 'admin_maintenances_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em): Response
+    public function new(Request $request, EntityManagerInterface $em, Security $security): Response
     {
         $maintenance = new Maintenance();
+        
         $form = $this->createForm(MaintenanceType::class, $maintenance);
         $form->handleRequest($request);
 
@@ -114,7 +116,11 @@ class MaintenanceController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Maintenance created successfully!');
-            return $this->redirectToRoute('admin_maintenances_index');
+            if ($security->isGranted('ROLE_ADMIN')) {
+                return $this->redirectToRoute('admin_maintenances_index');
+            } elseif ($security->isGranted('ROLE_DRIVER')) {
+                return $this->redirectToRoute('my_vehicle');
+            }
         }
 
         return $this->render('maintenance/new.html.twig', [
@@ -165,7 +171,8 @@ class MaintenanceController extends AbstractController
     public function delete(
         Request $request, 
         Maintenance $maintenance, 
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        Security $security
     ): Response {
         if ($this->isCsrfTokenValid('delete'.$maintenance->getId(), $request->request->get('_token'))) {
             $em->remove($maintenance);
@@ -173,7 +180,13 @@ class MaintenanceController extends AbstractController
             $this->addFlash('success', 'Maintenance deleted successfully!');
         }
 
-        return $this->redirectToRoute('admin_maintenances_index');
+        if ($security->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('admin_maintenances_index');
+        } else{
+            // Get the vehicle ID from the maintenance record
+            $vehicleId = $maintenance->getVehicle()->getId();
+            return $this->redirectToRoute('my_vehicle');
+        }
     }
 
     #[Route('/{id}', name: 'maintenance_show', methods: ['GET'])]
@@ -310,6 +323,221 @@ class MaintenanceController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename="'.$filename.'"');
         
         return $response;
+    }
+
+    #[Route('/driver', name: 'driver_maintenances_index', methods: ['GET'])]
+    public function driverIndex(
+        MaintenanceRepository $maintenanceRepository,
+        EntityManagerInterface $em
+    ): Response {
+        $this->denyAccessUnlessGranted('ROLE_DRIVER');
+        
+        $driver = $this->getUser();
+        $vehicles = $em->getRepository(Vehicle::class)->findBy(['driver' => $driver]);
+        
+        $maintenances = [];
+        foreach ($vehicles as $vehicle) {
+            $vehicleMaintenances = $maintenanceRepository->findBy(
+                ['vehicle' => $vehicle],
+                ['maintenanceDate' => 'DESC']
+            );
+            $maintenances = array_merge($maintenances, $vehicleMaintenances);
+        }
+
+        // Update statuses based on current date
+        $today = new \DateTimeImmutable();
+        $todayDate = $today->format('Y-m-d');
+        
+        foreach ($maintenances as $maintenance) {
+            $maintenanceDate = $maintenance->getMaintenanceDate();
+            $maintenanceDateOnly = $maintenanceDate->format('Y-m-d');
+            
+            $newStatus = match(true) {
+                $maintenanceDateOnly < $todayDate => Maintenance::STATUS_NOT_IN_MAINTENANCE,
+                $maintenanceDateOnly === $todayDate => Maintenance::STATUS_IN_MAINTENANCE,
+                default => Maintenance::STATUS_RESERVED
+            };
+
+            // Only update and persist if status changed
+            if ($maintenance->getStatus() !== $newStatus) {
+                $maintenance->setStatus($newStatus);
+                $em->persist($maintenance);
+            }
+        }
+        
+        $em->flush();
+
+        return $this->render('maintenance/driver_index.html.twig', [
+            'maintenances' => $maintenances,
+            'serviceTypes' => $this->getServiceTypesData(),
+        ]);
+    }
+
+    #[Route('/driver/new/{vehicle_id}', name: 'driver_maintenances_new', methods: ['GET', 'POST'])]
+    public function driverNew(
+        Request $request, 
+        EntityManagerInterface $em,
+        int $vehicle_id
+    ): Response {
+        $this->denyAccessUnlessGranted('ROLE_DRIVER');
+        
+        $driver = $this->getUser();
+        $maintenance = new Maintenance();
+        
+        // If vehicle_id is provided, set it
+        if ($vehicle_id) {
+            $vehicle = $em->getRepository(Vehicle::class)->find($vehicle_id);
+            if ($vehicle && $vehicle->getDriver() === $driver) {
+                $maintenance->setVehicle($vehicle);
+            }
+        }
+        
+        $form = $this->createForm(MaintenanceType::class, $maintenance, [
+            'driver_vehicles' => $em->getRepository(Vehicle::class)->findBy(['driver' => $driver])
+        ]);
+        
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Set cost based on service type
+            $serviceType = $maintenance->getServiceType();
+            $serviceTypes = $this->getServiceTypesData();
+            
+            if (isset($serviceTypes[$serviceType])) {
+                $maintenance->setCost($serviceTypes[$serviceType]['price']);
+                
+                // Set default provider if not set
+                if (empty($maintenance->getServiceProvider())) {
+                    $maintenance->setServiceProvider($serviceTypes[$serviceType]['providers'][0]);
+                }
+            }
+
+            $this->updateMaintenanceStatus($maintenance);
+
+            $em->persist($maintenance);
+            $em->flush();
+
+            $this->addFlash('success', 'Maintenance record created successfully!');
+            return $this->redirectToRoute('driver_maintenances_index');
+        }
+
+        return $this->render('maintenance/driver_new.html.twig', [
+            'form' => $form->createView(),
+            'services' => $this->getServiceTypesData(),
+        ]); 
+    }
+
+    #[Route('/driver/edit/{id}', name: 'driver_maintenances_edit', methods: ['GET', 'POST'])]
+    public function driverEdit(
+        Request $request, 
+        Maintenance $maintenance, 
+        EntityManagerInterface $em
+    ): Response {
+        $this->denyAccessUnlessGranted('ROLE_DRIVER');
+        
+        $driver = $this->getUser();
+        
+        // Verify the maintenance belongs to one of the driver's vehicles
+        if ($maintenance->getVehicle()->getDriver() !== $driver) {
+            throw $this->createAccessDeniedException('You can only edit maintenance for your own vehicles.');
+        }
+        
+        $form = $this->createForm(MaintenanceType::class, $maintenance, [
+            'driver_vehicles' => [$maintenance->getVehicle()] // Only show the current vehicle
+        ]);
+        
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Update cost if service type changed
+            $serviceType = $maintenance->getServiceType();
+            $serviceTypes = $this->getServiceTypesData();
+            
+            if (isset($serviceTypes[$serviceType])) {
+                $maintenance->setCost($serviceTypes[$serviceType]['price']);
+                
+                // Update provider if empty
+                if (empty($maintenance->getServiceProvider())) {
+                    $maintenance->setServiceProvider($serviceTypes[$serviceType]['providers'][0]);
+                }
+            }
+
+            // Update status based on date
+            $this->updateMaintenanceStatus($maintenance);
+            
+            $em->flush();
+            $this->addFlash('success', 'Maintenance updated successfully!');
+            return $this->redirectToRoute('driver_maintenances_index');
+        }
+
+        return $this->render('maintenance/driver_edit.html.twig', [
+            'form' => $form->createView(),
+            'maintenance' => $maintenance,
+            'serviceTypes' => $this->getServiceTypesData(),
+        ]);
+    }
+
+    #[Route('/driver/{id}', name: 'driver_maintenance_show', methods: ['GET'])]
+    public function driverShow(int $id, MaintenanceRepository $repository, EntityManagerInterface $em): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_DRIVER');
+        
+        $driver = $this->getUser();
+        $maintenance = $repository->find($id);
+
+        if (!$maintenance || $maintenance->getVehicle()->getDriver() !== $driver) {
+            throw $this->createAccessDeniedException('You can only view maintenance for your own vehicles.');
+        }
+
+        // Update status before showing
+        $this->updateMaintenanceStatus($maintenance);
+        $em->flush();
+
+        return $this->render('maintenance/driver_show.html.twig', [
+            'maintenance' => $maintenance,
+        ]);
+    }
+
+    // In your MaintenanceController.php
+
+    #[Route('/clear-history/{vehicle_id}', name: 'clear_vehicle_maintenance_history', methods: ['POST'])]
+    public function clearVehicleMaintenanceHistory(
+        Request $request,
+        EntityManagerInterface $em,
+        int $vehicle_id,
+        Security $security
+    ): Response {
+        $vehicle = $em->getRepository(Vehicle::class)->find($vehicle_id);
+        
+        if (!$vehicle) {
+            throw $this->createNotFoundException('Vehicle not found');
+        }
+
+        // Check permissions - admin or vehicle owner
+        if (!$security->isGranted('ROLE_ADMIN') && 
+            ($security->getUser() !== $vehicle->getDriver())) {
+            throw $this->createAccessDeniedException('You can only clear maintenance for your own vehicles.');
+        }
+
+        if ($this->isCsrfTokenValid('clear_history_'.$vehicle_id, $request->request->get('_token'))) {
+            $maintenances = $em->getRepository(Maintenance::class)
+                ->findBy(['vehicle' => $vehicle]);
+            
+            foreach ($maintenances as $maintenance) {
+                $em->remove($maintenance);
+            }
+            
+            $em->flush();
+            
+            $this->addFlash('success', 'Maintenance history cleared successfully!');
+        }
+
+        // Redirect back to appropriate page based on user role
+        if ($security->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('admin_maintenances_index');
+        } else {
+            return $this->redirectToRoute('my_vehicle');
+        }
     }
 
 }
