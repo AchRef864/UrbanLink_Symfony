@@ -15,6 +15,10 @@ parameters:
     oauth.enabled: true
     oauth.google_enabled: true
     oauth.facebook_enabled: true
+    gemini_model:   '%env(GEMINI_MODEL)%'
+   # voicerss_key: '%env(VOICERSS_API_KEY)%'
+
+
 
 twig:
     globals:
@@ -82,3 +86,9 @@ services:
     App\Service\BadWordFilterService:
         arguments:
             $endpoint: 'https://www.purgomalum.com/service/plain'
+
+   # App\Service\TextToSpeechService:
+    #    arguments:
+     #       $apiKey: '%voicerss_key%' 
+      #      $httpClient: '@Symfony\Contracts\HttpClient\HttpClientInterface'
+            
