@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use App\Repository\MaintenanceRepository;
+use Symfony\Bundle\SecurityBundle\Security;
+
 
 #[Route('/vehicles')]
 class VehicleController extends AbstractController
@@ -45,83 +48,90 @@ class VehicleController extends AbstractController
     }
 
     #[Route('/new', name: 'vehicle_new', methods: ['GET', 'POST'])]
-public function new(Request $request, EntityManagerInterface $em, ImageUploadService $imageUploader): Response
-{
-    $drivers = $em->getRepository(User::class)->findAll();
+    public function new(Request $request, EntityManagerInterface $em, ImageUploadService $imageUploader): Response
+    {
+        $drivers = $em->getRepository(User::class)->findAll();
 
-    if ($request->isMethod('POST')) {
-        $vehicle = new Vehicle();
+        if ($request->isMethod('POST')) {
+            $vehicle = new Vehicle();
 
-        // Validate required fields
-        $requiredFields = ['type', 'model', 'brand', 'licensePlate', 'driverId'];
-        foreach ($requiredFields as $field) {
-            if (empty($request->request->get($field))) {
-                $this->addFlash('error', "The field {$field} is required");
+            // Validate required fields
+            $requiredFields = ['type', 'model', 'brand', 'licensePlate', 'driverId'];
+            foreach ($requiredFields as $field) {
+                if (empty($request->request->get($field))) {
+                    $this->addFlash('error', "The field {$field} is required");
+                    return $this->redirectToRoute('vehicle_new');
+                }
+            }
+
+            // Validate image
+            $imageFile = $request->files->get('image');
+            if (!$imageFile) {
+                $this->addFlash('error', 'Vehicle image is required');
                 return $this->redirectToRoute('vehicle_new');
             }
-        }
 
-        // Validate image
-        $imageFile = $request->files->get('image');
-        if (!$imageFile) {
-            $this->addFlash('error', 'Vehicle image is required');
-            return $this->redirectToRoute('vehicle_new');
-        }
+            $vehicle->setType($request->request->get('type', ''));
+            $vehicle->setModel($request->request->get('model', ''));
+            $vehicle->setBrand($request->request->get('brand', ''));
+            $vehicle->setLicenseplate($request->request->get('licensePlate', ''));
+            $vehicle->setSeats((int) $request->request->get('seats', 1));
+            $vehicle->setColor($request->request->get('color', null));
+            $vehicle->setYear((int) $request->request->get('year', 2020));
+            $vehicle->setAirconditioning($request->request->getBoolean('airConditioning', false));
+            $vehicle->setIsavailable(true);
+            $vehicle->setIsverified($request->request->getBoolean('isVerified', false));
 
-        $vehicle->setType($request->request->get('type', ''));
-        $vehicle->setModel($request->request->get('model', ''));
-        $vehicle->setBrand($request->request->get('brand', ''));
-        $vehicle->setLicenseplate($request->request->get('licensePlate', ''));
-        $vehicle->setSeats((int) $request->request->get('seats', 1));
-        $vehicle->setColor($request->request->get('color', null));
-        $vehicle->setYear((int) $request->request->get('year', 2020));
-        $vehicle->setAirconditioning($request->request->getBoolean('airConditioning', false));
-        $vehicle->setIsavailable(true);
-        $vehicle->setIsverified($request->request->getBoolean('isVerified', false));
-
-        // Image upload
-        try {
-            $imageUrl = $imageUploader->uploadImage($imageFile);
-            $vehicle->setImage($imageUrl);
-        } catch (\Exception $e) {
-            $this->addFlash('error', 'Image upload failed: ' . $e->getMessage());
-            return $this->redirectToRoute('vehicle_new');
-        }
-
-        // Set driver
-        $driverId = $request->request->get('driverId');
-        if ($driverId) {
-            $driver = $em->getRepository(User::class)->find($driverId);
-            if ($driver) {
-                $vehicle->setDriver($driver);
+            // Image upload
+            try {
+                $imageUrl = $imageUploader->uploadImage($imageFile);
+                $vehicle->setImage($imageUrl);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Image upload failed: ' . $e->getMessage());
+                return $this->redirectToRoute('vehicle_new');
             }
+
+            // Set driver
+            $driverId = $request->request->get('driverId');
+            if ($driverId) {
+                $driver = $em->getRepository(User::class)->find($driverId);
+                if ($driver) {
+                    $vehicle->setDriver($driver);
+                }
+            }
+
+            $vehicle->validateAvailability($vehicle->getIsverified());
+
+            $em->persist($vehicle);
+            $em->flush();
+
+            $this->addFlash('success', 'Vehicle created successfully');
+            return $this->redirectToRoute('vehicle_index');
         }
 
-        $vehicle->validateAvailability($vehicle->getIsverified());
-
-        $em->persist($vehicle);
-        $em->flush();
-
-        $this->addFlash('success', 'Vehicle created successfully');
-        return $this->redirectToRoute('vehicle_index');
+        return $this->render('vehicle/new.html.twig', [
+            'drivers' => $drivers,
+        ]);
     }
 
-    return $this->render('vehicle/new.html.twig', [
-        'drivers' => $drivers,
-    ]);
-}
-
     #[Route('/{id}', name: 'vehicle_show', methods: ['GET'])]
-    public function show(int $id, VehicleRepository $repository): Response
+    public function show(int $id, VehicleRepository $vehicleRepository, MaintenanceRepository $maintenanceRepository): Response
     {
-        $vehicle = $repository->find($id);
+        $vehicle = $vehicleRepository->find($id);
 
         if (!$vehicle) {
             return new Response('Vehicle not found', Response::HTTP_NOT_FOUND);
         }
 
+        // Option 1: If there's no relation in the Vehicle entity
+        $maintenances = $maintenanceRepository->findBy(['vehicle' => $vehicle]);
+
+        // Option 2: If the Vehicle entity has a relation like: /** @OneToMany(targetEntity="Maintenance", mappedBy="vehicle") */
+        // $maintenances = $vehicle->getMaintenances();
+
         return $this->render('vehicle/show.html.twig', [
             'vehicle' => $vehicle,
+            'maintenances' => $maintenances,
         ]);
     }
 
@@ -190,16 +200,165 @@ public function new(Request $request, EntityManagerInterface $em, ImageUploadSer
     }
 
     #[Route('/{id}', name: 'vehicle_delete', methods: ['DELETE'])]
-    public function delete(int $id, VehicleRepository $repository, EntityManagerInterface $em): Response
-    {
+    public function delete(
+        int $id,
+        VehicleRepository $repository,
+        EntityManagerInterface $em,
+        Security $security
+    ): Response {
         $vehicle = $repository->find($id);
+    
         if (!$vehicle) {
             return new Response('Vehicle not found', Response::HTTP_NOT_FOUND);
         }
-
+    
         $em->remove($vehicle);
         $em->flush();
-
-        return $this->redirectToRoute('vehicle_index');
+    
+        // Check the role of the logged-in user
+        if ($security->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('vehicle_index');
+        } elseif ($security->isGranted('ROLE_DRIVER')) {
+            return $this->redirectToRoute('my-vehicle');
+        }
+    
+        return $this->redirectToRoute('app_login'); // fallback if role not matched
     }
+    
+    #[Route('/my-vehicle', name: 'my_vehicle', methods: ['GET'])]
+    public function myVehicle(EntityManagerInterface $em): Response
+    {
+        // Get the currently logged-in user
+        $user = $this->getUser();
+        
+        if (!$user) {
+            throw $this->createAccessDeniedException('You must be logged in to view your vehicle');
+        }
+
+        // Find vehicles assigned to this user
+        $vehicles = $em->getRepository(Vehicle::class)->findBy(['driver' => $user]);
+
+        return $this->render('vehicle/my_vehicle.html.twig', [
+            'vehicles' => $vehicles,
+            'user' => $user,
+        ]);
+    }
+
+    #[Route('/driver/vehicle/new', name: 'driver_vehicle_new', methods: ['GET', 'POST'])]
+    public function driverAddVehicle(Request $request, EntityManagerInterface $em, ImageUploadService $imageUploader): Response
+    {
+        // Ensure only drivers can access this
+        $this->denyAccessUnlessGranted('ROLE_DRIVER');
+
+        if ($request->isMethod('POST')) {
+            $vehicle = new Vehicle();
+
+            // Validate required fields
+            $requiredFields = ['type', 'model', 'brand', 'licensePlate'];
+            foreach ($requiredFields as $field) {
+                if (empty($request->request->get($field))) {
+                    $this->addFlash('error', "The field {$field} is required");
+                    return $this->redirectToRoute('driver_vehicle_new');
+                }
+            }
+
+            // Validate image
+            $imageFile = $request->files->get('image');
+            if (!$imageFile) {
+                $this->addFlash('error', 'Vehicle image is required');
+                return $this->redirectToRoute('driver_vehicle_new');
+            }
+
+            $vehicle->setType($request->request->get('type', ''));
+            $vehicle->setModel($request->request->get('model', ''));
+            $vehicle->setBrand($request->request->get('brand', ''));
+            $vehicle->setLicenseplate($request->request->get('licensePlate', ''));
+            $vehicle->setSeats((int) $request->request->get('seats', 1));
+            $vehicle->setColor($request->request->get('color', null));
+            $vehicle->setYear((int) $request->request->get('year', date('Y')));
+            $vehicle->setAirconditioning($request->request->getBoolean('airConditioning', false));
+            $vehicle->setIsavailable(true);
+            $vehicle->setIsverified(false); 
+
+            // Set current user as driver
+            $vehicle->setDriver($this->getUser());
+
+            // Image upload
+            try {
+                $imageUrl = $imageUploader->uploadImage($imageFile);
+                $vehicle->setImage($imageUrl);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Image upload failed: ' . $e->getMessage());
+                return $this->redirectToRoute('driver_vehicle_new');
+            }
+
+            $em->persist($vehicle);
+            $em->flush();
+
+            $this->addFlash('success', 'Vehicle registered successfully! It will be available after admin verification.');
+            return $this->redirectToRoute('my_vehicle');
+        }
+
+        return $this->render('vehicle/new.html.twig');
+    }
+
+    #[Route('/my-vehicle/{id}/edit', name: 'my_vehicle_edit', methods: ['GET', 'POST'])]
+    public function editMyVehicle(
+        int $id,
+        Request $request,
+        EntityManagerInterface $em,
+        VehicleRepository $vehicleRepository,
+        ImageUploadService $imageUploader
+    ): Response {
+        $user = $this->getUser();
+
+        if (!$user) {
+            throw $this->createAccessDeniedException('You must be logged in.');
+        }
+
+        $vehicle = $vehicleRepository->find($id);
+
+        if (!$vehicle || $vehicle->getDriver() !== $user) {
+            throw $this->createAccessDeniedException('You can only edit your own vehicles.');
+        }
+
+        if ($request->isMethod('POST')) {
+            $vehicle->setType($request->request->get('type', $vehicle->getType()));
+            $vehicle->setModel($request->request->get('model', $vehicle->getModel()));
+            $vehicle->setBrand($request->request->get('brand', $vehicle->getBrand()));
+            $vehicle->setLicenseplate($request->request->get('licensePlate', $vehicle->getLicenseplate()));
+            $vehicle->setSeats((int) $request->request->get('seats', $vehicle->getSeats()));
+            $vehicle->setColor($request->request->get('color', $vehicle->getColor()));
+            $vehicle->setYear((int) $request->request->get('year', $vehicle->getYear()));
+            $vehicle->setAirconditioning($request->request->getBoolean('airConditioning', $vehicle->getAirconditioning()));
+            $vehicle->setIsavailable($request->request->getBoolean('isAvailable', $vehicle->getIsavailable()));
+            $vehicle->setIsverified($request->request->getBoolean('isVerified', $vehicle->getIsverified()));
+
+            /** @var UploadedFile|null $imageFile */
+            $imageFile = $request->files->get('image');
+            if ($imageFile) {
+                try {
+                    $imageUrl = $imageUploader->uploadImage($imageFile);
+                    $vehicle->setImage($imageUrl);
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Image upload failed: ' . $e->getMessage());
+                    return $this->redirectToRoute('my_vehicle_edit', ['id' => $vehicle->getId()]);
+                }
+            }
+
+            $vehicle->validateAvailability($vehicle->getIsverified());
+
+            $em->flush();
+
+            $this->addFlash('success', 'Vehicle updated successfully.');
+            return $this->redirectToRoute('my_vehicle');
+        }
+
+        return $this->render('vehicle/my_vehicle_edit.html.twig', [
+            'vehicle' => $vehicle,
+        ]);
+    }
+
 }
+
+

@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Carte des zones actives{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <!-- CSS ArcGIS -->
+  <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
+  <style>
+    #viewDiv {
+      width: 90%;
+      height: 750px;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+<div style="margin-left: 50px;">
+  <h1 class="mb-4">Zones de réservation</h1>
+  <div id="viewDiv"></div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <!-- API ArcGIS for JavaScript -->
+  <script src="https://js.arcgis.com/4.26/"></script>
+  <script>
+    require([
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/layers/FeatureLayer"
+    ], function(Map, MapView, FeatureLayer) {
+
+      // Initialiser la carte
+      const map = new Map({ basemap: "streets-navigation-vector" });
+      const view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [10.2, 36.8], // [lon, lat]
+        zoom: 10
+      });
+
+      // Récupérer les données PHP
+      const zonePoints = {{ zonePoints|json_encode|raw }};
+      const maxCount  = {{ maxCount }};
+
+      // Préparer les features
+      const features = zonePoints.map(p => ({
+        geometry: {
+          type: "point",
+          longitude: p.lon,
+          latitude:  p.lat
+        },
+        attributes: {
+          objectId: p.objectId,
+          count:    p.count
+        }
+      }));
+
+      // Créer un FeatureLayer client-side
+      const layer = new FeatureLayer({
+        source: features,
+        objectIdField: "objectId",
+        fields: [
+          { name: "objectId", type: "oid" },
+          { name: "count",    type: "double" }
+        ],
+        renderer: {
+          type: "simple",
+          symbol: {
+            type: "simple-marker",
+            outline: { color: [255, 255, 255, 0.8], width: 1 }
+          },
+          visualVariables: [
+            {
+              type: "size",
+              field: "count",
+              stops: [
+                { value: 1,        size: 10 },
+                { value: maxCount, size: 40 }
+              ]
+            },
+            {
+              type: "color",
+              field: "count",
+              stops: [
+                { value: 1,        color: "rgba(0, 255, 255, 0.6)" },
+                { value: maxCount, color: "rgba(255, 0, 0, 0.6)" }
+              ]
+            }
+          ]
+        },
+        title: "Zones actives"
+      });
+
+      // Ajouter le layer à la carte
+      map.add(layer);
+    });
+  </script>
+  </div>
+{% endblock %}

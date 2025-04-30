@@ -133,6 +133,10 @@
         .action-button.secondary {
             background: linear-gradient(135deg, var(--dark) 0%, #3a0ca3 100%);
         }
+
+        .action-button.pdf {
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+        }
         
         .action-button i {
             margin-right: 8px;
@@ -208,6 +212,11 @@
                 <h4 class="font-bold text-lg mb-3">Détails de la réservation</h4>
                 
                 <div class="detail-row">
+                    <span class="detail-label">Numéro de réservation:</span>
+                    <span class="detail-value">#{{ reservation.id }}</span>
+                </div>
+
+                <div class="detail-row">
                     <span class="detail-label">Type d'abonnement:</span>
                     <span class="detail-value">{{ abonnement.type|capitalize }}</span>
                 </div>
@@ -235,6 +244,13 @@
             
             <!-- Boutons d'action -->
             <div class="action-buttons">
+                <a href="{{ path('app_abonnement_reserve_success', {
+                    'id': abonnement.id,
+                    'reservation_id': reservation.id,
+                    'download': 'pdf'
+                }) }}" class="action-button pdf">
+                    <i class="fas fa-file-pdf"></i> Télécharger le reçu
+                </a>
                 <a href="{{ path('app_dashboard') }}" class="action-button">
                     <i class="fas fa-tachometer-alt"></i> Tableau de bord
                 </a>

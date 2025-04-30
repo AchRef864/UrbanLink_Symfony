@@ -198,6 +198,17 @@
 {% block body %}
 <div class="form-container">
     <div class="container mx-auto px-4 py-8">
+        {% for message in app.flashes('success') %}
+            <div class="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                {{ message }}
+            </div>
+        {% endfor %}
+
         <div class="form-card">
             <div class="form-header">
                 <h1 class="form-title">Modifier l'Abonnement</h1>
@@ -214,50 +225,61 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="form-group">
                             {{ form_label(form.type, 'Type', {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_widget(form.type, {'attr': {
+                                'class': 'form-control',
+                                'onchange': 'updateSubscriptionDetails()'
+                            }}) }}
                             {{ form_errors(form.type) }}
                         </div>
                         
                         <div class="form-group">
                             {{ form_label(form.prix, 'Prix (TND)', {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.prix, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_widget(form.prix, {'attr': {
+                                'class': 'form-control',
+                                'readonly': 'readonly',
+                                'id': 'abonnement_prix'
+                            }}) }}
                             {{ form_errors(form.prix) }}
                         </div>
                         
                         <div class="form-group">
                             {{ form_label(form.date_debut, 'Date de début', {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.date_debut, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_widget(form.date_debut, {'attr': {
+                                'class': 'form-control',
+                                'onchange': 'updateSubscriptionDetails()'
+                            }}) }}
                             {{ form_errors(form.date_debut) }}
                         </div>
                         
                         <div class="form-group">
                             {{ form_label(form.date_fin, 'Date de fin', {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.date_fin, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_widget(form.date_fin, {'attr': {
+                                'class': 'form-control',
+                                'id': 'abonnement_date_fin',
+                                'readonly': true
+                            }}) }}
                             {{ form_errors(form.date_fin) }}
                         </div>
                         
                         <div class="form-group">
-                            {{ form_label(form.etat, 'État', {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.etat, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(form.etat) }}
-                        </div>
-                        
-                        <div class="form-group">
                             {{ form_label(form.imageFile, 'Image', {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.imageFile, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_widget(form.imageFile, {'attr': {
+                                'class': 'form-control',
+                                'onchange': 'previewImage(this)'
+                            }}) }}
                             {{ form_errors(form.imageFile) }}
                             
-                            {% if abonnement.image %}
-                                <div class="image-preview">
-                                    <img src="{{ asset('uploads/images/abonnements/' ~ abonnement.image ) }}" alt="Current image">
-                                </div>
-                            {% else %}
-                                <div class="image-preview image-preview-placeholder">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                        <path d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z"/>
-                                    </svg>
-                                </div>
-                            {% endif %}
+                            <div class="image-preview mt-4" id="imagePreview">
+                                {% if abonnement.image %}
+                                    <img src="{{ asset('uploads/images/abonnements/' ~ abonnement.image) }}" alt="Current image" id="previewImage">
+                                {% else %}
+                                    <div class="image-preview-placeholder w-full h-full flex items-center justify-center" id="previewPlaceholder">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z"/>
+                                        </svg>
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
 
@@ -274,4 +296,91 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        const PRICES = {
+            'mensuel': 50,
+            'trimestriel': 140,
+            'annuel': 200
+        };
+
+        function updateSubscriptionDetails() {
+            const typeSelect = document.querySelector('#{{ form.type.vars.id }}');
+            const priceInput = document.getElementById('abonnement_prix');
+            const dateDebutInput = document.querySelector('#{{ form.date_debut.vars.id }}');
+            const dateFinInput = document.getElementById('abonnement_date_fin');
+            
+            // Update price
+            if (typeSelect && priceInput) {
+                priceInput.value = PRICES[typeSelect.value] || 0;
+            }
+            
+            // Update end date
+            if (typeSelect && dateDebutInput && dateFinInput && dateDebutInput.value) {
+                const dateDebut = new Date(dateDebutInput.value);
+                let dateFin = new Date(dateDebut);
+                
+                switch (typeSelect.value) {
+                    case 'mensuel':
+                        dateFin.setMonth(dateFin.getMonth() + 1);
+                        break;
+                    case 'trimestriel':
+                        dateFin.setMonth(dateFin.getMonth() + 3);
+                        break;
+                    case 'annuel':
+                        dateFin.setFullYear(dateFin.getFullYear() + 1);
+                        break;
+                }
+                
+                dateFinInput.value = dateFin.toISOString().split('T')[0];
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const typeSelect = document.querySelector('#{{ form.type.vars.id }}');
+            const dateDebutInput = document.querySelector('#{{ form.date_debut.vars.id }}');
+            
+            if (typeSelect) {
+                typeSelect.addEventListener('change', updateSubscriptionDetails);
+                updateSubscriptionDetails();
+            }
+            
+            if (dateDebutInput) {
+                dateDebutInput.addEventListener('change', updateSubscriptionDetails);
+            }
+        });
+
+        function previewImage(input) {
+            const preview = document.getElementById('previewImage');
+            const placeholder = document.getElementById('previewPlaceholder');
+            const file = input.files[0];
+            const reader = new FileReader();
+
+            if (file) {
+                reader.onload = function(e) {
+                    if (preview) {
+                        preview.src = e.target.result;
+                    } else {
+                        const img = document.createElement('img');
+                        img.id = 'previewImage';
+                        img.src = e.target.result;
+                        img.alt = 'Preview';
+                        img.className = 'w-full h-full object-cover';
+                        
+                        const previewContainer = document.getElementById('imagePreview');
+                        previewContainer.innerHTML = '';
+                        previewContainer.appendChild(img);
+                        
+                        if (placeholder) {
+                            placeholder.remove();
+                        }
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
 {% endblock %}

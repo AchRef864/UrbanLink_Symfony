@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Taxis – Utilisateurs{% endblock %}
+{% block page_title %}Pilotes de Taxi{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+  <style>
+    .card-3d {
+      background-color: #fff;
+      border-radius: .75rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      transition: transform .3s ease, box-shadow .3s ease;
+      transform-style: preserve-3d;
+    }
+    .card-3d:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+    }
+    .header-3d {
+      padding: 1.25rem;
+      background: linear-gradient(135deg,#2D3748,#4A5568);
+      display: flex;
+      align-items: center;
+      color: #fff;   
+    }
+    .header-3d h6 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0;
+    }
+    .table-3d {
+      padding: 1rem;
+    }
+    table.dataTable thead {
+      background-color: #edf2f7;
+    }
+    table.dataTable tbody tr:hover {
+      background-color: #f7fafc;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+<div class="container mx-auto p-6">
+  <div class="card-3d">
+    <div class="header-3d">
+      <h6>Liste des Pilotes</h6>
+    </div>
+    <div class="table-3d overflow-x-auto">
+      <table id="datatable-search" class="w-full text-sm text-left">
+        <thead>
+          <tr>
+            <th class="px-6 py-3 uppercase tracking-wider">Nom</th>
+            <th class="px-6 py-3 uppercase tracking-wider">Email</th>
+            <th class="px-6 py-3 uppercase tracking-wider">Téléphone</th>
+            <th class="px-6 py-3 uppercase tracking-wider">Permis</th>
+            <th class="px-6 py-3 uppercase tracking-wider">Inscription</th>
+            <th class="px-6 py-3 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in drivers %}
+            <tr class="border-b border-gray-200">
+              <td class="px-6 py-3">{{ user.name }}</td>
+              <td class="px-6 py-3">{{ user.email }}</td>
+              <td class="px-6 py-3">{{ user.phone }}</td>
+              <td class="px-6 py-3">{{ user.license ?: '—' }}</td>
+              <td class="px-6 py-3">{{ user.joiningDate|date('d/m/Y') }}</td>
+              <td class="px-6 py-3 space-x-2">
+                {% if user.taxis|length == 0 %}
+                  <a href="{{ path('taxi_new', { userId: user.id }) }}">
+                    <button type="button"
+                      class="inline-block px-4 py-1.5 text-xs font-bold uppercase rounded-lg shadow-xs hover:-translate-y-px active:opacity-85 hover:shadow-md text-white"
+                      style="background: #16a34a;">
+                      Ajouter Taxi
+                    </button>
+                  </a>
+                {% else %}
+                  {% set taxi = user.taxis|first %}
+                  <a href="{{ path('taxi_edit', { id: taxi.id }) }}">
+                    <button type="button"
+                      class="inline-block px-4 py-1.5 text-xs font-bold uppercase rounded-lg shadow-xs hover:-translate-y-px active:opacity-85 hover:shadow-md text-white"
+                      style="background: #1d4ed8;">
+                      Modifier Taxi
+                    </button>
+                  </a>
+                {% endif %}
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="6" class="px-6 py-3 text-center text-gray-500">Aucun pilote trouvé.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#datatable-search').DataTable({
+        language: {
+          search: "Rechercher :",
+          lengthMenu: "Afficher _MENU_ entrées",
+          info: "Affichage de _START_ à _END_ sur _TOTAL_ entrées",
+          paginate: { previous: "Précédent", next: "Suivant" },
+          zeroRecords: "Aucun enregistrement trouvé"
+        },
+        responsive: true,
+        autoWidth: false
+      });
+    });
+  </script>
+{% endblock %}

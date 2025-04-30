@@ -123,6 +123,18 @@
                         </div>
 
                         <div class="mb-4">
+                            {{ form_label(form.homeAddress, 'Home Address', {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-yellow mb-2'}}) }}
+                            {{ form_widget(form.homeAddress, {'attr': {'class': 'form-control w-full px-3 py-2 text-sm text-slate-700 placeholder-slate-300 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring'}}) }}
+                            {{ form_errors(form.homeAddress) }}
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form_label(form.image, 'Profile Image', {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-yellow mb-2'}}) }}
+                            {{ form_widget(form.image, {'attr': {'class': 'form-control w-full px-3 py-2 text-sm text-slate-700 placeholder-slate-300 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring'}}) }}
+                            {{ form_errors(form.image) }}
+                        </div>
+
+                        <div class="mb-4">
                             <button type="button" id="togglePasswordBtn" class="action-btn px-4 py-2 bg-gradient-to-tl from-gray-600 to-gray-400 text-yellow text-sm font-medium rounded-lg shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-300">
                                 <i class="fas fa-lock mr-2"></i> Edit Password
                             </button>
@@ -130,15 +142,9 @@
 
                         <div id="passwordFields" class="password-fields">
                             <div class="mb-4">
-                                {{ form_label(form.plainPassword.first, 'New Password', {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-yellow mb-2'}}) }}
-                                {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control w-full px-3 py-2 text-sm text-slate-700 placeholder-slate-300 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring', 'placeholder': 'Leave blank to keep current'}}) }}
-                                {{ form_errors(form.plainPassword.first) }}
-                            </div>
-
-                            <div class="mb-6">
-                                {{ form_label(form.plainPassword.second, 'Confirm Password', {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-yellow mb-2'}}) }}
-                                {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control w-full px-3 py-2 text-sm text-slate-700 placeholder-slate-300 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring'}}) }}
-                                {{ form_errors(form.plainPassword.second) }}
+                                {{ form_label(form.plainPassword, 'New Password', {'label_attr': {'class': 'block text-sm font-medium text-slate-700 dark:text-yellow mb-2'}}) }}
+                                {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control w-full px-3 py-2 text-sm text-slate-700 placeholder-slate-300 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring', 'placeholder': 'Leave blank to keep current'}}) }}
+                                {{ form_errors(form.plainPassword) }}
                             </div>
                         </div>
 
@@ -173,21 +179,21 @@
 
                 // Change button text based on visibility
                 if (passwordFields.classList.contains('show')) {
-                    this.innerHTML = '<i class="fas fa-lock-open mr-2"></i> Hide Password Fields';
+                    this.innerHTML = '<i class="fas fa-lock-open mr-2"></i> Hide Password Field';
                 } else {
                     this.innerHTML = '<i class="fas fa-lock mr-2"></i> Edit Password';
                 }
             });
 
             // Add any client-side validation or enhancements here
-            const passwordInputs = document.querySelectorAll('input[type="password"]');
-            passwordInputs.forEach(input => {
-                input.addEventListener('input', function() {
+            const passwordInput = document.getElementById('{{ form.plainPassword.vars.id }}');
+            if (passwordInput) {
+                passwordInput.addEventListener('input', function() {
                     if (this.value.length > 0) {
                         this.setCustomValidity('');
                     }
                 });
-            });
+            }
         });
     </script>
 {% endblock %}

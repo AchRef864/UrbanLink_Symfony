@@ -12,10 +12,14 @@ use App\Form\AbonnementType;
 use App\Repository\AbonnementRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-
-
 final class AbonnementController extends AbstractController
 {
+    private const PRICES = [
+        'mensuel' => 50,
+        'trimestriel' => 140,
+        'annuel' => 200
+    ];
+
     #[Route('/abonnement', name: 'app_abonnement')]
     public function index(): Response
     {
@@ -26,19 +30,37 @@ final class AbonnementController extends AbstractController
     public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
         $abonnement = new Abonnement();
+        
+        // Set initial values if type is provided
+        if ($request->isMethod('GET') && $request->query->has('type')) {
+            $type = $request->query->get('type');
+            if (array_key_exists($type, self::PRICES)) {
+                $abonnement->setType($type);
+                $abonnement->setPrix(self::PRICES[$type]);
+                $abonnement->setDateDebut(new \DateTime());
+                $abonnement->setDateFin($this->calculateEndDate(new \DateTime(), $type));
+            }
+        }
+        
         $form = $this->createForm(AbonnementType::class, $abonnement);
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
+            $type = $abonnement->getType();
+            $abonnement->setPrix(self::PRICES[$type]);
+            
+            if ($abonnement->getDateDebut()) {
+                $abonnement->setDateFin($this->calculateEndDate(
+                    $abonnement->getDateDebut(),
+                    $type
+                ));
+            }
+            
             $imageFile = $form->get('imageFile')->getData();
-    
             if ($imageFile) {
-                // VichUploader will handle the file upload automatically
-                // No need to manually move the file
                 $abonnement->setImageFile($imageFile);
             }
     
-            // Save the Abonnement entity (VichUploader will handle the image upload)
             $entityManager->persist($abonnement);
             $entityManager->flush();
     
@@ -50,20 +72,16 @@ final class AbonnementController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    
+
     #[Route('/abonnements', name: 'abonnement_list')]
     public function list(Request $request, AbonnementRepository $abonnementRepository): Response
     {
-        // Get filter parameters from the request
         $searchTerm = $request->query->get('search', '');
-        $etat = $request->query->get('etat', '');
-        $minPrice = $request->query->get('min_price', null);
-        $maxPrice = $request->query->get('max_price', null);
-        
-        // Query abonnements with filters
+        $minPrice = $request->query->has('min_price') ? (float)$request->query->get('min_price') : null;
+        $maxPrice = $request->query->has('max_price') ? (float)$request->query->get('max_price') : null;
+    
         $abonnements = $abonnementRepository->findWithFilters(
             $searchTerm,
-            $etat,
             $minPrice,
             $maxPrice
         );
@@ -71,19 +89,17 @@ final class AbonnementController extends AbstractController
         return $this->render('abonnement/list.html.twig', [
             'abonnements' => $abonnements,
             'searchTerm' => $searchTerm,
-            'etat' => $etat,
             'minPrice' => $minPrice,
             'maxPrice' => $maxPrice,
         ]);
     }
-    
+
     #[Route('/abonnement/{id}', name: 'abonnement_show')]
     public function show(Abonnement $abonnement): Response
     {
         try {
-            // This assumes the field `date_debut` is being accessed somewhere in the controller logic
             if (!$abonnement->getDateDebut()) {
-                throw new NotFoundHttpException('La propriété "date_debut" est manquante dans l\'entité Abonnement.');
+                throw new NotFoundHttpException('La propriété "date_debut" est manquante.');
             }
     
             return $this->render('abonnement/show.html.twig', [
@@ -95,46 +111,69 @@ final class AbonnementController extends AbstractController
         }
     }
 
-
     #[Route('/abonnement/edit/{id}', name: 'abonnement_edit')]
-public function edit(Request $request, Abonnement $abonnement, EntityManagerInterface $entityManager): Response
-{
-    $form = $this->createForm(AbonnementType::class, $abonnement);
-    $form->handleRequest($request);
+    public function edit(Request $request, Abonnement $abonnement, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(AbonnementType::class, $abonnement);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $type = $abonnement->getType();
+            $abonnement->setPrix(self::PRICES[$type]);
+            
+            if ($abonnement->getDateDebut()) {
+                $abonnement->setDateFin($this->calculateEndDate(
+                    $abonnement->getDateDebut(),
+                    $type
+                ));
+            }
+            
+            $imageFile = $form->get('imageFile')->getData();
+            if ($imageFile) {
+                $abonnement->setImageFile($imageFile);
+            }
+    
+            $entityManager->flush();
+            $this->addFlash('success', 'Abonnement modifié avec succès!');
+            return $this->redirectToRoute('abonnement_list');
+        }
+    
+        return $this->render('abonnement/edit.html.twig', [
+            'form' => $form->createView(),
+            'abonnement' => $abonnement,
+        ]);
+    }
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        $imageFile = $form->get('imageFile')->getData();
-        if ($imageFile) {
-            $abonnement->setImageFile($imageFile);
+    #[Route('/abonnement/delete/{id}', name: 'abonnement_delete', methods: ['POST'])]
+    public function delete(Request $request, Abonnement $abonnement, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $abonnement->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($abonnement);
+            $entityManager->flush();
+            $this->addFlash('success', 'Abonnement supprimé avec succès!');
+        } else {
+            $this->addFlash('error', 'Jeton CSRF invalide.');
         }
 
-        $entityManager->flush();
-        $this->addFlash('success', 'Abonnement modifié avec succès!');
         return $this->redirectToRoute('abonnement_list');
     }
 
-    return $this->render('abonnement/edit.html.twig', [
-        'form' => $form->createView(),
-        'abonnement' => $abonnement,
-    ]);
-}
-
-
-
-
-#[Route('/abonnement/delete/{id}', name: 'abonnement_delete', methods: ['POST'])]
-public function delete(Request $request, Abonnement $abonnement, EntityManagerInterface $entityManager): Response
-{
-    if ($this->isCsrfTokenValid('delete' . $abonnement->getId(), $request->request->get('_token'))) {
-        $entityManager->remove($abonnement);
-        $entityManager->flush();
-        $this->addFlash('success', 'Abonnement supprimé avec succès!');
-    } else {
-        $this->addFlash('error', 'Jeton CSRF invalide.');
+    private function calculateEndDate(\DateTimeInterface $startDate, string $type): \DateTimeInterface
+    {
+        $endDate = \DateTime::createFromInterface($startDate);
+        
+        switch ($type) {
+            case 'mensuel':
+                $endDate->modify('+1 month');
+                break;
+            case 'trimestriel':
+                $endDate->modify('+3 months');
+                break;
+            case 'annuel':
+                $endDate->modify('+1 year');
+                break;
+        }
+        
+        return $endDate;
     }
-
-    return $this->redirectToRoute('abonnement_list');
-}
-
-
 }

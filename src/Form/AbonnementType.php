@@ -37,14 +37,6 @@ class AbonnementType extends AbstractType
                 'widget' => 'single_text',
                 'label' => 'Date de fin',
             ])
-            ->add('etat', ChoiceType::class, [
-                'choices' => [
-                    'Actif' => 'actif',
-                    'Expiré' => 'expiré',
-                    'Annulé' => 'annulé',
-                ],
-                'label' => 'État',
-            ])
             ->add('imageFile', FileType::class, [
                 'label' => 'Image (JPEG, PNG, WebP)',
                 'mapped' => false,
@@ -59,6 +51,4 @@ class AbonnementType extends AbstractType
             ])
         ;
     }
-
-
 }
