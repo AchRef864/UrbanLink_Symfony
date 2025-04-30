@@ -12,6 +12,8 @@ parameters:
     opencage.api_key: '%env(OPENCAGE_API_KEY)%'
     gemini_api_key: '%env(GEMINI_API_KEY)%'
     gemini_model:   '%env(GEMINI_MODEL)%'
+    voicerss_key: '%env(VOICERSS_API_KEY)%'
+
 
 
 twig:
@@ -79,3 +81,8 @@ services:
     App\Service\BadWordFilterService:
         arguments:
             $endpoint: 'https://www.purgomalum.com/service/plain'
+
+    App\Service\TextToSpeechService:
+        arguments:
+            $apiKey: '%voicerss_key%' 
+            $httpClient: '@Symfony\Contracts\HttpClient\HttpClientInterface'
