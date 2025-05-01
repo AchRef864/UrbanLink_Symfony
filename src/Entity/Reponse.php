@@ -34,6 +34,15 @@ class Reponse
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id', nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Assert\Range(
+        min: 1,
+        max: 5,
+        notInRangeMessage: 'You must rate between {{ min }} and {{ max }} stars.'
+    )]
+    private ?int $rate = null;
+
+
     public function __construct()
     {
         $this->date_reponse = new \DateTime(); // Automatically set the current date
@@ -87,4 +96,15 @@ class Reponse
         $this->user = $user;
         return $this;
     }
+    public function getRate(): ?int
+{
+    return $this->rate;
+}
+
+public function setRate(?int $rate): static
+{
+    $this->rate = $rate;
+    return $this;
+}
+
 }

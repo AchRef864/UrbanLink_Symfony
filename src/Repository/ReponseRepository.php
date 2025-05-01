@@ -16,6 +16,27 @@ class ReponseRepository extends ServiceEntityRepository
         parent::__construct($registry, Reponse::class);
     }
 
+    public function getGlobalRatingStats(): array
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->select('r.rate as rating, COUNT(r.id) as count')
+            ->where('r.rate IS NOT NULL')
+            ->groupBy('r.rate');
+    
+        $results = $qb->getQuery()->getResult();
+    
+        $stats = array_fill_keys(range(1, 5), 0);
+        
+        foreach ($results as $result) {
+            $rating = (int)$result['rating'];
+            if (isset($stats[$rating])) {
+                $stats[$rating] = (int)$result['count'];
+            }
+        }
+    
+        return $stats;
+    }
+
     //    /**
     //     * @return Reponse[] Returns an array of Reponse objects
     //     */

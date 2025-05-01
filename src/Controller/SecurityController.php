@@ -57,4 +57,13 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
+    #[Route('/oauth/check-google', name: 'oauth_check_google')]
+    public function checkGoogleCallback(): Response
+    {
+        // This route is being hit after Google authentication.
+        // If HWI/OAuth is correctly configured, it should handle this internally.
+        // For now, let's just redirect to the login page.
+        return $this->redirectToRoute('app_login'); // Redirect to your login page route
+    }
 }

@@ -1,10 +1,8 @@
-{% extends 'basef.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Leave a Complaint{% endblock %}
 
 {% block stylesheets %}
-{{ parent() }}
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
 <style>
     .container {
         font-family: 'Arial', sans-serif;
@@ -206,7 +204,7 @@
                 <button type="submit" class="submit-btn">
                     {{ button_label|default('Submit Complaint') }}
                 </button>
-                <a href="{{ path('app_avis_front') }}" class="back-link">
+                <a href="{{ path('app_avis_index') }}" class="back-link">
                     ← Back to complaints list
                 </a>
             </div>
