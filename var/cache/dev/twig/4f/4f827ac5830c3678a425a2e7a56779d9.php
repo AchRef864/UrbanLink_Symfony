@@ -1186,6 +1186,6 @@ class __TwigTemplate_e38843b6ab9908a35439891d6d5b9360 extends Template
         {# {{ encore_entry_script_tags('app') }} #}
     {% endblock %}
 </body>
-</html>", "basef.html.twig", "C:\\Users\\moham\\Downloads\\UrbanLInkfinal\\templates\\basef.html.twig");
+</html>", "basef.html.twig", "C:\\Users\\moham\\Downloads\\UrbanLInkfinal - Copie (2)\\templates\\basef.html.twig");
     }
 }

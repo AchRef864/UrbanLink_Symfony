@@ -577,6 +577,6 @@ class __TwigTemplate_d8535c4575e78548a3928e05ae0336a5 extends Template
         });
     </script>
     </body>
-{% endblock %}", "dashboard/client.html.twig", "C:\\Users\\moham\\Downloads\\UrbanLInkfinal\\templates\\dashboard\\client.html.twig");
+{% endblock %}", "dashboard/client.html.twig", "C:\\Users\\moham\\Downloads\\UrbanLInkfinal - Copie (2)\\templates\\dashboard\\client.html.twig");
     }
 }

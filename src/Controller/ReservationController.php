@@ -191,6 +191,7 @@ public function showDeletedTrajetDetails(Reservation $reservation): Response
 
         Stripe::setApiKey($this->getParameter('stripe_secret_key'));
 
+        
         // Ensure the price is correct
         $totalPrice = $reservation->getTrajet()->getPrice() * $reservation->getNumberOfSeats();
         $reservation->setTotalPrice($totalPrice);
@@ -391,6 +392,15 @@ public function indexAdmin(Request $request, ReservationRepository $reservationR
     {
         return $this->render('reservation/reservation_show.html.twig', [
             'reservation' => $reservation,
+        ]);
+    }
+
+
+    #[Route('/wathercontroller', name: 'app_wathercontroller')]
+    public function wather(): Response
+    {
+        return $this->render('wathercontroller/index.html.twig', [
+            'controller_name' => 'WathercontrollerController',
         ]);
     }
 }

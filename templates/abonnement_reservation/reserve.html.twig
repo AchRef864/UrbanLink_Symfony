@@ -1,0 +1,134 @@
+{% extends 'basef.html.twig' %}
+
+{% block title %}Reserve Subscription{% endblock %}
+
+{% block styles %}
+<style>
+    .reservation-detail-card {
+        background-color: #f8f9fa;
+        border-radius: 0.75rem;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    .reservation-detail-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+    .form-control {
+        transition: all 0.3s ease;
+    }
+    .form-control:focus {
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+        border-color: #3b82f6;
+    }
+    .price-highlight {
+        color: #1e40af;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="w-full px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
+    <div class="flex flex-col space-y-6">
+        <!-- Main Card -->
+        <div class="overflow-hidden bg-white rounded-xl shadow-sm">
+            <!-- Card Header -->
+            <div class="px-6 py-4 border-b border-gray-100">
+                <h3 class="text-2xl font-bold text-gray-900">Reserve {{ abonnement.type|capitalize }} Subscription</h3>
+            </div>
+            
+            <!-- Flash Messages -->
+            {% for message in app.flashes('danger') %}
+                <div class="p-4 mx-6 mt-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            <!-- Card Content -->
+            <div class="p-6">
+                <!-- Details Grid -->
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <!-- Subscription Details -->
+                    <div class="p-5 reservation-detail-card">
+                        <h5 class="mb-4 text-lg font-bold text-gray-900">Subscription Details</h5>
+                        <ul class="space-y-3 text-gray-600">
+                            <li class="flex items-center justify-between">
+                                <span class="font-medium">Type:</span>
+                                <span>{{ abonnement.type|capitalize }}</span>
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="font-medium">Price:</span>
+                                <span class="price-highlight">{{ abonnement.prix }} DT</span>
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="font-medium">Duration:</span>
+                                <span>
+                                    {% if abonnement.type == 'mensuel' %}
+                                        1 Month
+                                    {% elseif abonnement.type == 'trimestriel' %}
+                                        3 Months
+                                    {% elseif abonnement.type == 'annuel' %}
+                                        1 Year
+                                    {% endif %}
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Reservation Period -->
+                    <div class="p-5 reservation-detail-card">
+                        <h5 class="mb-4 text-lg font-bold text-gray-900">Reservation Period</h5>
+                        <ul class="space-y-3 text-gray-600">
+                            <li class="flex items-center justify-between">
+                                <span class="font-medium">Start Date:</span>
+                                <span>{{ abonnement.dateDebut|date('d/m/Y') }}</span>
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="font-medium">End Date:</span>
+                                <span>{{ abonnement.dateFin|date('d/m/Y') }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                {{ form_start(form, {'attr': {'id': 'reservation-form', 'class': 'mt-8'}}) }}
+                    <div class="mb-6">
+                        <label class="block mb-2 text-sm font-medium text-gray-700">Full Name</label>
+                        {{ form_widget(form.fullname, {
+                            'attr': {
+                                'class': 'w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500',
+                                'placeholder': 'Enter your full name'
+                            }
+                        }) }}
+                        {{ form_errors(form.fullname) }}
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-end space-x-4">
+                        <a href="{{ path('app_abonnement_index') }}" 
+                           class="inline-block px-6 py-3 font-bold text-center text-gray-700 uppercase align-middle transition-all bg-white border border-gray-300 rounded-lg cursor-pointer leading-normal text-xs ease-in tracking-tight-rem shadow-md hover:shadow-lg hover:-translate-y-0.5">
+                            Cancel
+                        </a>
+                        <button id="stripe-checkout-btn"
+                                type="button"
+                                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-800 to-blue-500 leading-normal text-xs ease-in tracking-tight-rem shadow-md hover:shadow-lg active:shadow-inner transform hover:-translate-y-0.5 active:translate-y-0">
+                            Pay & Confirm
+                        </button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    const stripe = Stripe('{{ stripe_key }}');
+
+    document.getElementById('stripe-checkout-btn').addEventListener('click', function () {
+        document.getElementById('reservation-form').submit();
+    });
+</script>
+{% endblock %}

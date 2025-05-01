@@ -242,8 +242,10 @@ class __TwigTemplate_f3ae5672ea06cbe75b069ea6169fbf15 extends Template
           </a>
         </li>
         <li>
-          <a href=\"#\" class=\"";
+          <a href=\"";
             // line 333
+            yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("abonnement_list");
+            yield "\" class=\"";
             yield (((is_string($_v14 = CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 333, $this->source); })()), "request", [], "any", false, false, false, 333), "get", ["_route"], "method", false, false, false, 333)) && is_string($_v15 = "abonnement_") && str_starts_with($_v14, $_v15))) ? ("active") : (""));
             yield "\">
             <i class=\"fas fa-id-card\"></i> Subscriptions
@@ -920,7 +922,7 @@ class __TwigTemplate_f3ae5672ea06cbe75b069ea6169fbf15 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  858 => 510,  845 => 509,  823 => 492,  589 => 41,  576 => 40,  553 => 17,  538 => 550,  535 => 549,  530 => 546,  527 => 545,  525 => 509,  520 => 507,  517 => 505,  512 => 503,  508 => 502,  503 => 501,  501 => 500,  497 => 497,  492 => 493,  490 => 492,  486 => 490,  483 => 488,  478 => 485,  468 => 478,  458 => 470,  456 => 469,  446 => 462,  443 => 461,  430 => 449,  423 => 444,  419 => 443,  412 => 438,  405 => 433,  401 => 432,  394 => 427,  387 => 422,  383 => 421,  376 => 416,  362 => 403,  358 => 400,  355 => 399,  350 => 395,  348 => 394,  345 => 392,  334 => 384,  324 => 379,  310 => 370,  300 => 365,  290 => 360,  280 => 355,  270 => 350,  258 => 341,  247 => 333,  237 => 328,  228 => 324,  217 => 318,  201 => 307,  190 => 301,  179 => 295,  168 => 289,  154 => 280,  145 => 274,  141 => 272,  139 => 271,  136 => 269,  134 => 268,  128 => 266,  125 => 265,  122 => 40,  116 => 37,  110 => 34,  105 => 31,  100 => 30,  89 => 20,  84 => 17,  77 => 13,  73 => 12,  69 => 11,  65 => 10,  60 => 9,  52 => 2,);
+        return array (  860 => 510,  847 => 509,  825 => 492,  591 => 41,  578 => 40,  555 => 17,  540 => 550,  537 => 549,  532 => 546,  529 => 545,  527 => 509,  522 => 507,  519 => 505,  514 => 503,  510 => 502,  505 => 501,  503 => 500,  499 => 497,  494 => 493,  492 => 492,  488 => 490,  485 => 488,  480 => 485,  470 => 478,  460 => 470,  458 => 469,  448 => 462,  445 => 461,  432 => 449,  425 => 444,  421 => 443,  414 => 438,  407 => 433,  403 => 432,  396 => 427,  389 => 422,  385 => 421,  378 => 416,  364 => 403,  360 => 400,  357 => 399,  352 => 395,  350 => 394,  347 => 392,  336 => 384,  326 => 379,  312 => 370,  302 => 365,  292 => 360,  282 => 355,  272 => 350,  260 => 341,  247 => 333,  237 => 328,  228 => 324,  217 => 318,  201 => 307,  190 => 301,  179 => 295,  168 => 289,  154 => 280,  145 => 274,  141 => 272,  139 => 271,  136 => 269,  134 => 268,  128 => 266,  125 => 265,  122 => 40,  116 => 37,  110 => 34,  105 => 31,  100 => 30,  89 => 20,  84 => 17,  77 => 13,  73 => 12,  69 => 11,  65 => 10,  60 => 9,  52 => 2,);
     }
 
     public function getSourceContext(): Source
@@ -1257,7 +1259,7 @@ class __TwigTemplate_f3ae5672ea06cbe75b069ea6169fbf15 extends Template
           </a>
         </li>
         <li>
-          <a href=\"#\" class=\"{{ app.request.get('_route') starts with 'abonnement_' ? 'active' : '' }}\">
+          <a href=\"{{ path('abonnement_list') }}\" class=\"{{ app.request.get('_route') starts with 'abonnement_' ? 'active' : '' }}\">
             <i class=\"fas fa-id-card\"></i> Subscriptions
           </a>
         </li>
@@ -1477,6 +1479,6 @@ class __TwigTemplate_f3ae5672ea06cbe75b069ea6169fbf15 extends Template
 {{ encore_entry_script_tags('app') }}
 
 </body>
-</html>", "base.html.twig", "C:\\Users\\moham\\Downloads\\UrbanLInkfinal\\templates\\base.html.twig");
+</html>", "base.html.twig", "C:\\Users\\moham\\Downloads\\UrbanLInkfinal - Copie (2)\\templates\\base.html.twig");
     }
 }

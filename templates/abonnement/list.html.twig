@@ -1,0 +1,613 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Abonnements{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Custom Color Scheme */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a0ca3;
+            --primary-light: #4895ef;
+            --secondary: #7209b7;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #577590;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --text: #2b2d42;
+            --text-light: #8d99ae;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --border: #dee2e6;
+        }
+        
+        .dark {
+            --primary: #4895ef;
+            --primary-dark: #3a0ca3;
+            --primary-light: #4cc9f0;
+            --secondary: #b5179e;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #577590;
+            --light: #343a40;
+            --dark: #f8f9fa;
+            --text: #f8f9fa;
+            --text-light: #adb5bd;
+            --bg: #212529;
+            --card-bg: #2b2d42;
+            --border: #495057;
+        }
+        
+        /* Base Styles */
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Card Styles */
+        .custom-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .dark .custom-card {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .custom-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .dark .custom-card:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Header Styles */
+        .custom-header {
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem;
+        }
+        
+        .custom-title {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .custom-subtitle {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+        
+        /* Button Styles */
+        .custom-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .custom-btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.25);
+        }
+        
+        .custom-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(67, 97, 238, 0.35);
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+        }
+        
+        /* Table Styles */
+        .custom-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .custom-table thead {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        
+        .custom-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .custom-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+        
+        .custom-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .custom-table tbody tr:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .dark .custom-table tbody tr:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+        
+      
+        
+        .custom-badge-active {
+            background-color: rgba(76, 201, 240, 0.15);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+        
+        .custom-badge-expired {
+            background-color: rgba(247, 37, 133, 0.15);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+        
+        .custom-badge-cancelled {
+            background-color: rgba(248, 150, 30, 0.15);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+        
+        /* Enhanced Action Buttons with SVG Icons */
+        .custom-action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .custom-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .custom-action-btn svg {
+            width: 18px;
+            height: 18px;
+            transition: all 0.2s ease;
+        }
+        
+        .custom-action-btn-edit {
+            background-color: rgba(67, 97, 238, 0.2);
+            border: 1px solid var(--primary);
+        }
+        
+        .custom-action-btn-edit svg {
+            fill: var(--primary-dark);
+        }
+        
+        .custom-action-btn-edit:hover {
+            background-color: var(--primary);
+        }
+        
+        .custom-action-btn-edit:hover svg {
+            fill: white;
+        }
+        
+        .custom-action-btn-delete {
+            background-color: rgba(247, 37, 133, 0.2);
+            border: 1px solid var(--danger);
+        }
+        
+        .custom-action-btn-delete svg {
+            fill: var(--danger);
+        }
+        
+        .custom-action-btn-delete:hover {
+            background-color: var(--danger);
+        }
+        
+        .custom-action-btn-delete:hover svg {
+            fill: white;
+        }
+        
+        /* Image Container */
+        .custom-img-container {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--light);
+        }
+        
+        .custom-img-placeholder {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-size: 0.75rem;
+        }
+        
+        /* Empty State */
+        .custom-empty-state {
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 12px;
+            background-color: rgba(248, 249, 250, 0.5);
+            border: 1px dashed var(--border);
+        }
+        
+        .dark .custom-empty-state {
+            background-color: rgba(43, 45, 66, 0.5);
+        }
+        
+        .custom-empty-icon {
+            font-size: 2.5rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+        
+        /* Flash Messages */
+        .custom-flash-success {
+            background-color: rgba(76, 201, 240, 0.15);
+            color: var(--success);
+            border: 1px solid var(--success);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .custom-flash-error {
+            background-color: rgba(247, 37, 133, 0.15);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Filter form styles */
+        .filter-form input,
+        .filter-form select {
+            background-color: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem;
+            width: 100%;
+        }
+
+        .filter-form input:focus,
+        .filter-form select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+
+        .filter-form label {
+            color: var(--text-light);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .filter-reset-btn {
+            background-color: var(--light);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .filter-reset-btn:hover {
+            background-color: var(--border);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .custom-table th, 
+            .custom-table td {
+                padding: 0.75rem 0.5rem;
+            }
+            
+            .custom-title {
+                font-size: 1.25rem;
+            }
+
+            .filter-form {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="w-full px-4 py-6 mx-auto max-w-7xl">
+    <!-- Flash messages -->
+    {% for message in app.flashes('success') %}
+        <div class="custom-flash-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="custom-flash-error">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <!-- Filter form -->
+    <div class="custom-card mb-6">
+        <div class="p-4 md:p-6">
+            <form method="get" action="{{ path('abonnement_list') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Search input -->
+                <div>
+                    <label for="search" class="block text-sm font-medium mb-1">Recherche</label>
+                    <input type="text" id="search" name="search" value="{{ searchTerm }}"
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                           placeholder="Type ou description">
+                </div>
+                
+                <!-- Status filter -->
+           
+                
+                <!-- Price range -->
+                <div>
+                    <label for="min_price" class="block text-sm font-medium mb-1">Prix min</label>
+                    <input type="number" id="min_price" name="min_price" value="{{ minPrice }}"
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                           placeholder="Prix minimum" step="0.01" min="0">
+                </div>
+                
+                <div>
+                    <label for="max_price" class="block text-sm font-medium mb-1">Prix max</label>
+                    <input type="number" id="max_price" name="max_price" value="{{ maxPrice }}"
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                           placeholder="Prix maximum" step="0.01" min="0">
+                </div>
+                
+                <!-- Form actions -->
+                <div class="md:col-span-4 flex justify-end space-x-3">
+                    <button type="submit" 
+                            class="custom-btn custom-btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="mr-2">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg>
+                        Filtrer
+                    </button>
+                    <a href="{{ path('abonnement_list') }}" 
+                       class="custom-btn filter-reset-btn">
+                        Réinitialiser
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Card container -->
+    <div class="custom-card">
+        <!-- Card header -->
+        <div class="custom-header flex flex-col md:flex-row justify-between items-start md:items-center">
+            <div class="mb-4 md:mb-0">
+                <h1 class="custom-title">Liste des Abonnements</h1>
+                <p class="custom-subtitle">Gérez tous les abonnements de votre système</p>
+            </div>
+            <a href="{{ path('abonnement_add') }}" class="custom-btn custom-btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="mr-2">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+                Nouvel Abonnement
+            </a>
+        </div>
+
+        <!-- Table container -->
+        <div class="p-4 md:p-6">
+            <div class="overflow-x-auto">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Type</th>
+                            <th>Prix</th>
+                            <th>Période</th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for abonnement in abonnements %}
+                            <tr>
+                                <!-- Image -->
+                                <td>
+                                    <div class="custom-img-container {% if not abonnement.image %}custom-img-placeholder{% endif %}">
+                                        {% if abonnement.image %}
+                                            <img src="{{ asset('uploads/images/abonnements/' ~ abonnement.image) }}" 
+                                                 class="w-full h-full object-cover" 
+                                                 alt="Abonnement {{ abonnement.type }}">
+                                        {% else %}
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                                <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+                                            </svg>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                
+                                <!-- Type -->
+                                <td>
+                                    <div class="font-semibold capitalize">
+                                        {{ abonnement.type }}
+                                    </div>
+                                </td>
+                                
+                                <!-- Price -->
+                                <td>
+                                    <div class="font-semibold">
+                                        {{ abonnement.prix }} TND
+                                    </div>
+                                </td>
+                                
+                                <!-- Date Range -->
+                                <td>
+                                    <div class="text-sm">
+                                        <div>{{ abonnement.dateDebut|date('d/m/Y') }}</div>
+                                        <div class="text-xs text-slate-500 dark:text-slate-500">au</div>
+                                        <div>{{ abonnement.dateFin|date('d/m/Y') }}</div>
+                                    </div>
+                                </td>
+                                
+                                <!-- Status -->
+                                
+                                
+                                <!-- Actions -->
+                                <td class="text-right">
+                                    <div class="flex items-center justify-end space-x-3">
+                                        <!-- Edit -->
+                                        <a href="{{ path('abonnement_edit', {id: abonnement.id}) }}"
+                                           class="custom-action-btn custom-action-btn-edit"
+                                           title="Modifier">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                <path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/>
+                                            </svg>
+                                        </a>
+                                        
+                                        <!-- Delete Form -->
+                                        <form method="post" 
+                                              action="{{ path('abonnement_delete', {id: abonnement.id}) }}"
+                                              class="delete-form inline-block"
+                                              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet abonnement ?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ abonnement.id) }}">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit"
+                                                    class="custom-action-btn custom-action-btn-delete"
+                                                    title="Supprimer">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                    <path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">
+                                    <div class="custom-empty-state">
+                                        <div class="custom-empty-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0z"/>
+                                            </svg>
+                                        </div>
+                                        <h3 class="font-medium mb-2">Aucun abonnement trouvé</h3>
+                                        <p class="text-sm mb-4">Commencez par créer un nouvel abonnement</p>
+                                        <a href="{{ path('abonnement_add') }}" class="custom-btn custom-btn-primary inline-block">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="mr-2">
+                                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                            </svg>
+                                            Créer un abonnement
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Pagination -->
+        {% if abonnements|length > 0 %}
+            <div class="custom-header border-t flex items-center justify-between">
+                <div class="text-sm">
+                    Affichage de <span class="font-semibold">1</span> à <span class="font-semibold">{{ abonnements|length }}</span> abonnements
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Delete confirmation with SweetAlert2
+            document.querySelectorAll('.delete-form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    Swal.fire({
+                        title: 'Confirmer la suppression',
+                        text: "Voulez-vous vraiment supprimer cet abonnement?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#f72585',
+                        cancelButtonColor: '#4361ee',
+                        confirmButtonText: 'Oui, supprimer',
+                        cancelButtonText: 'Annuler',
+                        background: 'var(--card-bg)',
+                        color: 'var(--text)'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.submit();
+                        }
+                    });
+                });
+            });
+
+            // Price range validation
+            const minPriceInput = document.getElementById('min_price');
+            const maxPriceInput = document.getElementById('max_price');
+            
+            if (minPriceInput && maxPriceInput) {
+                minPriceInput.addEventListener('change', function() {
+                    if (maxPriceInput.value && parseFloat(this.value) > parseFloat(maxPriceInput.value)) {
+                        this.value = maxPriceInput.value;
+                    }
+                });
+                
+                maxPriceInput.addEventListener('change', function() {
+                    if (minPriceInput.value && parseFloat(this.value) < parseFloat(minPriceInput.value)) {
+                        this.value = minPriceInput.value;
+                    }
+                });
+            }
+            
+            // Add active class to filter button when filters are applied
+            const urlParams = new URLSearchParams(window.location.search);
+            const hasFilters = urlParams.toString() !== '';
+            
+            if (hasFilters) {
+                const filterButton = document.querySelector('button[type="submit"]');
+                if (filterButton) {
+                    filterButton.classList.add('bg-primary-dark');
+                }
+            }
+        });
+    </script>
+{% endblock %}

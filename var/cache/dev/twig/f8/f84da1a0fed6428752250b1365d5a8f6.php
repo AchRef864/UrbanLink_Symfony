@@ -756,6 +756,6 @@ $context["course"], "statut", [], "any", false, false, false, 186) == "Refusée"
       
   </script>
 {% endblock %}
-", "back_office/course/index.html.twig", "C:\\Users\\moham\\Downloads\\UrbanLInkfinal\\templates\\back_office\\course\\index.html.twig");
+", "back_office/course/index.html.twig", "C:\\Users\\moham\\Downloads\\UrbanLInkfinal - Copie (2)\\templates\\back_office\\course\\index.html.twig");
     }
 }

@@ -14,6 +14,12 @@ return [
         '/_profiler/phpinfo' => [[['_route' => '_profiler_phpinfo', '_controller' => 'web_profiler.controller.profiler::phpinfoAction'], null, null, null, false, false, null]],
         '/_profiler/xdebug' => [[['_route' => '_profiler_xdebug', '_controller' => 'web_profiler.controller.profiler::xdebugAction'], null, null, null, false, false, null]],
         '/_profiler/open' => [[['_route' => '_profiler_open_file', '_controller' => 'web_profiler.controller.profiler::openAction'], null, null, null, false, false, null]],
+        '/abonnement' => [[['_route' => 'app_abonnement', '_controller' => 'App\\Controller\\AbonnementController::index'], null, null, null, false, false, null]],
+        '/abonnement/add' => [[['_route' => 'abonnement_add', '_controller' => 'App\\Controller\\AbonnementController::add'], null, null, null, false, false, null]],
+        '/abonnements' => [[['_route' => 'abonnement_list', '_controller' => 'App\\Controller\\AbonnementController::list'], null, null, null, false, false, null]],
+        '/abonnementR' => [[['_route' => 'app_abonnement_index', '_controller' => 'App\\Controller\\AbonnementReservationController::index'], null, ['GET' => 0], null, true, false, null]],
+        '/abonnementR/mes-reservations' => [[['_route' => 'app_abonnement_mes_reservations', '_controller' => 'App\\Controller\\AbonnementReservationController::mesReservations'], null, ['GET' => 0], null, false, false, null]],
+        '/abonnementR/admin/reservations' => [[['_route' => 'app_admin_reservations', '_controller' => 'App\\Controller\\AbonnementReservationController::adminReservations'], null, null, null, false, false, null]],
         '/admin/pdf-generator' => [[['_route' => 'admin_pdf_generator', '_controller' => 'App\\Controller\\Admin\\PdfGeneratorController::index'], null, null, null, false, false, null]],
         '/admin/users/pdf' => [[['_route' => 'admin_users_pdf', '_controller' => 'App\\Controller\\Admin\\UserPdfController::generatePdf'], null, null, null, false, false, null]],
         '/affichage' => [[['_route' => 'app_affichage', '_controller' => 'App\\Controller\\AffichageController::index'], null, null, null, false, false, null]],
@@ -49,6 +55,7 @@ return [
         '/reservation/affichage' => [[['_route' => 'reservation_affichage', '_controller' => 'App\\Controller\\ReservationController::affichage'], null, null, null, false, false, null]],
         '/reservation/list' => [[['_route' => 'reservation_list', '_controller' => 'App\\Controller\\ReservationController::list'], null, null, null, false, false, null]],
         '/admin/reservations' => [[['_route' => 'admin_reservations', '_controller' => 'App\\Controller\\ReservationController::indexAdmin'], null, null, null, false, false, null]],
+        '/wathercontroller' => [[['_route' => 'app_wathercontroller', '_controller' => 'App\\Controller\\ReservationController::wather'], null, null, null, false, false, null]],
         '/admin/statistics' => [[['_route' => 'admin_statistics', '_controller' => 'App\\Controller\\StatisticsController::index'], null, null, null, false, false, null]],
         '/taxi/dashboajrd' => [[['_route' => 'taxi_dashboafrd', '_controller' => 'App\\Controller\\Taxi\\DashboardController::index'], null, null, null, false, false, null]],
         '/admin/taxi/users' => [[['_route' => 'taxi_user_list', '_controller' => 'App\\Controller\\TaxiController::userList'], null, null, null, false, false, null]],
@@ -59,7 +66,7 @@ return [
         '/taxiste/notifications' => [[['_route' => 'taxiste_notifications_ajax', '_controller' => 'App\\Controller\\TaxisteController::notifications'], null, ['GET' => 0], null, false, false, null]],
         '/telegram/set-webhook' => [[['_route' => 'telegram_set_webhook', '_controller' => 'App\\Controller\\TelegramWebhookController::setWebhook'], null, ['GET' => 0], null, false, false, null]],
         '/telegram/webhook-info' => [[['_route' => 'telegram_webhook_info', '_controller' => 'App\\Controller\\TelegramWebhookController::getWebhookInfo'], null, ['GET' => 0], null, false, false, null]],
-        '/trajet/ajouter' => [[['_route' => 'trajet_ajouter', '_controller' => 'App\\Controller\\TrajetController::ajouter'], null, null, null, false, false, null]],
+        '/trajet/ajouter' => [[['_route' => 'trajet_ajouter', '_controller' => 'App\\Controller\\TrajetController::add'], null, null, null, false, false, null]],
         '/trajet/affichage' => [[['_route' => 'trajet_affichage', '_controller' => 'App\\Controller\\TrajetController::affichage'], null, null, null, false, false, null]],
         '/user' => [[['_route' => 'app_user', '_controller' => 'App\\Controller\\UserController::index'], null, null, null, false, false, null]],
         '/user/courses' => [[['_route' => 'user_courses', '_controller' => 'App\\Controller\\UserCourseController::index'], null, null, null, true, false, null]],
@@ -126,127 +133,147 @@ return [
                     .'|registration/([^/]++)(*:275)'
                 .')'
                 .'|/a(?'
+                    .'|bonnement(?'
+                        .'|/(?'
+                            .'|([^/]++)(*:313)'
+                            .'|edit/([^/]++)(*:334)'
+                            .'|delete/([^/]++)(*:357)'
+                        .')'
+                        .'|R/(?'
+                            .'|([^/]++)/(?'
+                                .'|reserve(?'
+                                    .'|(*:393)'
+                                    .'|/(?'
+                                        .'|success/([^/]++)(*:421)'
+                                        .'|cancel(*:435)'
+                                    .')'
+                                .')'
+                                .'|pay(*:448)'
+                            .')'
+                            .'|payment/success/([^/]++)(*:481)'
+                        .')'
+                    .')'
                     .'|vis/(?'
                         .'|([^/]++)(?'
-                            .'|(*:307)'
+                            .'|(*:509)'
                             .'|/(?'
-                                .'|edit(*:323)'
-                                .'|reponses(*:339)'
-                                .'|tts(*:350)'
+                                .'|edit(*:525)'
+                                .'|reponses(*:541)'
+                                .'|tts(*:552)'
                             .')'
-                            .'|(*:359)'
+                            .'|(*:561)'
                         .')'
-                        .'|api/tts\\-token/([^/]++)(*:391)'
+                        .'|api/tts\\-token/([^/]++)(*:593)'
                     .')'
                     .'|dmin/(?'
                         .'|maintenances/(?'
-                            .'|edit/([^/]++)(*:437)'
+                            .'|edit/([^/]++)(*:639)'
                             .'|d(?'
-                                .'|elete/([^/]++)(*:463)'
+                                .'|elete/([^/]++)(*:665)'
                                 .'|river/(?'
-                                    .'|new/([^/]++)(*:492)'
-                                    .'|edit/([^/]++)(*:513)'
-                                    .'|([^/]++)(*:529)'
+                                    .'|new/([^/]++)(*:694)'
+                                    .'|edit/([^/]++)(*:715)'
+                                    .'|([^/]++)(*:731)'
                                 .')'
                             .')'
-                            .'|maintenance/export/pdf/([^/]++)(*:570)'
-                            .'|clear\\-history/([^/]++)(*:601)'
+                            .'|maintenance/export/pdf/([^/]++)(*:772)'
+                            .'|clear\\-history/([^/]++)(*:803)'
                         .')'
-                        .'|reservations/([^/]++)(*:631)'
+                        .'|reservations/([^/]++)(*:833)'
                         .'|taxi/(?'
-                            .'|new/(\\d+)(*:656)'
-                            .'|(\\d+)/edit(*:674)'
-                            .'|([^/]++)/delete(*:697)'
+                            .'|new/(\\d+)(*:858)'
+                            .'|(\\d+)/edit(*:876)'
+                            .'|([^/]++)/delete(*:899)'
                         .')'
                         .'|course/([^/]++)/(?'
-                            .'|edit(*:729)'
-                            .'|delete(*:743)'
+                            .'|edit(*:931)'
+                            .'|delete(*:945)'
                         .')'
                         .'|users/(?'
                             .'|delete/(?'
-                                .'|confirm/([^/]++)(*:787)'
-                                .'|([^/]++)(*:803)'
+                                .'|confirm/([^/]++)(*:989)'
+                                .'|([^/]++)(*:1005)'
                             .')'
-                            .'|edit/([^/]++)(*:825)'
-                            .'|block/([^/]++)(*:847)'
-                            .'|unblock/([^/]++)(*:871)'
+                            .'|edit/([^/]++)(*:1028)'
+                            .'|block/([^/]++)(*:1051)'
+                            .'|unblock/([^/]++)(*:1076)'
                         .')'
                     .')'
                 .')'
                 .'|/re(?'
                     .'|po(?'
                         .'|nse/(?'
-                            .'|avis/([^/]++)(*:913)'
-                            .'|new/([^/]++)(*:933)'
+                            .'|avis/([^/]++)(*:1119)'
+                            .'|new/([^/]++)(*:1140)'
                             .'|([^/]++)(?'
-                                .'|(*:952)'
+                                .'|(*:1160)'
                                 .'|/(?'
-                                    .'|edit(*:968)'
-                                    .'|rate(*:980)'
+                                    .'|edit(*:1177)'
+                                    .'|rate(*:1190)'
                                 .')'
-                                .'|(*:989)'
+                                .'|(*:1200)'
                             .')'
                         .')'
                         .'|rt/(?'
-                            .'|qr/([^/]++)(*:1016)'
-                            .'|([^/]++)(*:1033)'
+                            .'|qr/([^/]++)(*:1228)'
+                            .'|([^/]++)(*:1245)'
                         .')'
                     .')'
                     .'|se(?'
                         .'|rvation/(?'
-                            .'|new/([^/]++)(*:1072)'
-                            .'|trajet\\-supprime/([^/]++)(*:1106)'
-                            .'|success/([^/]++)(*:1131)'
-                            .'|cancel/([^/]++)(*:1155)'
+                            .'|new/([^/]++)(*:1284)'
+                            .'|trajet\\-supprime/([^/]++)(*:1318)'
+                            .'|success/([^/]++)(*:1343)'
+                            .'|cancel/([^/]++)(*:1367)'
                             .'|p(?'
                                 .'|ayment/(?'
-                                    .'|([^/]++)(*:1186)'
-                                    .'|success/([^/]++)(*:1211)'
-                                    .'|cancel/([^/]++)(*:1235)'
+                                    .'|([^/]++)(*:1398)'
+                                    .'|success/([^/]++)(*:1423)'
+                                    .'|cancel/([^/]++)(*:1447)'
                                 .')'
-                                .'|df/([^/]++)(*:1256)'
+                                .'|df/([^/]++)(*:1468)'
                             .')'
                         .')'
-                        .'|t\\-password/reset/(\\d+)(*:1290)'
+                        .'|t\\-password/reset/(\\d+)(*:1502)'
                     .')'
                 .')'
                 .'|/t(?'
                     .'|axiste/(?'
                         .'|course/([^/]++)/(?'
-                            .'|accept(*:1341)'
-                            .'|refuse(*:1356)'
-                            .'|start(*:1370)'
-                            .'|finish(*:1385)'
+                            .'|accept(*:1553)'
+                            .'|refuse(*:1568)'
+                            .'|start(*:1582)'
+                            .'|finish(*:1597)'
                         .')'
-                        .'|taxi/([^/]++)/change\\-status(*:1423)'
+                        .'|taxi/([^/]++)/change\\-status(*:1635)'
                     .')'
                     .'|rajet/(?'
-                        .'|modifier/([^/]++)(*:1459)'
-                        .'|supprimer/([^/]++)(*:1486)'
+                        .'|modifier/([^/]++)(*:1671)'
+                        .'|supprimer/([^/]++)(*:1698)'
                     .')'
                 .')'
                 .'|/user/(?'
                     .'|course(?'
-                        .'|s/([^/]++)/cancel(*:1532)'
-                        .'|/([^/]++)/cancel(*:1557)'
+                        .'|s/([^/]++)/cancel(*:1744)'
+                        .'|/([^/]++)/cancel(*:1769)'
                     .')'
-                    .'|taxi/([^/]++)/rate(*:1585)'
+                    .'|taxi/([^/]++)/rate(*:1797)'
                 .')'
                 .'|/vehicles/(?'
-                    .'|my\\-vehicle/([^/]++)/edit(*:1633)'
+                    .'|my\\-vehicle/([^/]++)/edit(*:1845)'
                     .'|([^/]++)/verify(?'
-                        .'|\\-page(*:1666)'
-                        .'|(*:1675)'
+                        .'|\\-page(*:1878)'
+                        .'|(*:1887)'
                     .')'
-                    .'|edit/([^/]++)(*:1698)'
-                    .'|(\\d+)(*:1712)'
-                    .'|delete/([^/]++)(*:1736)'
+                    .'|edit/([^/]++)(*:1910)'
+                    .'|(\\d+)(*:1924)'
+                    .'|delete/([^/]++)(*:1948)'
                 .')'
                 .'|/maintenances/(?'
-                    .'|(\\d+)(*:1768)'
-                    .'|edit/([^/]++)(*:1790)'
-                    .'|delete/([^/]++)(*:1814)'
-                    .'|vehicle/([^/]++)(*:1839)'
+                    .'|(\\d+)(*:1980)'
+                    .'|edit/([^/]++)(*:2002)'
+                    .'|delete/([^/]++)(*:2026)'
+                    .'|vehicle/([^/]++)(*:2051)'
                 .')'
             .')/?$}sDu',
     ],
@@ -262,67 +289,75 @@ return [
         222 => [[['_route' => 'hwi_oauth_service_redirect', '_controller' => ['HWI\\Bundle\\OAuthBundle\\Controller\\RedirectToServiceController', 'redirectToServiceAction']], ['service'], ['GET' => 0], null, false, true, null]],
         246 => [[['_route' => 'hwi_oauth_connect_service', '_controller' => 'HWI\\Bundle\\OAuthBundle\\Controller\\Connect\\ConnectController::connectServiceAction'], ['service'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
         275 => [[['_route' => 'hwi_oauth_connect_registration', '_controller' => 'HWI\\Bundle\\OAuthBundle\\Controller\\Connect\\RegisterController::registrationAction'], ['key'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        307 => [[['_route' => 'app_avis_show', '_controller' => 'App\\Controller\\AvisController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        323 => [[['_route' => 'app_avis_edit', '_controller' => 'App\\Controller\\AvisController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        339 => [[['_route' => 'app_avis_reponses', '_controller' => 'App\\Controller\\AvisController::viewReponses'], ['id'], ['GET' => 0], null, false, false, null]],
-        350 => [[['_route' => 'app_avis_tts', '_controller' => 'App\\Controller\\AvisController::tts'], ['id'], ['GET' => 0], null, false, false, null]],
-        359 => [[['_route' => 'app_avis_delete', '_controller' => 'App\\Controller\\AvisController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
-        391 => [[['_route' => 'app_api_tts_token', '_controller' => 'App\\Controller\\AvisController::getTtsToken'], ['id'], ['GET' => 0], null, false, true, null]],
-        437 => [[['_route' => 'admin_maintenances_edit', '_controller' => 'App\\Controller\\MaintenanceController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        463 => [[['_route' => 'admin_maintenances_delete', '_controller' => 'App\\Controller\\MaintenanceController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
-        492 => [[['_route' => 'driver_maintenances_new', '_controller' => 'App\\Controller\\MaintenanceController::driverNew'], ['vehicle_id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        513 => [[['_route' => 'driver_maintenances_edit', '_controller' => 'App\\Controller\\MaintenanceController::driverEdit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        529 => [[['_route' => 'driver_maintenance_show', '_controller' => 'App\\Controller\\MaintenanceController::driverShow'], ['id'], ['GET' => 0], null, false, true, null]],
-        570 => [[['_route' => 'maintenance_export_pdf', '_controller' => 'App\\Controller\\MaintenanceController::exportToPdf'], ['id'], ['GET' => 0], null, false, true, null]],
-        601 => [[['_route' => 'clear_vehicle_maintenance_history', '_controller' => 'App\\Controller\\MaintenanceController::clearVehicleMaintenanceHistory'], ['vehicle_id'], ['POST' => 0], null, false, true, null]],
-        631 => [[['_route' => 'show_reservation', '_controller' => 'App\\Controller\\ReservationController::showReservation'], ['id'], null, null, false, true, null]],
-        656 => [[['_route' => 'taxi_new', '_controller' => 'App\\Controller\\TaxiController::new'], ['userId'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        674 => [[['_route' => 'taxi_edit', '_controller' => 'App\\Controller\\TaxiController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        697 => [[['_route' => 'taxi_delete', '_controller' => 'App\\Controller\\TaxiController::delete'], ['id'], null, null, false, false, null]],
-        729 => [[['_route' => 'course_edit', '_controller' => 'App\\Controller\\CourseController::edit'], ['id'], null, null, false, false, null]],
-        743 => [[['_route' => 'course_delete', '_controller' => 'App\\Controller\\CourseController::delete'], ['id'], null, null, false, false, null]],
-        787 => [[['_route' => 'admin_user_confirm_delete', '_controller' => 'App\\Controller\\Admin\\UserManagementController::confirmDelete'], ['id'], null, null, false, true, null]],
-        803 => [[['_route' => 'admin_user_perform_delete', '_controller' => 'App\\Controller\\Admin\\UserManagementController::performDelete'], ['id'], ['POST' => 0], null, false, true, null]],
-        825 => [[['_route' => 'admin_user_edit', '_controller' => 'App\\Controller\\Admin\\UserManagementController::editUser'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        847 => [[['_route' => 'admin_user_block', '_controller' => 'App\\Controller\\Admin\\UserManagementController::blockUser'], ['id'], ['POST' => 0], null, false, true, null]],
-        871 => [[['_route' => 'admin_user_unblock', '_controller' => 'App\\Controller\\Admin\\UserManagementController::unblockUser'], ['id'], ['POST' => 0], null, false, true, null]],
-        913 => [[['_route' => 'app_avis_reponsess', '_controller' => 'App\\Controller\\ReponseController::reponsesForAvis'], ['id'], ['GET' => 0], null, false, true, null]],
-        933 => [[['_route' => 'app_reponse_new', '_controller' => 'App\\Controller\\ReponseController::new'], ['avisId'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        952 => [[['_route' => 'app_reponse_show', '_controller' => 'App\\Controller\\ReponseController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        968 => [[['_route' => 'app_reponse_edit', '_controller' => 'App\\Controller\\ReponseController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        980 => [[['_route' => 'app_reponse_rate', '_controller' => 'App\\Controller\\ReponseController::rate'], ['id'], ['POST' => 0], null, false, false, null]],
-        989 => [[['_route' => 'app_reponse_delete', '_controller' => 'App\\Controller\\ReponseController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
-        1016 => [[['_route' => 'report_qr', '_controller' => 'App\\Controller\\ReportController::qr'], ['userId'], ['GET' => 0], null, false, true, null]],
-        1033 => [[['_route' => 'report_pdf', '_controller' => 'App\\Controller\\ReportController::pdf'], ['userId'], ['GET' => 0], null, false, true, null]],
-        1072 => [[['_route' => 'reservation_new', '_controller' => 'App\\Controller\\ReservationController::new'], ['trajetId'], null, null, false, true, null]],
-        1106 => [[['_route' => 'reservation_trajet_supprime', '_controller' => 'App\\Controller\\ReservationController::showDeletedTrajetDetails'], ['id'], null, null, false, true, null]],
-        1131 => [[['_route' => 'reservation_success', '_controller' => 'App\\Controller\\ReservationController::success'], ['id'], null, null, false, true, null]],
-        1155 => [[['_route' => 'reservation_cancel', '_controller' => 'App\\Controller\\ReservationController::cancel'], ['id'], null, null, false, true, null]],
-        1186 => [[['_route' => 'reservation_payment', '_controller' => 'App\\Controller\\ReservationController::payment'], ['id'], null, null, false, true, null]],
-        1211 => [[['_route' => 'reservation_payment_success', '_controller' => 'App\\Controller\\ReservationController::paymentSuccess'], ['id'], null, null, false, true, null]],
-        1235 => [[['_route' => 'reservation_payment_cancel', '_controller' => 'App\\Controller\\ReservationController::paymentCancel'], ['id'], null, null, false, true, null]],
-        1256 => [[['_route' => 'reservation_pdf', '_controller' => 'App\\Controller\\ReservationController::generatePdf'], ['id'], null, null, false, true, null]],
-        1290 => [[['_route' => 'app_reset_password', '_controller' => 'App\\Controller\\Auth\\ResetPasswordController::reset'], ['code'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        1341 => [[['_route' => 'taxiste_course_accept', '_controller' => 'App\\Controller\\TaxisteController::acceptCourse'], ['id'], ['POST' => 0], null, false, false, null]],
-        1356 => [[['_route' => 'taxiste_course_refuse', '_controller' => 'App\\Controller\\TaxisteController::refuseCourse'], ['id'], ['POST' => 0], null, false, false, null]],
-        1370 => [[['_route' => 'taxiste_course_start', '_controller' => 'App\\Controller\\TaxisteController::startCourse'], ['id'], ['POST' => 0], null, false, false, null]],
-        1385 => [[['_route' => 'taxiste_course_finish', '_controller' => 'App\\Controller\\TaxisteController::finishCourse'], ['id'], ['POST' => 0], null, false, false, null]],
-        1423 => [[['_route' => 'taxiste_taxi_change_status', '_controller' => 'App\\Controller\\TaxisteController::changeTaxiStatus'], ['id'], ['POST' => 0], null, false, false, null]],
-        1459 => [[['_route' => 'trajet_modifier', '_controller' => 'App\\Controller\\TrajetController::modifier'], ['id'], null, null, false, true, null]],
-        1486 => [[['_route' => 'trajet_supprimer', '_controller' => 'App\\Controller\\TrajetController::supprimer'], ['id'], null, null, false, true, null]],
-        1532 => [[['_route' => 'user_course_cancel', '_controller' => 'App\\Controller\\UserCourseController::cancel'], ['id'], ['POST' => 0], null, false, false, null]],
-        1557 => [[['_route' => 'course_cancel', '_controller' => 'App\\Controller\\UserCourseController::cancel'], ['id'], null, null, false, false, null]],
-        1585 => [[['_route' => 'taxi_rate', '_controller' => 'App\\Controller\\RatingController::rateTaxi'], ['id'], null, null, false, false, null]],
-        1633 => [[['_route' => 'my_vehicle_edit', '_controller' => 'App\\Controller\\VehicleController::editMyVehicle'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        1666 => [[['_route' => 'vehicle_verify_page', '_controller' => 'App\\Controller\\VehicleController::verifyPage'], ['id'], ['GET' => 0], null, false, false, null]],
-        1675 => [[['_route' => 'vehicle_verify', '_controller' => 'App\\Controller\\VehicleController::verifyVehicle'], ['id'], ['POST' => 0], null, false, false, null]],
-        1698 => [[['_route' => 'vehicle_edit', '_controller' => 'App\\Controller\\VehicleController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        1712 => [[['_route' => 'vehicle_show', '_controller' => 'App\\Controller\\VehicleController::show'], ['id'], null, null, false, true, null]],
-        1736 => [[['_route' => 'vehicle_delete', '_controller' => 'App\\Controller\\VehicleController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
-        1768 => [[['_route' => 'maintenance_show', '_controller' => 'App\\Controller\\MaintenanceController::show'], ['id'], null, null, false, true, null]],
-        1790 => [[['_route' => 'maintenance_edit', '_controller' => 'App\\Controller\\MaintenanceController::update'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        1814 => [[['_route' => 'maintenance_delete', '_controller' => 'App\\Controller\\MaintenanceController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
-        1839 => [
+        313 => [[['_route' => 'abonnement_show', '_controller' => 'App\\Controller\\AbonnementController::show'], ['id'], null, null, false, true, null]],
+        334 => [[['_route' => 'abonnement_edit', '_controller' => 'App\\Controller\\AbonnementController::edit'], ['id'], null, null, false, true, null]],
+        357 => [[['_route' => 'abonnement_delete', '_controller' => 'App\\Controller\\AbonnementController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        393 => [[['_route' => 'app_abonnement_reserve', '_controller' => 'App\\Controller\\AbonnementReservationController::reserve'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        421 => [[['_route' => 'app_abonnement_reserve_success', '_controller' => 'App\\Controller\\AbonnementReservationController::reserveSuccess'], ['id', 'reservation_id'], null, null, false, true, null]],
+        435 => [[['_route' => 'app_abonnement_reserve_cancel', '_controller' => 'App\\Controller\\AbonnementReservationController::reserveCancel'], ['id'], null, null, false, false, null]],
+        448 => [[['_route' => 'app_abonnement_pay', '_controller' => 'App\\Controller\\AbonnementReservationController::pay'], ['id'], null, null, false, false, null]],
+        481 => [[['_route' => 'app_payment_success', '_controller' => 'App\\Controller\\AbonnementReservationController::paymentSuccess'], ['id'], null, null, false, true, null]],
+        509 => [[['_route' => 'app_avis_show', '_controller' => 'App\\Controller\\AvisController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        525 => [[['_route' => 'app_avis_edit', '_controller' => 'App\\Controller\\AvisController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        541 => [[['_route' => 'app_avis_reponses', '_controller' => 'App\\Controller\\AvisController::viewReponses'], ['id'], ['GET' => 0], null, false, false, null]],
+        552 => [[['_route' => 'app_avis_tts', '_controller' => 'App\\Controller\\AvisController::tts'], ['id'], ['GET' => 0], null, false, false, null]],
+        561 => [[['_route' => 'app_avis_delete', '_controller' => 'App\\Controller\\AvisController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        593 => [[['_route' => 'app_api_tts_token', '_controller' => 'App\\Controller\\AvisController::getTtsToken'], ['id'], ['GET' => 0], null, false, true, null]],
+        639 => [[['_route' => 'admin_maintenances_edit', '_controller' => 'App\\Controller\\MaintenanceController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        665 => [[['_route' => 'admin_maintenances_delete', '_controller' => 'App\\Controller\\MaintenanceController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        694 => [[['_route' => 'driver_maintenances_new', '_controller' => 'App\\Controller\\MaintenanceController::driverNew'], ['vehicle_id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        715 => [[['_route' => 'driver_maintenances_edit', '_controller' => 'App\\Controller\\MaintenanceController::driverEdit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        731 => [[['_route' => 'driver_maintenance_show', '_controller' => 'App\\Controller\\MaintenanceController::driverShow'], ['id'], ['GET' => 0], null, false, true, null]],
+        772 => [[['_route' => 'maintenance_export_pdf', '_controller' => 'App\\Controller\\MaintenanceController::exportToPdf'], ['id'], ['GET' => 0], null, false, true, null]],
+        803 => [[['_route' => 'clear_vehicle_maintenance_history', '_controller' => 'App\\Controller\\MaintenanceController::clearVehicleMaintenanceHistory'], ['vehicle_id'], ['POST' => 0], null, false, true, null]],
+        833 => [[['_route' => 'show_reservation', '_controller' => 'App\\Controller\\ReservationController::showReservation'], ['id'], null, null, false, true, null]],
+        858 => [[['_route' => 'taxi_new', '_controller' => 'App\\Controller\\TaxiController::new'], ['userId'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        876 => [[['_route' => 'taxi_edit', '_controller' => 'App\\Controller\\TaxiController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        899 => [[['_route' => 'taxi_delete', '_controller' => 'App\\Controller\\TaxiController::delete'], ['id'], null, null, false, false, null]],
+        931 => [[['_route' => 'course_edit', '_controller' => 'App\\Controller\\CourseController::edit'], ['id'], null, null, false, false, null]],
+        945 => [[['_route' => 'course_delete', '_controller' => 'App\\Controller\\CourseController::delete'], ['id'], null, null, false, false, null]],
+        989 => [[['_route' => 'admin_user_confirm_delete', '_controller' => 'App\\Controller\\Admin\\UserManagementController::confirmDelete'], ['id'], null, null, false, true, null]],
+        1005 => [[['_route' => 'admin_user_perform_delete', '_controller' => 'App\\Controller\\Admin\\UserManagementController::performDelete'], ['id'], ['POST' => 0], null, false, true, null]],
+        1028 => [[['_route' => 'admin_user_edit', '_controller' => 'App\\Controller\\Admin\\UserManagementController::editUser'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        1051 => [[['_route' => 'admin_user_block', '_controller' => 'App\\Controller\\Admin\\UserManagementController::blockUser'], ['id'], ['POST' => 0], null, false, true, null]],
+        1076 => [[['_route' => 'admin_user_unblock', '_controller' => 'App\\Controller\\Admin\\UserManagementController::unblockUser'], ['id'], ['POST' => 0], null, false, true, null]],
+        1119 => [[['_route' => 'app_avis_reponsess', '_controller' => 'App\\Controller\\ReponseController::reponsesForAvis'], ['id'], ['GET' => 0], null, false, true, null]],
+        1140 => [[['_route' => 'app_reponse_new', '_controller' => 'App\\Controller\\ReponseController::new'], ['avisId'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        1160 => [[['_route' => 'app_reponse_show', '_controller' => 'App\\Controller\\ReponseController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        1177 => [[['_route' => 'app_reponse_edit', '_controller' => 'App\\Controller\\ReponseController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        1190 => [[['_route' => 'app_reponse_rate', '_controller' => 'App\\Controller\\ReponseController::rate'], ['id'], ['POST' => 0], null, false, false, null]],
+        1200 => [[['_route' => 'app_reponse_delete', '_controller' => 'App\\Controller\\ReponseController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        1228 => [[['_route' => 'report_qr', '_controller' => 'App\\Controller\\ReportController::qr'], ['userId'], ['GET' => 0], null, false, true, null]],
+        1245 => [[['_route' => 'report_pdf', '_controller' => 'App\\Controller\\ReportController::pdf'], ['userId'], ['GET' => 0], null, false, true, null]],
+        1284 => [[['_route' => 'reservation_new', '_controller' => 'App\\Controller\\ReservationController::new'], ['trajetId'], null, null, false, true, null]],
+        1318 => [[['_route' => 'reservation_trajet_supprime', '_controller' => 'App\\Controller\\ReservationController::showDeletedTrajetDetails'], ['id'], null, null, false, true, null]],
+        1343 => [[['_route' => 'reservation_success', '_controller' => 'App\\Controller\\ReservationController::success'], ['id'], null, null, false, true, null]],
+        1367 => [[['_route' => 'reservation_cancel', '_controller' => 'App\\Controller\\ReservationController::cancel'], ['id'], null, null, false, true, null]],
+        1398 => [[['_route' => 'reservation_payment', '_controller' => 'App\\Controller\\ReservationController::payment'], ['id'], null, null, false, true, null]],
+        1423 => [[['_route' => 'reservation_payment_success', '_controller' => 'App\\Controller\\ReservationController::paymentSuccess'], ['id'], null, null, false, true, null]],
+        1447 => [[['_route' => 'reservation_payment_cancel', '_controller' => 'App\\Controller\\ReservationController::paymentCancel'], ['id'], null, null, false, true, null]],
+        1468 => [[['_route' => 'reservation_pdf', '_controller' => 'App\\Controller\\ReservationController::generatePdf'], ['id'], null, null, false, true, null]],
+        1502 => [[['_route' => 'app_reset_password', '_controller' => 'App\\Controller\\Auth\\ResetPasswordController::reset'], ['code'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        1553 => [[['_route' => 'taxiste_course_accept', '_controller' => 'App\\Controller\\TaxisteController::acceptCourse'], ['id'], ['POST' => 0], null, false, false, null]],
+        1568 => [[['_route' => 'taxiste_course_refuse', '_controller' => 'App\\Controller\\TaxisteController::refuseCourse'], ['id'], ['POST' => 0], null, false, false, null]],
+        1582 => [[['_route' => 'taxiste_course_start', '_controller' => 'App\\Controller\\TaxisteController::startCourse'], ['id'], ['POST' => 0], null, false, false, null]],
+        1597 => [[['_route' => 'taxiste_course_finish', '_controller' => 'App\\Controller\\TaxisteController::finishCourse'], ['id'], ['POST' => 0], null, false, false, null]],
+        1635 => [[['_route' => 'taxiste_taxi_change_status', '_controller' => 'App\\Controller\\TaxisteController::changeTaxiStatus'], ['id'], ['POST' => 0], null, false, false, null]],
+        1671 => [[['_route' => 'trajet_modifier', '_controller' => 'App\\Controller\\TrajetController::modifier'], ['id'], null, null, false, true, null]],
+        1698 => [[['_route' => 'trajet_supprimer', '_controller' => 'App\\Controller\\TrajetController::supprimer'], ['id'], null, null, false, true, null]],
+        1744 => [[['_route' => 'user_course_cancel', '_controller' => 'App\\Controller\\UserCourseController::cancel'], ['id'], ['POST' => 0], null, false, false, null]],
+        1769 => [[['_route' => 'course_cancel', '_controller' => 'App\\Controller\\UserCourseController::cancel'], ['id'], null, null, false, false, null]],
+        1797 => [[['_route' => 'taxi_rate', '_controller' => 'App\\Controller\\RatingController::rateTaxi'], ['id'], null, null, false, false, null]],
+        1845 => [[['_route' => 'my_vehicle_edit', '_controller' => 'App\\Controller\\VehicleController::editMyVehicle'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        1878 => [[['_route' => 'vehicle_verify_page', '_controller' => 'App\\Controller\\VehicleController::verifyPage'], ['id'], ['GET' => 0], null, false, false, null]],
+        1887 => [[['_route' => 'vehicle_verify', '_controller' => 'App\\Controller\\VehicleController::verifyVehicle'], ['id'], ['POST' => 0], null, false, false, null]],
+        1910 => [[['_route' => 'vehicle_edit', '_controller' => 'App\\Controller\\VehicleController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        1924 => [[['_route' => 'vehicle_show', '_controller' => 'App\\Controller\\VehicleController::show'], ['id'], null, null, false, true, null]],
+        1948 => [[['_route' => 'vehicle_delete', '_controller' => 'App\\Controller\\VehicleController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        1980 => [[['_route' => 'maintenance_show', '_controller' => 'App\\Controller\\MaintenanceController::show'], ['id'], null, null, false, true, null]],
+        2002 => [[['_route' => 'maintenance_edit', '_controller' => 'App\\Controller\\MaintenanceController::update'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        2026 => [[['_route' => 'maintenance_delete', '_controller' => 'App\\Controller\\MaintenanceController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        2051 => [
             [['_route' => 'maintenance_by_vehicle', '_controller' => 'App\\Controller\\MaintenanceController::findByVehicleId'], ['vehicleId'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],

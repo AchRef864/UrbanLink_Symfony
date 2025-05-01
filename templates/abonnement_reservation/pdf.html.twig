@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Carte d'Abonnement - {{ reservation.abonnement.type }}</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .subscription-card {
+            width: 350px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+        .card-header {
+            background: #4a6fa5;
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+        .card-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 0;
+        }
+        .card-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 3px 12px;
+            background: #27ae60;
+            color: white;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .card-body {
+            padding: 25px;
+        }
+        .subscription-type {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .subscription-duration {
+            color: #7f8c8d;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .subscription-price {
+            font-size: 36px;
+            font-weight: 700;
+            color: #4a6fa5;
+            text-align: center;
+            margin: 25px 0;
+        }
+        .divider {
+            height: 1px;
+            background: #eee;
+            margin: 20px 0;
+        }
+        .card-details {
+            margin-top: 20px;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 12px;
+        }
+        .detail-label {
+            width: 120px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        .detail-value {
+            flex: 1;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .card-footer {
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #95a5a6;
+            border-top: 1px solid #eee;
+        }
+        .valid-dates {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 15px 0;
+        }
+        .valid-date {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        .barcode {
+            text-align: center;
+            margin: 20px 0;
+            color: #333;
+            letter-spacing: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="subscription-card">
+        <div class="card-header">
+            <div class="card-status">{{ reservation.statut }}</div>
+            <h1 class="card-title">Carte d'Abonnement</h1>
+        </div>
+        
+        <div class="card-body">
+            <div class="subscription-type">{{ reservation.abonnement.type }}</div>
+            <div class="subscription-duration">
+                {% set difference = date(reservation.dateFin).diff(date(reservation.dateDebut)) %}
+                {% set months = difference.m %}
+                {% set days = difference.d %}
+                Durée: {{ months }} mois et {{ days }} jours
+            </div>
+            
+            <div class="valid-dates">
+                <div class="valid-date"><strong>Valide du:</strong> {{ reservation.dateDebut|date('d/m/Y') }}</div>
+                <div class="valid-date"><strong>Au:</strong> {{ reservation.dateFin|date('d/m/Y') }}</div>
+            </div>
+            
+            <div class="subscription-price">{{ reservation.abonnement.prix }} €</div>
+            
+            <div class="barcode">| | | | {{ reservation.id }} | | | |</div>
+            
+            <div class="divider"></div>
+            
+            <div class="card-details">
+                <div class="detail-row">
+                    <div class="detail-label">Nom du client:</div>
+                    <div class="detail-value">{{ reservation.user.name }}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">N° d'abonnement:</div>
+                    <div class="detail-value">#{{ reservation.id }}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Date d'émission:</div>
+                    <div class="detail-value">{{ "now"|date('d/m/Y') }}</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-footer">
+            <p>Présentez cette carte pour accéder à votre abonnement</p>
+            <p>© {{ "now"|date('Y') }} [Votre Entreprise]</p>
+        </div>
+    </div>
+</body>
+</html>

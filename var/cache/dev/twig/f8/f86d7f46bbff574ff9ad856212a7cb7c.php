@@ -320,6 +320,6 @@ class __TwigTemplate_e276d882c0c8dfa4ad971de540f91e78 extends Template
     </div>`;
         }
     });
-</script>", "urbanTalk.html.twig", "C:\\Users\\moham\\Downloads\\UrbanLInkfinal\\templates\\urbanTalk.html.twig");
+</script>", "urbanTalk.html.twig", "C:\\Users\\moham\\Downloads\\UrbanLInkfinal - Copie (2)\\templates\\urbanTalk.html.twig");
     }
 }

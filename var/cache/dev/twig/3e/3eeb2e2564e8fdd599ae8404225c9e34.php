@@ -269,6 +269,6 @@ class __TwigTemplate_db142dc6d1d18c55a2a88a82c32013c9 extends Template
         </div>
     {% endif %}
 {% endblock %}
-", "@WebProfiler/Collector/exception.html.twig", "C:\\Users\\moham\\Downloads\\UrbanLInkfinal\\vendor\\symfony\\web-profiler-bundle\\Resources\\views\\Collector\\exception.html.twig");
+", "@WebProfiler/Collector/exception.html.twig", "C:\\Users\\moham\\Downloads\\UrbanLInkfinal - Copie (2)\\vendor\\symfony\\web-profiler-bundle\\Resources\\views\\Collector\\exception.html.twig");
     }
 }

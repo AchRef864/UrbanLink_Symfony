@@ -1,0 +1,667 @@
+{% extends 'basef.html.twig' %}
+
+{% block title %}Available Subscriptions{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<style>
+    :root {
+        --primary: #6366f1;
+        --primary-hover: #4f46e5;
+        --primary-light: #e0e7ff;
+        --secondary: #f43f5e;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --dark: #1e293b;
+        --light: #f8fafc;
+        --gray: #94a3b8;
+        --gray-light: #e2e8f0;
+        --radius: 12px;
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        line-height: 1.5;
+        color: var(--dark);
+        background-color: var(--light);
+        padding: 20px;
+    }
+    
+    .subscriptions-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px 0;
+    }
+    
+    .page-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+    }
+    
+    .page-header::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(to right, var(--primary), var(--secondary));
+        margin: 15px auto 0;
+        border-radius: 2px;
+    }
+    
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 10px;
+        background: linear-gradient(to right, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+    
+    .page-subtitle {
+        color: var(--gray);
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 30px;
+    }
+    
+    .subscription-card {
+        background: white;
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    
+    .subscription-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-hover);
+    }
+    
+    .card-image-container {
+        height: 200px;
+        width: 100%;
+        background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .card-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition);
+    }
+    
+    .subscription-card:hover .card-image {
+        transform: scale(1.05);
+    }
+    
+    .image-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: var(--gray);
+        font-size: 3.5rem;
+        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    }
+    
+    .card-header {
+        background: linear-gradient(to right, var(--primary), var(--primary-hover));
+        color: white;
+        padding: 18px;
+        text-align: center;
+        position: relative;
+    }
+    
+    .card-header::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 100%;
+        height: 20px;
+        background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='white' d='M0,70 C150,100 350,0 500,20 C700,40 800,80 1000,60 C1200,40 1300,0 1440,10 L1440,100 L0,100 Z'/%3E%3C/svg%3E") no-repeat;
+        background-size: cover;
+    }
+    
+    .plan-name {
+        font-size: 1.4rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+    
+    .plan-type {
+        font-size: 0.9rem;
+        opacity: 0.9;
+        font-weight: 500;
+    }
+    
+    /* Enhanced Card Body Styles */
+    .card-body {
+        padding: 25px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .price-container {
+        text-align: center;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .price {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--primary);
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        line-height: 1;
+        margin-bottom: 5px;
+    }
+
+    .price-currency {
+        font-size: 1.2rem;
+        margin-top: 5px;
+        margin-right: 3px;
+    }
+
+    .price-amount {
+        line-height: 1;
+    }
+
+    .price-period {
+        font-size: 1rem;
+        color: var(--gray);
+        font-weight: 500;
+        margin-left: 5px;
+        align-self: flex-end;
+        margin-bottom: 3px;
+    }
+
+    .discount-badge {
+        position: absolute;
+        top: -10px;
+        right: 20px;
+        background: var(--secondary);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+    }
+
+    .original-price {
+        text-decoration: line-through;
+        font-size: 0.8rem;
+        margin-left: 5px;
+        opacity: 0.8;
+    }
+
+    .details-list {
+        margin: 20px 0;
+        flex-grow: 1;
+    }
+
+    .detail-item {
+        display: flex;
+        margin-bottom: 15px;
+        align-items: flex-start;
+    }
+
+    .detail-item.highlight-item {
+        background: var(--primary-light);
+        padding: 10px;
+        border-radius: 8px;
+        margin: 15px -10px;
+    }
+
+    .detail-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary-light);
+        color: var(--primary);
+        border-radius: 8px;
+        margin-right: 12px;
+        flex-shrink: 0;
+        font-size: 0.9rem;
+    }
+
+    .detail-content {
+        flex-grow: 1;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: var(--dark);
+        font-size: 0.9rem;
+        display: block;
+        margin-bottom: 2px;
+    }
+
+    .detail-value {
+        color: var(--gray);
+        font-weight: 500;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .duration-days {
+        font-size: 0.8rem;
+        background: var(--gray-light);
+        padding: 2px 6px;
+        border-radius: 10px;
+        margin-left: 8px;
+    }
+
+    .speed-indicator {
+        display: inline-block;
+        width: calc(var(--speed) * 50px);
+        max-width: 100px;
+        height: 4px;
+        background: linear-gradient(to right, var(--primary), var(--success));
+        border-radius: 2px;
+        margin-left: 8px;
+    }
+
+    .status-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 15px 0;
+        padding-top: 15px;
+        border-top: 1px dashed var(--gray-light);
+    }
+
+    .remaining-days {
+        font-size: 0.85rem;
+        color: var(--gray);
+        display: flex;
+        align-items: center;
+    }
+
+    .remaining-days i {
+        margin-right: 5px;
+        color: var(--warning);
+    }
+
+    .action-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 10px;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 20px;
+        border-radius: var(--radius);
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        transition: var(--transition);
+        border: none;
+        font-size: 0.95rem;
+    }
+
+    .btn-block {
+        display: flex;
+        width: 100%;
+    }
+
+    .btn-primary {
+        background: var(--primary);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: var(--primary-hover);
+        transform: translateY(-2px);
+    }
+
+    .btn-outline {
+        background: transparent;
+        border: 2px solid var(--primary);
+        color: var(--primary);
+    }
+
+    .btn-outline:hover {
+        background: var(--primary-light);
+    }
+
+    .benefits-list {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px dashed var(--gray-light);
+    }
+
+    .benefits-title {
+        font-size: 1rem;
+        color: var(--dark);
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .benefit-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+    }
+
+    .benefit-icon {
+        color: var(--success);
+        margin-right: 8px;
+        font-size: 0.8rem;
+    }
+
+    .empty-state {
+        grid-column: 1/-1;
+        text-align: center;
+        padding: 60px 40px;
+        background: white;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .empty-icon {
+        font-size: 4rem;
+        color: var(--gray-light);
+        margin-bottom: 20px;
+    }
+    
+    .empty-title {
+        font-size: 1.5rem;
+        color: var(--dark);
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+    
+    .empty-text {
+        color: var(--gray);
+        margin-bottom: 30px;
+        font-size: 1.05rem;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .flash-message {
+        padding: 16px 20px;
+        margin-bottom: 30px;
+        border-radius: var(--radius);
+        animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: var(--shadow);
+    }
+    
+    .flash-message i {
+        margin-right: 12px;
+        font-size: 1.2rem;
+    }
+    
+    .flash-success {
+        background: #ecfdf5;
+        color: #047857;
+        border-left: 4px solid #10b981;
+    }
+    
+    .flash-error {
+        background: #fef2f2;
+        color: #b91c1c;
+        border-left: 4px solid #ef4444;
+    }
+    
+    .ribbon {
+        position: absolute;
+        top: 10px;
+        right: -30px;
+        width: 120px;
+        padding: 6px 0;
+        background: var(--secondary);
+        color: white;
+        text-align: center;
+        font-size: 0.75rem;
+        font-weight: 700;
+        transform: rotate(45deg);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        z-index: 1;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @media (max-width: 768px) {
+        .page-title {
+            font-size: 2rem;
+        }
+        
+        .cards-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .subscription-card {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="subscriptions-container">
+    <div class="page-header">
+        <h1 class="page-title">Available Subscriptions</h1>
+        <p class="page-subtitle">Choose the perfect plan that fits your needs and budget</p>
+    </div>
+    
+    {% for message in app.flashes('success') %}
+        <div class="flash-message flash-success">
+            <i class="fas fa-check-circle"></i> {{ message }}
+        </div>
+    {% endfor %}
+    
+    {% for message in app.flashes('error') %}
+        <div class="flash-message flash-error">
+            <i class="fas fa-exclamation-circle"></i> {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="cards-grid">
+        {% for abonnement in abonnements %}
+            <div class="subscription-card">
+                {% if abonnement.etat == 'active' %}
+                    <div class="ribbon">POPULAR</div>
+                {% endif %}
+                
+                <div class="card-image-container">
+                    {% if abonnement.image %}
+                        <img src="{{ asset('uploads/images/abonnements/' ~ abonnement.image) }}" 
+                             class="card-image" 
+                             alt="{{ abonnement.type }}"
+                             onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'image-placeholder\'><i class=\'fas fa-image\'></i></div>'">
+                    {% else %}
+                        <div class="image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="card-header">
+                    <div class="plan-name">{{ abonnement.type }}</div>
+                    <div class="plan-type">Subscription Plan</div>
+                </div>
+                
+                <div class="card-body">
+                    <div class="price-container">
+                        <div class="price">
+                            <span class="price-currency">DT</span>
+                            <span class="price-amount">{{ abonnement.prix }}</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        {% if abonnement.discount is defined and abonnement.discount > 0 %}
+                            <div class="discount-badge">
+                                <span class="discount-value">-{{ abonnement.discount }}%</span>
+                                <span class="original-price">{{ abonnement.originalPrice }} DT</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="details-list">
+                        <div class="detail-item">
+                            <div class="detail-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="detail-content">
+                                <span class="detail-label">Duration:</span>
+                                <span class="detail-value">
+                                    {{ abonnement.dateDebut|date('M d, Y') }} - {{ abonnement.dateFin|date('M d, Y') }}
+                                    {% if abonnement.duration is defined %}
+                                        <span class="duration-days">({{ abonnement.duration }} days)</span>
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        {% if abonnement.speed is defined %}
+                        <div class="detail-item">
+                            <div class="detail-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div class="detail-content">
+                                <span class="detail-label">Speed:</span>
+                                <span class="detail-value">
+                                    {{ abonnement.speed }} Mbps
+                                    {% if abonnement.speed is defined %}
+                                        <span class="speed-indicator" style="--speed: {{ abonnement.speed / 100 }};"></span>
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if abonnement.data is defined %}
+                        <div class="detail-item">
+                            <div class="detail-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="detail-content">
+                                <span class="detail-label">Data:</span>
+                                <span class="detail-value">
+                                    {% if abonnement.data == -1 %}
+                                        Unlimited
+                                    {% else %}
+                                        {{ abonnement.data }} GB
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if abonnement.feature is defined %}
+                        <div class="detail-item highlight-item">
+                            <div class="detail-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="detail-content">
+                                <span class="detail-label">Special Feature:</span>
+                                <span class="detail-value">{{ abonnement.feature }}</span>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="status-container">
+                        <span class="status-badge status-{{ abonnement.etat }}">
+                            <i class="fas fa-{% if abonnement.etat == 'active' %}check-circle{% elseif abonnement.etat == 'expired' %}times-circle{% else %}exclamation-circle{% endif %}"></i>
+                            {{ abonnement.etat|capitalize }}
+                        </span>
+                        {% if abonnement.remainingDays is defined %}
+                            <span class="remaining-days" title="Days remaining">
+                                <i class="fas fa-clock"></i> {{ abonnement.remainingDays }} days left
+                            </span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <a href="{{ path('app_abonnement_reserve', {'id': abonnement.id}) }}" class="btn btn-primary">
+                            <i class="fas fa-shopping-cart mr-2"></i> Reserve
+                        </a>
+                      
+                    </div>
+                    
+                    {% if abonnement.benefits is defined %}
+                    <div class="benefits-list">
+                        <h4 class="benefits-title">Includes:</h4>
+                        <ul>
+                            {% for benefit in abonnement.benefits %}
+                            <li class="benefit-item">
+                                <i class="fas fa-check-circle benefit-icon"></i>
+                                <span>{{ benefit }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-box-open"></i>
+                </div>
+                <h3 class="empty-title">No subscriptions available</h3>
+                <p class="empty-text">There are currently no subscription plans available. Please check back later or contact support for more information.</p>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('abonnement_add') }}" class="btn btn-primary">
+                        <i class="fas fa-plus mr-2"></i> Add Subscription
+                    </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
