@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'basef.html.twig' %}
 
 {% block title %}Complaints{% endblock %}
 
@@ -258,19 +258,7 @@
         </div>
     </div>
 
-    {# === Section Chatbot === #}
-    <div class="chatbot-card">
-        <div style="padding:1.5rem;">
-            <h3>Chatbot Assistance</h3>
-            <form method="post" action="{{ path('app_avis_front') }}">
-                <textarea name="chat_message" placeholder="Posez votre question…">{{ chatMessage|default('') }}</textarea>
-                <button type="submit" class="btn-primary">Envoyer</button>
-            </form>
-            {% if botResponse is defined and botResponse %}
-                <div class="response mt-4">{{ botResponse }}</div>
-            {% endif %}
-        </div>
-    </div>
+
 </div>
 {% endblock %}
 
@@ -321,7 +309,7 @@ $(document).ready(function() {
         if (!response.ok) {
           return response.json().then(err => {
             const msg = err.message || err.error || `Server error ${response.status}`;
-            throw new Error(msg);
+            throw new Error(msg);Complaints Management
           });
         }
         return response.blob();
