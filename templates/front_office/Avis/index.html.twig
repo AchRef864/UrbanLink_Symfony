@@ -309,7 +309,7 @@ $(document).ready(function() {
         if (!response.ok) {
           return response.json().then(err => {
             const msg = err.message || err.error || `Server error ${response.status}`;
-            throw new Error(msg);Complaints Management
+            throw new Error(msg);
           });
         }
         return response.blob();
