@@ -61,6 +61,7 @@
             "time": "2022-12-07T17:46:57+00:00"
         },
         {
+<<<<<<< Updated upstream
             "name": "boshurik/telegram-bot-bundle",
             "version": "6.0.0",
             "source": {
@@ -312,6 +313,8 @@
             "time": "2023-12-20T15:40:13+00:00"
         },
         {
+=======
+>>>>>>> Stashed changes
             "name": "composer/semver",
             "version": "3.4.3",
             "source": {
@@ -3652,6 +3655,7 @@
             "time": "2022-12-19T14:38:11+00:00"
         },
         {
+<<<<<<< Updated upstream
             "name": "lcobucci/jwt",
             "version": "4.0.4",
             "source": {
@@ -3854,6 +3858,8 @@
             "time": "2024-03-31T07:05:07+00:00"
         },
         {
+=======
+>>>>>>> Stashed changes
             "name": "monolog/monolog",
             "version": "3.9.0",
             "source": {
