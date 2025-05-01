@@ -7,18 +7,28 @@
         <h1 class="mb-4">Admin Statistics Dashboard</h1>
 
         <div class="mb-4">
-            <a href="{{ path('admin_statistics', {'show': 'general'}) }}"
-               class="btn {{ show == 'general' ? 'btn-primary' : 'btn-outline-primary' }}">
-                General Stats
-            </a>
-            <a href="{{ path('admin_statistics', {'show': 'roles'}) }}"
-               class="btn {{ show == 'roles' ? 'btn-primary' : 'btn-outline-primary' }}">
-                Role Distribution
-            </a>
-            <a href="{{ path('admin_statistics', {'show': 'status'}) }}"
-               class="btn {{ show == 'status' ? 'btn-primary' : 'btn-outline-primary' }}">
-                User Status
-            </a>
+            <div class="flex flex-wrap gap-4 mb-4">
+                <a href="{{ path('admin_statistics', {'show': 'general'}) }}"
+                   class="btn {{ show == 'general' ? 'btn-primary' : 'btn-outline-primary' }}">
+                    General Stats
+                </a>
+                <a href="{{ path('admin_statistics', {'show': 'roles'}) }}"
+                   class="btn {{ show == 'roles' ? 'btn-primary' : 'btn-outline-primary' }}">
+                    Role Distribution
+                </a>
+                <a href="{{ path('admin_statistics', {'show': 'status'}) }}"
+                   class="btn {{ show == 'status' ? 'btn-primary' : 'btn-outline-primary' }}">
+                    User Status
+                </a>
+            </div>
+
+            <div>
+                <a href="{{ path('admin_users_pdf') }}"
+                   class="inline-flex items-center bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300">
+                    <i class="ni ni-single-copy-04 mr-2"></i>
+                    Generate Complete Users Report
+                </a>
+            </div>
         </div>
 
         <div class="card shadow">

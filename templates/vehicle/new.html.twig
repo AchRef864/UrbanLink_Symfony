@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends base_template is defined ? base_template : 'base.html.twig' %}
 
 {% block title %}Add New Vehicle{% endblock %}
 
@@ -544,7 +544,11 @@
             </div>
             
             <div class="card-body">
+                {% if is_granted('ROLE_ADMIN') %}
                 <form id="vehicleForm" action="{{ path('vehicle_new') }}" method="POST" enctype="multipart/form-data">
+                {% else %}
+                <form id="vehicleForm" action="{{ path('driver_vehicle_new') }}" method="POST" enctype="multipart/form-data">
+                {% endif %}
                     <div class="form-group full-width">
                         <label class="form-label">Vehicle Type</label>
                         <div class="vehicle-types">
@@ -556,10 +560,12 @@
                                 <div class="vehicle-type-icon">🚐</div>
                                 <div class="vehicle-type-name">Van</div>
                             </div>
-                            <div class="vehicle-type-card" data-type="Bus" onclick="selectVehicleType(this)">
-                                <div class="vehicle-type-icon">🚌</div>
-                                <div class="vehicle-type-name">Bus</div>
-                            </div>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <div class="vehicle-type-card" data-type="Bus" onclick="selectVehicleType(this)">
+                                    <div class="vehicle-type-icon">🚌</div>
+                                    <div class="vehicle-type-name">Bus</div>
+                                </div>
+                            {% endif %}
                             <div class="vehicle-type-card" data-type="Minibus" onclick="selectVehicleType(this)">
                                 <div class="vehicle-type-icon">🚐</div>
                                 <div class="vehicle-type-name">Minibus</div>
@@ -627,7 +633,7 @@
                         
                         <div class="form-group">
                             <label class="form-label" for="seats">Number of Seats</label>
-                            <input type="number" name="seats" id="seats" class="form-control" value="5" min="1" max="50">
+                            <input type="number" name="seats" id="seats" class="form-control" value="5" min="1" max="5">
                             <div class="input-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -645,22 +651,24 @@
                                 <div class="color-preview" id="colorPreview" style="background-color: #5e60ce;"></div>
                             </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="driverId">Assigned Driver</label>
-                            <select name="driverId" id="driverId" class="form-control" >
-                                <option value="" disabled selected>-- Select Driver --</option>
-                                {% for driver in drivers %}
-                                    <option value="{{ driver.id }}">{{ driver.name }}</option>
-                                {% endfor %}
-                            </select>
-                            <div class="input-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="12" cy="7" r="4"></circle>
-                                </svg>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="form-group">
+                                <label class="form-label" for="driverId">Assigned Driver</label>
+                                <select name="driverId" id="driverId" class="form-control" >
+                                    <option value="" disabled selected>-- Select Driver --</option>
+                                    {% for driver in drivers %}
+                                        <option value="{{ driver.id }}">{{ driver.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="input-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
                         
                         <div class="form-group">
                             <div class="checkbox-group">
@@ -695,13 +703,24 @@
                             </svg>
                             Create Vehicle
                         </button>
-                        <a href="{{ path('vehicle_index') }}" class="btn btn-secondary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="19" y1="12" x2="5" y2="12"></line>
-                                <polyline points="12 19 5 12 12 5"></polyline>
-                            </svg>
-                            Back to list
-                        </a>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('vehicle_index') }}" class="btn btn-secondary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                                    <polyline points="12 19 5 12 12 5"></polyline>
+                                </svg>
+                                Back to list
+                            </a>
+                        {% else %}
+                            <a href="{{ path('my_vehicle') }}" class="btn btn-secondary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                                    <polyline points="12 19 5 12 12 5"></polyline>
+                                </svg>
+                                Back to list
+                            </a>
+                        {% endif %}
                     </div>
                 </form>
             </div>
@@ -709,18 +728,35 @@
     </div>
 
 <script>
-function selectVehicleType(element) {
-    // Remove selected class from all cards
-    document.querySelectorAll('.vehicle-type-card').forEach(card => {
-        card.classList.remove('selected');
-    });
-    
-    // Add selected class to clicked card
-    element.classList.add('selected');
-    
-    // Update hidden input value
-    document.getElementById('typeHidden').value = element.getAttribute('data-type');
-}
+const seatLimits = {
+        Car: 5,
+        Van: 9,
+        Minibus: 16,
+        Bus: 50,
+        Motorcycle: 2
+    };
+
+    function selectVehicleType(element) {
+        // Remove 'selected' class from all type cards
+        document.querySelectorAll('.vehicle-type-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+
+        // Add 'selected' to the clicked one
+        element.classList.add('selected');
+
+        // Update the hidden input
+        const selectedType = element.getAttribute('data-type');
+        document.getElementById('typeHidden').value = selectedType;
+
+        // Update max and value for seats input
+        const seatInput = document.getElementById('seats');
+        seatInput.max = seatLimits[selectedType];
+        seatInput.value = seatLimits[selectedType]; // or set to "" if you prefer user input
+
+        // Optional: update UI or alert
+        console.log(`Selected vehicle type: ${selectedType}, max seats: ${seatLimits[selectedType]}`);
+    }
 
 function previewImage(event) {
     const input = event.target;

@@ -13,6 +13,14 @@ parameters:
     gemini_api_key: '%env(GEMINI_API_KEY)%'
     app.user_image_upload_path: '%kernel.project_dir%/public/uploads/users/images'
     TELEGRAM_BOT_TOKEN: '%env(TELEGRAM_BOT_TOKEN)%'
+    gemini_api_key: '%env(GEMINI_API_KEY)%'
+    plate_recognizer_api_key: '%env(PLATE_RECOGNIZER_API_KEY)%'
+    oauth.enabled: true
+    oauth.google_enabled: true
+    oauth.facebook_enabled: true
+    gemini_model:   '%env(GEMINI_MODEL)%'
+   # voicerss_key: '%env(VOICERSS_API_KEY)%'
+
 
 
 twig:
@@ -95,3 +103,16 @@ services:
     # seront automatiquement taggées boshurik_telegram_bot.command
    
         # autowire/autoconfigure sont hérités de _defaults
+            $client: '@http_client'  # Or the name of your HttpClient service
+            $apiKey: '%env(GEMINI_API_KEY)%' # Assuming you store your API key in .env
+            $doctrine: '@doctrine'
+
+    App\Service\BadWordFilterService:
+        arguments:
+            $endpoint: 'https://www.purgomalum.com/service/plain'
+
+   # App\Service\TextToSpeechService:
+    #    arguments:
+     #       $apiKey: '%voicerss_key%' 
+      #      $httpClient: '@Symfony\Contracts\HttpClient\HttpClientInterface'
+            

@@ -40,10 +40,15 @@
             margin-bottom: 2rem;
         }
         
-        h1 {
+        h1, h2 {
             color: var(--primary);
             font-weight: 700;
             margin: 0;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            margin: 0 0 1rem;
         }
         
         .btn {
@@ -80,6 +85,7 @@
             box-shadow: var(--card-shadow);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             overflow: hidden;
+            margin-bottom: 2rem;
         }
         
         .card:hover {
@@ -123,6 +129,14 @@
         .bg-warning {
             background-color: var(--warning) !important;
             color: var(--dark);
+        }
+        
+        .bg-info {
+            background-color: var(--info) !important;
+        }
+        
+        .bg-danger {
+            background-color: var(--danger) !important;
         }
         
         .btn-group {
@@ -182,6 +196,136 @@
             margin-bottom: 1.5rem;
         }
         
+        .maintenance-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            margin-left: 1rem;
+            flex: 1;
+        }
+        
+        .maintenance-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .maintenance-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .maintenance-item:last-child {
+            border-bottom: none;
+        }
+        
+        .maintenance-details {
+            flex: 1;
+        }
+        
+        .maintenance-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .maintenance-date, .maintenance-cost {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        
+        .maintenance-status {
+            margin-left: 1rem;
+        }
+        
+        .maintenance-total {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .add-maintenance-btn {
+            margin-top: 1rem;
+            display: inline-flex;
+            align-items: center;
+        }
+        .maintenance-description {
+            color: var(--gray);
+            font-size: 0.85rem;
+            margin: 0.5rem 0;
+        }
+
+        .maintenance-info {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+
+        .maintenance-info span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .maintenance-cost {
+            margin-top: 0.5rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .maintenance-total svg {
+            margin-right: 0.5rem;
+        }
+        
+        .vehicle-row {
+            display: flex;
+            margin-bottom: 2rem;
+        }
+        
+        .vehicle-card-container {
+            flex: 0 0 400px;
+        }
+        
+        /* PDF Button Styles */
+        .btn-pdf {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-pdf:hover {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 992px) {
+            .vehicle-row {
+                flex-direction: column;
+            }
+            
+            .vehicle-card-container {
+                flex: 1;
+                margin-bottom: 1rem;
+            }
+            
+            .maintenance-section {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+        }
+        
         @media (max-width: 768px) {
             .page-header {
                 flex-direction: column;
@@ -193,6 +337,72 @@
                 width: 100%;
                 justify-content: center;
             }
+            
+            .btn-group {
+                flex-wrap: wrap;
+            }
+            
+            .btn-group .btn {
+                flex: 1;
+                min-width: 120px;
+            }
+            
+            .vehicle-card-container {
+                flex: 1;
+            }
+        }
+
+        .maintenance-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            gap: 1rem;
+        }
+        
+        .maintenance-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .btn-icon {
+            padding: 0.5rem;
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+        
+        .btn-icon svg {
+            margin-right: 0;
+            width: 16px;
+            height: 16px;
+        }
+        
+        .btn-pdf-icon {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 2px 5px rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-pdf-icon:hover {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            box-shadow: 0 3px 8px rgba(239, 68, 68, 0.4);
+        }
+        
+        .btn-delete-icon {
+            background: transparent;
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+        
+        .btn-delete-icon:hover {
+            background: var(--danger);
+            color: white;
         }
     </style>
 {% endblock %}
@@ -210,45 +420,195 @@
             </a>
         </div>
         
-        {% if vehicles|length > 0 %}
-            <div class="row">
-                {% for vehicle in vehicles %}
-                    <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card h-100">
-                            <img src="{{ vehicle.image }}" class="card-img-top" alt="{{ vehicle.brand }} {{ vehicle.model }}">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">{{ vehicle.brand }} {{ vehicle.model }}</h5>
-                                <p class="card-text">
-                                    <strong>Type:</strong> {{ vehicle.type }}<br>
-                                    <strong>License Plate:</strong> {{ vehicle.licensePlate }}<br>
-                                    <strong>Year:</strong> {{ vehicle.year }}<br>
-                                    <strong>Seats:</strong> {{ vehicle.seats }}<br>
-                                    <strong>Status:</strong> 
-                                    <span class="badge bg-{{ vehicle.isVerified ? 'success' : 'warning' }}">
-                                        {{ vehicle.isVerified ? 'Verified' : 'Pending Verification' }}
-                                    </span>
-                                </p>
-                                <div class="btn-group mt-auto">
-                                    <a href="{{ path('vehicle_show', {'id': vehicle.id}) }}" class="btn btn-outline-primary btn-sm">
+        {% if vehiclesWithMaintenance|length > 0 %}
+            {% for vehicleData in vehiclesWithMaintenance %}
+                {% set vehicle = vehicleData.vehicle %}
+                {% set maintenances = vehicleData.maintenances %}
+                {% set totalMaintenanceCost = vehicleData.totalMaintenanceCost %}
+                
+                <div class="vehicle-row">
+                    <div class="vehicle-card-container">
+                    <div class="card h-100">
+                        <img src="{{ vehicle.image }}" class="card-img-top" alt="{{ vehicle.brand }} {{ vehicle.model }}">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ vehicle.brand }} {{ vehicle.model }}</h5>
+                            <p class="card-text">
+                                <strong>Type:</strong> {{ vehicle.type }}<br>
+                                <strong>License Plate:</strong> {{ vehicle.licensePlate }}<br>
+                                <strong>Year:</strong> {{ vehicle.year }}<br>
+                                <strong>Seats:</strong> {{ vehicle.seats }}<br>
+                                <strong>Status:</strong> 
+                                <span class="badge bg-{{ vehicle.isVerified ? 'success' : 'warning' }}">
+                                    {{ vehicle.isVerified ? 'Verified' : 'Pending Verification' }}
+                                </span><br>
+                                {% if maintenances|length > 0 %}
+                                {% set latestMaintenance = maintenances|first %}
+                                <strong>Maintenance Status:</strong>
+                                <span class="badge bg-{% if latestMaintenance.status == 0 %}success
+                                                    {% elseif latestMaintenance.status == 1 %}warning
+                                                    {% else %}info{% endif %}">
+                                    {% if latestMaintenance.status == 0 %}
+                                        Not in maintenance
+                                    {% elseif latestMaintenance.status == 1 %}
+                                        In maintenance
+                                    {% else %}
+                                        Reserved
+                                    {% endif %}
+                                </span>
+                            {% endif %}
+                            </p>
+                            {% if not vehicle.isVerified %}
+                                    <a href="{{ path('vehicle_verify_page', {'id': vehicle.id}) }}" class="btn btn-outline-success btn-sm">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                            <circle cx="12" cy="12" r="3"></circle>
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                         </svg>
-                                        Details
+                                        Verify
                                     </a>
-                                    <a href="{{ path('vehicle_edit', {'id': vehicle.id}) }}" class="btn btn-outline-secondary btn-sm">
+                                {% endif %}
+                            <div class="btn-group mt-auto">
+                                <a href="{{ path('vehicle_show', {'id': vehicle.id}) }}" class="btn btn-outline-primary btn-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    Details
+                                </a>
+                                <a href="{{ path('vehicle_edit', {'id': vehicle.id}) }}" class="btn btn-outline-secondary btn-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                    </svg>
+                                    Edit
+                                </a>
+                                <form method="post" action="{{ path('vehicle_delete', {'id': vehicle.id}) }}" onsubmit="return confirm('Are you sure you want to delete this vehicle?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ vehicle.id) }}">
+                                    <button class="btn btn-outline-danger btn-sm" type="submit">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6l-2 14H7L5 6"></path>
+                                            <path d="M10 11v6"></path>
+                                            <path d="M14 11v6"></path>
                                         </svg>
-                                        Edit
-                                    </a>
-                                </div>
+                                        Delete
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
+                </div>            
+                    <!-- Maintenance Section for each vehicle - now on the right side -->
+                     <div class="maintenance-section">
+                        <h2>Maintenance for {{ vehicle.brand }} {{ vehicle.model }}</h2>
+                        
+                        {% if maintenances|length > 0 %}
+                            <ul class="maintenance-list">
+                                {% for maintenance in maintenances %}
+                                    <li class="maintenance-item">
+                                        <div class="maintenance-details">
+                                            <div class="maintenance-title">{{ maintenance.serviceType }}</div>
+                                            <div class="maintenance-description">{{ maintenance.description }}</div>
+                                            <div class="maintenance-info">
+                                                <span class="maintenance-date">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                                    </svg>
+                                                    {{ maintenance.maintenanceDate|date('M d, Y') }}
+                                                </span>
+                                                <span class="maintenance-provider">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                        <circle cx="9" cy="7" r="4"></circle>
+                                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                    </svg>
+                                                    {{ maintenance.serviceProvider }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="maintenance-cost">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                            </svg>
+                                            {{ maintenance.cost|number_format(2) }} TND
+                                        </div>
+                                        
+                                        <div class="maintenance-actions">
+                                            <a href="{{ path('maintenance_export_pdf', {'id': maintenance.id}) }}" class="btn btn-icon btn-pdf-icon" title="Export to PDF">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                                </svg>
+                                            </a>
+                                            <form method="post" action="{{ path('maintenance_delete', {'id': maintenance.id}) }}" onsubmit="return confirm('Are you sure you want to delete this maintenance record?');">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ maintenance.id) }}">
+                                                <button class="btn btn-icon btn-delete-icon" type="submit" title="Delete Record">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <div class="maintenance-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1rem;">
+                                <form method="post" action="{{ path('clear_vehicle_maintenance_history', {'vehicle_id': vehicle.id}) }}" onsubmit="return confirm('Are you sure you want to clear ALL maintenance history for this vehicle? This action cannot be undone.');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('clear_history_' ~ vehicle.id) }}">
+                                    <button type="submit" class="btn btn-outline-danger">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        </svg>
+                                        Clear History
+                                    </button>
+                                </form>
+                                <div class="maintenance-total">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                    </svg>
+                                    Total Maintenance Cost: {{ totalMaintenanceCost|number_format(2) }} TND
+                                </div>
+                                
+                            </div>
+                            <a href="{{ path('admin_maintenances_new', {'vehicle_id': vehicle.id}) }}" class="btn btn-primary add-maintenance-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                Add Maintenance
+                            </a>
+                        {% else %}
+                            <div class="empty-state">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8z"></path>
+                                    <circle cx="10" cy="13" r="2"></circle>
+                                    <line x1="16" y1="13" x2="22" y2="13"></line>
+                                    <line x1="16" y1="17" x2="22" y2="17"></line>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
+                                <h4>No Maintenance Records</h4>
+                                <p>You haven't added any maintenance records for this vehicle yet.</p>
+                                <a href="{{ path('admin_maintenances_new', {'vehicle_id': vehicle.id}) }}" class="btn btn-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    Add Maintenance
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
         {% else %}
             <div class="card">
                 <div class="empty-state">
