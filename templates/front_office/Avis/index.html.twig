@@ -3,155 +3,134 @@
 {% block title %}Complaints{% endblock %}
 
 {% block stylesheets %}
-{{ parent() }}
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
-<style>
-    .course-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem;
-    }
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+    <style>
+        .course-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
 
-    .card-3d {
-        background-color: #fff;
-        border-radius: 0.75rem;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-        overflow: hidden;
-        margin-bottom: 1.5rem;
-    }
+        .card-3d {
+            background-color: #fff;
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
 
-    .header-3d {
-        padding: 1.25rem;
-        background: linear-gradient(135deg, #2D3748, #4A5568);
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 1rem;
-        border-radius: 0.75rem 0.75rem 0 0;
-    }
+        .header-3d {
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #2D3748, #4A5568);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-radius: 0.75rem 0.75rem 0 0;
+        }
 
-    .btn-primary {
-        display: inline-block;
-        padding: 0.75rem 1.5rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        background: linear-gradient(135deg, #06B6D4, #0284C7);
-        border: none;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        font-size: 0.875rem;
-        color: #fff;
-        text-decoration: none;
-    }
+        .btn-primary {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background: linear-gradient(135deg, #06B6D4, #0284C7);
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: #fff;
+            text-decoration: none;
+        }
 
-    .btn-primary:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
-    }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        }
 
-    .status-badge {
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        font-weight: bold;
-        border-radius: 0.25rem;
-        padding: 0.25rem 0.5rem;
-        text-align: center;
-    }
+        .status-badge {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border-radius: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            text-align: center;
+        }
 
-    .status-processed { background-color: #10B981; color: #fff; }
-    .status-pending   { background-color: #FACC15; color: #1F2937; }
-    .status-na        { background-color: #EF4444; color: #fff; }
+        .status-processed { background-color: #10B981; color: #fff; }
+        .status-pending   { background-color: #FACC15; color: #1F2937; }
+        .status-closed    { background-color: #6B7280; color: #fff; }
+        .status-na        { background-color: #EF4444; color: #fff; }
 
-    .search-form input {
-        padding: 0.5rem 1rem;
-        border: 2px solid #fff;
-        border-radius: 0.5rem;
-        background: rgba(255, 255, 255, 0.1);
-        color: #fff;
-    }
+        .search-form input {
+            padding: 0.5rem 1rem;
+            border: 2px solid #fff;
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
 
-    table.dataTable {
-        width: 100% !important;
-        margin: 1rem 0 !important;
-        border-collapse: collapse;
-    }
+        table.dataTable {
+            width: 100% !important;
+            margin: 1rem 0 !important;
+            border-collapse: collapse;
+        }
 
-    table.dataTable thead th {
-        padding: 1rem;
-        background-color: #F8FAFC;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        color: #6B7280;
-    }
+        table.dataTable thead th {
+            padding: 1rem;
+            background-color: #F8FAFC;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            color: #6B7280;
+        }
 
-    table.dataTable tbody td {
-        padding: 1rem;
-        border-bottom: 1px solid #E5E7EB;
-    }
+        table.dataTable tbody td {
+            padding: 1rem;
+            border-bottom: 1px solid #E5E7EB;
+        }
 
-    .action-buttons {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-        align-items: center;
-    }
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
 
-    .btn-edit {
-        background: linear-gradient(135deg, #00007d, #1E40AF);
-        color: #fff;
-        padding: 0.5rem 1rem;
-        border-radius: 0.25rem;
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-decoration: none;
-    }
+        .btn-edit {
+            background: linear-gradient(135deg, #00007d, #1E40AF);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
 
-    .btn-responses {
-        background: linear-gradient(135deg, #28a745, #10B981);
-        color: #fff;
-        padding: 0.5rem 1rem;
-        border-radius: 0.25rem;
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-decoration: none;
-    }
+        .btn-responses {
+            background: linear-gradient(135deg, #28a745, #10B981);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
 
-    .btn-delete {
-        background: linear-gradient(135deg, #b91c1c, #EF4444);
-        color: #fff;
-        padding: 0.5rem 1rem;
-        border-radius: 0.25rem;
-        font-size: 0.75rem;
-        font-weight: 600;
-        border: none;
-        cursor: pointer;
-    }
-
-    /* === Styles du chatbot === */
-    .chatbot-card {
-        background-color: #f9fafb;
-        border-radius: 0.75rem;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-        margin-top: 1.5rem;
-    }
-    .chatbot-card textarea {
-        width: 100%;
-        height: 100px;
-        padding: 0.75rem;
-        border: 1px solid #cbd5e0;
-        border-radius: 0.5rem;
-        margin-bottom: 0.75rem;
-    }
-    .chatbot-card .response {
-        background: #edf2f7;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        white-space: pre-wrap;
-    }
-</style>
+        .btn-delete {
+            background: linear-gradient(135deg, #b91c1c, #EF4444);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -161,11 +140,10 @@
             <h2>Complaints Management</h2>
             <div class="flex items-center gap-2">
                 <form method="get" action="{{ path('app_avis_index') }}" class="search-form">
-                    <input type="text" name="search" id="search" value="{{ search }}"
-                           placeholder="Search complaints..." class="mr-2">
+                    <input type="text" name="search" id="search" value="{{ search }}" placeholder="Search complaints..." class="mr-2">
                     <button type="submit" class="btn-primary">Search</button>
                 </form>
-                {% if app.user and app.user.role == 'client' %}
+                {% if app.user and 'ROLE_CLIENT' in app.user.roles %}
                     <a href="{{ path('app_avis_new') }}" class="btn-primary">+ New Complaint</a>
                 {% endif %}
             </div>
@@ -194,6 +172,7 @@
                 <span class="status-badge
                     {% if avi.statut == 'processed' %}status-processed
                     {% elseif avi.statut == 'not processed' %}status-pending
+                    {% elseif avi.statut == 'closed' %}status-closed
                     {% else %}status-na{% endif %}">
                     {{ avi.statut|capitalize }}
                 </span>
@@ -202,37 +181,18 @@
             <td>{{ avi.vehicle ? avi.vehicle.licensePlate : 'N/A' }}</td>
             <td>
                 <div class="action-buttons">
-                    {# Text-to-Speech button for description only #}
-                    <button
-                        type="button"
-                        class="btn-primary tts-btn"
-                        data-id="{{ avi.id }}"
-                        data-tts-url="{{ path('app_avis_tts', {'id': avi.id}) }}"
-                        aria-label="Play description">
-                        🔊
-                    </button>
+                    <button type="button" class="btn-primary tts-btn" data-id="{{ avi.id }}" data-tts-url="{{ path('app_avis_tts', {'id': avi.id}) }}" aria-label="Play description">🔊</button>
                     <audio id="tts-audio-{{ avi.id }}" hidden></audio>
 
-                    {# Responses #}
-                    <a href="{{ path('app_avis_reponses', {'id': avi.id}) }}"
-                       class="btn-responses">
-                        Responses
-                    </a>
+                    <a href="{{ path('app_avis_reponses', {'id': avi.id}) }}" class="btn-responses">Responses</a>
 
-                    {# Admin Edit #}
                     {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('app_avis_edit', {'id': avi.id}) }}"
-                           class="btn-edit">Edit</a>
+                        <a href="{{ path('app_avis_edit', {'id': avi.id}) }}" class="btn-edit">Edit</a>
                     {% endif %}
 
-                    {# Owner Delete #}
                     {% if app.user and app.user.id == avi.user.id %}
-                        <form method="post"
-                              action="{{ path('app_avis_delete', {'id': avi.id}) }}"
-                              style="display:inline-block;"
-                              onsubmit="return confirm('Are you sure you want to delete this complaint?');">
-                            <input type="hidden" name="_token"
-                                   value="{{ csrf_token('delete' ~ avi.id) }}">
+                        <form method="post" action="{{ path('app_avis_delete', {'id': avi.id}) }}" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this complaint?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ avi.id) }}">
                             <button type="submit" class="btn-delete">Delete</button>
                         </form>
                     {% endif %}
@@ -241,13 +201,10 @@
         </tr>
     {% else %}
         <tr>
-            <td colspan="7" class="text-center py-4 text-gray-500">
-                No complaints found
-            </td>
+            <td colspan="7" class="text-center py-4 text-gray-500">No complaints found</td>
         </tr>
     {% endfor %}
-</tbody>
-
+                </tbody>
             </table>
         </div>
     </div>
@@ -257,76 +214,65 @@
             {{ knp_pagination_render(avis) }}
         </div>
     </div>
-
-
 </div>
 {% endblock %}
 
 {% block javascripts %}
-{{ parent() }}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-let currentAudio = null;
-$(document).ready(function() {
-  $('#datatable-search tbody').on('click', '.tts-btn', function() {
-    const btn    = $(this);
-    const id     = btn.data('id');
-    const row    = btn.closest('tr');
-    const text   = row.find('.description-cell').text().trim();
-    const audioId = 'tts-audio-' + id;
-    let audio   = document.getElementById(audioId);
+    {{ parent() }}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        let currentAudio = null;
+        $(document).ready(function() {
+            $('#datatable-search tbody').on('click', '.tts-btn', function() {
+                const btn = $(this);
+                const id  = btn.data('id');
+                const row = btn.closest('tr');
+                const text= row.find('.description-cell').text().trim();
+                const audioId = 'tts-audio-' + id;
+                let audio = document.getElementById(audioId);
 
-    btn.text('⏳');
+                btn.text('⏳');
+                if (currentAudio) {
+                    currentAudio.pause();
+                    if (currentAudio === audio) {
+                        currentAudio = null;
+                        btn.text('🔊');
+                        return;
+                    }
+                }
+                if (!audio) {
+                    audio = document.createElement('audio');
+                    audio.id = audioId;
+                    audio.controls = true;
+                    audio.style.display = 'block';
+                    document.body.appendChild(audio);
+                }
+                audio.onloadeddata = () => btn.text('⏸️');
+                audio.onended      = () => { btn.text('🔊'); currentAudio = null; };
+                audio.onerror      = () => { btn.text('❌'); setTimeout(() => btn.text('🔊'), 2000); currentAudio = null; };
 
-    // Pause any playing audio
-    if (currentAudio) {
-      currentAudio.pause();
-      if (currentAudio === audio) {
-        currentAudio = null;
-        btn.text('🔊');
-        return;
-      }
-    }
+                const baseUrl = btn.data('tts-url');
+                const url     = `${baseUrl}?text=${encodeURIComponent(text)}`;
 
-    // Create audio element if missing
-    if (!audio) {
-      audio = document.createElement('audio');
-      audio.id = audioId;
-      audio.controls = true;
-      audio.style.display = 'block';
-      document.body.appendChild(audio);
-    }
-
-    audio.onloadeddata = () => btn.text('⏸️');
-    audio.onended      = () => { btn.text('🔊'); currentAudio = null; };
-    audio.onerror      = () => { btn.text('❌'); setTimeout(() => btn.text('🔊'), 2000); currentAudio = null; };
-
-    const baseUrl = btn.data('tts-url');
-    const url     = `${baseUrl}?text=${encodeURIComponent(text)}`;
-
-    fetch(url)
-      .then(response => {
-        if (!response.ok) {
-          return response.json().then(err => {
-            const msg = err.message || err.error || `Server error ${response.status}`;
-            throw new Error(msg);
-          });
-        }
-        return response.blob();
-      })
-      .then(blob => {
-        const blobUrl = URL.createObjectURL(blob);
-        audio.src = blobUrl;
-        return audio.play();
-      })
-      .then(() => { currentAudio = audio; })
-      .catch(err => {
-        console.error('TTS fetch/play error:', err);
-        btn.text('🔊');
-        alert(`Could not play TTS: ${err.message}`);
-      });
-  });
-});
-</script>
+                fetch(url)
+                  .then(response => {
+                    if (!response.ok) {
+                      return response.json().then(err => { throw new Error(err.error || `Server error ${response.status}`); });
+                    }
+                    return response.blob();
+                  })
+                  .then(blob => {
+                    const blobUrl = URL.createObjectURL(blob);
+                    audio.src = blobUrl;
+                    return audio.play();
+                  })
+                  .then(() => { currentAudio = audio; })
+                  .catch(err => {
+                    console.error('TTS error:', err);
+                    btn.text('🔊');
+                    alert(`Could not play TTS: ${err.message}`);
+                  });
+            });
+        });
+    </script>
 {% endblock %}
-

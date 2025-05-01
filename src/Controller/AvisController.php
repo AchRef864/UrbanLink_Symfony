@@ -5,8 +5,6 @@ namespace App\Controller;
 use App\Entity\Avis;
 use App\Form\AvisType;
 use App\Repository\AvisRepository;
-use App\Repository\ReponseRepository;
-use App\Service\GeminiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Knp\Snappy\Pdf;
@@ -19,6 +17,8 @@ use App\Service\BadWordFilterService;
 use App\Service\TextToSpeechService;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Psr\Log\LoggerInterface;
+use App\Entity\Reponse;
+use App\Repository\ReponseRepository;
 
 #[Route('/avis')]
 final class AvisController extends AbstractController
@@ -58,7 +58,7 @@ final class AvisController extends AbstractController
 
         // Statistiques par type
         $dql = 'SELECT a.type AS type, COUNT(a.id) AS cnt
-                FROM App\Entity\Avis a
+                FROM App\\Entity\\Avis a
                 GROUP BY a.type';
         $rawStats = $em->createQuery($dql)->getResult();
 
@@ -74,17 +74,19 @@ final class AvisController extends AbstractController
         }
         $totalComplaints = array_sum($stats);
 
-        // Comptage processed / pending
+        // Comptage processed / pending / closed
         $processedCount = $avisRepository->count(['statut' => 'processed']);
         $pendingCount   = $avisRepository->count(['statut' => 'not processed']);
+        $closedCount    = $avisRepository->count(['statut' => 'closed']);
 
         return $this->render('avis/index.html.twig', [
-            'avis'             => $pagination,
-            'search'           => $searchTerm,
-            'stats'            => $stats,
-            'totalComplaints'  => $totalComplaints,
-            'processedCount'   => $processedCount,
-            'pendingCount'     => $pendingCount,
+            'avis'            => $pagination,
+            'search'          => $searchTerm,
+            'stats'           => $stats,
+            'totalComplaints' => $totalComplaints,
+            'processedCount'  => $processedCount,
+            'pendingCount'    => $pendingCount,
+            'closedCount'     => $closedCount,
         ]);
     }
 
@@ -125,12 +127,11 @@ final class AvisController extends AbstractController
         ]);
     }
 
-    #[Route('/avisFront', name: 'app_avis_front', methods: ['GET', 'POST'])]
+    #[Route('/avisFront', name: 'app_avis_front', methods: ['GET'])]
     public function indexFront(
         AvisRepository $avisRepository,
         PaginatorInterface $paginator,
-        Request $request,
-        GeminiService $geminiService
+        Request $request
     ): Response {
         $user = $this->getUser();
         if (!$user) {
@@ -165,21 +166,9 @@ final class AvisController extends AbstractController
             5
         );
 
-        // Chatbot functionality
-        $chatMessage = '';
-        $botResponse = null;
-        if ($request->isMethod('POST')) {
-            $chatMessage = $request->request->get('chat_message', '');
-            if ($chatMessage) {
-                $botResponse = $geminiService->getChatResponse($chatMessage);
-            }
-        }
-
         return $this->render('front_office/Avis/index.html.twig', [
-            'avis'        => $pagination,
-            'search'      => $searchTerm,
-            'chatMessage' => $chatMessage,
-            'botResponse' => $botResponse,
+            'avis'   => $pagination,
+            'search' => $searchTerm,
         ]);
     }
 
@@ -253,7 +242,7 @@ final class AvisController extends AbstractController
     #[Route('/{id}', name: 'app_avis_delete', methods: ['POST'])]
     public function delete(Request $request, Avis $avi, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$avi->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $avi->getId(), $request->request->get('_token'))) {
             $reponses = $entityManager->getRepository(Reponse::class)->findBy(['avis' => $avi->getId()]);
             foreach ($reponses as $reponse) {
                 $entityManager->remove($reponse);
@@ -271,7 +260,6 @@ final class AvisController extends AbstractController
     {
         $reponses = $reponseRepository->findBy(['avis' => $id]);
         
-        // Calculate rating statistics
         $ratingStats = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
         foreach ($reponses as $reponse) {
             if ($reponse->getRate() !== null) {
@@ -283,9 +271,9 @@ final class AvisController extends AbstractController
         }
     
         return $this->render('avis/reponses.html.twig', [
-            'reponses' => $reponses,
-            'avis_id' => $id,
-            'ratingStats' => $ratingStats
+            'reponses'   => $reponses,
+            'avis_id'    => $id,
+            'ratingStats'=> $ratingStats
         ]);
     }
 
@@ -310,66 +298,42 @@ final class AvisController extends AbstractController
     public function tts(Request $request, Avis $avi, TextToSpeechService $tts): Response
     {
         try {
-            // Log the request
-            error_log('DEBUG TTS Controller: Request for Avis ID: ' . $avi->getId());
-
-            // Use description text passed via query or fallback to comment
             $text = $request->query->get('text', $avi->getCommentaire());
             if (empty(trim($text))) {
-                error_log('DEBUG TTS Controller: Empty description text for Avis ID: ' . $avi->getId());
                 return new Response('No text to synthesize', 400);
             }
-            error_log('DEBUG TTS Controller: Text to synthesize: ' . substr($text, 0, 100) . (strlen($text) > 100 ? '...' : ''));
-
-            // Generate the audio content
             $audioContent = $tts->synthesize($text);
-
-            // Return with proper headers - explicitly specify MP3 format
-            $response = new Response($audioContent, 200, [
+            return new Response($audioContent, 200, [
                 'Content-Type' => 'audio/mpeg',
-                'Content-Disposition' => 'inline; filename="description-' . $avi->getId() . '.mp3"',
+                'Content-Disposition' => 'inline; filename="description-'. $avi->getId() .'.mp3"',
             ]);
-            return $response;
         } catch (\Exception $e) {
-            error_log('DEBUG TTS Controller Error: ' . $e->getMessage());
             return new Response(json_encode(['error' => $e->getMessage()]), 500, ['Content-Type' => 'application/json']);
         }
     }
 
     #[Route('/api/tts-token/{id}', name: 'app_api_tts_token', methods: ['GET'])]
-public function getTtsToken(
-    Avis $avi, 
-    ParameterBagInterface $params,
-    LoggerInterface $logger
-): Response {
-    try {
-        // Using the standardized parameter name
-        $apiKey = $params->get('voicerss_key'); 
-        
-        // Better debugging
-        $logger->debug('Retrieving API key');
-        if (!$apiKey) {
-            $logger->error('Voice RSS API key is empty or not found');
-            throw new \RuntimeException('API key not configured');
+    public function getTtsToken(
+        Avis $avi,
+        ParameterBagInterface $params,
+        LoggerInterface $logger
+    ): Response {
+        try {
+            $apiKey = $params->get('voicerss_key');
+            if (!$apiKey) {
+                throw new \RuntimeException('API key not configured');
+            }
+            $maskedKey = substr($apiKey, 0, 3) . '...' . substr($apiKey, -3);
+            $logger->debug('API key retrieved', ['masked_key' => $maskedKey]);
+
+            return $this->json([
+                'text'   => $avi->getCommentaire(),
+                'apiKey' => $apiKey
+            ]);
+
+        } catch (\Exception $e) {
+            $logger->error('TTS Token Error: ' . $e->getMessage());
+            return $this->json(['error' => $e->getMessage()], 500);
         }
-        
-        // Log successful key retrieval (masked for security)
-        $maskedKey = substr($apiKey, 0, 3) . '...' . substr($apiKey, -3);
-        $logger->debug('API key retrieved', ['masked_key' => $maskedKey]);
-
-        return $this->json([
-            'text' => $avi->getCommentaire(),
-            'apiKey' => $apiKey
-        ]);
-
-    } catch (\Exception $e) {
-        $logger->error('TTS Token Error: ' . $e->getMessage(), [
-            'exception' => get_class($e),
-            'file' => $e->getFile(),
-            'line' => $e->getLine()
-        ]);
-        return $this->json(['error' => $e->getMessage()], 500);
     }
-}
-
 }

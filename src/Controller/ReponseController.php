@@ -144,16 +144,24 @@ final class ReponseController extends AbstractController
         if (!$reponse) {
             throw $this->createNotFoundException('Response not found.');
         }
+
         $rate = (int) $request->request->get('rate', 0);
         if ($rate >= 1 && $rate <= 5) {
             $reponse->setRate($rate);
+
+            // ——— NEW: mark complaint closed ———
+            $avis = $reponse->getAvis();
+            $avis->setStatut('closed');
+
             $em->flush();
             $this->addFlash('success', 'Thank you for your rating!');
         }
+
         return $this->redirectToRoute('app_avis_reponsess', [
-            'id' => $reponse->getAvis()->getId()
+            'id' => $reponse->getAvis()->getId(),
         ]);
     }
+
     
     #[Route('/stats/global', name: 'app_reponse_global_stats', methods: ['GET'])]
     public function globalStats(ReponseRepository $reponseRepository): Response
