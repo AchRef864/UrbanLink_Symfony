@@ -964,6 +964,11 @@
         {% else %}
             <!-- Guest Navigation -->
             <div class="nav-container">
+                <ul class="nav-links">
+                    <li><a href="{{ path('app_home') }}" class="hover-effect">Home</a></li>
+                    <li><a href="{{ path('app_register') }}" class="hover-effect">Sign Up</a></li>
+                    <li><a href="{{ path('app_login') }}" class="hover-effect">Sign In</a></li>
+                </ul>
 
                 <div class="auth-buttons">
                     <a href="{{ path('app_login') }}" class="btn-secondary">Sign In</a>
