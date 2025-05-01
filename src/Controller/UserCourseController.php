@@ -12,6 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\OpenCageGeocoder;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Mercure\PublisherInterface;
+use Symfony\Component\Mercure\Update;
+
+
 
 #[Route('/user/courses')]
 class UserCourseController extends AbstractController
@@ -72,32 +76,42 @@ class UserCourseController extends AbstractController
     }
 
     #[Route('/new', name: 'user_course_new')]
-    public function new(Request $request, EntityManagerInterface $em): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $em,
+        PublisherInterface $publisher  // ← Symfony injectera mercure.hub.default.publisher
+    ): Response {
         $course = new Course();
         $course->setDateCourse(new \DateTime());
 
-        // Le formulaire CourseType doit être adapté pour le front-office :
-        // par exemple, masquer le champ du statut et calculer automatiquement le montant.
         $form = $this->createForm(CourseType::class, $course, [
-            'show_statut' => false,
+            'show_statut'            => false,
             'auto_calculate_montant' => true,
         ]);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             $course->setStatut('En attente');
             $course->setUser($this->getUser());
-            $taxi = $course->getTaxi();
-            if ($taxi) {
-                // Calcul du montant en fonction du tarif par km et de la distance indiquée
+
+            if ($taxi = $course->getTaxi()) {
                 $montant = $taxi->getTarifKm() * $course->getDistanceKm();
                 $course->setMontant($montant);
             }
+
             $em->persist($course);
             $em->flush();
 
-            $this->addFlash('success', 'Votre course a été réservée.');
+            // Publication Mercure
+            $topic = sprintf('/taxi/%d/notifications', $taxi->getId());
+            $data = [
+                'message'  => sprintf('Course %s → %s', $course->getVilleDepart(), $course->getVilleArrivee()),
+                'courseId' => $course->getId(),
+                'statut'   => $course->getStatut(),
+            ];
+            $publisher(new Update($topic, json_encode($data), true));
+
+            $this->addFlash('success', 'Course ajoutée et taxiste notifié.');
             return $this->redirectToRoute('user_courses');
         }
 
@@ -105,7 +119,6 @@ class UserCourseController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
     #[Route('/{id}/cancel', name: 'user_course_cancel', methods: ['POST'])]
     public function cancel(Request $request, Course $course, EntityManagerInterface $em): Response
     {

@@ -4,6 +4,15 @@ controllers:
         namespace: App\Controller
     type: attribute
 # Route pour la page de connexion
+
+app_home2:
+    path: /
+    controller: App\Controller\HomeController::index
+
+app_home:
+    path: /home
+    controller: App\Controller\DashboardController::home
+
 app_login: 
     path: /login
     controller: App\Controller\Auth\LoginController::index
@@ -84,9 +93,6 @@ admin_dashboard:
     path: /admin/dashboard
     controller: App\Controller\DashboardController::adminDashboard
 
-app_home:
-    path: /home
-    controller: App\Controller\DashboardController::home
 admin_user_delete:
     path: /admin/users/delete
     controller: App\Controller\Admin\UserManagementController::deleteUsers
@@ -174,55 +180,75 @@ urban_talk:
     path: /urban-talk
     controller: App\Controller\UrbanTalkController::chat
     methods: POST
+
 vehicle_index:
-    path: /admin/vehicles
+    path: /vehicles
     controller: App\Controller\VehicleController::index
 
 vehicle_new:
-    path: /admin/vehicles/new
+    path: /vehicles/new
     controller: App\Controller\VehicleController::new
 
 vehicle_edit:
-    path: /admin/vehicles/edit/{id}
+    path: /vehicles/edit/{id}
     controller: App\Controller\VehicleController::edit
     methods: ['GET', 'POST']
 
 vehicle_show:
-    path: /admin/vehicles/{id}
+    path: /vehicles/{id}
     controller: App\Controller\VehicleController::show
     requirements:
         id: '\d+'
 
 vehicle_delete:
-    path: /admin/vehicles/delete/{id}
+    path: /vehicles/delete/{id}
     controller: App\Controller\VehicleController::delete
     methods: POST
 
 maintenance_index:
-    path: /admin/maintenances
+    path: /maintenances
     controller: App\Controller\MaintenanceController::index
 
 maintenance_show:
-    path: /admin/maintenances/{id}
+    path: /maintenances/{id}
     controller: App\Controller\MaintenanceController::show
     requirements:
         id: '\d+'
 
 maintenance_new:
-    path: /admin/maintenances/new
+    path: /maintenances/new
     controller: App\Controller\MaintenanceController::create
     methods: ['GET', 'POST']
 
 maintenance_edit:
-    path: /admin/maintenances/edit/{id}
+    path: /maintenances/edit/{id}
     controller: App\Controller\MaintenanceController::update
     methods: ['GET', 'POST']
 
 maintenance_delete:
-    path: /admin/maintenances/delete/{id}
+    path: /maintenances/delete/{id}
     controller: App\Controller\MaintenanceController::delete
     methods: POST
 
 maintenance_by_vehicle:
-    path: /admin/maintenances/vehicle/{vehicleId}
+    path: /maintenances/vehicle/{vehicleId}
     controller: App\Controller\MaintenanceController::findByVehicleId
+    
+# config/routes/telegram.yaml
+telegram_webhook:
+    path: /telegram/webhook
+    controller: App\Controller\TelegramWebhookController::webhook
+
+
+hwi_oauth_connect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+    prefix: /connect
+
+hwi_oauth_login:
+    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+    prefix: /login
+
+oauth_check_google:
+    path: /oauth/check-google
+    methods: [GET]
+    controller: App\Controller\SecurityController::checkGoogleCallback

@@ -45,6 +45,9 @@ class Taxi
     #[Assert\Positive(message: "L'année doit être un nombre positif.")]
     private ?int $anneeFabrication = null;
 
+    #[ORM\Column(type: 'string', length: 50, unique: true, nullable: true)]
+    private ?string $telegramChatId = null;
+
     #[Assert\Callback]
     public function validateAnneeFabrication(ExecutionContextInterface $context, $payload)
     {
@@ -161,7 +164,16 @@ class Taxi
         $this->marque = $marque;
         return $this;
     }
+    public function getTelegramChatId(): ?string
+    {
+        return $this->telegramChatId;
+    }
 
+    public function setTelegramChatId(?string $chatId): self
+    {
+        $this->telegramChatId = $chatId;
+        return $this;
+    }
     public function getModele(): ?string
     {
         return $this->modele;

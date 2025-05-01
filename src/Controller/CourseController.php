@@ -11,6 +11,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
+
 
 #[Route('/course')]
 class CourseController extends AbstractController
@@ -85,46 +88,58 @@ class CourseController extends AbstractController
         return "$city - $road";
     }
 
-    #[Route('/new', name: 'course_new')]
-public function new(Request $request, EntityManagerInterface $em): Response
-{
-    $course = new Course();
-    $course->setDateCourse(new \DateTime());
+    #[Route('/course/new', name: 'course_new')]
+    public function new(
+        Request $request,
+        EntityManagerInterface $em,
+        HubInterface $hub        // ← Injection correcte du Hub Mercure
+    ): Response {
+        $course = new Course();
+        $course->setDateCourse(new \DateTime());
 
-    $form = $this->createForm(CourseType::class, $course, [
-        'show_statut' => false,
-        'auto_calculate_montant' => true,
-    ]);
+        $form = $this->createForm(CourseType::class, $course, [
+            'show_statut'            => false,
+            'auto_calculate_montant' => true,
+        ]);
+        $form->handleRequest($request);
 
-    $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Hydratation de la Course
+            $course->setVilleDepart($form->get('villeDepart')->getData());
+            $course->setVilleArrivee($form->get('villeArrivee')->getData());
+            $course->setStatut('En attente');
+            $course->setUser($this->getUser());
+            if ($taxi = $course->getTaxi()) {
+                $course->setMontant($taxi->getTarifKm() * $course->getDistanceKm());
+            }
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        // Récupération des données du formulaire
-        $villeDepart = $form->get('villeDepart')->getData();
-        $villeArrivee = $form->get('villeArrivee')->getData();
-        
-        $course->setVilleDepart($villeDepart);
-        $course->setVilleArrivee($villeArrivee);
-        $course->setStatut('En attente');
-        $course->setUser($this->getUser());
+            $em->persist($course);
+            $em->flush();
 
-        $taxi = $course->getTaxi();
-        if ($taxi) {
-            $montant = $taxi->getTarifKm() * $course->getDistanceKm();
-            $course->setMontant($montant);
+            // ——— Publication Mercure ———
+            if ($taxi) {
+                $topic = "/taxi/{$taxi->getId()}/notifications";
+                $data  = [
+                    'message'  => 'Nouvelle course planifiée !',
+                    'courseId' => $course->getId(),
+                ];
+                // Crée et publie l’Update
+                $update = new Update(
+                    $topic,
+                    json_encode($data)
+                );
+                $hub->publish($update);
+            }
+            // ——————————————————————————
+
+            $this->addFlash('success', 'Course créée avec succès');
+            return $this->redirectToRoute('course_index');
         }
 
-        $em->persist($course);
-        $em->flush();
-
-        $this->addFlash('success', 'Course créée avec succès');
-        return $this->redirectToRoute('course_index');
+        return $this->render('back_office/course/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
-
-    return $this->render('back_office/course/new.html.twig', [
-        'form' => $form->createView(),
-    ]);
-}
 
     #[Route('/{id}/edit', name: 'course_edit')]
     public function edit(Request $request, Course $course, EntityManagerInterface $em): Response
@@ -332,4 +347,5 @@ public function new(Request $request, EntityManagerInterface $em): Response
             'refused'         => $refused,
         ]);
     }
+    
 }
