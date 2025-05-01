@@ -29,6 +29,8 @@
       <parameter key="KnpSnappyBundle">Knp\Bundle\SnappyBundle\KnpSnappyBundle</parameter>
       <parameter key="WebpackEncoreBundle">Symfony\WebpackEncoreBundle\WebpackEncoreBundle</parameter>
       <parameter key="VoiceBundle">App\VoiceBundle\VoiceBundle</parameter>
+      <parameter key="HWIOAuthBundle">HWI\Bundle\OAuthBundle\HWIOAuthBundle</parameter>
+      <parameter key="HttplugBundle">Http\HttplugBundle\HttplugBundle</parameter>
       <parameter key="MercureBundle">Symfony\Bundle\MercureBundle\MercureBundle</parameter>
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
@@ -96,6 +98,14 @@
         <parameter key="path">C:\Users\moham\Downloads\UrbanLInkfinal\src\VoiceBundle</parameter>
         <parameter key="namespace">App\VoiceBundle</parameter>
       </parameter>
+      <parameter key="HWIOAuthBundle" type="collection">
+        <parameter key="path">C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src</parameter>
+        <parameter key="namespace">HWI\Bundle\OAuthBundle</parameter>
+      </parameter>
+      <parameter key="HttplugBundle" type="collection">
+        <parameter key="path">C:\Users\moham\Downloads\UrbanLInkfinal\vendor\php-http\httplug-bundle\src</parameter>
+        <parameter key="namespace">Http\HttplugBundle</parameter>
+      </parameter>
       <parameter key="MercureBundle" type="collection">
         <parameter key="path">C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\mercure-bundle\src</parameter>
         <parameter key="namespace">Symfony\Bundle\MercureBundle</parameter>
@@ -113,9 +123,14 @@
     <parameter key="stripe_public_key">%env(STRIPE_PUBLIC_KEY)%</parameter>
     <parameter key="stripe_secret_key">%env(STRIPE_SECRET_KEY)%</parameter>
     <parameter key="opencage.api_key">%env(OPENCAGE_API_KEY)%</parameter>
-    <parameter key="gemini_api_key">%env(GEMINI_API_KEY)%</parameter>
     <parameter key="app.user_image_upload_path">C:\Users\moham\Downloads\UrbanLInkfinal/public/uploads/users/images</parameter>
     <parameter key="TELEGRAM_BOT_TOKEN">%env(TELEGRAM_BOT_TOKEN)%</parameter>
+    <parameter key="gemini_api_key">%env(GEMINI_API_KEY)%</parameter>
+    <parameter key="plate_recognizer_api_key">%env(PLATE_RECOGNIZER_API_KEY)%</parameter>
+    <parameter key="oauth.enabled">true</parameter>
+    <parameter key="oauth.google_enabled">true</parameter>
+    <parameter key="oauth.facebook_enabled">true</parameter>
+    <parameter key="gemini_model">%env(GEMINI_MODEL)%</parameter>
     <parameter key="event_dispatcher.event_aliases" type="collection">
       <parameter key="Symfony\Component\Console\Event\ConsoleCommandEvent">console.command</parameter>
       <parameter key="Symfony\Component\Console\Event\ConsoleErrorEvent">console.error</parameter>
@@ -289,6 +304,9 @@
       <parameter>dev</parameter>
       <parameter>main</parameter>
     </parameter>
+    <parameter key="hwi_oauth.resource_ownermap.configured.main" type="collection">
+      <parameter key="google">/oauth/check-google</parameter>
+    </parameter>
     <parameter key="security.logout_uris" type="collection"/>
     <parameter key="monolog.use_microseconds">true</parameter>
     <parameter key="monolog.swift_mailer.handlers" type="collection"/>
@@ -308,12 +326,24 @@
         </parameter>
       </parameter>
     </parameter>
-    <parameter key="knp_snappy.pdf.binary">"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"</parameter>
+    <parameter key="knp_snappy.pdf.binary">%env(resolve:WKHTMLTOPDF_PATH)%</parameter>
     <parameter key="knp_snappy.pdf.options" type="collection">
-      <parameter key="encoding">utf-8</parameter>
+      <parameter key="encoding">UTF-8</parameter>
       <parameter key="enable-local-file-access">true</parameter>
     </parameter>
     <parameter key="knp_snappy.pdf.env" type="collection"/>
+    <parameter key="hwi_oauth.target_path_parameter">null</parameter>
+    <parameter key="hwi_oauth.target_path_domains_whitelist" type="collection"/>
+    <parameter key="hwi_oauth.use_referer">false</parameter>
+    <parameter key="hwi_oauth.failed_use_referer">false</parameter>
+    <parameter key="hwi_oauth.failed_auth_path">hwi_oauth_connect</parameter>
+    <parameter key="hwi_oauth.grant_rule">IS_AUTHENTICATED_REMEMBERED</parameter>
+    <parameter key="hwi_oauth.resource_owners" type="collection">
+      <parameter key="google">google</parameter>
+    </parameter>
+    <parameter key="hwi_oauth.connect">false</parameter>
+    <parameter key="hwi_oauth.connect.confirmation">false</parameter>
+    <parameter key="hwi_oauth.connect.registration_form">null</parameter>
     <parameter key="mercure.hubs" type="collection">
       <parameter key="default">%env(MERCURE_URL)%</parameter>
     </parameter>
@@ -391,6 +421,10 @@
         <parameter>dump</parameter>
         <parameter>@Debug/Profiler/dump.html.twig</parameter>
       </parameter>
+      <parameter key="httplug.collector.collector" type="collection">
+        <parameter>httplug</parameter>
+        <parameter>@Httplug/webprofiler.html.twig</parameter>
+      </parameter>
       <parameter key="data_collector.messenger" type="collection">
         <parameter>messenger</parameter>
         <parameter>@WebProfiler/Collector/messenger.html.twig</parameter>
@@ -416,6 +450,74 @@
         <parameter>@WebProfiler/Collector/config.html.twig</parameter>
       </parameter>
     </parameter>
+    <parameter key="hwi_oauth.resource_owner.amazon_cognito.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\AmazonCognitoResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.amazon.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\AmazonResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.apple.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\AppleResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.asana.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\AsanaResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.auth0.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\Auth0ResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.azure.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\AzureResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.bitbucket2.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\Bitbucket2ResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.bitbucket.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\BitbucketResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.bitly.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\BitlyResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.box.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\BoxResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.bufferapp.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\BufferAppResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.clever.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\CleverResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.dailymotion.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\DailymotionResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.deezer.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\DeezerResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.deviantart.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\DeviantartResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.discogs.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\DiscogsResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.disqus.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\DisqusResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.dropbox.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\DropboxResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.eventbrite.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\EventbriteResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.eveonline.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\EveOnlineResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.facebook.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\FacebookResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.fiware.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\FiwareResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.flickr.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\FlickrResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.foursquare.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\FoursquareResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.genius.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\GeniusResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.github.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\GitHubResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.gitlab.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\GitLabResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.google.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\GoogleResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.hubic.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\HubicResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.instagram.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\InstagramResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.itembase.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\ItembaseResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.jawbone.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\JawboneResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.jira.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\JiraResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.keycloak.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\KeycloakResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.linkedin.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\LinkedinResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.mailru.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\MailRuResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.oauth1.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\OAuth1ResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.oauth2.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\OAuth2ResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.odnoklassniki.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\OdnoklassnikiResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.office365.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\Office365ResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.passage.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\PassageResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.paypal.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\PaypalResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.qq.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\QQResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.reddit.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\RedditResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.runkeeper.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\RunKeeperResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.salesforce.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\SalesforceResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.sensio_connect.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\SensioConnectResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.sina_weibo.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\SinaWeiboResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.slack.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\SlackResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.soundcloud.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\SoundcloudResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.spotify.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\SpotifyResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.stack_exchange.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\StackExchangeResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.stereomood.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\StereomoodResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.strava.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\StravaResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.telegram.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\TelegramResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.37signals.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\ThirtySevenSignalsResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.toshl.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\ToshlResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.trakt.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\TraktResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.trello.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\TrelloResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.twitch.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\TwitchResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.twitter.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\TwitterResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.vkontakte.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\VkontakteResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.windows_live.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\WindowsLiveResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.wordpress.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\WordpressResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.xing.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\XingResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.yahoo.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\YahooResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.yandex.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\YandexResourceOwner</parameter>
+    <parameter key="hwi_oauth.resource_owner.youtube.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\YoutubeResourceOwner</parameter>
     <parameter key="console.command.ids" type="collection"/>
   </parameters>
   <services>
@@ -706,6 +808,7 @@
     </service>
     <service id="App\Form\MaintenanceType" class="App\Form\MaintenanceType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
+      <argument type="service" id="security.helper"/>
     </service>
     <service id="App\Form\ProfileFormType" class="App\Form\ProfileFormType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
@@ -781,11 +884,29 @@
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
       <argument type="service" id="router.default"/>
     </service>
-    <service id="App\Security\UserChecker" class="App\Security\UserChecker" autowire="true" autoconfigure="true"/>
-    <service id="App\Service\GeminiService" class="App\Service\GeminiService" autowire="true" autoconfigure="true">
+    <service id="App\Security\OAuthAuthenticationSuccessHandler" class="App\Security\OAuthAuthenticationSuccessHandler" autowire="true" autoconfigure="true">
+      <argument type="service" id="router.default"/>
+      <argument type="service" id="security.authorization_checker"/>
+    </service>
+    <service id="App\Security\OAuthUserProvider" class="App\Security\OAuthUserProvider" autowire="true" autoconfigure="true">
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+    </service>
+    <service id="App\Security\UserChecker" class="App\Security\UserChecker" autowire="true" autoconfigure="true">
+      <argument type="service" id="security.token_storage"/>
+    </service>
+    <service id="App\Service\BadWordFilterService" class="App\Service\BadWordFilterService" autowire="true" autoconfigure="true">
+      <argument type="service" id=".debug.http_client"/>
+      <argument>https://www.purgomalum.com/service/plain</argument>
+    </service>
+    <service id="App\Service\GeminiService" class="App\Service\GeminiService" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
       <argument type="service" id=".debug.http_client"/>
       <argument>%env(GEMINI_API_KEY)%</argument>
-      <argument type="service" id="doctrine.dbal.default_connection"/>
+      <argument type="service" id="doctrine"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.O2p6Lk7.App\Service\GeminiService"/>
+      </call>
     </service>
     <service id="App\Service\ImageUploadService" class="App\Service\ImageUploadService" autowire="true" autoconfigure="true">
       <argument type="service" id=".debug.http_client"/>
@@ -808,12 +929,16 @@
     <service id="App\Service\TelegramService" class="App\Service\TelegramService" autowire="true" autoconfigure="true">
       <tag name="container.error" message="Cannot autowire service &quot;App\Service\TelegramService&quot;: argument &quot;$botToken&quot; of method &quot;__construct()&quot; is type-hinted &quot;string&quot;, you should configure its value explicitly."/>
     </service>
+    <service id="App\Service\TextToSpeechService" class="App\Service\TextToSpeechService" autowire="true" autoconfigure="true">
+      <argument type="service" id=".debug.http_client"/>
+    </service>
     <service id="App\Service\TwilioService" class="App\Service\TwilioService" autowire="true" autoconfigure="true">
       <argument>%env(TWILIO_SID)%</argument>
       <argument>%env(TWILIO_AUTH_TOKEN)%</argument>
       <argument>%env(TWILIO_PHONE_NUMBER)%</argument>
       <argument type="service" id="monolog.logger"/>
     </service>
+    <service id="App\Utils\Prompt" class="App\Utils\Prompt" autowire="true" autoconfigure="true"/>
     <service id="App\VoiceBundle\DependencyInjection\VoiceExtension" class="App\VoiceBundle\DependencyInjection\VoiceExtension" autowire="true" autoconfigure="true"/>
     <service id="App\VoiceBundle\VoiceBundle" class="App\VoiceBundle\VoiceBundle" autowire="true" autoconfigure="true"/>
     <service id="Dompdf\Dompdf" class="Dompdf\Dompdf" autowire="true" autoconfigure="true">
@@ -848,7 +973,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.ErrHWz1"/>
+      <argument type="service" id=".service_locator.GNnv82i"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -1002,7 +1127,9 @@
         <argument key="webpack_encore.tag_renderer" type="service" id="webpack_encore.tag_renderer" on-invalid="ignore_uninitialized"/>
         <argument key="cache.webpack_encore" type="service" id="cache.webpack_encore" on-invalid="ignore_uninitialized"/>
         <argument key="webpack_encore.entrypoint_lookup[_default]" type="service" id="webpack_encore.entrypoint_lookup[_default]" on-invalid="ignore_uninitialized"/>
+        <argument key="httplug.collector.collector" type="service" id="httplug.collector.collector" on-invalid="ignore_uninitialized"/>
         <argument key=".debug.http_client" type="service" id=".debug.http_client" on-invalid="ignore_uninitialized"/>
+        <argument key=".debug.hwi_oauth.http_client" type="service" id=".debug.hwi_oauth.http_client" on-invalid="ignore_uninitialized"/>
       </argument>
       <argument type="collection">
         <argument key="request_stack" type="collection">
@@ -1117,7 +1244,13 @@
         <argument key="webpack_encore.entrypoint_lookup[_default]" type="collection">
           <argument>reset</argument>
         </argument>
+        <argument key="httplug.collector.collector" type="collection">
+          <argument>reset</argument>
+        </argument>
         <argument key=".debug.http_client" type="collection">
+          <argument>reset</argument>
+        </argument>
+        <argument key=".debug.hwi_oauth.http_client" type="collection">
           <argument>reset</argument>
         </argument>
       </argument>
@@ -1681,6 +1814,7 @@
         <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\form/Resources/translations</argument>
         <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\security-core/Resources/translations</argument>
         <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations</argument>
+        <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations</argument>
       </argument>
       <argument type="collection">
         <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\twig-bridge/Resources/views/Email</argument>
@@ -1708,6 +1842,7 @@
         <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\form/Resources/translations</argument>
         <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\security-core/Resources/translations</argument>
         <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations</argument>
+        <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations</argument>
       </argument>
       <argument type="collection">
         <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\twig-bridge/Resources/views/Email</argument>
@@ -2601,6 +2736,7 @@
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\form/Resources/translations\validators.de.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\security-core/Resources/translations\security.de.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations\KnpPaginatorBundle.de.xliff</argument>
+            <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations\HWIOAuthBundle.de.yml</argument>
           </argument>
           <argument key="el" type="collection">
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\validator/Resources/translations\validators.el.xlf</argument>
@@ -2612,12 +2748,14 @@
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\form/Resources/translations\validators.en.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\security-core/Resources/translations\security.en.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations\KnpPaginatorBundle.en.xliff</argument>
+            <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations\HWIOAuthBundle.en.yml</argument>
           </argument>
           <argument key="es" type="collection">
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\validator/Resources/translations\validators.es.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\form/Resources/translations\validators.es.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\security-core/Resources/translations\security.es.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations\KnpPaginatorBundle.es.xliff</argument>
+            <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations\HWIOAuthBundle.es.yml</argument>
           </argument>
           <argument key="et" type="collection">
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\validator/Resources/translations\validators.et.xlf</argument>
@@ -2635,6 +2773,7 @@
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\form/Resources/translations\validators.fa.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\security-core/Resources/translations\security.fa.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations\KnpPaginatorBundle.fa.xliff</argument>
+            <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations\HWIOAuthBundle.fa.yml</argument>
           </argument>
           <argument key="fi" type="collection">
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\validator/Resources/translations\validators.fi.xlf</argument>
@@ -2647,6 +2786,7 @@
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\form/Resources/translations\validators.fr.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\security-core/Resources/translations\security.fr.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations\KnpPaginatorBundle.fr.xliff</argument>
+            <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations\HWIOAuthBundle.fr.yml</argument>
           </argument>
           <argument key="gl" type="collection">
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\validator/Resources/translations\validators.gl.xlf</argument>
@@ -2669,6 +2809,7 @@
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\form/Resources/translations\validators.hu.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\security-core/Resources/translations\security.hu.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations\KnpPaginatorBundle.hu.xliff</argument>
+            <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations\HWIOAuthBundle.hu.yml</argument>
           </argument>
           <argument key="hy" type="collection">
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\validator/Resources/translations\validators.hy.xlf</argument>
@@ -2686,6 +2827,7 @@
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\form/Resources/translations\validators.it.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\security-core/Resources/translations\security.it.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations\KnpPaginatorBundle.it.xliff</argument>
+            <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations\HWIOAuthBundle.it.yml</argument>
           </argument>
           <argument key="ja" type="collection">
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\validator/Resources/translations\validators.ja.xlf</argument>
@@ -2734,6 +2876,7 @@
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\form/Resources/translations\validators.nl.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\security-core/Resources/translations\security.nl.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations\KnpPaginatorBundle.nl.xliff</argument>
+            <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations\HWIOAuthBundle.nl.yml</argument>
           </argument>
           <argument key="nn" type="collection">
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\validator/Resources/translations\validators.nn.xlf</argument>
@@ -2751,6 +2894,7 @@
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\form/Resources/translations\validators.pl.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\security-core/Resources/translations\security.pl.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations\KnpPaginatorBundle.pl.xliff</argument>
+            <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations\HWIOAuthBundle.pl.yml</argument>
           </argument>
           <argument key="pt" type="collection">
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\validator/Resources/translations\validators.pt.xlf</argument>
@@ -2774,6 +2918,7 @@
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\form/Resources/translations\validators.ru.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\security-core/Resources/translations\security.ru.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations\KnpPaginatorBundle.ru.xliff</argument>
+            <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations\HWIOAuthBundle.ru.yml</argument>
           </argument>
           <argument key="sk" type="collection">
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\validator/Resources/translations\validators.sk.xlf</argument>
@@ -2821,12 +2966,14 @@
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\form/Resources/translations\validators.tr.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\security-core/Resources/translations\security.tr.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations\KnpPaginatorBundle.tr.xliff</argument>
+            <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations\HWIOAuthBundle.tr.yml</argument>
           </argument>
           <argument key="uk" type="collection">
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\validator/Resources/translations\validators.uk.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\form/Resources/translations\validators.uk.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\security-core/Resources/translations\security.uk.xlf</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations\KnpPaginatorBundle.uk.xliff</argument>
+            <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations\HWIOAuthBundle.uk.yml</argument>
           </argument>
           <argument key="ur" type="collection">
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\validator/Resources/translations\validators.ur.xlf</argument>
@@ -2860,12 +3007,16 @@
           <argument key="sw" type="collection">
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations\KnpPaginatorBundle.sw.xliff</argument>
           </argument>
+          <argument key="zh" type="collection">
+            <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations\HWIOAuthBundle.zh.yml</argument>
+          </argument>
         </argument>
         <argument key="scanned_directories" type="collection">
           <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\validator/Resources/translations</argument>
           <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\form/Resources/translations</argument>
           <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\security-core/Resources/translations</argument>
           <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations</argument>
+          <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations</argument>
           <argument>C:\Users\moham\Downloads\UrbanLInkfinal/translations</argument>
           <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\framework-bundle/translations</argument>
           <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\doctrine\doctrine-bundle/translations</argument>
@@ -2882,6 +3033,7 @@
           <argument>C:/Users/moham/Downloads/UrbanLInkfinal/vendor/knplabs/knp-snappy-bundle/src/translations</argument>
           <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\webpack-encore-bundle\src/translations</argument>
           <argument>C:\Users\moham\Downloads\UrbanLInkfinal\src\VoiceBundle/translations</argument>
+          <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\php-http\httplug-bundle\src/translations</argument>
           <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\mercure-bundle\src/translations</argument>
         </argument>
         <argument key="cache_vary" type="collection">
@@ -2890,6 +3042,7 @@
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\form/Resources/translations</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\security-core/Resources/translations</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\knplabs\knp-paginator-bundle/translations</argument>
+            <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/translations</argument>
             <argument>translations</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\framework-bundle/translations</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\doctrine\doctrine-bundle/translations</argument>
@@ -2906,6 +3059,7 @@
             <argument>C:/Users/moham/Downloads/UrbanLInkfinal/vendor/knplabs/knp-snappy-bundle/src/translations</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\webpack-encore-bundle\src/translations</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\src\VoiceBundle/translations</argument>
+            <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\php-http\httplug-bundle\src/translations</argument>
             <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\mercure-bundle\src/translations</argument>
           </argument>
         </argument>
@@ -3879,6 +4033,38 @@
         <argument>0</argument>
       </call>
       <call method="addListener">
+        <argument>kernel.request</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="httplug.strategy_listener"/>
+          <argument>onEvent</argument>
+        </argument>
+        <argument>1024</argument>
+      </call>
+      <call method="addListener">
+        <argument>console.command</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="httplug.strategy_listener"/>
+          <argument>onEvent</argument>
+        </argument>
+        <argument>1024</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.request</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="Http\HttplugBundle\Collector\PluginClientFactoryListener"/>
+          <argument>onEvent</argument>
+        </argument>
+        <argument>1024</argument>
+      </call>
+      <call method="addListener">
+        <argument>console.command</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="Http\HttplugBundle\Collector\PluginClientFactoryListener"/>
+          <argument>onEvent</argument>
+        </argument>
+        <argument>1024</argument>
+      </call>
+      <call method="addListener">
         <argument>kernel.response</argument>
         <argument type="collection">
           <argument type="service_closure" id="Symfony\Component\Mercure\EventSubscriber\SetCookieSubscriber"/>
@@ -3916,7 +4102,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.ErrHWz1"/>
+      <argument type="service" id=".service_locator.GNnv82i"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <tag name="kernel.reset" method="reset"/>
@@ -5189,6 +5375,9 @@
         <argument type="service" id="data_collector.dump"/>
       </call>
       <call method="add">
+        <argument type="service" id="httplug.collector.collector"/>
+      </call>
+      <call method="add">
         <argument type="service" id="data_collector.messenger"/>
       </call>
       <call method="add">
@@ -5400,6 +5589,10 @@
       <call method="registerClient">
         <argument>http_client</argument>
         <argument type="service" id=".debug.http_client"/>
+      </call>
+      <call method="registerClient">
+        <argument>hwi_oauth.http_client</argument>
+        <argument type="service" id=".debug.hwi_oauth.http_client"/>
       </call>
     </service>
     <service id="notifier.data_collector" class="Symfony\Component\Notifier\DataCollector\NotificationDataCollector">
@@ -6351,6 +6544,12 @@
         <argument type="service" id="webpack_encore.twig_entry_files_extension"/>
       </call>
       <call method="addExtension">
+        <argument type="service" id="hwi_oauth.twig.extension.oauth"/>
+      </call>
+      <call method="addExtension">
+        <argument type="service" id="httplug.collector.twig.http_message"/>
+      </call>
+      <call method="addExtension">
         <argument type="service" id="Symfony\Component\Mercure\Twig\MercureExtension"/>
       </call>
       <call method="addExtension">
@@ -6501,6 +6700,22 @@
         <argument>!Maker</argument>
       </call>
       <call method="addPath">
+        <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/views</argument>
+        <argument>HWIOAuth</argument>
+      </call>
+      <call method="addPath">
+        <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\hwi\oauth-bundle\src/Resources/views</argument>
+        <argument>!HWIOAuth</argument>
+      </call>
+      <call method="addPath">
+        <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\php-http\httplug-bundle\src/Resources/views</argument>
+        <argument>Httplug</argument>
+      </call>
+      <call method="addPath">
+        <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\php-http\httplug-bundle\src/Resources/views</argument>
+        <argument>!Httplug</argument>
+      </call>
+      <call method="addPath">
         <argument>C:\Users\moham\Downloads\UrbanLInkfinal\vendor\symfony\mercure-bundle\src/Resources/views</argument>
         <argument>Mercure</argument>
       </call>
@@ -6597,7 +6812,7 @@
       <argument>,</argument>
     </service>
     <service id="twig.runtime_loader" class="Twig\RuntimeLoader\ContainerRuntimeLoader">
-      <argument type="service" id=".service_locator.PqIxmzX"/>
+      <argument type="service" id=".service_locator.MYxB76W"/>
     </service>
     <service id="twig.error_renderer.html" class="Symfony\Bridge\Twig\ErrorRenderer\TwigErrorRenderer">
       <argument type="service" id="twig"/>
@@ -6883,7 +7098,7 @@
       <argument type="service" id=".service_locator.e_.xxAP"/>
       <argument type="collection">
         <argument key="dev">null</argument>
-        <argument key="main" type="service" id=".service_locator.SfGnQiG"/>
+        <argument key="main" type="service" id=".service_locator.9yq2RTn"/>
       </argument>
     </service>
     <service id="security.user_value_resolver" class="Symfony\Component\Security\Http\Controller\UserValueResolver">
@@ -7463,6 +7678,7 @@
       <argument type="service" id=".service_locator._1SGciK"/>
       <argument type="collection">
         <argument key="main" type="collection">
+          <argument type="service" id="security.authenticator.oauth.main"/>
           <argument type="service" id="security.authenticator.form_login.main"/>
         </argument>
       </argument>
@@ -7521,6 +7737,7 @@
       <argument>null</argument>
       <argument>null</argument>
       <argument type="collection">
+        <argument>oauth</argument>
         <argument>form_login</argument>
       </argument>
       <argument>null</argument>
@@ -7580,6 +7797,70 @@
     <service id="security.logout.listener.session.main" class="Symfony\Component\Security\Http\EventListener\SessionLogoutListener">
       <tag name="kernel.event_subscriber" dispatcher="debug.security.event_dispatcher.main"/>
     </service>
+    <service id="hwi_oauth.resource_ownermap.main" class="HWI\Bundle\OAuthBundle\Security\Http\ResourceOwnerMap" public="true">
+      <argument type="service" id="security.http_utils"/>
+      <argument>%hwi_oauth.resource_owners%</argument>
+      <argument>%hwi_oauth.resource_ownermap.configured.main%</argument>
+      <argument type="service" id=".service_locator.RYCt.tV"/>
+    </service>
+    <service id="security.authenticator.oauth.main" class="HWI\Bundle\OAuthBundle\Security\Http\Authenticator\OAuthAuthenticator">
+      <argument type="service" id="security.http_utils"/>
+      <argument type="service" id="App\Security\OAuthUserProvider"/>
+      <argument type="service" id="hwi_oauth.resource_ownermap.main"/>
+      <argument type="collection">
+        <argument key="google">/oauth/check-google</argument>
+      </argument>
+      <argument type="service" id="security.authentication.success_handler.main.oauth"/>
+      <argument type="service" id="security.authentication.failure_handler.main.oauth"/>
+      <argument type="service" id="http_kernel"/>
+      <argument type="collection">
+        <argument key="login_path">/login</argument>
+        <argument key="check_path">/login_check</argument>
+        <argument key="use_forward">false</argument>
+        <argument key="require_previous_session">false</argument>
+      </argument>
+    </service>
+    <service id="security.authentication.success_handler.main.oauth" class="Symfony\Component\Security\Http\Authentication\CustomAuthenticationSuccessHandler">
+      <argument type="service">
+        <service class="App\Security\OAuthAuthenticationSuccessHandler" autowire="true">
+          <argument type="service" id="router.default"/>
+          <argument type="service" id="security.authorization_checker"/>
+        </service>
+      </argument>
+      <argument type="collection">
+        <argument key="login_path">/login</argument>
+        <argument key="always_use_default_target_path">false</argument>
+        <argument key="default_target_path">/</argument>
+        <argument key="target_path_parameter">_target_path</argument>
+        <argument key="use_referer">false</argument>
+      </argument>
+      <argument>main</argument>
+    </service>
+    <service id="security.authentication.failure_handler.main.oauth" class="Symfony\Component\Security\Http\Authentication\CustomAuthenticationFailureHandler">
+      <argument type="service">
+        <service class="HWI\Bundle\OAuthBundle\Security\Http\Authentication\AuthenticationFailureHandler">
+          <argument type="service" id="request_stack"/>
+          <argument type="service" id="router.default"/>
+          <argument type="service" id="security.http_utils"/>
+          <argument>false</argument>
+        </service>
+      </argument>
+      <argument type="collection">
+        <argument key="login_path">/login</argument>
+        <argument key="failure_path">/login</argument>
+        <argument key="failure_forward">false</argument>
+        <argument key="failure_path_parameter">_failure_path</argument>
+      </argument>
+    </service>
+    <service id="hwi_oauth.context_listener.token_refresher.main" class="HWI\Bundle\OAuthBundle\Security\Http\Firewall\RefreshAccessTokenListener">
+      <argument type="service" id="security.authenticator.oauth.main"/>
+      <call method="setTokenStorage">
+        <argument type="service" id="security.token_storage"/>
+      </call>
+      <call method="setResourceOwnerMap">
+        <argument type="service" id="hwi_oauth.resource_ownermap.main"/>
+      </call>
+    </service>
     <service id="security.authenticator.form_login.main" class="Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator">
       <argument type="service" id="security.http_utils"/>
       <argument type="service" id="security.user.provider.concrete.app_user_provider"/>
@@ -7633,6 +7914,7 @@
     <service id="security.authenticator.manager.main" class="Symfony\Component\Security\Http\Authentication\AuthenticatorManager">
       <tag name="monolog.logger" channel="security"/>
       <argument type="collection">
+        <argument type="service" id="security.authenticator.oauth.main"/>
         <argument type="service" id="security.authenticator.form_login.main"/>
       </argument>
       <argument type="service" id="security.token_storage"/>
@@ -7663,10 +7945,11 @@
       <argument type="service" id="monolog.logger.security" on-invalid="null"/>
       <argument>false</argument>
     </service>
-    <service id=".service_locator.SfGnQiG" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.9yq2RTn" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="security.authenticator.form_login.main" type="service_closure" id="security.authenticator.form_login.main"/>
+        <argument key="security.authenticator.oauth.main" type="service_closure" id="security.authenticator.oauth.main"/>
       </argument>
     </service>
     <service id="security.firewall.map.context.main" class="Symfony\Bundle\SecurityBundle\Security\LazyFirewallContext">
@@ -7674,6 +7957,7 @@
         <argument type="service" id="security.channel_listener"/>
         <argument type="service" id="security.context_listener.0"/>
         <argument type="service" id="debug.security.firewall.authenticator.main"/>
+        <argument type="service" id="hwi_oauth.context_listener.token_refresher.main"/>
         <argument type="service" id="security.access_listener"/>
       </argument>
       <argument type="service" id="security.exception_listener.main"/>
@@ -8067,7 +8351,7 @@
     </service>
     <service id="knp_snappy.pdf" class="Knp\Snappy\Pdf" public="true">
       <tag name="monolog.logger" channel="snappy"/>
-      <argument>"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"</argument>
+      <argument>%env(resolve:WKHTMLTOPDF_PATH)%</argument>
       <argument>%knp_snappy.pdf.options%</argument>
       <argument type="collection"/>
       <call method="setLogger">
@@ -8151,6 +8435,358 @@
     </service>
     <service id="App\VoiceBundle\Resources" class="App\VoiceBundle\Resources" abstract="true">
       <tag name="container.excluded" source="in &quot;config/services.yaml&quot;"/>
+    </service>
+    <service id="HWI\Bundle\OAuthBundle\Controller\Connect\ConnectController" class="HWI\Bundle\OAuthBundle\Controller\Connect\ConnectController" public="true">
+      <argument type="service" id="hwi_oauth.security.oauth_utils"/>
+      <argument type="service" id="hwi_oauth.resource_ownermap_locator"/>
+      <argument type="service" id="request_stack"/>
+      <argument type="service" id="debug.event_dispatcher"/>
+      <argument type="service" id="security.token_storage"/>
+      <argument type="service" id="security.user_checker"/>
+      <argument type="service" id="security.authorization_checker"/>
+      <argument type="service" id="form.factory"/>
+      <argument type="service" id="twig"/>
+      <argument type="service" id="router.default"/>
+      <argument>IS_AUTHENTICATED_REMEMBERED</argument>
+      <argument>false</argument>
+      <argument>hwi_oauth_connect</argument>
+      <argument>false</argument>
+      <argument>null</argument>
+    </service>
+    <service id="HWI\Bundle\OAuthBundle\Controller\Connect\RegisterController" class="HWI\Bundle\OAuthBundle\Controller\Connect\RegisterController" public="true">
+      <argument type="service" id="hwi_oauth.resource_ownermap_locator"/>
+      <argument type="service" id="request_stack"/>
+      <argument type="service" id="debug.event_dispatcher"/>
+      <argument type="service" id="security.token_storage"/>
+      <argument type="service" id="security.user_checker"/>
+      <argument type="service" id="security.authorization_checker"/>
+      <argument type="service" id="form.factory"/>
+      <argument type="service" id="twig"/>
+      <argument>IS_AUTHENTICATED_REMEMBERED</argument>
+      <argument>null</argument>
+      <argument>null</argument>
+      <argument>null</argument>
+    </service>
+    <service id="HWI\Bundle\OAuthBundle\Controller\LoginController" class="HWI\Bundle\OAuthBundle\Controller\LoginController" public="true">
+      <argument type="service" id="security.authentication_utils"/>
+      <argument type="service" id="router.default"/>
+      <argument type="service" id="security.authorization_checker"/>
+      <argument type="service" id="request_stack"/>
+      <argument type="service" id="twig"/>
+      <argument>false</argument>
+      <argument>IS_AUTHENTICATED_REMEMBERED</argument>
+    </service>
+    <service id="HWI\Bundle\OAuthBundle\Controller\RedirectToServiceController" class="HWI\Bundle\OAuthBundle\Controller\RedirectToServiceController" public="true">
+      <argument type="service" id="hwi_oauth.security.oauth_utils"/>
+      <argument type="service" id="hwi_oauth.util.domain_whitelist"/>
+      <argument type="service" id="hwi_oauth.resource_ownermap_locator"/>
+      <argument>null</argument>
+      <argument>false</argument>
+      <argument>false</argument>
+    </service>
+    <service id="hwi_oauth.authentication.listener.oauth" class="HWI\Bundle\OAuthBundle\Security\Http\Firewall\OAuthListener" abstract="true">
+      <argument type="service" id="security.token_storage"/>
+      <argument type="service" id="security.authentication.manager"/>
+      <argument type="service" id="security.authentication.session_strategy"/>
+      <argument type="service" id="security.http_utils"/>
+      <argument type="abstract">Provider-shared Key</argument>
+      <argument type="service" id="security.authentication.success_handler"/>
+      <argument type="service" id="security.authentication.failure_handler"/>
+      <argument type="collection"/>
+      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument type="service" id="debug.event_dispatcher" on-invalid="null"/>
+    </service>
+    <service id="hwi_oauth.authentication.provider.oauth" class="HWI\Bundle\OAuthBundle\Security\Core\Authentication\Provider\OAuthProvider"/>
+    <service id="hwi_oauth.authentication.entry_point.oauth" class="HWI\Bundle\OAuthBundle\Security\Http\EntryPoint\OAuthEntryPoint">
+      <argument type="service" id="http_kernel"/>
+      <argument type="service" id="security.http_utils"/>
+    </service>
+    <service id="hwi_oauth.user.provider" class="HWI\Bundle\OAuthBundle\Security\Core\User\OAuthUserProvider"/>
+    <service id="hwi_oauth.user.provider.entity" class="HWI\Bundle\OAuthBundle\Security\Core\User\EntityUserProvider">
+      <argument type="service" id="doctrine"/>
+      <argument type="abstract">User entity class name</argument>
+      <argument type="abstract">an array of properties, where key is resource owner name &amp; value is property name in User entity</argument>
+    </service>
+    <service id="hwi_oauth.context_listener.abstract_token_refresher" class="HWI\Bundle\OAuthBundle\Security\Http\Firewall\AbstractRefreshAccessTokenListener" abstract="true">
+      <argument type="abstract">OAuthAuthenticator or AuthenticationProviderInterface</argument>
+      <call method="setTokenStorage">
+        <argument type="service" id="security.token_storage"/>
+      </call>
+    </service>
+    <service id="hwi_oauth.storage.session" class="HWI\Bundle\OAuthBundle\OAuth\RequestDataStorage\SessionStorage">
+      <argument type="service" id="request_stack"/>
+    </service>
+    <service id="hwi_oauth.security.oauth_utils" class="HWI\Bundle\OAuthBundle\Security\OAuthUtils">
+      <argument type="service" id="security.http_utils"/>
+      <argument type="service" id="security.authorization_checker"/>
+      <argument type="service" id="security.firewall.map"/>
+      <argument>false</argument>
+      <argument>IS_AUTHENTICATED_REMEMBERED</argument>
+      <call method="addResourceOwnerMap">
+        <argument>main</argument>
+        <argument type="service" id="hwi_oauth.resource_ownermap.main"/>
+      </call>
+    </service>
+    <service id="hwi_oauth.authentication.failure_handler" class="HWI\Bundle\OAuthBundle\Security\Http\Authentication\AuthenticationFailureHandler">
+      <argument type="service" id="request_stack"/>
+      <argument type="service" id="router.default"/>
+      <argument type="service" id="security.http_utils"/>
+      <argument>false</argument>
+    </service>
+    <service id="hwi_oauth.abstract_resource_ownermap" class="HWI\Bundle\OAuthBundle\Security\Http\ResourceOwnerMap" abstract="true">
+      <argument type="service" id="security.http_utils"/>
+      <argument>%hwi_oauth.resource_owners%</argument>
+      <argument type="collection"/>
+    </service>
+    <service id="hwi_oauth.resource_ownermap_locator" class="HWI\Bundle\OAuthBundle\Security\Http\ResourceOwnerMapLocator">
+      <call method="set">
+        <argument>main</argument>
+        <argument type="service" id="hwi_oauth.resource_ownermap.main"/>
+      </call>
+    </service>
+    <service id="hwi_oauth.twig.extension.oauth" class="HWI\Bundle\OAuthBundle\Twig\Extension\OAuthExtension">
+      <tag name="twig.extension"/>
+    </service>
+    <service id="hwi_oauth.twig.extension.oauth.runtime" class="HWI\Bundle\OAuthBundle\Twig\Extension\OAuthRuntime">
+      <tag name="twig.runtime"/>
+      <argument type="service" id="hwi_oauth.security.oauth_utils"/>
+      <argument type="service" id="request_stack"/>
+    </service>
+    <service id="hwi_oauth.util.domain_whitelist" class="HWI\Bundle\OAuthBundle\Util\DomainWhitelist">
+      <argument type="collection"/>
+    </service>
+    <service id="hwi_oauth.resource_owner.google" class="HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\GoogleResourceOwner">
+      <argument type="service" id=".debug.hwi_oauth.http_client"/>
+      <argument type="service" id="security.http_utils"/>
+      <argument type="collection">
+        <argument key="client_id">%env(OAUTH_GOOGLE_CLIENT_ID)%</argument>
+        <argument key="client_secret">%env(OAUTH_GOOGLE_CLIENT_SECRET)%</argument>
+        <argument key="scope">email profile</argument>
+        <argument key="options" type="collection">
+          <argument key="csrf">true</argument>
+          <argument key="access_type">online</argument>
+          <argument key="display">popup</argument>
+        </argument>
+        <argument key="paths" type="collection"/>
+      </argument>
+      <argument>google</argument>
+      <argument type="service" id="hwi_oauth.storage.session"/>
+    </service>
+    <service id=".service_locator.RYCt.tV" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="google" type="service_closure" id="hwi_oauth.resource_owner.google"/>
+      </argument>
+    </service>
+    <service id="httplug.strategy" class="Http\HttplugBundle\Discovery\ConfiguredClientsStrategy">
+      <argument type="service" id="httplug.collector.auto_discovered_client" on-invalid="null"/>
+      <argument>null</argument>
+    </service>
+    <service id="httplug.strategy_listener" class="Http\HttplugBundle\Discovery\ConfiguredClientsStrategyListener">
+      <tag name="kernel.event_subscriber"/>
+      <tag name="container.hot_path"/>
+    </service>
+    <service id="httplug.async_client.default" class="Http\Client\HttpAsyncClient">
+      <factory class="Http\Discovery\HttpAsyncClientDiscovery" method="find"/>
+    </service>
+    <service id="httplug.psr18_client.default" class="Psr\Http\Client\ClientInterface">
+      <factory class="Http\Discovery\Psr18ClientDiscovery" method="find"/>
+    </service>
+    <service id="httplug.psr17_request_factory.default" class="Psr\Http\Message\RequestFactoryInterface">
+      <factory class="Http\Discovery\Psr17FactoryDiscovery" method="findRequestFactory"/>
+    </service>
+    <service id="httplug.psr17_response_factory.default" class="Psr\Http\Message\ResponseFactoryInterface">
+      <factory class="Http\Discovery\Psr17FactoryDiscovery" method="findResponseFactory"/>
+    </service>
+    <service id="httplug.psr17_stream_factory.default" class="Psr\Http\Message\StreamFactoryInterface">
+      <factory class="Http\Discovery\Psr17FactoryDiscovery" method="findStreamFactory"/>
+    </service>
+    <service id="httplug.psr17_uri_factory.default" class="Psr\Http\Message\UriFactoryInterface">
+      <factory class="Http\Discovery\Psr17FactoryDiscovery" method="findUrlFactory"/>
+    </service>
+    <service id="httplug.psr17_uploaded_file_factory.default" class="Psr\Http\Message\UploadedFileFactoryInterface">
+      <factory class="Http\Discovery\Psr17FactoryDiscovery" method="findUploadedFileFactory"/>
+    </service>
+    <service id="httplug.psr17_server_request_factory.default" class="Psr\Http\Message\ServerRequestFactoryInterface">
+      <factory class="Http\Discovery\Psr17FactoryDiscovery" method="findServerRequestFactory"/>
+    </service>
+    <service id="Http\Client\Common\PluginClientFactory" class="Http\HttplugBundle\Collector\PluginClientFactory">
+      <argument type="service" id="httplug.collector.collector"/>
+      <argument type="service" id="httplug.collector.formatter"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="httplug.factory.symfony" class="Http\HttplugBundle\ClientFactory\SymfonyFactory">
+      <argument type="service" id="httplug.psr17_response_factory.default"/>
+      <argument type="service" id="httplug.psr17_stream_factory.default"/>
+    </service>
+    <service id="httplug.plugin.cache" class="Http\Client\Common\Plugin\CachePlugin" abstract="true">
+      <argument></argument>
+      <argument></argument>
+      <argument></argument>
+    </service>
+    <service id="httplug.plugin.content_length" class="Http\Client\Common\Plugin\ContentLengthPlugin"/>
+    <service id="httplug.plugin.cookie" class="Http\Client\Common\Plugin\CookiePlugin">
+      <argument></argument>
+    </service>
+    <service id="httplug.plugin.decoder" class="Http\Client\Common\Plugin\DecoderPlugin">
+      <argument type="collection">
+        <argument key="use_content_encoding">true</argument>
+      </argument>
+    </service>
+    <service id="httplug.plugin.error" class="Http\Client\Common\Plugin\ErrorPlugin"/>
+    <service id="httplug.plugin.history" class="Http\Client\Common\Plugin\HistoryPlugin">
+      <argument></argument>
+    </service>
+    <service id="httplug.plugin.logger" class="Http\Client\Common\Plugin\LoggerPlugin">
+      <tag name="monolog.logger" channel="httplug"/>
+      <argument type="service" id="monolog.logger.httplug"/>
+      <argument>null</argument>
+    </service>
+    <service id="httplug.plugin.redirect" class="Http\Client\Common\Plugin\RedirectPlugin">
+      <argument type="collection">
+        <argument key="preserve_header">true</argument>
+        <argument key="use_default_for_multiple">true</argument>
+      </argument>
+    </service>
+    <service id="httplug.plugin.retry" class="Http\Client\Common\Plugin\RetryPlugin">
+      <argument type="collection">
+        <argument key="retries">1</argument>
+      </argument>
+    </service>
+    <service id="httplug.plugin.stopwatch" class="Http\Client\Common\Plugin\StopwatchPlugin">
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="httplug.plugin.throttle" class="Http\Client\Common\Plugin\ThrottlePlugin" abstract="true">
+      <argument></argument>
+    </service>
+    <service id="httplug.plugin.add_host" class="Http\Client\Common\Plugin\AddHostPlugin" abstract="true">
+      <argument></argument>
+      <argument></argument>
+    </service>
+    <service id="httplug.plugin.add_path" class="Http\Client\Common\Plugin\AddPathPlugin" abstract="true">
+      <argument></argument>
+    </service>
+    <service id="httplug.plugin.base_uri" class="Http\Client\Common\Plugin\BaseUriPlugin" abstract="true">
+      <argument></argument>
+      <argument></argument>
+    </service>
+    <service id="httplug.plugin.content_type" class="Http\Client\Common\Plugin\ContentTypePlugin" abstract="true">
+      <argument></argument>
+    </service>
+    <service id="httplug.plugin.header_append" class="Http\Client\Common\Plugin\HeaderAppendPlugin" abstract="true">
+      <argument></argument>
+    </service>
+    <service id="httplug.plugin.header_defaults" class="Http\Client\Common\Plugin\HeaderDefaultsPlugin" abstract="true">
+      <argument></argument>
+    </service>
+    <service id="httplug.plugin.header_set" class="Http\Client\Common\Plugin\HeaderSetPlugin" abstract="true">
+      <argument></argument>
+    </service>
+    <service id="httplug.plugin.header_remove" class="Http\Client\Common\Plugin\HeaderRemovePlugin" abstract="true">
+      <argument></argument>
+    </service>
+    <service id="httplug.plugin.query_defaults" class="Http\Client\Common\Plugin\QueryDefaultsPlugin" abstract="true">
+      <argument></argument>
+    </service>
+    <service id="httplug.plugin.request_seekable_body" class="Http\Client\Common\Plugin\RequestSeekableBodyPlugin" abstract="true">
+      <argument></argument>
+    </service>
+    <service id="httplug.plugin.response_seekable_body" class="Http\Client\Common\Plugin\ResponseSeekableBodyPlugin" abstract="true">
+      <argument></argument>
+    </service>
+    <service id=".1_CurlCommandFormatter~PmkAy7X" class="Http\Message\Formatter\CurlCommandFormatter"/>
+    <service id="httplug.formatter.full_http_message" class="Http\Message\Formatter\FullHttpMessageFormatter">
+      <argument>0</argument>
+    </service>
+    <service id="httplug.collector.formatter" class="Http\HttplugBundle\Collector\Formatter">
+      <argument type="service" id="httplug.formatter.full_http_message"/>
+      <argument type="service" id=".1_CurlCommandFormatter~PmkAy7X"/>
+    </service>
+    <service id="httplug.collector.collector" class="Http\HttplugBundle\Collector\Collector">
+      <tag name="data_collector" template="@Httplug/webprofiler.html.twig" priority="200" id="httplug"/>
+      <tag name="kernel.reset" method="reset"/>
+      <argument>0</argument>
+    </service>
+    <service id="httplug.plugin.stack" class="Http\HttplugBundle\Collector\StackPlugin" abstract="true">
+      <argument type="service" id="httplug.collector.collector"/>
+      <argument type="service" id="httplug.collector.formatter"/>
+    </service>
+    <service id="httplug.collector.twig.http_message" class="Http\HttplugBundle\Collector\Twig\HttpMessageMarkupExtension">
+      <tag name="twig.extension"/>
+      <argument type="service" id="var_dumper.cloner" on-invalid="null"/>
+      <argument type="service" id="var_dumper.html_dumper" on-invalid="null"/>
+    </service>
+    <service id="httplug.collector.auto_discovered_client" class="Http\HttplugBundle\Collector\ProfileClient">
+      <tag name="container.decorator" id="httplug.auto_discovery.auto_discovered_client" inner="httplug.collector.auto_discovered_client.inner"/>
+      <argument type="service" id="httplug.collector.auto_discovered_client.inner"/>
+      <argument type="service" id="httplug.collector.collector"/>
+      <argument type="service" id="httplug.collector.formatter"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="httplug.collector.factory.auto" class="Http\HttplugBundle\Collector\ProfileClientFactory">
+      <tag name="container.decorator" id="httplug.factory.auto" inner="httplug.collector.factory.auto.inner"/>
+      <argument type="service" id="httplug.collector.factory.auto.inner"/>
+      <argument type="service" id="httplug.collector.collector"/>
+      <argument type="service" id="httplug.collector.formatter"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="httplug.collector.factory.buzz" class="Http\HttplugBundle\Collector\ProfileClientFactory">
+      <tag name="container.decorator" id="httplug.factory.buzz" inner="httplug.collector.factory.buzz.inner"/>
+      <argument type="service" id="httplug.collector.factory.buzz.inner"/>
+      <argument type="service" id="httplug.collector.collector"/>
+      <argument type="service" id="httplug.collector.formatter"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="httplug.collector.factory.curl" class="Http\HttplugBundle\Collector\ProfileClientFactory">
+      <tag name="container.decorator" id="httplug.factory.curl" inner="httplug.collector.factory.curl.inner"/>
+      <argument type="service" id="httplug.collector.factory.curl.inner"/>
+      <argument type="service" id="httplug.collector.collector"/>
+      <argument type="service" id="httplug.collector.formatter"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="httplug.collector.factory.guzzle6" class="Http\HttplugBundle\Collector\ProfileClientFactory">
+      <tag name="container.decorator" id="httplug.factory.guzzle6" inner="httplug.collector.factory.guzzle6.inner"/>
+      <argument type="service" id="httplug.collector.factory.guzzle6.inner"/>
+      <argument type="service" id="httplug.collector.collector"/>
+      <argument type="service" id="httplug.collector.formatter"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="httplug.collector.factory.guzzle7" class="Http\HttplugBundle\Collector\ProfileClientFactory">
+      <tag name="container.decorator" id="httplug.factory.guzzle7" inner="httplug.collector.factory.guzzle7.inner"/>
+      <argument type="service" id="httplug.collector.factory.guzzle7.inner"/>
+      <argument type="service" id="httplug.collector.collector"/>
+      <argument type="service" id="httplug.collector.formatter"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="httplug.collector.factory.react" class="Http\HttplugBundle\Collector\ProfileClientFactory">
+      <tag name="container.decorator" id="httplug.factory.react" inner="httplug.collector.factory.react.inner"/>
+      <argument type="service" id="httplug.collector.factory.react.inner"/>
+      <argument type="service" id="httplug.collector.collector"/>
+      <argument type="service" id="httplug.collector.formatter"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="httplug.collector.factory.socket" class="Http\HttplugBundle\Collector\ProfileClientFactory">
+      <tag name="container.decorator" id="httplug.factory.socket" inner="httplug.collector.factory.socket.inner"/>
+      <argument type="service" id="httplug.collector.factory.socket.inner"/>
+      <argument type="service" id="httplug.collector.collector"/>
+      <argument type="service" id="httplug.collector.formatter"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="Http\HttplugBundle\Collector\PluginClientFactoryListener" class="Http\HttplugBundle\Collector\PluginClientFactoryListener">
+      <tag name="kernel.event_subscriber"/>
+      <tag name="container.hot_path"/>
+      <argument type="service" id="Http\Client\Common\PluginClientFactory"/>
+    </service>
+    <service id="httplug.client.app.client" class="Psr\Http\Client\ClientInterface">
+      <argument type="collection"/>
+      <factory service="httplug.collector.factory.auto" method="createClient"/>
+    </service>
+    <service id="httplug.client.app.http_methods" class="Http\Client\Common\HttpMethodsClient">
+      <tag name="httplug.client"/>
+      <tag name="container.decorator" id="httplug.client.app" inner="httplug.client.app.http_methods.inner"/>
+      <argument type="service" id="httplug.client.app.http_methods.inner"/>
+      <argument type="service" id="httplug.psr17_request_factory.default"/>
+      <argument type="service" id="httplug.psr17_stream_factory.default"/>
     </service>
     <service id="mercure.hub.default.jwt.factory" class="Symfony\Component\Mercure\Jwt\LcobucciFactory">
       <tag name="mercure.jwt.factory"/>
@@ -8382,6 +9018,9 @@
     <service id=".abstract.instanceof.App\Repository\UserRepository" class="App\Repository\UserRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\VehicleRepository" class="App\Repository\VehicleRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\VehicleRepository" class="App\Repository\VehicleRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Service\GeminiService" class="App\Service\GeminiService" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Service\GeminiService" class="App\Service\GeminiService" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Service\GeminiService" class="App\Service\GeminiService" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".service_locator.w7.f4fT" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -8862,6 +9501,21 @@
         <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
       </argument>
     </service>
+    <service id=".service_locator.gRaRER_" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="avisRepository" type="service_closure" id="App\Repository\AvisRepository"/>
+        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="paginator" type="service_closure" id="knp_paginator"/>
+      </argument>
+    </service>
+    <service id=".service_locator.QLpPh3T" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="badWordFilter" type="service_closure" id="App\Service\BadWordFilterService"/>
+        <argument key="entityManager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+      </argument>
+    </service>
     <service id=".service_locator.sXn0o2G" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -8892,6 +9546,28 @@
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="reponseRepository" type="service_closure" id="App\Repository\ReponseRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.N1QO2US" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="avisRepository" type="service_closure" id="App\Repository\AvisRepository"/>
+        <argument key="knpSnappyPdf" type="service_closure" id="knp_snappy.pdf"/>
+      </argument>
+    </service>
+    <service id=".service_locator.Rv71xlo" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="avi" type="service_closure" id=".errored..service_locator.Rv71xlo.App\Entity\Avis"/>
+        <argument key="tts" type="service_closure" id="App\Service\TextToSpeechService"/>
+      </argument>
+    </service>
+    <service id=".service_locator.WmUudt1" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="avi" type="service_closure" id=".errored..service_locator.WmUudt1.App\Entity\Avis"/>
+        <argument key="logger" type="service_closure" id="monolog.logger"/>
+        <argument key="params" type="service_closure" id="parameter_bag"/>
       </argument>
     </service>
     <service id=".service_locator.jyu0j.y" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -8929,10 +9605,11 @@
         <argument key="vehicleRepository" type="service_closure" id="App\Repository\VehicleRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.9kKwU2t" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.2rSpiUs" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="security" type="service_closure" id="security.helper"/>
       </argument>
     </service>
     <service id=".service_locator.o4OSn_B" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -8940,6 +9617,14 @@
       <argument type="collection">
         <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
         <argument key="maintenance" type="service_closure" id=".errored..service_locator.o4OSn_B.App\Entity\Maintenance"/>
+      </argument>
+    </service>
+    <service id=".service_locator.OpYewy6" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="maintenance" type="service_closure" id=".errored..service_locator.OpYewy6.App\Entity\Maintenance"/>
+        <argument key="security" type="service_closure" id="security.helper"/>
       </argument>
     </service>
     <service id=".service_locator.mzIlfgE" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -8959,6 +9644,19 @@
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="maintenance" type="service_closure" id=".errored..service_locator.yr1nTWk.App\Entity\Maintenance"/>
+      </argument>
+    </service>
+    <service id=".service_locator.CTpCb9p" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="maintenanceRepository" type="service_closure" id="App\Repository\MaintenanceRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.9kKwU2t" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
       </argument>
     </service>
     <service id=".service_locator.qrNhk2c" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -8994,6 +9692,13 @@
       <argument type="collection">
         <argument key="entityManager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
         <argument key="reponse" type="service_closure" id=".errored..service_locator.0488DqB.App\Entity\Reponse"/>
+      </argument>
+    </service>
+    <service id=".service_locator.je30DF4" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="repo" type="service_closure" id="App\Repository\ReponseRepository"/>
       </argument>
     </service>
     <service id=".service_locator.YuFNz6h" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -9113,6 +9818,39 @@
         <argument key="repository" type="service_closure" id="App\Repository\VehicleRepository"/>
       </argument>
     </service>
+    <service id=".service_locator.bFLFIY2" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="imageUploader" type="service_closure" id="App\Service\ImageUploadService"/>
+        <argument key="security" type="service_closure" id="security.helper"/>
+      </argument>
+    </service>
+    <service id=".service_locator.VApJ1BJ" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="maintenanceRepository" type="service_closure" id="App\Repository\MaintenanceRepository"/>
+        <argument key="security" type="service_closure" id="security.helper"/>
+        <argument key="vehicleRepository" type="service_closure" id="App\Repository\VehicleRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.hEoGfNr" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="imageUploader" type="service_closure" id="App\Service\ImageUploadService"/>
+        <argument key="repository" type="service_closure" id="App\Repository\VehicleRepository"/>
+        <argument key="security" type="service_closure" id="security.helper"/>
+      </argument>
+    </service>
+    <service id=".service_locator.vEN.5Jc" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="repository" type="service_closure" id="App\Repository\VehicleRepository"/>
+        <argument key="security" type="service_closure" id="security.helper"/>
+      </argument>
+    </service>
     <service id=".service_locator.W1rkJBW" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -9120,29 +9858,28 @@
         <argument key="imageUploader" type="service_closure" id="App\Service\ImageUploadService"/>
       </argument>
     </service>
-    <service id=".service_locator.IGk5.9t" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="maintenanceRepository" type="service_closure" id="App\Repository\MaintenanceRepository"/>
-        <argument key="vehicleRepository" type="service_closure" id="App\Repository\VehicleRepository"/>
-      </argument>
-    </service>
-    <service id=".service_locator.Odgi3jE" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.Yp6hj5r" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
         <argument key="imageUploader" type="service_closure" id="App\Service\ImageUploadService"/>
-        <argument key="repository" type="service_closure" id="App\Repository\VehicleRepository"/>
+        <argument key="vehicleRepository" type="service_closure" id="App\Repository\VehicleRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.Qmp2mzR" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.d1U9zsJ" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="vehicleRepository" type="service_closure" id="App\Repository\VehicleRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.j_CADyQ" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
-        <argument key="repository" type="service_closure" id="App\Repository\VehicleRepository"/>
+        <argument key="vehicleRepository" type="service_closure" id="App\Repository\VehicleRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.ErrHWz1" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.GNnv82i" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\Admin\UserManagementController::blockUser" type="service_closure" id=".service_locator.rvMNZGh"/>
@@ -9160,11 +9897,14 @@
         <argument key="App\Controller\Auth\ResetPasswordController::verifyCode" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\AvisController::delete" type="service_closure" id=".service_locator.WAdf4Q1"/>
         <argument key="App\Controller\AvisController::edit" type="service_closure" id=".service_locator.WAdf4Q1"/>
-        <argument key="App\Controller\AvisController::index" type="service_closure" id=".service_locator.sXn0o2G"/>
+        <argument key="App\Controller\AvisController::exportPdf" type="service_closure" id=".service_locator.N1QO2US"/>
+        <argument key="App\Controller\AvisController::getTtsToken" type="service_closure" id=".service_locator.WmUudt1"/>
+        <argument key="App\Controller\AvisController::index" type="service_closure" id=".service_locator.gRaRER_"/>
         <argument key="App\Controller\AvisController::indexFront" type="service_closure" id=".service_locator.sXn0o2G"/>
-        <argument key="App\Controller\AvisController::new" type="service_closure" id=".service_locator.CsMkqUa"/>
+        <argument key="App\Controller\AvisController::new" type="service_closure" id=".service_locator.QLpPh3T"/>
         <argument key="App\Controller\AvisController::newFront" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\AvisController::show" type="service_closure" id=".service_locator.tqKaOKq"/>
+        <argument key="App\Controller\AvisController::tts" type="service_closure" id=".service_locator.Rv71xlo"/>
         <argument key="App\Controller\AvisController::viewReponses" type="service_closure" id=".service_locator.9seJ.96"/>
         <argument key="App\Controller\CourseController::delete" type="service_closure" id=".service_locator.WFOklYF"/>
         <argument key="App\Controller\CourseController::edit" type="service_closure" id=".service_locator.WFOklYF"/>
@@ -9174,12 +9914,17 @@
         <argument key="App\Controller\CourseController::new" type="service_closure" id=".service_locator.HdVlk9X"/>
         <argument key="App\Controller\CourseController::stats" type="service_closure" id=".service_locator.QkVYtxV"/>
         <argument key="App\Controller\CourseController::zonesMap" type="service_closure" id=".service_locator.QkVYtxV"/>
-        <argument key="App\Controller\MaintenanceController::delete" type="service_closure" id=".service_locator.o4OSn_B"/>
+        <argument key="App\Controller\MaintenanceController::clearVehicleMaintenanceHistory" type="service_closure" id=".service_locator.2rSpiUs"/>
+        <argument key="App\Controller\MaintenanceController::delete" type="service_closure" id=".service_locator.OpYewy6"/>
+        <argument key="App\Controller\MaintenanceController::driverEdit" type="service_closure" id=".service_locator.o4OSn_B"/>
+        <argument key="App\Controller\MaintenanceController::driverIndex" type="service_closure" id=".service_locator.CTpCb9p"/>
+        <argument key="App\Controller\MaintenanceController::driverNew" type="service_closure" id=".service_locator.9kKwU2t"/>
+        <argument key="App\Controller\MaintenanceController::driverShow" type="service_closure" id=".service_locator.mzIlfgE"/>
         <argument key="App\Controller\MaintenanceController::edit" type="service_closure" id=".service_locator.o4OSn_B"/>
         <argument key="App\Controller\MaintenanceController::exportToPdf" type="service_closure" id=".service_locator.yr1nTWk"/>
         <argument key="App\Controller\MaintenanceController::findByVehicleId" type="service_closure" id=".service_locator.PmRn0jE"/>
         <argument key="App\Controller\MaintenanceController::index" type="service_closure" id=".service_locator.gLNs2.Z"/>
-        <argument key="App\Controller\MaintenanceController::new" type="service_closure" id=".service_locator.9kKwU2t"/>
+        <argument key="App\Controller\MaintenanceController::new" type="service_closure" id=".service_locator.2rSpiUs"/>
         <argument key="App\Controller\MaintenanceController::show" type="service_closure" id=".service_locator.mzIlfgE"/>
         <argument key="App\Controller\ProfileController::changePassword" type="service_closure" id=".service_locator.qrNhk2c"/>
         <argument key="App\Controller\ProfileController::delete" type="service_closure" id=".service_locator.CsMkqUa"/>
@@ -9188,8 +9933,10 @@
         <argument key="App\Controller\RatingController::rateTaxi" type="service_closure" id=".service_locator.A59gyzW"/>
         <argument key="App\Controller\ReponseController::delete" type="service_closure" id=".service_locator.0488DqB"/>
         <argument key="App\Controller\ReponseController::edit" type="service_closure" id=".service_locator.0488DqB"/>
+        <argument key="App\Controller\ReponseController::globalStats" type="service_closure" id=".service_locator.9seJ.96"/>
         <argument key="App\Controller\ReponseController::index" type="service_closure" id=".service_locator.9seJ.96"/>
         <argument key="App\Controller\ReponseController::new" type="service_closure" id=".service_locator..Acm3OK"/>
+        <argument key="App\Controller\ReponseController::rate" type="service_closure" id=".service_locator.je30DF4"/>
         <argument key="App\Controller\ReponseController::reponsesForAvis" type="service_closure" id=".service_locator.9seJ.96"/>
         <argument key="App\Controller\ReponseController::show" type="service_closure" id=".service_locator.Nf.XpWv"/>
         <argument key="App\Controller\ReportController::pdf" type="service_closure" id=".service_locator.kPUOGb8"/>
@@ -9234,15 +9981,19 @@
         <argument key="App\Controller\UserCourseController::cancel" type="service_closure" id=".service_locator.WFOklYF"/>
         <argument key="App\Controller\UserCourseController::index" type="service_closure" id=".service_locator.jyu0j.y"/>
         <argument key="App\Controller\UserCourseController::new" type="service_closure" id=".service_locator.9Nk7qGc"/>
-        <argument key="App\Controller\VehicleController::delete" type="service_closure" id=".service_locator.Qmp2mzR"/>
+        <argument key="App\Controller\VehicleController::delete" type="service_closure" id=".service_locator.vEN.5Jc"/>
         <argument key="App\Controller\VehicleController::driverAddVehicle" type="service_closure" id=".service_locator.W1rkJBW"/>
-        <argument key="App\Controller\VehicleController::edit" type="service_closure" id=".service_locator.Odgi3jE"/>
+        <argument key="App\Controller\VehicleController::edit" type="service_closure" id=".service_locator.hEoGfNr"/>
+        <argument key="App\Controller\VehicleController::editMyVehicle" type="service_closure" id=".service_locator.Yp6hj5r"/>
         <argument key="App\Controller\VehicleController::index" type="service_closure" id=".service_locator.zK6wgY4"/>
         <argument key="App\Controller\VehicleController::myVehicle" type="service_closure" id=".service_locator.9kKwU2t"/>
-        <argument key="App\Controller\VehicleController::new" type="service_closure" id=".service_locator.W1rkJBW"/>
-        <argument key="App\Controller\VehicleController::show" type="service_closure" id=".service_locator.IGk5.9t"/>
+        <argument key="App\Controller\VehicleController::new" type="service_closure" id=".service_locator.bFLFIY2"/>
+        <argument key="App\Controller\VehicleController::show" type="service_closure" id=".service_locator.VApJ1BJ"/>
+        <argument key="App\Controller\VehicleController::verifyPage" type="service_closure" id=".service_locator.d1U9zsJ"/>
+        <argument key="App\Controller\VehicleController::verifyVehicle" type="service_closure" id=".service_locator.j_CADyQ"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
+        <argument key="App\Service\GeminiService::chat" type="service_closure" id=".service_locator.6sfO1nG"/>
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="App\Controller\Admin\UserManagementController:blockUser" type="service_closure" id=".service_locator.rvMNZGh"/>
@@ -9260,11 +10011,14 @@
         <argument key="App\Controller\Auth\ResetPasswordController:verifyCode" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\AvisController:delete" type="service_closure" id=".service_locator.WAdf4Q1"/>
         <argument key="App\Controller\AvisController:edit" type="service_closure" id=".service_locator.WAdf4Q1"/>
-        <argument key="App\Controller\AvisController:index" type="service_closure" id=".service_locator.sXn0o2G"/>
+        <argument key="App\Controller\AvisController:exportPdf" type="service_closure" id=".service_locator.N1QO2US"/>
+        <argument key="App\Controller\AvisController:getTtsToken" type="service_closure" id=".service_locator.WmUudt1"/>
+        <argument key="App\Controller\AvisController:index" type="service_closure" id=".service_locator.gRaRER_"/>
         <argument key="App\Controller\AvisController:indexFront" type="service_closure" id=".service_locator.sXn0o2G"/>
-        <argument key="App\Controller\AvisController:new" type="service_closure" id=".service_locator.CsMkqUa"/>
+        <argument key="App\Controller\AvisController:new" type="service_closure" id=".service_locator.QLpPh3T"/>
         <argument key="App\Controller\AvisController:newFront" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\AvisController:show" type="service_closure" id=".service_locator.tqKaOKq"/>
+        <argument key="App\Controller\AvisController:tts" type="service_closure" id=".service_locator.Rv71xlo"/>
         <argument key="App\Controller\AvisController:viewReponses" type="service_closure" id=".service_locator.9seJ.96"/>
         <argument key="App\Controller\CourseController:delete" type="service_closure" id=".service_locator.WFOklYF"/>
         <argument key="App\Controller\CourseController:edit" type="service_closure" id=".service_locator.WFOklYF"/>
@@ -9274,12 +10028,17 @@
         <argument key="App\Controller\CourseController:new" type="service_closure" id=".service_locator.HdVlk9X"/>
         <argument key="App\Controller\CourseController:stats" type="service_closure" id=".service_locator.QkVYtxV"/>
         <argument key="App\Controller\CourseController:zonesMap" type="service_closure" id=".service_locator.QkVYtxV"/>
-        <argument key="App\Controller\MaintenanceController:delete" type="service_closure" id=".service_locator.o4OSn_B"/>
+        <argument key="App\Controller\MaintenanceController:clearVehicleMaintenanceHistory" type="service_closure" id=".service_locator.2rSpiUs"/>
+        <argument key="App\Controller\MaintenanceController:delete" type="service_closure" id=".service_locator.OpYewy6"/>
+        <argument key="App\Controller\MaintenanceController:driverEdit" type="service_closure" id=".service_locator.o4OSn_B"/>
+        <argument key="App\Controller\MaintenanceController:driverIndex" type="service_closure" id=".service_locator.CTpCb9p"/>
+        <argument key="App\Controller\MaintenanceController:driverNew" type="service_closure" id=".service_locator.9kKwU2t"/>
+        <argument key="App\Controller\MaintenanceController:driverShow" type="service_closure" id=".service_locator.mzIlfgE"/>
         <argument key="App\Controller\MaintenanceController:edit" type="service_closure" id=".service_locator.o4OSn_B"/>
         <argument key="App\Controller\MaintenanceController:exportToPdf" type="service_closure" id=".service_locator.yr1nTWk"/>
         <argument key="App\Controller\MaintenanceController:findByVehicleId" type="service_closure" id=".service_locator.PmRn0jE"/>
         <argument key="App\Controller\MaintenanceController:index" type="service_closure" id=".service_locator.gLNs2.Z"/>
-        <argument key="App\Controller\MaintenanceController:new" type="service_closure" id=".service_locator.9kKwU2t"/>
+        <argument key="App\Controller\MaintenanceController:new" type="service_closure" id=".service_locator.2rSpiUs"/>
         <argument key="App\Controller\MaintenanceController:show" type="service_closure" id=".service_locator.mzIlfgE"/>
         <argument key="App\Controller\ProfileController:changePassword" type="service_closure" id=".service_locator.qrNhk2c"/>
         <argument key="App\Controller\ProfileController:delete" type="service_closure" id=".service_locator.CsMkqUa"/>
@@ -9288,8 +10047,10 @@
         <argument key="App\Controller\RatingController:rateTaxi" type="service_closure" id=".service_locator.A59gyzW"/>
         <argument key="App\Controller\ReponseController:delete" type="service_closure" id=".service_locator.0488DqB"/>
         <argument key="App\Controller\ReponseController:edit" type="service_closure" id=".service_locator.0488DqB"/>
+        <argument key="App\Controller\ReponseController:globalStats" type="service_closure" id=".service_locator.9seJ.96"/>
         <argument key="App\Controller\ReponseController:index" type="service_closure" id=".service_locator.9seJ.96"/>
         <argument key="App\Controller\ReponseController:new" type="service_closure" id=".service_locator..Acm3OK"/>
+        <argument key="App\Controller\ReponseController:rate" type="service_closure" id=".service_locator.je30DF4"/>
         <argument key="App\Controller\ReponseController:reponsesForAvis" type="service_closure" id=".service_locator.9seJ.96"/>
         <argument key="App\Controller\ReponseController:show" type="service_closure" id=".service_locator.Nf.XpWv"/>
         <argument key="App\Controller\ReportController:pdf" type="service_closure" id=".service_locator.kPUOGb8"/>
@@ -9334,13 +10095,17 @@
         <argument key="App\Controller\UserCourseController:cancel" type="service_closure" id=".service_locator.WFOklYF"/>
         <argument key="App\Controller\UserCourseController:index" type="service_closure" id=".service_locator.jyu0j.y"/>
         <argument key="App\Controller\UserCourseController:new" type="service_closure" id=".service_locator.9Nk7qGc"/>
-        <argument key="App\Controller\VehicleController:delete" type="service_closure" id=".service_locator.Qmp2mzR"/>
+        <argument key="App\Controller\VehicleController:delete" type="service_closure" id=".service_locator.vEN.5Jc"/>
         <argument key="App\Controller\VehicleController:driverAddVehicle" type="service_closure" id=".service_locator.W1rkJBW"/>
-        <argument key="App\Controller\VehicleController:edit" type="service_closure" id=".service_locator.Odgi3jE"/>
+        <argument key="App\Controller\VehicleController:edit" type="service_closure" id=".service_locator.hEoGfNr"/>
+        <argument key="App\Controller\VehicleController:editMyVehicle" type="service_closure" id=".service_locator.Yp6hj5r"/>
         <argument key="App\Controller\VehicleController:index" type="service_closure" id=".service_locator.zK6wgY4"/>
         <argument key="App\Controller\VehicleController:myVehicle" type="service_closure" id=".service_locator.9kKwU2t"/>
-        <argument key="App\Controller\VehicleController:new" type="service_closure" id=".service_locator.W1rkJBW"/>
-        <argument key="App\Controller\VehicleController:show" type="service_closure" id=".service_locator.IGk5.9t"/>
+        <argument key="App\Controller\VehicleController:new" type="service_closure" id=".service_locator.bFLFIY2"/>
+        <argument key="App\Controller\VehicleController:show" type="service_closure" id=".service_locator.VApJ1BJ"/>
+        <argument key="App\Controller\VehicleController:verifyPage" type="service_closure" id=".service_locator.d1U9zsJ"/>
+        <argument key="App\Controller\VehicleController:verifyVehicle" type="service_closure" id=".service_locator.j_CADyQ"/>
+        <argument key="App\Service\GeminiService:chat" type="service_closure" id=".service_locator.6sfO1nG"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
       </argument>
@@ -9640,6 +10405,13 @@
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="debug.stopwatch" on-invalid="ignore"/>
     </service>
+    <service id=".debug.hwi_oauth.http_client" class="Symfony\Component\HttpClient\TraceableHttpClient">
+      <tag name="http_client.client"/>
+      <tag name="kernel.reset" method="reset"/>
+      <tag name="container.decorator" id="hwi_oauth.http_client" inner=".debug.hwi_oauth.http_client.inner"/>
+      <argument type="service" id=".debug.hwi_oauth.http_client.inner"/>
+      <argument type="service" id="debug.stopwatch" on-invalid="ignore"/>
+    </service>
     <service id=".service_locator.uQI6v0E" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -9862,6 +10634,16 @@
     </service>
     <service id="monolog.logger.snappy" class="Monolog\Logger">
       <argument>snappy</argument>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.console"/>
+      </call>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.main"/>
+      </call>
+      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
+    </service>
+    <service id="monolog.logger.httplug" class="Monolog\Logger">
+      <argument>httplug</argument>
       <call method="pushHandler">
         <argument type="service" id="monolog.handler.console"/>
       </call>
@@ -10227,6 +11009,12 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.O2p6Lk7" method="withContext"/>
     </service>
+    <service id=".service_locator.O2p6Lk7.App\Service\GeminiService" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Service\GeminiService"/>
+      <argument>App\Service\GeminiService</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.O2p6Lk7" method="withContext"/>
+    </service>
     <service id=".service_locator.fuYM_Z." class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -10384,6 +11172,9 @@
       </argument>
       <factory function="current"/>
     </service>
+    <service id=".debug.hwi_oauth.http_client.inner" class="Symfony\Contracts\HttpClient\HttpClientInterface">
+      <factory class="Symfony\Component\HttpClient\HttpClient" method="create"/>
+    </service>
     <service id="asset_mapper.cached_mapped_asset_factory.inner" class="Symfony\Component\AssetMapper\Factory\MappedAssetFactory">
       <argument type="service" id="asset_mapper.public_assets_path_resolver"/>
       <argument type="service" id="asset_mapper_compiler"/>
@@ -10442,6 +11233,7 @@
           <argument>App\Controller\UserCourseController</argument>
           <argument>App\Controller\VehicleController</argument>
           <argument>App\Controller\voiceController</argument>
+          <argument>App\Service\GeminiService</argument>
           <argument>Doctrine\Bundle\DoctrineBundle\Controller\ProfilerController</argument>
         </argument>
       </call>
@@ -10622,6 +11414,32 @@
     <service id="debug.security.firewall.authenticator.main.inner" class="Symfony\Component\Security\Http\Firewall\AuthenticatorManagerListener">
       <argument type="service" id="security.authenticator.manager.main"/>
     </service>
+    <service id="httplug.collector.auto_discovered_client.inner" class="Psr\Http\Client\ClientInterface">
+      <factory class="Http\Discovery\Psr18ClientDiscovery" method="find"/>
+    </service>
+    <service id="httplug.collector.factory.auto.inner" class="Http\HttplugBundle\ClientFactory\AutoDiscoveryFactory"/>
+    <service id="httplug.collector.factory.buzz.inner" class="Http\HttplugBundle\ClientFactory\BuzzFactory">
+      <argument type="service" id="httplug.psr17_response_factory.default"/>
+    </service>
+    <service id="httplug.collector.factory.curl.inner" class="Http\HttplugBundle\ClientFactory\CurlFactory">
+      <argument type="service" id="httplug.psr17_response_factory.default"/>
+      <argument type="service" id="httplug.psr17_stream_factory.default"/>
+    </service>
+    <service id="httplug.collector.factory.guzzle6.inner" class="Http\HttplugBundle\ClientFactory\Guzzle6Factory"/>
+    <service id="httplug.collector.factory.guzzle7.inner" class="Http\HttplugBundle\ClientFactory\Guzzle7Factory"/>
+    <service id="httplug.collector.factory.react.inner" class="Http\HttplugBundle\ClientFactory\ReactFactory"/>
+    <service id="httplug.collector.factory.socket.inner" class="Http\HttplugBundle\ClientFactory\SocketFactory"/>
+    <service id="httplug.client.app.http_methods.inner" class="Http\Client\Common\PluginClient">
+      <argument type="service" id="httplug.client.app.client"/>
+      <argument type="collection">
+        <argument type="service" id="httplug.plugin.content_length"/>
+        <argument type="service" id="httplug.plugin.redirect"/>
+      </argument>
+      <argument type="collection">
+        <argument key="client_name">app</argument>
+      </argument>
+      <factory service="Http\Client\Common\PluginClientFactory" method="createClient"/>
+    </service>
     <service id="mercure.hub.default.publisher.traceable.inner" class="Symfony\Component\Mercure\Publisher">
       <argument>%env(MERCURE_URL)%</argument>
       <argument type="service" id="mercure.hub.default.jwt.provider"/>
@@ -10668,11 +11486,20 @@
     <service id=".errored..service_locator.WAdf4Q1.App\Entity\Avis" class="App\Entity\Avis">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.WAdf4Q1&quot;: it needs an instance of &quot;App\Entity\Avis&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
     </service>
+    <service id=".errored..service_locator.Rv71xlo.App\Entity\Avis" class="App\Entity\Avis">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.Rv71xlo&quot;: it needs an instance of &quot;App\Entity\Avis&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
+    </service>
+    <service id=".errored..service_locator.WmUudt1.App\Entity\Avis" class="App\Entity\Avis">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.WmUudt1&quot;: it needs an instance of &quot;App\Entity\Avis&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
+    </service>
     <service id=".errored..service_locator.WFOklYF.App\Entity\Course" class="App\Entity\Course">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.WFOklYF&quot;: it needs an instance of &quot;App\Entity\Course&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
     </service>
     <service id=".errored..service_locator.o4OSn_B.App\Entity\Maintenance" class="App\Entity\Maintenance">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.o4OSn_B&quot;: it needs an instance of &quot;App\Entity\Maintenance&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
+    </service>
+    <service id=".errored..service_locator.OpYewy6.App\Entity\Maintenance" class="App\Entity\Maintenance">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.OpYewy6&quot;: it needs an instance of &quot;App\Entity\Maintenance&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
     </service>
     <service id=".errored..service_locator.yr1nTWk.App\Entity\Maintenance" class="App\Entity\Maintenance">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.yr1nTWk&quot;: it needs an instance of &quot;App\Entity\Maintenance&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
@@ -11713,7 +12540,7 @@
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
-    <service id=".service_locator.PqIxmzX" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.MYxB76W" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="Symfony\Bridge\Twig\Extension\CsrfRuntime" type="service_closure" id="twig.runtime.security_csrf"/>
@@ -11724,6 +12551,7 @@
         <argument key="Symfony\UX\StimulusBundle\Twig\UxControllersTwigRuntime" type="service_closure" id="stimulus.ux_controllers_twig_runtime"/>
         <argument key="Symfony\UX\Turbo\Twig\TurboRuntime" type="service_closure" id="turbo.twig.runtime"/>
         <argument key="Knp\Bundle\PaginatorBundle\Twig\Extension\PaginationRuntime" type="service_closure" id="Knp\Bundle\PaginatorBundle\Twig\Extension\PaginationRuntime"/>
+        <argument key="HWI\Bundle\OAuthBundle\Twig\Extension\OAuthRuntime" type="service_closure" id="hwi_oauth.twig.extension.oauth.runtime"/>
       </argument>
     </service>
     <service id="Psr\Http\Message\RequestFactoryInterface" alias="http_discovery.psr17_factory"/>
@@ -11769,8 +12597,8 @@
     <service id="asset_mapper.http_client" alias=".debug.http_client"/>
     <service id="Symfony\Component\AssetMapper\ImportMap\ImportMapManager" alias="asset_mapper.importmap.manager"/>
     <service id="Symfony\Contracts\HttpClient\HttpClientInterface" alias=".debug.http_client"/>
-    <service id="Psr\Http\Client\ClientInterface" alias="psr18.http_client"/>
-    <service id="Http\Client\HttpAsyncClient" alias="httplug.http_client"/>
+    <service id="Psr\Http\Client\ClientInterface" alias="httplug.client.app.http_methods"/>
+    <service id="Http\Client\HttpAsyncClient" alias="httplug.async_client.default"/>
     <service id="Http\Client\HttpClient" alias="httplug.http_client">
       <deprecated package="symfony/framework-bundle" version="6.3">The "%alias_id%" service is deprecated, use "Psr\Http\Client\ClientInterface" instead.</deprecated>
     </service>
@@ -11900,6 +12728,7 @@
     <service id="security.user_providers" alias="security.user.provider.concrete.app_user_provider"/>
     <service id="Symfony\Component\Security\Core\User\UserProviderInterface" alias="security.user.provider.concrete.app_user_provider"/>
     <service id="security.authentication.session_strategy.main" alias="security.authentication.session_strategy"/>
+    <service id="hwi_oauth.user.provider.entity.main" alias="App\Security\OAuthUserProvider"/>
     <service id="security.user_checker.main" alias="App\Security\UserChecker"/>
     <service id="security.firewall.context_locator" alias=".service_locator.zJyh7qS"/>
     <service id="logger" alias="monolog.logger"/>
@@ -11907,6 +12736,20 @@
     <service id="Knp\Snappy\Pdf" alias="knp_snappy.pdf"/>
     <service id="Symfony\WebpackEncoreBundle\Asset\EntrypointLookupCollectionInterface" alias="webpack_encore.entrypoint_lookup_collection"/>
     <service id="Symfony\WebpackEncoreBundle\Asset\EntrypointLookupInterface" alias="webpack_encore.entrypoint_lookup[_default]"/>
+    <service id="hwi_oauth.user_checker" alias="security.user_checker" public="true"/>
+    <service id="hwi_oauth.resource_owners.locator" alias=".service_locator.RYCt.tV"/>
+    <service id="httplug.client" alias="httplug.client.app.http_methods" public="true"/>
+    <service id="httplug.psr18_client" alias="httplug.psr18_client.default" public="true"/>
+    <service id="httplug.psr17_request_factory" alias="httplug.psr17_request_factory.default" public="true"/>
+    <service id="httplug.psr17_response_factory" alias="httplug.psr17_response_factory.default" public="true"/>
+    <service id="httplug.psr17_stream_factory" alias="httplug.psr17_stream_factory.default" public="true"/>
+    <service id="httplug.psr17_uri_factory" alias="httplug.psr17_uri_factory.default" public="true"/>
+    <service id="httplug.psr17_uploaded_file_factory" alias="httplug.psr17_uploaded_file_factory.default" public="true"/>
+    <service id="httplug.psr17_server_request_factory" alias="httplug.psr17_server_request_factory.default" public="true"/>
+    <service id="Psr\Http\Client\ClientInterface $app" alias="httplug.client.app.http_methods"/>
+    <service id="Http\Client\HttpAsyncClient $app" alias="httplug.client.app.http_methods"/>
+    <service id="httplug.client.default" alias="httplug.client.app.http_methods"/>
+    <service id="Http\Client\Common\HttpMethodsClientInterface" alias="httplug.client.app.http_methods"/>
     <service id="Symfony\Component\Mercure\Jwt\TokenFactoryInterface $default" alias="mercure.hub.default.jwt.factory"/>
     <service id="Symfony\Component\Mercure\Jwt\TokenFactoryInterface $defaultFactory" alias="mercure.hub.default.jwt.factory"/>
     <service id="Symfony\Component\Mercure\Jwt\TokenFactoryInterface $defaultTokenFactory" alias="mercure.hub.default.jwt.factory"/>
@@ -11921,7 +12764,7 @@
     <service id="Symfony\Component\Mercure\Publisher" alias="mercure.hub.default.publisher.traceable"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.w7.f4fT" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.ErrHWz1"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.GNnv82i"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -11942,10 +12785,12 @@
     <service id="Psr\Log\LoggerInterface $debugLogger" alias="monolog.logger.debug"/>
     <service id="Psr\Log\LoggerInterface $securityLogger" alias="monolog.logger.security"/>
     <service id="Psr\Log\LoggerInterface $snappyLogger" alias="monolog.logger.snappy"/>
+    <service id="Psr\Log\LoggerInterface $httplugLogger" alias="monolog.logger.httplug"/>
     <service id="Psr\Log\LoggerInterface $deprecationLogger" alias="monolog.logger.deprecation"/>
     <service id="turbo.mercure.stimulus_helper" alias="stimulus.helper"/>
     <service id=".service_locator.80edgLI" alias="messenger.receiver_locator"/>
     <service id=".service_locator.h8Jkkd2" alias="messenger.retry_strategy_locator"/>
+    <service id=".service_locator.x6mAHB8" alias=".service_locator.9yq2RTn"/>
     <service id=".service_locator.XDGmiR3" alias=".1_ServiceLocator~JMwI_Uc"/>
     <service id=".service_locator.bJ.4HC5" alias=".service_locator.w7.f4fT"/>
     <service id=".service_locator.RtCGHrO" alias=".service_locator.lDw5jgg"/>
@@ -11953,18 +12798,26 @@
     <service id=".service_locator.H7hrCl." alias=".service_locator.iNEEFiM"/>
     <service id=".service_locator.WHWcPEi" alias=".service_locator.Xm4mt1I"/>
     <service id=".service_locator.yZn_IzL" alias=".service_locator.rET9i7U"/>
+    <service id=".service_locator.84727aC" alias=".service_locator.gRaRER_"/>
+    <service id=".service_locator.glWLdJO" alias=".service_locator.QLpPh3T"/>
+    <service id=".service_locator.ZUJdXX1" alias=".service_locator.WmUudt1"/>
     <service id=".service_locator.58do0G8" alias=".service_locator.gLNs2.Z"/>
     <service id=".service_locator.fl1pKPp" alias=".service_locator.o4OSn_B"/>
+    <service id=".service_locator.MQO.u3V" alias=".service_locator.OpYewy6"/>
     <service id=".service_locator.e3sag5G" alias=".service_locator.mzIlfgE"/>
+    <service id=".service_locator.._To.Ew" alias=".service_locator.CTpCb9p"/>
     <service id=".service_locator.x8XHjji" alias=".service_locator.A59gyzW"/>
     <service id=".service_locator.PFeenAx" alias=".service_locator.0488DqB"/>
+    <service id=".service_locator.Wf7Uov3" alias=".service_locator.je30DF4"/>
     <service id=".service_locator.yjYmAoZ" alias=".service_locator.gBkZnE5"/>
     <service id=".service_locator.vQQOucM" alias=".service_locator.KzUmWl9"/>
     <service id=".service_locator.wGrkirq" alias=".service_locator.vp8xSL3"/>
-    <service id=".service_locator.u38pUjA" alias=".service_locator.IGk5.9t"/>
-    <service id=".service_locator.Pk8F8jO" alias=".service_locator.Odgi3jE"/>
-    <service id=".service_locator..kqrApu" alias=".service_locator.Qmp2mzR"/>
-    <service id=".service_locator.VWesPvF" alias=".service_locator.ErrHWz1"/>
+    <service id=".service_locator.jLYgcGx" alias=".service_locator.VApJ1BJ"/>
+    <service id=".service_locator.2JzWTYR" alias=".service_locator.hEoGfNr"/>
+    <service id=".service_locator.luMIMho" alias=".service_locator.vEN.5Jc"/>
+    <service id=".service_locator.pUcltmg" alias=".service_locator.Yp6hj5r"/>
+    <service id=".service_locator.8_PuObu" alias=".service_locator.j_CADyQ"/>
+    <service id=".service_locator.aq0hUmz" alias=".service_locator.GNnv82i"/>
     <service id=".service_locator.BFrsqsn" alias=".service_locator.F9PKc.7"/>
     <service id=".service_locator.CUxlF4t" alias=".service_locator.C43x9BG"/>
     <service id=".service_locator.EJ_5nbN" alias=".service_locator.uQI6v0E"/>
@@ -11973,6 +12826,7 @@
     <service id="validator" alias="debug.validator"/>
     <service id="http_client" alias=".debug.http_client"/>
     <service id=".debug.http_client.inner" alias="http_client.uri_template"/>
+    <service id="hwi_oauth.http_client" alias=".debug.hwi_oauth.http_client"/>
     <service id="asset_mapper.mapped_asset_factory" alias="asset_mapper.cached_mapped_asset_factory"/>
     <service id="assets._default_package" alias="asset_mapper.asset_package"/>
     <service id="event_dispatcher" alias="debug.event_dispatcher" public="true"/>
@@ -11986,6 +12840,15 @@
     <service id="turbo.broadcaster.imux" alias="turbo.broadcaster.action_renderer"/>
     <service id="security.access.decision_manager" alias="debug.security.access.decision_manager"/>
     <service id="security.firewall.authenticator.main" alias="debug.security.firewall.authenticator.main"/>
+    <service id="httplug.auto_discovery.auto_discovered_client" alias="httplug.collector.auto_discovered_client"/>
+    <service id="httplug.factory.auto" alias="httplug.collector.factory.auto"/>
+    <service id="httplug.factory.buzz" alias="httplug.collector.factory.buzz"/>
+    <service id="httplug.factory.curl" alias="httplug.collector.factory.curl"/>
+    <service id="httplug.factory.guzzle6" alias="httplug.collector.factory.guzzle6"/>
+    <service id="httplug.factory.guzzle7" alias="httplug.collector.factory.guzzle7"/>
+    <service id="httplug.factory.react" alias="httplug.collector.factory.react"/>
+    <service id="httplug.factory.socket" alias="httplug.collector.factory.socket"/>
+    <service id="httplug.client.app" alias="httplug.client.app.http_methods"/>
     <service id="mercure.hub.default.publisher" alias="mercure.hub.default.publisher.traceable"/>
     <service id="mercure.hub.default" alias="mercure.hub.default.traceable"/>
     <service id="messenger.bus.default" alias="debug.traced.messenger.bus.default"/>
@@ -12000,26 +12863,35 @@
     <service id=".service_locator.HAp6Qyp" alias=".service_locator.iNEEFiM"/>
     <service id=".service_locator.2u2E1.k" alias=".service_locator.Xm4mt1I"/>
     <service id=".service_locator..g6EE34" alias=".service_locator.rET9i7U"/>
+    <service id=".service_locator.Z.VIQGH" alias=".service_locator.gRaRER_"/>
+    <service id=".service_locator.Yaou.79" alias=".service_locator.QLpPh3T"/>
     <service id=".service_locator.0GJqD2u" alias=".service_locator.sXn0o2G"/>
     <service id=".service_locator.9e2t_lq" alias=".service_locator.CsMkqUa"/>
     <service id=".service_locator.S1ieKS5" alias=".service_locator.tqKaOKq"/>
     <service id=".service_locator.zdHfM31" alias=".service_locator.WAdf4Q1"/>
     <service id=".service_locator.YmuaK52" alias=".service_locator.9seJ.96"/>
+    <service id=".service_locator.qfnTGEe" alias=".service_locator.N1QO2US"/>
+    <service id=".service_locator.InN34i6" alias=".service_locator.Rv71xlo"/>
+    <service id=".service_locator.HUe.5Da" alias=".service_locator.WmUudt1"/>
     <service id=".service_locator.TRzoW29" alias=".service_locator.jyu0j.y"/>
     <service id=".service_locator.zEg5TCj" alias=".service_locator.HdVlk9X"/>
     <service id=".service_locator.SR5Kj99" alias=".service_locator.WFOklYF"/>
     <service id=".service_locator.HRkK60W" alias=".service_locator.QkVYtxV"/>
     <service id=".service_locator.ZPDwDI1" alias=".service_locator.gLNs2.Z"/>
-    <service id=".service_locator.gaTSUXr" alias=".service_locator.9kKwU2t"/>
+    <service id=".service_locator.BXTk63H" alias=".service_locator.2rSpiUs"/>
     <service id=".service_locator.0AoX3n6" alias=".service_locator.o4OSn_B"/>
+    <service id=".service_locator.eiSnG.R" alias=".service_locator.OpYewy6"/>
     <service id=".service_locator.AyGW_sS" alias=".service_locator.mzIlfgE"/>
     <service id=".service_locator.ap2ALHK" alias=".service_locator.PmRn0jE"/>
     <service id=".service_locator.fRB2Vdt" alias=".service_locator.yr1nTWk"/>
+    <service id=".service_locator.WwhfxFR" alias=".service_locator.CTpCb9p"/>
+    <service id=".service_locator.gaTSUXr" alias=".service_locator.9kKwU2t"/>
     <service id=".service_locator.GEFQPA3" alias=".service_locator.qrNhk2c"/>
     <service id=".service_locator.LCDZeF7" alias=".service_locator.A59gyzW"/>
     <service id=".service_locator.SR.BzAL" alias=".service_locator..Acm3OK"/>
     <service id=".service_locator.ppzQ96B" alias=".service_locator.Nf.XpWv"/>
     <service id=".service_locator.7hez2nP" alias=".service_locator.0488DqB"/>
+    <service id=".service_locator.fO2fQws" alias=".service_locator.je30DF4"/>
     <service id=".service_locator.o_TGHNJ" alias=".service_locator.YuFNz6h"/>
     <service id=".service_locator.bRbdH2p" alias=".service_locator.h9c0uBq"/>
     <service id=".service_locator.Kcii2X5" alias=".service_locator.gBkZnE5"/>
@@ -12038,10 +12910,14 @@
     <service id=".service_locator.VujNNwz" alias=".service_locator.6sfO1nG"/>
     <service id=".service_locator.NOF1oBx" alias=".service_locator.9Nk7qGc"/>
     <service id=".service_locator.ObJyWvr" alias=".service_locator.zK6wgY4"/>
+    <service id=".service_locator.V9NKT1D" alias=".service_locator.bFLFIY2"/>
+    <service id=".service_locator.xdNBon_" alias=".service_locator.VApJ1BJ"/>
+    <service id=".service_locator.FXoW7z1" alias=".service_locator.hEoGfNr"/>
+    <service id=".service_locator.qF9ZAGN" alias=".service_locator.vEN.5Jc"/>
     <service id=".service_locator.HQTg2Oy" alias=".service_locator.W1rkJBW"/>
-    <service id=".service_locator.JBZTRsa" alias=".service_locator.IGk5.9t"/>
-    <service id=".service_locator.YUU3kXF" alias=".service_locator.Odgi3jE"/>
-    <service id=".service_locator._yF65.d" alias=".service_locator.Qmp2mzR"/>
+    <service id=".service_locator.DF5_hNI" alias=".service_locator.Yp6hj5r"/>
+    <service id=".service_locator.W.aoMjE" alias=".service_locator.d1U9zsJ"/>
+    <service id=".service_locator.6CueAwf" alias=".service_locator.j_CADyQ"/>
     <service id=".service_locator.Q1z.f9O" alias=".service_locator.O2p6Lk7"/>
     <service id=".service_locator.dGUCsbe" alias=".service_locator.oR77BOj"/>
     <service id=".service_locator._kIAbz1" alias=".service_locator.TpoC7U9"/>

@@ -7,7 +7,7 @@ namespace Proxies\__CG__\App\Entity;
  */
 class User extends \App\Entity\User implements \Doctrine\ORM\Proxy\InternalProxy
 {
-     use \Symfony\Component\VarExporter\LazyGhostTrait {
+    use \Symfony\Component\VarExporter\LazyGhostTrait {
         initializeLazyObject as private;
         setLazyObjectAsInitialized as public __setInitialized;
         isLazyObjectInitialized as private;

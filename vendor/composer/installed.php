@@ -3,15 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        'reference' => '34a4493a49be8b5e9b1219517838b4bdf5077d0b',
-=======
-        'reference' => 'f1de0a17f4ecfae63adcf395de158d1072952319',
->>>>>>> Stashed changes
-=======
-        'reference' => 'f1de0a17f4ecfae63adcf395de158d1072952319',
->>>>>>> Stashed changes
+        'reference' => '28db0d330a3ab305b58b683e6a4160f4a48d3afd',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -21,23 +13,16 @@
         '__root__' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            'reference' => '34a4493a49be8b5e9b1219517838b4bdf5077d0b',
-=======
-            'reference' => 'f1de0a17f4ecfae63adcf395de158d1072952319',
->>>>>>> Stashed changes
-=======
-            'reference' => 'f1de0a17f4ecfae63adcf395de158d1072952319',
->>>>>>> Stashed changes
+            'reference' => '28db0d330a3ab305b58b683e6a4160f4a48d3afd',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'bacon/bacon-qr-code' => array(
-            'pretty_version' => '2.0.8',
-            'version' => '2.0.8.0',
-            'reference' => '8674e51bb65af933a5ffaf1c308a660387c35c22',
+            'pretty_version' => 'v3.0.1',
+            'version' => '3.0.1.0',
+            'reference' => 'f9cc1f52b5a463062251d666761178dbdb6b544f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../bacon/bacon-qr-code',
             'aliases' => array(),
@@ -52,18 +37,21 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'carbonphp/carbon-doctrine-types' => array(
-            'pretty_version' => '2.1.0',
-            'version' => '2.1.0.0',
-            'reference' => '99f76ffa36cce3b70a4a6abce41dba15ca2e84cb',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../carbonphp/carbon-doctrine-types',
         'brick/math' => array(
             'pretty_version' => '0.12.3',
             'version' => '0.12.3.0',
             'reference' => '866551da34e9a618e64a819ee1e01c20d8a588ba',
             'type' => 'library',
             'install_path' => __DIR__ . '/../brick/math',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'carbonphp/carbon-doctrine-types' => array(
+            'pretty_version' => '2.1.0',
+            'version' => '2.1.0.0',
+            'reference' => '99f76ffa36cce3b70a4a6abce41dba15ca2e84cb',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../carbonphp/carbon-doctrine-types',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -239,9 +227,9 @@
             'dev_requirement' => false,
         ),
         'endroid/qr-code' => array(
-            'pretty_version' => '5.0.7',
-            'version' => '5.0.7.0',
-            'reference' => '0cc00f0626b73bc71a1ea17af01387d0ac75e046',
+            'pretty_version' => '5.1.0',
+            'version' => '5.1.0.0',
+            'reference' => '393fec6c4cbdc1bd65570ac9d245704428010122',
             'type' => 'library',
             'install_path' => __DIR__ . '/../endroid/qr-code',
             'aliases' => array(),
@@ -379,18 +367,27 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'hwi/oauth-bundle' => array(
+            'pretty_version' => '2.3.0',
+            'version' => '2.3.0.0',
+            'reference' => '3d42abc963485988789816c8585a10ad02b4fbc3',
+            'type' => 'symfony-bundle',
+            'install_path' => __DIR__ . '/../hwi/oauth-bundle',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'illuminate/collections' => array(
-            'pretty_version' => 'v12.11.0',
-            'version' => '12.11.0.0',
-            'reference' => '7f8a89e1e484fea952cdd8400bab2e277fa4f903',
+            'pretty_version' => 'v12.12.0',
+            'version' => '12.12.0.0',
+            'reference' => 'abccbba3aef0fb9460105496e18c36b28dfe10b2',
             'type' => 'library',
             'install_path' => __DIR__ . '/../illuminate/collections',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'illuminate/conditionable' => array(
-            'pretty_version' => 'v12.11.0',
-            'version' => '12.11.0.0',
+            'pretty_version' => 'v12.12.0',
+            'version' => '12.12.0.0',
             'reference' => '455a28c08f849db93078c9a60d765b88011affd2',
             'type' => 'library',
             'install_path' => __DIR__ . '/../illuminate/conditionable',
@@ -398,8 +395,8 @@
             'dev_requirement' => false,
         ),
         'illuminate/contracts' => array(
-            'pretty_version' => 'v12.11.0',
-            'version' => '12.11.0.0',
+            'pretty_version' => 'v12.12.0',
+            'version' => '12.12.0.0',
             'reference' => 'bbaec083da240396f2186f4c3a9952da207f28a0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../illuminate/contracts',
@@ -407,8 +404,8 @@
             'dev_requirement' => false,
         ),
         'illuminate/macroable' => array(
-            'pretty_version' => 'v12.11.0',
-            'version' => '12.11.0.0',
+            'pretty_version' => 'v12.12.0',
+            'version' => '12.12.0.0',
             'reference' => 'e862e5648ee34004fa56046b746f490dfa86c613',
             'type' => 'library',
             'install_path' => __DIR__ . '/../illuminate/macroable',
@@ -416,9 +413,9 @@
             'dev_requirement' => false,
         ),
         'illuminate/support' => array(
-            'pretty_version' => 'v12.11.0',
-            'version' => '12.11.0.0',
-            'reference' => '2688096d1d1674ed4d955461d7ccf49de1a402b4',
+            'pretty_version' => 'v12.12.0',
+            'version' => '12.12.0.0',
+            'reference' => '586b1ccf141724d7cd87ee759e6e8baae9c6d507',
             'type' => 'library',
             'install_path' => __DIR__ . '/../illuminate/support',
             'aliases' => array(),
@@ -430,12 +427,6 @@
             'reference' => '07146018d173dedfd520fb8f18a50f31e27b1e60',
             'type' => 'library',
             'install_path' => __DIR__ . '/../irazasyed/telegram-bot-sdk',
-        'hwi/oauth-bundle' => array(
-            'pretty_version' => '2.3.0',
-            'version' => '2.3.0.0',
-            'reference' => '3d42abc963485988789816c8585a10ad02b4fbc3',
-            'type' => 'symfony-bundle',
-            'install_path' => __DIR__ . '/../hwi/oauth-bundle',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
