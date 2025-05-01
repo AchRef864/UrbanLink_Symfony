@@ -59,12 +59,16 @@ return [
         '/admin/taxi/admin/taxi/get-models' => [[['_route' => 'get_models', '_controller' => 'App\\Controller\\TaxiController::getModels'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
         '/admin/taxi/taxis/nearby' => [[['_route' => 'get_nearby_taxis', '_controller' => 'App\\Controller\\TaxiController::getNearbyTaxis'], null, null, null, false, false, null]],
         '/admin/taxiste' => [[['_route' => 'taxiste_liste', '_controller' => 'App\\Controller\\TaxisteController::taxiste'], null, null, null, false, false, null]],
+        '/taxiste/notifications' => [[['_route' => 'taxiste_notifications_ajax', '_controller' => 'App\\Controller\\TaxisteController::notifications'], null, ['GET' => 0], null, false, false, null]],
+        '/telegram/set-webhook' => [[['_route' => 'telegram_set_webhook', '_controller' => 'App\\Controller\\TelegramWebhookController::setWebhook'], null, ['GET' => 0], null, false, false, null]],
+        '/telegram/webhook-info' => [[['_route' => 'telegram_webhook_info', '_controller' => 'App\\Controller\\TelegramWebhookController::getWebhookInfo'], null, ['GET' => 0], null, false, false, null]],
         '/trajet/ajouter' => [[['_route' => 'trajet_ajouter', '_controller' => 'App\\Controller\\TrajetController::ajouter'], null, null, null, false, false, null]],
         '/trajet/affichage' => [[['_route' => 'trajet_affichage', '_controller' => 'App\\Controller\\TrajetController::affichage'], null, null, null, false, false, null]],
         '/user' => [[['_route' => 'app_user', '_controller' => 'App\\Controller\\UserController::index'], null, null, null, false, false, null]],
         '/user/courses' => [[['_route' => 'user_courses', '_controller' => 'App\\Controller\\UserCourseController::index'], null, null, null, true, false, null]],
         '/vehicles/my-vehicle' => [[['_route' => 'my_vehicle', '_controller' => 'App\\Controller\\VehicleController::myVehicle'], null, ['GET' => 0], null, false, false, null]],
         '/vehicles/driver/vehicle/new' => [[['_route' => 'driver_vehicle_new', '_controller' => 'App\\Controller\\VehicleController::driverAddVehicle'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        '/voice-test' => [[['_route' => 'voice_test', '_controller' => 'App\\Controller\\voiceController::index'], null, null, null, false, false, null]],
         '/login' => [[['_route' => 'app_login', '_controller' => 'App\\Controller\\Auth\\LoginController::index'], null, null, null, false, false, null]],
         '/logout' => [[['_route' => 'app_logout', '_controller' => 'App\\Controller\\SecurityController::logout'], null, null, null, false, false, null]],
         '/admin' => [[['_route' => 'back_office_dashboard', '_controller' => 'App\\Controller\\BackOfficeController::dashboard'], null, null, null, false, false, null]],
@@ -90,6 +94,7 @@ return [
         '/urban-talk' => [[['_route' => 'urban_talk', '_controller' => 'App\\Controller\\UrbanTalkController::chat'], null, ['POST' => 0], null, false, false, null]],
         '/admin/vehicles' => [[['_route' => 'vehicle_index', '_controller' => 'App\\Controller\\VehicleController::index'], null, null, null, false, false, null]],
         '/admin/vehicles/new' => [[['_route' => 'vehicle_new', '_controller' => 'App\\Controller\\VehicleController::new'], null, null, null, false, false, null]],
+        '/telegram/webhook' => [[['_route' => 'telegram_webhook', '_controller' => 'App\\Controller\\TelegramWebhookController::webhook'], null, null, null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'
@@ -157,54 +162,60 @@ return [
                     .')'
                 .')'
                 .'|/re(?'
-                    .'|ponse/(?'
-                        .'|avis/([^/]++)(*:831)'
-                        .'|new/([^/]++)(*:851)'
-                        .'|([^/]++)(?'
-                            .'|(*:870)'
-                            .'|/edit(*:883)'
-                            .'|(*:891)'
+                    .'|po(?'
+                        .'|nse/(?'
+                            .'|avis/([^/]++)(*:834)'
+                            .'|new/([^/]++)(*:854)'
+                            .'|([^/]++)(?'
+                                .'|(*:873)'
+                                .'|/edit(*:886)'
+                                .'|(*:894)'
+                            .')'
+                        .')'
+                        .'|rt/(?'
+                            .'|qr/([^/]++)(*:921)'
+                            .'|([^/]++)(*:937)'
                         .')'
                     .')'
                     .'|se(?'
                         .'|rvation/(?'
-                            .'|new/([^/]++)(*:929)'
-                            .'|trajet\\-supprime/([^/]++)(*:962)'
-                            .'|success/([^/]++)(*:986)'
-                            .'|cancel/([^/]++)(*:1009)'
+                            .'|new/([^/]++)(*:975)'
+                            .'|trajet\\-supprime/([^/]++)(*:1008)'
+                            .'|success/([^/]++)(*:1033)'
+                            .'|cancel/([^/]++)(*:1057)'
                             .'|p(?'
                                 .'|ayment/(?'
-                                    .'|([^/]++)(*:1040)'
-                                    .'|success/([^/]++)(*:1065)'
-                                    .'|cancel/([^/]++)(*:1089)'
+                                    .'|([^/]++)(*:1088)'
+                                    .'|success/([^/]++)(*:1113)'
+                                    .'|cancel/([^/]++)(*:1137)'
                                 .')'
-                                .'|df/([^/]++)(*:1110)'
+                                .'|df/([^/]++)(*:1158)'
                             .')'
                         .')'
-                        .'|t\\-password/reset/(\\d+)(*:1144)'
+                        .'|t\\-password/reset/(\\d+)(*:1192)'
                     .')'
                 .')'
                 .'|/t(?'
                     .'|axiste/(?'
                         .'|course/([^/]++)/(?'
-                            .'|accept(*:1195)'
-                            .'|refuse(*:1210)'
-                            .'|start(*:1224)'
-                            .'|finish(*:1239)'
+                            .'|accept(*:1243)'
+                            .'|refuse(*:1258)'
+                            .'|start(*:1272)'
+                            .'|finish(*:1287)'
                         .')'
-                        .'|taxi/([^/]++)/change\\-status(*:1277)'
+                        .'|taxi/([^/]++)/change\\-status(*:1325)'
                     .')'
                     .'|rajet/(?'
-                        .'|modifier/([^/]++)(*:1313)'
-                        .'|supprimer/([^/]++)(*:1340)'
+                        .'|modifier/([^/]++)(*:1361)'
+                        .'|supprimer/([^/]++)(*:1388)'
                     .')'
                 .')'
                 .'|/user/(?'
                     .'|course(?'
-                        .'|s/([^/]++)/cancel(*:1386)'
-                        .'|/([^/]++)/cancel(*:1411)'
+                        .'|s/([^/]++)/cancel(*:1434)'
+                        .'|/([^/]++)/cancel(*:1459)'
                     .')'
-                    .'|taxi/([^/]++)/rate(*:1439)'
+                    .'|taxi/([^/]++)/rate(*:1487)'
                 .')'
             .')/?$}sDu',
     ],
@@ -242,30 +253,32 @@ return [
         756 => [[['_route' => 'vehicle_edit', '_controller' => 'App\\Controller\\VehicleController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
         769 => [[['_route' => 'vehicle_show', '_controller' => 'App\\Controller\\VehicleController::show'], ['id'], null, null, false, true, null]],
         792 => [[['_route' => 'vehicle_delete', '_controller' => 'App\\Controller\\VehicleController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
-        831 => [[['_route' => 'app_avis_reponsess', '_controller' => 'App\\Controller\\ReponseController::reponsesForAvis'], ['id'], ['GET' => 0], null, false, true, null]],
-        851 => [[['_route' => 'app_reponse_new', '_controller' => 'App\\Controller\\ReponseController::new'], ['avisId'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        870 => [[['_route' => 'app_reponse_show', '_controller' => 'App\\Controller\\ReponseController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        883 => [[['_route' => 'app_reponse_edit', '_controller' => 'App\\Controller\\ReponseController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        891 => [[['_route' => 'app_reponse_delete', '_controller' => 'App\\Controller\\ReponseController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
-        929 => [[['_route' => 'reservation_new', '_controller' => 'App\\Controller\\ReservationController::new'], ['trajetId'], null, null, false, true, null]],
-        962 => [[['_route' => 'reservation_trajet_supprime', '_controller' => 'App\\Controller\\ReservationController::showDeletedTrajetDetails'], ['id'], null, null, false, true, null]],
-        986 => [[['_route' => 'reservation_success', '_controller' => 'App\\Controller\\ReservationController::success'], ['id'], null, null, false, true, null]],
-        1009 => [[['_route' => 'reservation_cancel', '_controller' => 'App\\Controller\\ReservationController::cancel'], ['id'], null, null, false, true, null]],
-        1040 => [[['_route' => 'reservation_payment', '_controller' => 'App\\Controller\\ReservationController::payment'], ['id'], null, null, false, true, null]],
-        1065 => [[['_route' => 'reservation_payment_success', '_controller' => 'App\\Controller\\ReservationController::paymentSuccess'], ['id'], null, null, false, true, null]],
-        1089 => [[['_route' => 'reservation_payment_cancel', '_controller' => 'App\\Controller\\ReservationController::paymentCancel'], ['id'], null, null, false, true, null]],
-        1110 => [[['_route' => 'reservation_pdf', '_controller' => 'App\\Controller\\ReservationController::generatePdf'], ['id'], null, null, false, true, null]],
-        1144 => [[['_route' => 'app_reset_password', '_controller' => 'App\\Controller\\Auth\\ResetPasswordController::reset'], ['code'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        1195 => [[['_route' => 'taxiste_course_accept', '_controller' => 'App\\Controller\\TaxisteController::acceptCourse'], ['id'], ['POST' => 0], null, false, false, null]],
-        1210 => [[['_route' => 'taxiste_course_refuse', '_controller' => 'App\\Controller\\TaxisteController::refuseCourse'], ['id'], ['POST' => 0], null, false, false, null]],
-        1224 => [[['_route' => 'taxiste_course_start', '_controller' => 'App\\Controller\\TaxisteController::startCourse'], ['id'], ['POST' => 0], null, false, false, null]],
-        1239 => [[['_route' => 'taxiste_course_finish', '_controller' => 'App\\Controller\\TaxisteController::finishCourse'], ['id'], ['POST' => 0], null, false, false, null]],
-        1277 => [[['_route' => 'taxiste_taxi_change_status', '_controller' => 'App\\Controller\\TaxisteController::changeTaxiStatus'], ['id'], ['POST' => 0], null, false, false, null]],
-        1313 => [[['_route' => 'trajet_modifier', '_controller' => 'App\\Controller\\TrajetController::modifier'], ['id'], null, null, false, true, null]],
-        1340 => [[['_route' => 'trajet_supprimer', '_controller' => 'App\\Controller\\TrajetController::supprimer'], ['id'], null, null, false, true, null]],
-        1386 => [[['_route' => 'user_course_cancel', '_controller' => 'App\\Controller\\UserCourseController::cancel'], ['id'], ['POST' => 0], null, false, false, null]],
-        1411 => [[['_route' => 'course_cancel', '_controller' => 'App\\Controller\\UserCourseController::cancel'], ['id'], null, null, false, false, null]],
-        1439 => [
+        834 => [[['_route' => 'app_avis_reponsess', '_controller' => 'App\\Controller\\ReponseController::reponsesForAvis'], ['id'], ['GET' => 0], null, false, true, null]],
+        854 => [[['_route' => 'app_reponse_new', '_controller' => 'App\\Controller\\ReponseController::new'], ['avisId'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        873 => [[['_route' => 'app_reponse_show', '_controller' => 'App\\Controller\\ReponseController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        886 => [[['_route' => 'app_reponse_edit', '_controller' => 'App\\Controller\\ReponseController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        894 => [[['_route' => 'app_reponse_delete', '_controller' => 'App\\Controller\\ReponseController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        921 => [[['_route' => 'report_qr', '_controller' => 'App\\Controller\\ReportController::qr'], ['userId'], ['GET' => 0], null, false, true, null]],
+        937 => [[['_route' => 'report_pdf', '_controller' => 'App\\Controller\\ReportController::pdf'], ['userId'], ['GET' => 0], null, false, true, null]],
+        975 => [[['_route' => 'reservation_new', '_controller' => 'App\\Controller\\ReservationController::new'], ['trajetId'], null, null, false, true, null]],
+        1008 => [[['_route' => 'reservation_trajet_supprime', '_controller' => 'App\\Controller\\ReservationController::showDeletedTrajetDetails'], ['id'], null, null, false, true, null]],
+        1033 => [[['_route' => 'reservation_success', '_controller' => 'App\\Controller\\ReservationController::success'], ['id'], null, null, false, true, null]],
+        1057 => [[['_route' => 'reservation_cancel', '_controller' => 'App\\Controller\\ReservationController::cancel'], ['id'], null, null, false, true, null]],
+        1088 => [[['_route' => 'reservation_payment', '_controller' => 'App\\Controller\\ReservationController::payment'], ['id'], null, null, false, true, null]],
+        1113 => [[['_route' => 'reservation_payment_success', '_controller' => 'App\\Controller\\ReservationController::paymentSuccess'], ['id'], null, null, false, true, null]],
+        1137 => [[['_route' => 'reservation_payment_cancel', '_controller' => 'App\\Controller\\ReservationController::paymentCancel'], ['id'], null, null, false, true, null]],
+        1158 => [[['_route' => 'reservation_pdf', '_controller' => 'App\\Controller\\ReservationController::generatePdf'], ['id'], null, null, false, true, null]],
+        1192 => [[['_route' => 'app_reset_password', '_controller' => 'App\\Controller\\Auth\\ResetPasswordController::reset'], ['code'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        1243 => [[['_route' => 'taxiste_course_accept', '_controller' => 'App\\Controller\\TaxisteController::acceptCourse'], ['id'], ['POST' => 0], null, false, false, null]],
+        1258 => [[['_route' => 'taxiste_course_refuse', '_controller' => 'App\\Controller\\TaxisteController::refuseCourse'], ['id'], ['POST' => 0], null, false, false, null]],
+        1272 => [[['_route' => 'taxiste_course_start', '_controller' => 'App\\Controller\\TaxisteController::startCourse'], ['id'], ['POST' => 0], null, false, false, null]],
+        1287 => [[['_route' => 'taxiste_course_finish', '_controller' => 'App\\Controller\\TaxisteController::finishCourse'], ['id'], ['POST' => 0], null, false, false, null]],
+        1325 => [[['_route' => 'taxiste_taxi_change_status', '_controller' => 'App\\Controller\\TaxisteController::changeTaxiStatus'], ['id'], ['POST' => 0], null, false, false, null]],
+        1361 => [[['_route' => 'trajet_modifier', '_controller' => 'App\\Controller\\TrajetController::modifier'], ['id'], null, null, false, true, null]],
+        1388 => [[['_route' => 'trajet_supprimer', '_controller' => 'App\\Controller\\TrajetController::supprimer'], ['id'], null, null, false, true, null]],
+        1434 => [[['_route' => 'user_course_cancel', '_controller' => 'App\\Controller\\UserCourseController::cancel'], ['id'], ['POST' => 0], null, false, false, null]],
+        1459 => [[['_route' => 'course_cancel', '_controller' => 'App\\Controller\\UserCourseController::cancel'], ['id'], null, null, false, false, null]],
+        1487 => [
             [['_route' => 'taxi_rate', '_controller' => 'App\\Controller\\RatingController::rateTaxi'], ['id'], null, null, false, false, null],
             [null, null, null, null, false, false, 0],
         ],

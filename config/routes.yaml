@@ -226,3 +226,10 @@ maintenance_delete:
 maintenance_by_vehicle:
     path: /admin/maintenances/vehicle/{vehicleId}
     controller: App\Controller\MaintenanceController::findByVehicleId
+    
+# config/routes/telegram.yaml
+telegram_webhook:
+    path: /telegram/webhook
+    controller: App\Controller\TelegramWebhookController::webhook
+
+

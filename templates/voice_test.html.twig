@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <h1>Test VoiceBundle</h1>
+
+  {# Bouton Hello #}
+  <button data-controller="hello" data-action="click->hello#greet">
+    👋 Test Hello
+  </button>
+
+  {# Bouton Speech (synthèse vocale) #}
+   <button
+    data-controller="speech"
+    data-speech-list-url-value="{{ path('course_index') }}"
+    data-speech-new-url-value="{{ path('course_new') }}"
+    data-action="click->speech#start">
+    🎙️ Démarrer la commande vocale
+  </button>
+
+{% endblock %}

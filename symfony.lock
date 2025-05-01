@@ -1,4 +1,17 @@
 {
+    "boshurik/telegram-bot-bundle": {
+        "version": "6.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "6.0",
+            "ref": "27b12e13cf10f42beb71261c3334a2db107393b4"
+        },
+        "files": [
+            "./config/packages/boshurik_telegram_bot.yaml",
+            "./config/routes/boshurik_telegram_bot.yaml"
+        ]
+    },
     "doctrine/doctrine-bundle": {
         "version": "2.13",
         "recipe": {
@@ -158,6 +171,18 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
+    },
+    "symfony/mercure-bundle": {
+        "version": "0.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "0.3",
+            "ref": "528285147494380298f8f991ee8c47abebaf79db"
+        },
+        "files": [
+            "./config/packages/mercure.yaml"
+        ]
     },
     "symfony/messenger": {
         "version": "6.4",
