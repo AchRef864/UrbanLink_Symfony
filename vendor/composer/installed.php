@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '70e9035bdcb0f9b870b67307c7850c746b8baf85',
+        'reference' => '34a4493a49be8b5e9b1219517838b4bdf5077d0b',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,8 +13,9 @@
         '__root__' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-
-            'reference' => '70e9035bdcb0f9b870b67307c7850c746b8baf85',
+            'reference' => '34a4493a49be8b5e9b1219517838b4bdf5077d0b',
+            'type' => 'project',
+            'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
         ),
         'bacon/bacon-qr-code' => array(
@@ -504,9 +505,9 @@
             'dev_requirement' => false,
         ),
         'myclabs/deep-copy' => array(
-            'pretty_version' => '1.13.0',
-            'version' => '1.13.0.0',
-            'reference' => '024473a478be9df5fdaca2c793f2232fe788e414',
+            'pretty_version' => '1.13.1',
+            'version' => '1.13.1.0',
+            'reference' => '1720ddd719e16cf0db4eb1c6eca108031636d46c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../myclabs/deep-copy',
             'aliases' => array(),
@@ -1122,9 +1123,9 @@
             'dev_requirement' => false,
         ),
         'stripe/stripe-php' => array(
-            'pretty_version' => 'v17.1.1',
-            'version' => '17.1.1.0',
-            'reference' => '01ca9b5fdd899b8e4b69f83b85e09d96f6240220',
+            'pretty_version' => 'v17.2.0',
+            'version' => '17.2.0.0',
+            'reference' => 'ff2364c75533b71116ea11994d6bd08989b7f67b',
             'type' => 'library',
             'install_path' => __DIR__ . '/../stripe/stripe-php',
             'aliases' => array(),
