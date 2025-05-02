@@ -252,7 +252,7 @@ final class AvisController extends AbstractController
         }
         $this->addFlash('success', 'Avis deleted successfully.');
 
-        return $this->redirectToRoute('app_avis_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_avis_front', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}/reponses', name: 'app_avis_reponses', methods: ['GET'])]
@@ -269,11 +269,15 @@ final class AvisController extends AbstractController
                 }
             }
         }
+        $baseTemplate = $this->isGranted('ROLE_ADMIN')
+        ? 'base.html.twig'
+        : 'basef.html.twig';
     
         return $this->render('avis/reponses.html.twig', [
             'reponses'   => $reponses,
             'avis_id'    => $id,
-            'ratingStats'=> $ratingStats
+            'ratingStats'=> $ratingStats,
+            'baseTemplate' => $baseTemplate,
         ]);
     }
 

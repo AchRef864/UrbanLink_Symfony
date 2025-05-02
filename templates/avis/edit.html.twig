@@ -3,8 +3,11 @@
 {% block body %}
 
     <h3>Edit complaint</h3>
-
+<!--add a pading to the left!-->
+    <div class="back-link mb-4">
+        <a href="{{ path('app_avis_front') }}" class="btn btn-secondary">Back to list</a>
     {{ include('front_office/Avis/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('app_avis_front') }}">back to list</a>
+    </div>
 {% endblock %}

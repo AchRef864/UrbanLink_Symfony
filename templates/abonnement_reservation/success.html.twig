@@ -1,0 +1,264 @@
+{% extends 'basef.html.twig' %}
+
+{% block title %}Confirmation de Réservation | UrbanLInk{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Card de confirmation principale */
+        .confirmation-container {
+            @apply py-8 px-4 md:py-12;
+        }
+        
+        .confirmation-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        
+        .confirmation-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            color: white;
+        }
+        
+        .confirmation-body {
+            padding: 2.5rem 2rem;
+        }
+        
+        /* Icône de succès */
+        .confirmation-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            font-size: 2.5rem;
+        }
+        
+        .confirmation-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .confirmation-subtitle {
+            font-size: 1.2rem;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+        
+        /* Détails de la réservation */
+        .details-box {
+            background: #f8f9fa;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            color: #64748b;
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .price-value {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .status-badge {
+            background-color: var(--success);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        /* Boutons d'action */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .action-button {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+            color: white;
+        }
+        
+        .action-button.secondary {
+            background: linear-gradient(135deg, var(--dark) 0%, #3a0ca3 100%);
+        }
+
+        .action-button.pdf {
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+        }
+        
+        .action-button i {
+            margin-right: 8px;
+        }
+        
+        /* Success Message */
+        .success-message {
+            background-color: rgba(74, 222, 128, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .success-message i {
+            color: var(--success);
+            font-size: 1.25rem;
+            margin-right: 0.75rem;
+        }
+        
+        /* Media queries */
+        @media (max-width: 768px) {
+            .confirmation-header {
+                padding: 2rem 1rem;
+            }
+            
+            .confirmation-body {
+                padding: 1.5rem 1rem;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.3rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .action-button {
+                justify-content: center;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="confirmation-container">
+    <div class="confirmation-card">
+        <!-- En-tête avec dégradé -->
+        <div class="confirmation-header">
+            <div class="confirmation-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <h1 class="confirmation-title">Paiement Réussi!</h1>
+            <p class="confirmation-subtitle">Votre abonnement {{ abonnement.type }} a été confirmé</p>
+        </div>
+        
+        <!-- Corps de la carte -->
+        <div class="confirmation-body">
+            <!-- Message de succès -->
+            <div class="success-message">
+                <i class="fas fa-info-circle"></i>
+                <p class="m-0">Un email de confirmation a été envoyé à votre adresse email.</p>
+            </div>
+            
+            <!-- Détails de la réservation -->
+            <div class="details-box">
+                <h4 class="font-bold text-lg mb-3">Détails de la réservation</h4>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Numéro de réservation:</span>
+                    <span class="detail-value">#{{ reservation.id }}</span>
+                </div>
+
+                <div class="detail-row">
+                    <span class="detail-label">Type d'abonnement:</span>
+                    <span class="detail-value">{{ abonnement.type|capitalize }}</span>
+                </div>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Montant payé:</span>
+                    <span class="price-value">{{ abonnement.prix }} DT</span>
+                </div>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Date de début:</span>
+                    <span class="detail-value">{{ reservation.dateDebut|date('d/m/Y') }}</span>
+                </div>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Date de fin:</span>
+                    <span class="detail-value">{{ reservation.dateFin|date('d/m/Y') }}</span>
+                </div>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Statut:</span>
+                    <span class="status-badge">Confirmé</span>
+                </div>
+            </div>
+            
+            <!-- Boutons d'action -->
+            <div class="action-buttons">
+                <a href="{{ path('app_abonnement_reserve_success', {
+                    'id': abonnement.id,
+                    'reservation_id': reservation.id,
+                    'download': 'pdf'
+                }) }}" class="action-button pdf">
+                    <i class="fas fa-file-pdf"></i> Télécharger le reçu
+                </a>
+                <a href="{{ path('app_dashboard') }}" class="action-button">
+                    <i class="fas fa-tachometer-alt"></i> Tableau de bord
+                </a>
+                <a href="{{ path('app_abonnement_mes_reservations') }}" class="action-button secondary">
+                    <i class="fas fa-id-card"></i> Mes abonnements
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

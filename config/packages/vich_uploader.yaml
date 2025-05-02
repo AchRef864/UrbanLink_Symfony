@@ -1,0 +1,8 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        abonnement_image:
+            uri_prefix: /uploads/images/abonnements
+            upload_destination: '%kernel.project_dir%/public/uploads/images/abonnements'
+            namer: Vich\UploaderBundle\Naming\OrignameNamer

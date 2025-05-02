@@ -375,7 +375,7 @@ Answer the following question about the database in a clear, concise, and direct
 
 If data is provided, use it to give a precise and accurate answer.  If no data is provided, answer based on the schema alone.
 
-**Important:** Do not display raw data from the tables. Instead, offer to answer specific questions about the data.
+*Important:* Do not display raw data from the tables. Instead, offer to answer specific questions about the data.
 
 Avoid providing SQL queries unless explicitly asked.
 

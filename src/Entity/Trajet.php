@@ -87,8 +87,9 @@ class Trajet
     #[Assert\PositiveOrZero(message: 'Le nombre de places doit être positif ou zéro')]
     private ?int $availableSeats = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $vehicleId = null;
+    #[ORM\ManyToOne(targetEntity: Vehicle::class)]
+    #[ORM\JoinColumn(name: 'vehicle_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    private ?Vehicle $vehicle = null;
 
     #[ORM\Column(length: 20)]
     #[Assert\NotBlank(message: 'Veuillez choisir un type de transport')]
@@ -182,8 +183,18 @@ class Trajet
     public function setPrice(float $price): self { $this->price = $price; return $this; }
     public function getAvailableSeats(): ?int { return $this->availableSeats; }
     public function setAvailableSeats(int $availableSeats): self { $this->availableSeats = $availableSeats; return $this; }
-    public function getVehicleId(): ?int { return $this->vehicleId; }
-    public function setVehicleId(?int $vehicleId): self { $this->vehicleId = $vehicleId; return $this; }
+    public function getVehicle(): ?Vehicle
+    {
+        return $this->vehicle;
+    }
+    
+    public function setVehicle(?Vehicle $vehicle): self
+    {
+        $this->vehicle = $vehicle;
+    
+        return $this;
+    }
+    
     public function getTypeTransport(): ?string { return $this->typeTransport; }
     public function setTypeTransport(string $typeTransport): self { $this->typeTransport = $typeTransport; return $this; }
 
@@ -215,4 +226,5 @@ class Trajet
 
         return $this;
     }
+    
 }
