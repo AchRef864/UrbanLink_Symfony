@@ -278,6 +278,29 @@
         .is-invalid {
             border-color: var(--danger) !important;
         }
+
+        /* Payment processing */
+        .payment-processing {
+            display: none;
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(245, 247, 255, 0.8);
+            border-radius: 10px;
+        }
+
+        .payment-processing .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: var(--primary);
+        }
+
+        .payment-processing p {
+            color: var(--primary);
+            font-weight: 500;
+            margin-top: 1rem;
+            margin-bottom: 0;
+        }
         
         /* Responsive */
         @media (max-width: 768px) {
@@ -313,7 +336,7 @@
             </div>
             
             <div class="card-body">
-                {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'maintenance-form'}}) }}
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'maintenance-form', 'id': 'maintenance-form'}}) }}
                     <div class="form-grid">
                         <div class="form-group">
                             {{ form_label(form.vehicle, 'Vehicle', {'label_attr': {'class': 'form-label'}}) }}
@@ -428,16 +451,16 @@
                     </div>
                     
                     <div class="btn-group">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" id="submit-button">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
                                 <polyline points="17 21 17 13 7 13 7 21"></polyline>
                                 <polyline points="7 3 7 8 15 8"></polyline>
                             </svg>
-                            Create Maintenance
+                            Create Maintenance & Pay
                         </button>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('maintenance_index') }}" class="btn btn-secondary">
+                            <a href="{{ path('admin_maintenances_index') }}" class="btn btn-secondary">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="19" y1="12" x2="5" y2="12"></line>
                                     <polyline points="12 19 5 12 12 5"></polyline>
@@ -455,78 +478,166 @@
                         {% endif %}
                     </div>
                 {{ form_end(form) }}
+
+                <div class="payment-processing" id="payment-processing">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p>Processing your payment. Please wait...</p>
+                </div>
             </div>
         </div>
     </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const serviceTypeSelect = document.getElementById('{{ form.serviceType.vars.id }}');
-    const serviceProviderSelect = document.getElementById('{{ form.serviceProvider.vars.id }}');
-    const costInput = document.getElementById('{{ form.cost.vars.id }}');
-    
-    const servicesData = {
-        {% for serviceType, serviceData in services %}
-            '{{ serviceType }}': {
-                price: {{ serviceData.price }},
-                providers: {{ serviceData.providers|json_encode|raw }}
-            },
-        {% endfor %}
-    };
-    
-    // Update service provider options when service type changes
-    serviceTypeSelect.addEventListener('change', function() {
-        const selectedService = this.value;
+    <!-- Stripe.js library -->
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const serviceTypeSelect = document.getElementById('{{ form.serviceType.vars.id }}');
+        const serviceProviderSelect = document.getElementById('{{ form.serviceProvider.vars.id }}');
+        const costInput = document.getElementById('{{ form.cost.vars.id }}');
         
-        if (selectedService && servicesData[selectedService]) {
-            // Clear existing options
-            serviceProviderSelect.innerHTML = '';
+        const servicesData = {
+            {% for serviceType, serviceData in services %}
+                '{{ serviceType }}': {
+                    price: {{ serviceData.price }},
+                    providers: {{ serviceData.providers|json_encode|raw }}
+                },
+            {% endfor %}
+        };
+        
+        // Update service provider options when service type changes
+        serviceTypeSelect.addEventListener('change', function() {
+            const selectedService = this.value;
             
-            // Add default option
-            const defaultOption = document.createElement('option');
-            defaultOption.value = '';
-            defaultOption.disabled = true;
-            defaultOption.selected = true;
-            defaultOption.textContent = '-- Select Provider --';
-            serviceProviderSelect.appendChild(defaultOption);
+            if (selectedService && servicesData[selectedService]) {
+                // Clear existing options
+                serviceProviderSelect.innerHTML = '';
+                
+                // Add default option
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                defaultOption.textContent = '-- Select Provider --';
+                serviceProviderSelect.appendChild(defaultOption);
+                
+                // Add providers for selected service
+                const providers = servicesData[selectedService].providers;
+                providers.forEach(provider => {
+                    const option = document.createElement('option');
+                    option.value = provider;
+                    option.textContent = provider;
+                    serviceProviderSelect.appendChild(option);
+                });
+                
+                // Update cost
+                costInput.value = servicesData[selectedService].price;
+            } else {
+                serviceProviderSelect.innerHTML = '';
+                costInput.value = '';
+            }
+        });
+        
+        // Initialize form if returning with errors
+        if (serviceTypeSelect.value) {
+            serviceTypeSelect.dispatchEvent(new Event('change'));
             
-            // Add providers for selected service
-            const providers = servicesData[selectedService].providers;
-            providers.forEach(provider => {
-                const option = document.createElement('option');
-                option.value = provider.id;
-                option.textContent = provider.name;
-                serviceProviderSelect.appendChild(option);
+            // Reselect previously selected provider if any
+            if ('{{ form.serviceProvider.vars.value }}') {
+                serviceProviderSelect.value = '{{ form.serviceProvider.vars.value }}';
+            }
+        }
+        
+        // Tooltip functionality
+        document.querySelectorAll('[data-tooltip]').forEach(element => {
+            const tooltip = document.createElement('span');
+            tooltip.className = 'tooltip';
+            tooltip.innerHTML = `
+                <span class="tooltip-icon">i</span>
+                <span class="tooltip-text">${element.dataset.tooltip}</span>
+            `;
+            element.appendChild(tooltip);
+        });
+
+        // Stripe payment handling
+        const form = document.getElementById('maintenance-form');
+        const submitButton = document.getElementById('submit-button');
+        const paymentProcessing = document.getElementById('payment-processing');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show processing UI
+            submitButton.disabled = true;
+            submitButton.innerHTML = `
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Processing...
+            `;
+            paymentProcessing.style.display = 'block';
+            
+            // Submit the form via AJAX
+            fetch(form.action, {
+                method: form.method,
+                body: new FormData(form),
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(async response => {
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    const text = await response.text();
+                    throw new Error(`Expected JSON but got: ${text.substring(0, 100)}...`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success && data.redirectUrl) {
+                    // Redirect to Stripe checkout
+                    window.location.href = data.redirectUrl;
+                } else {
+                    // Handle form errors
+                    paymentProcessing.style.display = 'none';
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        Create Maintenance & Pay
+                    `;
+                    
+                    if (data.errors) {
+                        // Display form errors
+                        let errorMessages = [];
+                        for (const field in data.errors) {
+                            errorMessages.push(`${field}: ${data.errors[field]}`);
+                        }
+                        alert('Please fix the following errors:\n' + errorMessages.join('\n'));
+                    } else if (data.error) {
+                        alert(data.error);
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                paymentProcessing.style.display = 'none';
+                submitButton.disabled = false;
+                submitButton.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                        <polyline points="7 3 7 8 15 8"></polyline>
+                    </svg>
+                    Create Maintenance & Pay
+                `;
+                alert('An error occurred. Please try again.');
             });
-            
-            // Update cost
-            costInput.value = servicesData[selectedService].price;
-        } else {
-            serviceProviderSelect.innerHTML = '';
-            costInput.value = '';
-        }
+        });
     });
-    
-    // Initialize form if returning with errors
-    if (serviceTypeSelect.value) {
-        serviceTypeSelect.dispatchEvent(new Event('change'));
-        
-        // Reselect previously selected provider if any
-        if ('{{ form.serviceProvider.vars.value }}') {
-            serviceProviderSelect.value = '{{ form.serviceProvider.vars.value }}';
-        }
-    }
-    
-    // Tooltip functionality
-    document.querySelectorAll('[data-tooltip]').forEach(element => {
-        const tooltip = document.createElement('span');
-        tooltip.className = 'tooltip';
-        tooltip.innerHTML = `
-            <span class="tooltip-icon">i</span>
-            <span class="tooltip-text">${element.dataset.tooltip}</span>
-        `;
-        element.appendChild(tooltip);
-    });
-});
-</script>
+    </script>
 {% endblock %}

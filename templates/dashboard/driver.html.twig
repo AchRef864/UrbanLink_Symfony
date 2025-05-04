@@ -1,168 +1,389 @@
 {# templates/dashboard/driver.html.twig #}
 {% extends 'basef.html.twig' %}
 
-{% block title %}Driver Dashboard{% endblock %}
+{% block title %}Driver Dashboard | RideShare{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/argon-dashboard-tailwind.css') }}" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .sidebar {
-            width: 250px;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #6366F1;
+            --secondary: #10B981;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --gray: #6B7280;
+            --danger: #EF4444;
         }
-        .sidebar-open .sidebar {
-            transform: translateX(0);
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F3F4F6;
+            color: var(--dark);
         }
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 10;
-        }
-        .sidebar-open .overlay {
-            display: block;
-        }
-        @media (min-width: 1024px) {
-            .sidebar {
-                transform: translateX(0);
-            }
-            .sidenav-trigger {
-                display: none;
-            }
-        }
-        .stats-card {
-            width: 350px;
-            border-radius: 30px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            background: white;
-        }
-        .stats-header {
-            background: linear-gradient(to right, #10b981, #3b82f6);
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: white;
-            padding: 20px;
-            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
         }
-        .action-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 20px;
+        
+        .stat-card {
+            background: white;
             border-radius: 12px;
-            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .action-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
-            text-align: center;
+            border: 2px solid transparent;
         }
-        .action-btn i {
-            margin-right: 8px;
+        
+        .action-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
         }
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+        
+        .ride-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .rating {
+            color: #F59E0B;
+        }
+        
+        .map-placeholder {
+            background: linear-gradient(135deg, #E5E7EB, #D1D5DB);
+            border-radius: 12px;
+        }
+        
+        .driver-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .status-inactive {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: #E5E7EB;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: var(--primary);
         }
     </style>
 {% endblock %}
 
 {% block body %}
-    <body class="m-0 font-sans text-base antialiased font-normal leading-default bg-gray-50 text-slate-500">
-    <div class="absolute w-full bg-green-500 min-h-75"></div>
-
-    <!-- Sidebar Trigger -->
-    <div class="fixed top-4 left-4 z-50 lg:hidden">
-        <a href="javascript:;" class="sidenav-trigger p-2 bg-white rounded-lg shadow">
-            <div class="w-5 overflow-hidden">
-                <i class="ease relative block h-0.5 rounded-sm bg-slate-600 transition-all"></i>
-                <i class="ease relative block h-0.5 rounded-sm bg-slate-600 transition-all mt-1"></i>
-                <i class="ease relative block h-0.5 rounded-sm bg-slate-600 transition-all mt-1"></i>
-            </div>
-        </a>
-    </div>
-
-    <!-- Overlay -->
-    <div class="overlay"></div>
-    <!-- Main Content -->
-    <main class="relative h-full max-height-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
-        <!-- Navbar -->
-        <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start">
-            <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
-                <nav>
-                    <h4 class="mb-0 font-bold text-slate-700">Driver Dashboard</h4>
-                    <p class="mb-0 text-sm">Welcome back, {{ app.user.name }}</p>
-                </nav>
-            </div>
-        </nav>
-
-        <div class="w-full px-6 py-6 mx-auto">
-            <div class="flex flex-col items-center justify-center min-h-[60vh]">
-                <!-- Stats Card -->
-                <div class="stats-card mb-8">
-                    <div class="stats-header">
-                        <h3 class="text-xl font-bold">Today's Summary</h3>
+<div class="min-h-screen">
+    <!-- Header -->
+    <header class="dashboard-header py-6 px-4 lg:px-8">
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl lg:text-3xl font-bold">Welcome back, {{ app.user.name }}</h1>
+                    <p class="opacity-90 mt-1">Ready to hit the road?</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-indigo-600 font-bold">
+                            {{ app.user.name|first|upper }}
+                        </div>
+                        <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
                     </div>
-                    <div class="p-4">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="text-center p-4 bg-gray-100 rounded-lg">
-                                <div class="text-3xl font-bold text-blue-500">8</div>
-                                <div class="text-sm text-gray-600">Completed Rides</div>
-                            </div>
-                            <div class="text-center p-4 bg-gray-100 rounded-lg">
-                                <div class="text-3xl font-bold text-green-500">4.8</div>
-                                <div class="text-sm text-gray-600">Avg Rating</div>
-                            </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 lg:px-8 py-8 -mt-8">
+        <!-- Status and Quick Actions -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Driver Status -->
+            <div class="stat-card p-6 col-span-1">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-gray-500 text-sm font-medium">DRIVER STATUS</h3>
+                        <div class="mt-2 flex items-center">
+                            <span class="driver-status status-active mr-3">ACTIVE</span>
+                            <span class="text-sm text-gray-600">Accepting rides</span>
+                        </div>
+                    </div>
+                    <button class="btn-primary px-4 py-2 text-sm">Go Offline</button>
+                </div>
+                <div class="mt-4">
+                    <div class="flex justify-between text-sm text-gray-600 mb-1">
+                        <span>Today's goal: 5 rides</span>
+                        <span>80%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 80%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings -->
+            <div class="stat-card p-6 col-span-1">
+                <h3 class="text-gray-500 text-sm font-medium">TODAY'S EARNINGS</h3>
+                <div class="mt-2 flex items-end">
+                    <span class="text-3xl font-bold">$87.50</span>
+                    <span class="ml-2 text-green-500 text-sm font-medium">+12%</span>
+                </div>
+                <div class="mt-4 flex justify-between text-sm">
+                    <div>
+                        <div class="text-gray-500">Completed Rides</div>
+                        <div class="font-medium">4</div>
+                    </div>
+                    <div>
+                        <div class="text-gray-500">Avg. Rating</div>
+                        <div class="font-medium flex items-center">
+                            <span>4.8</span>
+                            <span class="rating ml-1">★</span>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Quick Actions -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-3xl">
-                    <a href="{{ path('app_profile') }}" class="action-btn bg-gradient-to-tl from-green-600 to-teal-400 text-white">
-                        <i class="fas fa-user"></i>
-                        My Profile
+            <!-- Quick Actions -->
+            <div class="stat-card p-6 col-span-1">
+                <h3 class="text-gray-500 text-sm font-medium">QUICK ACTIONS</h3>
+                <div class="mt-4 grid grid-cols-2 gap-3">
+                    <a href="{{ path('app_profile') }}" class="action-card p-3 text-center">
+                        <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 mx-auto mb-2">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span class="text-sm font-medium">Profile</span>
                     </a>
-                    <a href="#" class="action-btn bg-gradient-to-tl from-indigo-600 to-purple-400 text-white">
-                        <i class="fas fa-road"></i>
-                        My Routes
+                    <a href="#" class="action-card p-3 text-center">
+                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 mx-auto mb-2">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <span class="text-sm font-medium">Routes</span>
+                    </a>
+                    <a href="#" class="action-card p-3 text-center">
+                        <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 mx-auto mb-2">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <span class="text-sm font-medium">Vehicle</span>
+                    </a>
+                    <a href="#" class="action-card p-3 text-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mx-auto mb-2">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <span class="text-sm font-medium">Earnings</span>
                     </a>
                 </div>
             </div>
         </div>
+
+        <!-- Current Ride and Map -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Current Ride -->
+            <div class="lg:col-span-2">
+                <div class="stat-card p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-bold">Current Ride</h2>
+                        <span class="text-sm text-gray-500">10:45 AM</span>
+                    </div>
+                    
+                    <div class="ride-card p-4 mb-4">
+                        <div class="flex items-center mb-3">
+                            <img src="https://randomuser.me/api/portraits/women/42.jpg" alt="Passenger" class="avatar mr-3">
+                            <div>
+                                <h4 class="font-medium">Sarah Johnson</h4>
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <span class="rating">★★★★★</span>
+                                    <span class="ml-1">4.9 (42 rides)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start mb-4">
+                            <div class="flex flex-col items-center mr-3">
+                                <div class="w-4 h-4 bg-green-500 rounded-full mt-1"></div>
+                                <div class="w-0.5 h-12 bg-gray-300 my-1"></div>
+                                <div class="w-4 h-4 bg-red-500 rounded-full"></div>
+                            </div>
+                            <div>
+                                <div class="font-medium mb-4">123 Main St, Springfield</div>
+                                <div class="font-medium">456 Central Ave, Springfield</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center pt-3 border-t border-gray-100">
+                            <div>
+                                <div class="text-sm text-gray-500">Distance</div>
+                                <div class="font-medium">8.2 miles</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">Earnings</div>
+                                <div class="font-medium">$14.75</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">ETA</div>
+                                <div class="font-medium">12 min</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <button class="btn-primary py-3 flex items-center justify-center">
+                            <i class="fas fa-phone-alt mr-2"></i> Call Passenger
+                        </button>
+                        <button class="bg-gray-100 text-gray-800 py-3 rounded-lg flex items-center justify-center font-medium">
+                            <i class="fas fa-comment-alt mr-2"></i> Message
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Map -->
+            <div class="lg:col-span-1">
+                <div class="stat-card p-6 h-full flex flex-col">
+                    <h2 class="text-lg font-bold mb-4">Navigation</h2>
+                    <div class="map-placeholder flex-grow rounded-lg flex items-center justify-center text-gray-400">
+                        <i class="fas fa-map-marked-alt text-4xl"></i>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-3">
+                        <button class="bg-gray-100 text-gray-800 py-2 rounded-lg text-sm font-medium">
+                            <i class="fas fa-directions mr-1"></i> Directions
+                        </button>
+                        <button class="bg-gray-100 text-gray-800 py-2 rounded-lg text-sm font-medium">
+                            <i class="fas fa-ellipsis-h mr-1"></i> More Options
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Rides -->
+        <div class="stat-card p-6 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold">Upcoming Rides</h2>
+                <a href="#" class="text-sm text-indigo-600 font-medium">View All</a>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="text-left text-sm text-gray-500 border-b border-gray-100">
+                            <th class="pb-3">Passenger</th>
+                            <th class="pb-3">Pickup</th>
+                            <th class="pb-3">Dropoff</th>
+                            <th class="pb-3">Time</th>
+                            <th class="pb-3">Earnings</th>
+                            <th class="pb-3"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="py-4">
+                                <div class="flex items-center">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Passenger" class="avatar mr-3">
+                                    <span>Michael Chen</span>
+                                </div>
+                            </td>
+                            <td>78 Oak St</td>
+                            <td>Downtown Station</td>
+                            <td>11:30 AM</td>
+                            <td class="font-medium">$12.50</td>
+                            <td class="text-right">
+                                <button class="text-indigo-600 text-sm font-medium">Details</button>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="py-4">
+                                <div class="flex items-center">
+                                    <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Passenger" class="avatar mr-3">
+                                    <span>Jessica Williams</span>
+                                </div>
+                            </td>
+                            <td>45 Pine Ave</td>
+                            <td>City Airport</td>
+                            <td>2:15 PM</td>
+                            <td class="font-medium">$22.80</td>
+                            <td class="text-right">
+                                <button class="text-indigo-600 text-sm font-medium">Details</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </main>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const body = document.body;
-            const sidenavTrigger = document.querySelector('.sidenav-trigger');
-            const sidenavClose = document.querySelector('.sidenav-close');
-            const overlay = document.querySelector('.overlay');
-
-            if (sidenavTrigger) {
-                sidenavTrigger.addEventListener('click', function() {
-                    body.classList.add('sidebar-open');
-                });
-            }
-
-            if (sidenavClose) {
-                sidenavClose.addEventListener('click', function() {
-                    body.classList.remove('sidebar-open');
-                });
-            }
-
-            if (overlay) {
-                overlay.addEventListener('click', function() {
-                    body.classList.remove('sidebar-open');
-                });
-            }
-        });
-    </script>
-    </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toggle driver status
+        const statusToggle = document.querySelector('.driver-status');
+        if (statusToggle) {
+            statusToggle.addEventListener('click', function() {
+                if (this.classList.contains('status-active')) {
+                    this.classList.remove('status-active');
+                    this.classList.add('status-inactive');
+                    this.textContent = 'OFFLINE';
+                    this.nextElementSibling.textContent = 'Not accepting rides';
+                } else {
+                    this.classList.remove('status-inactive');
+                    this.classList.add('status-active');
+                    this.textContent = 'ACTIVE';
+                    this.nextElementSibling.textContent = 'Accepting rides';
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

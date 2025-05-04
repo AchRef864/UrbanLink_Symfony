@@ -1,31 +1,132 @@
 {# templates/auth/reset_password/reset_email.html.twig #}
 {% block body_html %}
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <style>
-            body { font-family: Arial, sans-serif; }
-            .code {
-                font-size: 24px;
-                font-weight: bold;
-                letter-spacing: 2px;
-                color: #2563eb;
-                margin: 10px 0;
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-light: #93c5fd;
+            --primary-dark: #1d4ed8;
+            --secondary: #6366f1;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f8fafc;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 1.25rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .email-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .email-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .email-body {
+            padding: 2rem;
+        }
+
+        .code-container {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .code {
+            display: inline-block;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.5rem;
+            color: var(--primary);
+            background: var(--light);
+            padding: 1.5rem 2rem;
+            border-radius: 0.75rem;
+            margin: 1rem 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            margin: 1rem 0;
+        }
+
+        @media (max-width: 640px) {
+            .email-container {
+                border-radius: 0;
             }
-        </style>
-    </head>
-    <body>
-    <p>Hello,</p>
+            
+            .code {
+                font-size: 1.5rem;
+                padding: 1rem;
+                letter-spacing: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="email-header">
+        <h1 class="email-title">Password Reset Request</h1>
+    </div>
 
-    <p>Your password reset code is:</p>
+    <div class="email-body">
+        <p>Hello,</p>
 
-    <div class="code">{{ code }}</div>
+        <p>You've requested to reset your password. Here's your verification code:</p>
 
-    <p>Enter this code on the password reset page to continue.</p>
+        <div class="code-container">
+            <div class="code">{{ code }}</div>
+        </div>
 
-    <p>If you didn't request this, please ignore this email.</p>
+        <p>Enter this code on the password reset page to continue. This code will expire in 15 minutes.</p>
 
-    <p>Best regards,<br>Your Application Team</p>
-    </body>
-    </html>
+        <p>If you didn't request this password reset, please ignore this email or contact support if you have concerns.</p>
+
+        <div class="footer">
+            <p>Best regards,<br><strong>The UrbanLink Team</strong></p>
+            <p><small>This is an automated message - please do not reply directly to this email.</small></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
 {% endblock %}
