@@ -288,11 +288,32 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item ms-lg-3 my-2 my-lg-0">
-                        <a class="nav-link btn btn-accent rounded-pill px-3" href="{{ path('app_logout') }}">
-                            <i class="fas fa-sign-out-alt me-1" aria-hidden="true"></i> Logout
-                        </a>
-                    </li>
+                     <li class="nav-item dropdown ms-lg-3 my-2 my-lg-0">
+                    <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdownProfile"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Mon compte">
+                        {% if app.user and app.user.image %}
+                            <img src="{{ path('user_avatar', {id: app.user.id}) }}"
+                                 alt="{{ app.user.username }}"
+                                 class="rounded-circle"
+                                 style="width:40px; height:40px; object-fit:cover;" />
+                        {% else %}
+                            <i class="fas fa-user-circle fa-2x text-secondary"></i>
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownProfile">
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_profile_myprofile') }}">
+                                <i class="fas fa-user me-2"></i> Profil
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_logout') }}">
+                                <i class="fas fa-sign-out-alt me-2"></i> Déconnexion
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 </ul>
             </div>
         </div>
