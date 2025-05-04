@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a1a2e">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('assets/site.webmanifest') }}">
+    <link rel="mask-icon" href="{{ asset('assets/img/safari-pinned-tab.svg') }}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+
+    <title>{% block title %}UrbanLink | Mobility Solutions{% endblock %}</title>
+
+    <!-- CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    {% block stylesheets %}
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4cc9f0;
+            --dark: #1a1a2e; /* Primary navbar color */
+            --footer-bg: #000000; /* Black footer background */
+            --light: #f8f9fa;
+            --gradient-accent: linear-gradient(to right, var(--accent), var(--primary));
+            --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.2);
+            --navbar-height: 70px;
+            --transition-default: all 0.3s ease;
+        }
+
+        /* Global Styles */
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .main-content {
+            flex: 1;
+            padding-top: 80px;
+            padding-bottom: 2rem;
+        }
+
+        /* Button Styles */
+        .btn-accent {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            transition: var(--transition-default);
+        }
+
+        .btn-accent:hover {
+            background-color: #3ab7d8;
+            color: white;
+        }
+
+        /* Navbar Styles - Fixed Size and Color */
+        .navbar {
+            background: var(--dark);
+            box-shadow: var(--shadow-sm);
+            padding: 0.75rem 0;
+            height: 70px;
+            min-height: 70px;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+            background: linear-gradient(to right, var(--accent), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .nav-item {
+            margin: 0 0.5rem;
+        }
+
+        .nav-link {
+            color: #fff !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            position: relative;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::before {
+            width: 100%;
+        }
+
+        .dropdown-menu {
+            background-color: var(--dark);
+            border: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        .dropdown-item {
+            color: rgba(255, 255, 255, 0.8);
+            transition: var(--transition-default);
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            color: #fff;
+            background-color: var(--secondary);
+        }
+
+        @media (max-width: 992px) {
+            .navbar-collapse {
+                background: rgba(26, 26, 46, 0.98);
+                padding: 1rem;
+                border-radius: 0.5rem;
+                margin-top: 0.5rem;
+            }
+        }
+
+        /* Footer Styles - Black Background */
+        .footer {
+            background: var(--footer-bg);
+            color: #fff;
+            padding: 3rem 0 1rem;
+            position: relative;
+            margin-top: auto;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--accent);
+        }
+
+        .footer h5 {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer h5::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .footer a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: var(--transition-default);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: #fff;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links i {
+            margin-right: 10px;
+            color: var(--accent);
+            font-size: 0.8rem;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: var(--transition-default);
+        }
+
+        .social-icons a:hover {
+            background: var(--accent);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+    </style>
+    {% endblock %}
+</head>
+<body>
+    {% block header %}
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" aria-label="Main navigation">
+        <div class="container">
+            <a class="navbar-brand" href="{{ path('driver_dashboard') }}">
+                <i class="fas fa-bus" aria-hidden="true"></i> UrbanLink
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+<<<<<<< HEAD:templates/base_taxiste.html.twig
+                <ul class="navbar-nav ms-auto">                   
+                    {# Logout Button #}
+=======
+                <ul class="navbar-nav ms-auto">
+                {% if is_granted('ROLE_DRIVER') %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownVehicles" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-car me-1" aria-hidden="true"></i> Vehicles
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownVehicles">
+                            <li><a class="dropdown-item" href="{{ path('my_vehicle')}}">Vehicle List</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownRoutes" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-route me-1" aria-hidden="true"></i> Routes
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownRoutes">
+                            <li><a class="dropdown-item" href="{{ path('reservation_affichage')}}">Plan a Route</a></li>
+                            <li><a class="dropdown-item" href="{{ path('reservation_list')}}">My Routes</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownReviews" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-comment-dots me-1" aria-hidden="true"></i> Reviews
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownReviews">
+                            <li><a class="dropdown-item" href="{{ path('app_avis_new_front') }}">Add Review</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_avis_front') }}">Review History</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTaxi" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-taxi me-1" aria-hidden="true"></i> Taxi
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownTaxi">
+                            <li><a class="dropdown-item" href="{{ path('user_course_new') }}">Book a Taxi</a></li>
+                            <li><a class="dropdown-item" href="{{ path('user_courses') }}">Ride History</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSubscription" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-id-card me-1" aria-hidden="true"></i> Subscription
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownSubscription">
+                            <li><a class="dropdown-item" href="{{ path('app_abonnement_mes_reservations') }}">My Subscriptions</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_abonnement_index') }}">Subscribe</a></li>
+                        </ul>
+                    </li>
+
+>>>>>>> 03ae647df28a08a64472f5fa756e624f54c8e601:templates/basef.html.twig
+                    <li class="nav-item ms-lg-3 my-2 my-lg-0">
+                        <a class="nav-link btn btn-accent rounded-pill px-3" href="{{ path('app_logout') }}">
+                            <i class="fas fa-sign-out-alt me-1" aria-hidden="true"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+
+    <main class="main-content" style="padding-top: var(--navbar-height);">
+        <div class="container">
+             {% block body %}{% endblock %}
+        </div>
+    </main>
+
+    {% block footer %}
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <h5><i class="fas fa-bus me-2" aria-hidden="true"></i> UrbanLink</h5>
+                    <p class="mt-3">Your complete urban mobility solution. We connect people to their destinations safely, efficiently and comfortably.</p>
+                    <div class="mt-4">
+                        <a href="#" class="btn btn-outline-light btn-sm rounded-pill me-2">
+                            <i class="fas fa-download me-1" aria-hidden="true"></i> Download App
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5>Quick Links</h5>
+                    <ul class="footer-links list-unstyled">
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> Home</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> Services</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> Pricing</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> About</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Services</h5>
+                    <ul class="footer-links list-unstyled">
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> Urban Transport</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> Taxi Services</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> Subscriptions</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> School Transport</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> Vehicle Rentals</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Contact Us</h5>
+                    <ul class="footer-links list-unstyled">
+                        <li><i class="fas fa-map-marker-alt me-2" aria-hidden="true"></i> 123 Main Street, City</li>
+                        <li><i class="fas fa-phone-alt me-2" aria-hidden="true"></i> +123 456 7890</li>
+                        <li><i class="fas fa-envelope me-2" aria-hidden="true"></i> contact@urbanlink.com</li>
+                    </ul>
+                    <div class="social-icons mt-3">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright text-center">
+                <p class="mb-0">&copy; {{ "now"|date("Y") }} UrbanLink. All rights reserved. | 
+                   <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+    {% endblock %}
+
+    {% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Script cleanup - removed scroll effect to maintain consistent navbar
+    </script>
+    {% endblock %}
+</body>
+</html>

@@ -5,11 +5,11 @@ controllers:
     type: attribute
 # Route pour la page de connexion
 
-app_home2:
+app_home:
     path: /
     controller: App\Controller\HomeController::index
 
-app_home:
+app_homes:
     path: /home
     controller: App\Controller\DashboardController::home
 
