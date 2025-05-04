@@ -1,321 +1,285 @@
-{# templates/base/front.html.twig #}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a1a2e">
 
-    {# Favicons - Utilise asset() pour les fichiers locaux standard #}
-    {# Assurez-vous que ces fichiers existent dans public/assets/img/ #}
+    <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/img/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/favicon-16x16.png') }}">
     <link rel="manifest" href="{{ asset('assets/site.webmanifest') }}">
     <link rel="mask-icon" href="{{ asset('assets/img/safari-pinned-tab.svg') }}" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
 
-    <title>{% block title %}UrbanLInk | Solutions de Mobilité{% endblock %}</title>
+    <title>{% block title %}UrbanLink | Mobility Solutions{% endblock %}</title>
 
-    {# CSS via CDN #}
-    {# Bootstrap 5 pour la structure de base, Navbar et Footer #}
+    <!-- CSS via CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    {# Font Awesome pour les icônes #}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    {# Google Fonts pour la police Poppins #}
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    {# AJOUT DU CDN DE TAILWIND CSS V2 #}
-    {# Attention: L'utilisation simultanée de Bootstrap et Tailwind peut causer des conflits de styles. #}
-    {# Il peut être nécessaire d'ajouter des préfixes Tailwind ou d'utiliser d'autres stratégies avancées si des problèmes surviennent. #}
     <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-
-    {# Stylesheets spécifiques (incluant votre CSS personnalisé pour Navbar/Footer et body de base) #}
     {% block stylesheets %}
-        <style>
-            :root {
-                --primary: #4361ee;
-                --secondary: #3f37c9;
-                --accent: #4cc9f0;
-                --dark: #1a1a2e;
-                --light: #f8f9fa;
-                --success: #4ade80;
-                --warning: #fbbf24;
-                --danger: #f87171;
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4cc9f0;
+            --dark: #1a1a2e; /* Primary navbar color */
+            --footer-bg: #000000; /* Black footer background */
+            --light: #f8f9fa;
+            --gradient-accent: linear-gradient(to right, var(--accent), var(--primary));
+            --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.2);
+            --navbar-height: 70px;
+            --transition-default: all 0.3s ease;
+        }
+
+        /* Global Styles */
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .main-content {
+            flex: 1;
+            padding-top: 80px;
+            padding-bottom: 2rem;
+        }
+
+        /* Button Styles */
+        .btn-accent {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            transition: var(--transition-default);
+        }
+
+        .btn-accent:hover {
+            background-color: #3ab7d8;
+            color: white;
+        }
+
+        /* Navbar Styles - Fixed Size and Color */
+        .navbar {
+            background: var(--dark);
+            box-shadow: var(--shadow-sm);
+            padding: 0.75rem 0;
+            height: 70px;
+            min-height: 70px;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+            background: linear-gradient(to right, var(--accent), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .nav-item {
+            margin: 0 0.5rem;
+        }
+
+        .nav-link {
+            color: #fff !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            position: relative;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::before {
+            width: 100%;
+        }
+
+        .dropdown-menu {
+            background-color: var(--dark);
+            border: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        .dropdown-item {
+            color: rgba(255, 255, 255, 0.8);
+            transition: var(--transition-default);
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            color: #fff;
+            background-color: var(--secondary);
+        }
+
+        @media (max-width: 992px) {
+            .navbar-collapse {
+                background: rgba(26, 26, 46, 0.98);
+                padding: 1rem;
+                border-radius: 0.5rem;
+                margin-top: 0.5rem;
             }
+        }
 
-            /* Le reset de base de Tailwind est inclus, mais certaines règles Bootstrap pourraient le remplacer. */
-            /* * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; } */
+        /* Footer Styles - Black Background */
+        .footer {
+            background: var(--footer-bg);
+            color: #fff;
+            padding: 3rem 0 1rem;
+            position: relative;
+            margin-top: auto;
+        }
 
-            body {
-                background-color: #f5f7fa;
-                color: #333; /* La couleur du texte peut être écrasée par les classes Tailwind */
-                overflow-x: hidden;
-                display: flex;
-                flex-direction: column;
-                min-height: 100vh;
-            }
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--accent);
+        }
 
-            /* Navbar Styles - Ces styles spécifiques pour la navbar et le footer sont conservés */
-            .navbar {
-                background: linear-gradient(135deg, var(--dark) 0%, var(--secondary) 100%);
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-                padding: 1rem 0;
-                transition: all 0.3s ease;
-            }
+        .footer h5 {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
 
-            .navbar.scrolled {
-                padding: 0.5rem 0;
-                background: rgba(26, 26, 46, 0.95) !important;
-                backdrop-filter: blur(10px);
-            }
+        .footer h5::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+        }
 
-            .navbar-brand {
-                font-weight: 700;
-                font-size: 1.8rem;
-                background: linear-gradient(to right, var(--accent), #fff);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                display: flex;
-                align-items: center;
-            }
+        .footer a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: var(--transition-default);
+            text-decoration: none;
+        }
 
-            .navbar-brand i {
-                margin-right: 10px;
-                font-size: 1.5rem;
-                color: var(--accent);
-            }
+        .footer a:hover {
+            color: #fff;
+        }
 
-            .nav-item {
-                margin: 0 0.5rem;
-            }
+        .footer-links li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
 
-             /* Styles pour les liens de navigation (pas les dropdown toggles) */
-            .nav-link:not(.dropdown-toggle) {
-                 color: #fff !important;
-                 font-weight: 500;
-                 padding: 0.5rem 1rem !important;
-                 position: relative;
-             }
+        .footer-links i {
+            margin-right: 10px;
+            color: var(--accent);
+            font-size: 0.8rem;
+        }
 
-             /* Styles pour les toggles de dropdown */
-             .nav-link.dropdown-toggle {
-                 color: #fff !important;
-                 font-weight: 500;
-                 padding: 0.5rem 1rem !important;
-                 position: relative;
-                 /* Supprime la flèche par défaut de Bootstrap si vous préférez */
-                 /* &::after { display: none; } */
-             }
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: var(--transition-default);
+        }
 
+        .social-icons a:hover {
+            background: var(--accent);
+        }
 
-            .nav-link::before {
-                content: '';
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 0;
-                height: 2px;
-                background-color: var(--accent);
-                transition: width 0.3s ease;
-            }
-
-            .nav-link:hover::before {
-                width: 100%;
-            }
-
-            /* Styles spécifiques pour les dropdowns */
-            .dropdown-menu {
-                background-color: var(--dark); /* Fond du menu dropdown */
-                border: none;
-                box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-            }
-
-            .dropdown-item {
-                color: rgba(255, 255, 255, 0.8); /* Couleur du texte des items */
-                transition: all 0.2s ease;
-            }
-
-            .dropdown-item:hover,
-            .dropdown-item:focus {
-                 color: #fff;
-                 background-color: var(--secondary); /* Fond au survol */
-            }
-
-
-            /* Main Content Padding (adjust based on fixed navbar height) */
-            .main-content {
-                flex: 1;
-                /* Ajustez cette valeur pour qu'elle corresponde à la hauteur de votre navbar + un peu d'espace */
-                padding-top: 80px; /* Estimation, ajustez si nécessaire */
-                padding-bottom: 2rem;
-            }
-
-            /* Footer Styles - Ces styles spécifiques pour la navbar et le footer sont conservés */
-            .footer {
-                background: linear-gradient(135deg, var(--dark) 0%, var(--secondary) 100%);
-                color: #fff;
-                padding: 3rem 0 1rem;
-                position: relative;
-                margin-top: auto;
-            }
-
-            .footer::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 10px;
-                background: linear-gradient(to right, var(--accent), var(--primary));
-            }
-
-            .footer h5 {
-                font-weight: 600;
-                margin-bottom: 1.5rem;
-                position: relative;
-                display: inline-block;
-            }
-
-            .footer h5::after {
-                content: '';
-                position: absolute;
-                bottom: -8px;
-                left: 0;
-                width: 50px;
-                height: 3px;
-                background: var(--accent);
-            }
-
-            .footer a {
-                color: rgba(255, 255, 255, 0.7);
-                transition: all 0.3s ease;
-                text-decoration: none; /* Tailwind par défaut supprime les underscores, mais Bootstrap les ajoute */
-            }
-
-            .footer a:hover {
-                color: #fff;
-                 /* Retire la transformation pour éviter un mouvement inattendu */
-                 /* transform: translateX(5px); */
-            }
-
-            .footer-links li {
-                margin-bottom: 0.8rem;
-                display: flex; /* Peut interagir avec les display utilities de Tailwind */
-                align-items: center;
-            }
-
-            .footer-links i {
-                margin-right: 10px;
-                color: var(--accent);
-                font-size: 0.8rem;
-            }
-
-            .social-icons a {
-                display: inline-flex; /* Peut interagir avec les display utilities de Tailwind */
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                background: rgba(255, 255, 255, 0.1);
-                border-radius: 50%;
-                margin-right: 10px;
-                transition: all 0.3s ease;
-            }
-
-            .social-icons a:hover {
-                background: var(--accent);
-            }
-
-            .copyright {
-                border-top: 1px solid rgba(255, 255, 255, 0.1); /* Peut interagir avec les border utilities de Tailwind */
-                padding-top: 1.5rem; /* Peut interagir avec les padding utilities de Tailwind */
-                margin-top: 2rem; /* Peut interagir avec les margin utilities de Tailwind */
-                font-size: 0.9rem; /* Peut interagir avec les font-size utilities de Tailwind */
-                color: rgba(255, 255, 255, 0.6); /* Peut interagir avec les color utilities de Tailwind */
-            }
-
-            /* Responsive - Ces règles spécifiques sont conservées */
-            @media (max-width: 992px) {
-                .navbar-collapse {
-                    background: rgba(26, 26, 46, 0.98);
-                    padding: 1rem;
-                    border-radius: 0.5rem;
-                    margin-top: 0.5rem;
-                }
-            }
-        </style>
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+    </style>
     {% endblock %}
 </head>
 <body>
-    {# Header avec Navbar Bootstrap (Modifié pour les dropdowns) #}
     {% block header %}
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" aria-label="Main navigation">
         <div class="container">
-            {# Logo/Brand - Utilise path() pour la page d'accueil #}
-            <a class="navbar-brand" href="{{ path('app_home') }}">
-                <i class="fas fa-bus"></i> UrbanLInk
+            <a class="navbar-brand" href="{{ path('driver_dashboard') }}">
+                <i class="fas fa-bus" aria-hidden="true"></i> UrbanLink
             </a>
-            {# Bouton Burger pour Mobile #}
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            {# Menu de navigation #}
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-
-                    {# Dropdown Véhicules #}
+                {% if is_granted('ROLE_DRIVER') %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownVehicules" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-car me-1"></i> Véhicules
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownVehicles" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-car me-1" aria-hidden="true"></i> Vehicles
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownVehicules">
-                            {# Exemples d'items de dropdown - Remplacez # et le texte #}
-                            <li><a class="dropdown-item" href="{{ path('my_vehicle')}}">Liste des véhicules</a></li>
-
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownVehicles">
+                            <li><a class="dropdown-item" href="{{ path('my_vehicle')}}">Vehicle List</a></li>
                         </ul>
                     </li>
+                {% endif %}
 
-                    {# Dropdown Trajet #}
-                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTrajet" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-route me-1"></i> Trajet
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownRoutes" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-route me-1" aria-hidden="true"></i> Routes
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownTrajet">
-                             {# Exemples d'items de dropdown - Remplacez # et le texte #}
-                            <li><a class="dropdown-item" href="{{ path('reservation_affichage')}}">Planifier un trajet</a></li>
-                            <li><a class="dropdown-item" href="{{ path('reservation_list')}}">Consulter mes trajets</a></li>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownRoutes">
+                            <li><a class="dropdown-item" href="{{ path('reservation_affichage')}}">Plan a Route</a></li>
+                            <li><a class="dropdown-item" href="{{ path('reservation_list')}}">My Routes</a></li>
                         </ul>
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTaxi" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-comment-dots me-1"></i> Avis
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownReviews" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-comment-dots me-1" aria-hidden="true"></i> Reviews
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownTaxi">
-                            {# Exemples d'items de dropdown - Remplacez # et le texte #}
-                            <li><a class="dropdown-item" href="{{ path('app_avis_new_front') }}">Ajouter avis</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_avis_front') }}">Historique avis</a></li>
-                        </ul>
-                    </li>
-                    {# Dropdown Taxi #}
-                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTaxi" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-taxi me-1"></i> Taxi
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownTaxi">
-                             {# Exemples d'items de dropdown - Remplacez # et le texte #}
-                            <li><a class="dropdown-item" href="{{ path('user_course_new') }}">Réserver un taxi</a></li>
-                            <li><a class="dropdown-item" href="{{ path('user_courses') }}">Historique des courses</a></li>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownReviews">
+                            <li><a class="dropdown-item" href="{{ path('app_avis_new_front') }}">Add Review</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_avis_front') }}">Review History</a></li>
                         </ul>
                     </li>
 
-                    {# Dropdown Abonnement #}
-                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAbonnement" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-id-card me-1"></i> Abonnement
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTaxi" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-taxi me-1" aria-hidden="true"></i> Taxi
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownAbonnement">
                              {# Exemples d'items de dropdown - Remplacez # et le texte #}
@@ -324,111 +288,86 @@
                         </ul>
                     </li>
 
-                    {# Logout Button #}
                     <li class="nav-item ms-lg-3 my-2 my-lg-0">
                         <a class="nav-link btn btn-accent rounded-pill px-3" href="{{ path('app_logout') }}">
-                            <i class="fas fa-sign-out-alt me-1"></i> Déconnexion
+                            <i class="fas fa-sign-out-alt me-1" aria-hidden="true"></i> Logout
                         </a>
                     </li>
-
                 </ul>
             </div>
         </div>
     </nav>
     {% endblock %}
 
-    {# Zone de contenu principale #}
-    <main class="main-content">
+    <main class="main-content" style="padding-top: var(--navbar-height);">
         <div class="container">
-             {# Ce bloc sera remplacé par le contenu spécifique de chaque page enfant #}
-             {# Vous pouvez maintenant utiliser les classes utilitaires de Tailwind V2 ici et dans les templates enfants #}
              {% block body %}{% endblock %}
         </div>
     </main>
 
-    {# Footer (Non modifié) #}
     {% block footer %}
     <footer class="footer">
         <div class="container">
             <div class="row g-4">
-                {# Section Logo & Description #}
                 <div class="col-lg-4 col-md-6">
-                    <h5><i class="fas fa-bus me-2"></i> UrbanLInk </h5>
-                    <p class="mt-3">Votre solution de mobilité urbaine complète. Nous connectons les gens à leurs destinations de manière sûre, efficace et confortable.</p>
+                    <h5><i class="fas fa-bus me-2" aria-hidden="true"></i> UrbanLink</h5>
+                    <p class="mt-3">Your complete urban mobility solution. We connect people to their destinations safely, efficiently and comfortably.</p>
                     <div class="mt-4">
-                        {# Le lien Télécharger l'App est un exemple, l'URL devrait pointer vers les magasins d'applications #}
-                        <a href="#" class="btn btn-outline-light btn-sm rounded-pill me-2"><i class="fas fa-download me-1"></i> Télécharger l'App</a>
+                        <a href="#" class="btn btn-outline-light btn-sm rounded-pill me-2">
+                            <i class="fas fa-download me-1" aria-hidden="true"></i> Download App
+                        </a>
                     </div>
                 </div>
-                {# Section Liens rapides #}
                 <div class="col-lg-2 col-md-6">
-                    <h5>Liens rapides</h5>
+                    <h5>Quick Links</h5>
                     <ul class="footer-links list-unstyled">
-                        {# Remplacez # par vos paths Symfony si besoin #}
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Accueil</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Services</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Tarifs</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> À propos</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> Home</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> Services</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> Pricing</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> About</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> Contact</a></li>
                     </ul>
                 </div>
-                {# Section Services #}
                 <div class="col-lg-3 col-md-6">
                     <h5>Services</h5>
                     <ul class="footer-links list-unstyled">
-                        {# Remplacez # par vos paths Symfony si besoin #}
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Transport urbain</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Services de taxi</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Abonnements</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Transport scolaire</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Locations de véhicules</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> Urban Transport</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> Taxi Services</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> Subscriptions</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> School Transport</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right" aria-hidden="true"></i> Vehicle Rentals</a></li>
                     </ul>
                 </div>
-                {# Section Contact & Social #}
                 <div class="col-lg-3 col-md-6">
-                    <h5>Contactez-nous</h5>
+                    <h5>Contact Us</h5>
                     <ul class="footer-links list-unstyled">
-                        {# Remplacez les placeholders par vos vraies informations #}
-                        <li><i class="fas fa-map-marker-alt me-2"></i> 123 Rue Principale, Ville</li>
-                        <li><i class="fas fa-phone-alt me-2"></i> +123 456 7890</li>
-                        <li><i class="fas fa-envelope me-2"></i> contact UrbanLInk.com</li>
+                        <li><i class="fas fa-map-marker-alt me-2" aria-hidden="true"></i> 123 Main Street, City</li>
+                        <li><i class="fas fa-phone-alt me-2" aria-hidden="true"></i> +123 456 7890</li>
+                        <li><i class="fas fa-envelope me-2" aria-hidden="true"></i> contact@urbanlink.com</li>
                     </ul>
                     <div class="social-icons mt-3">
-                         {# Remplacez # par les URLs de vos réseaux sociaux #}
-                        <a href="#" class="me-2"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="me-2"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="me-2"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="me-2"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
                     </div>
                 </div>
             </div>
-            {# Copyright #}
             <div class="copyright text-center">
-                {# Remplacez # par les paths Symfony de vos pages légales si elles existent #}
-                <p class="mb-0">&copy; {{ "now"|date("Y") }} UrbanLInk. Tous droits réservés. | <a href="#">Politique de confidentialité</a> | <a href="#">Conditions d'utilisation</a></p>
+                <p class="mb-0">&copy; {{ "now"|date("Y") }} UrbanLink. All rights reserved. | 
+                   <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+                </p>
             </div>
         </div>
     </footer>
     {% endblock %}
 
-    {# JavaScripts via CDN et scripts spécifiques #}
     {% block javascripts %}
-        {# Bootstrap 5 JS (essentiel pour les dropdowns Bootstrap) #}
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        {# Script pour l'effet de scroll sur la navbar (conservé) #}
-        <script>
-            window.addEventListener('scroll', function() {
-                const navbar = document.querySelector('.navbar');
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            });
-        </script>
-        {# Si vous utilisez Webpack Encore pour votre JS applicatif principal, décommentez la ligne suivante #}
-        {# {{ encore_entry_script_tags('app') }} #}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Script cleanup - removed scroll effect to maintain consistent navbar
+    </script>
     {% endblock %}
 </body>
 </html>

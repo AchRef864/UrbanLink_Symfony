@@ -1,9 +1,9 @@
 knp_snappy:
     pdf:
         enabled: true
-        binary: '%env(resolve:WKHTMLTOPDF_PATH)%'
-        options:
-            encoding: 'UTF-8'
-            enable-local-file-access: true
+        binary: '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"'
+        options: []
     image:
         enabled: false
+        binary: '"C:\Program Files\wkhtmltopdf\bin\wkhtmltoimage.exe"'
+        options: []

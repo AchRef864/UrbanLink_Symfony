@@ -6,8 +6,8 @@
 <style>
     .container {
         font-family: 'Arial', sans-serif;
-        width: 100%;
-        margin: 0 auto;
+        max-width: 800px; /* Set a max-width for better control */
+        margin: 0; /* Remove auto margin to align left */
         padding: 0 1rem;
     }
 
@@ -159,7 +159,7 @@
 {% endblock %}
 
 {% block body %}
-<div class="container">
+<div class="container" style="margin-left: 0; margin-right: auto;">
     <div class="form-card">
         <div class="form-header">
             <h1 class="form-title">Leave a Response</h1>

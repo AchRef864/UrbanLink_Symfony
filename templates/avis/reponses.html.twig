@@ -196,11 +196,15 @@
      {% endif %}
  
      <div class="text-center mt-4 mb-4">
-         <a href="{{ path('app_avis_index') }}" 
+        <a
+            href="{{ is_granted('ROLE_ADMIN')
+                ? path('app_avis_index')
+                : path('app_avis_front') }}"
             class="inline-block px-4 py-1.5 font-bold text-center uppercase align-middle transition-all rounded-lg cursor-pointer text-xs text-white"
-            style="background: #696969;">
-             Back to complaints list
-         </a>
+            style="background: #696969;"
+            >
+            Back to complaints list
+        </a>
      </div>
  </div>
  {% endblock %}
