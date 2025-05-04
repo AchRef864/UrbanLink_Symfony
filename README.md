@@ -4,7 +4,7 @@
 ````markdown
 # 🚖 UrbanLink Symfony Project
 
-**UrbanLink** is a Symfony-based web platform for managing urban transportation services such as taxi bookings, user subscriptions, and vehicle routing. It is designed with modern backend and frontend technologies, providing a scalable and flexible architecture for future enhancements.
+UrbanLink is a Symfony-based web platform for managing urban transportation services such as taxi bookings, user subscriptions, and vehicle routing. It is designed with modern backend and frontend technologies, providing a scalable and flexible architecture for future enhancements.
 
 ---
 
