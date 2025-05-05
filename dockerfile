@@ -15,20 +15,24 @@ RUN apk add --no-cache \
 # Step 3: Install Composer (PHP package manager)
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Step 4: Add git safe directory configuration to fix ownership issues
+# Step 4: Install Symfony CLI
+RUN curl -sS https://get.symfony.com/cli/installer | bash
+ENV PATH="$PATH:/root/.symfony*/bin"
+
+# Step 5: Add git safe directory configuration to fix ownership issues
 RUN git config --global --add safe.directory /var/www/html
 
-# Step 5: Set working directory inside the container
+# Step 6: Set working directory inside the container
 WORKDIR /var/www/html
 
-# Step 6: Copy your Symfony app to the container
+# Step 7: Copy your Symfony app to the container
 COPY . .
 
-# Step 7: Install app dependencies via Composer
+# Step 8: Install app dependencies via Composer
 RUN composer install --no-interaction --prefer-dist
 
-# Step 8: Expose the port your app will run on
+# Step 9: Expose the port your app will run on
 EXPOSE 8000
 
-# Step 9: Set the command to run Symfony using the PHP FPM server
+# Step 10: Set the command to run Symfony using the PHP FPM server
 CMD ["php-fpm"]
