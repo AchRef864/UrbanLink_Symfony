@@ -4,252 +4,295 @@
 {% block title %}Tableau de bord Taxiste{% endblock %}
 
 {% block body %}
-<div class="bg-white shadow-lg rounded-2xl max-w-5xl mx-auto border border-gray-200">
-
-  {# En-tête #}
-  <div class="px-6 py-4 rounded-t-2xl bg-indigo-900">
-    <h1 class="text-xl font-bold text-white">Tableau de bord du Taxi</h1>
-  </div>
-
-  {# Cloche de notifications #}
-  <div class="relative text-right p-4">
-    <button id="notifToggle"
-            class="relative inline-flex items-center p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-      <svg class="h-6 w-6 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none"
-           viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 
-                 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 
-                 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 
-                 11-6 0v-1m6 0H9"/>
-      </svg>
-      <span id="notifCount"
-            class="absolute -top-1 -right-1 inline-flex items-center justify-center
-                   px-1.5 py-0.5 text-xs font-bold text-white bg-red-600 rounded-full hidden">
-        0
-      </span>
-    </button>
-
-    <div id="notifList"
-         class="hidden origin-top-right absolute right-4 mt-2 w-80 max-h-96 overflow-y-auto
-                bg-white border border-gray-200 rounded-2xl shadow-lg ring-1 ring-black
-                ring-opacity-5 transition transform opacity-0 scale-95">
-      <ul id="notifItems" class="divide-y divide-gray-100 p-1"></ul>
+<div class="min-h-screen bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    {# Header with status and notifications #}
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Tableau de bord</h1>
+        <p class="text-indigo-600 mt-1 flex items-center">
+          <span class="relative flex h-3 w-3 mr-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full {% if taxi.statut|lower in ['disponible','en course'] %}bg-green-400{% else %}bg-red-400{% endif %} opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 {% if taxi.statut|lower in ['disponible','en course'] %}bg-green-500{% else %}bg-red-500{% endif %}"></span>
+          </span>
+          Statut: {{ taxi.statut }}
+        </p>
+      </div>
+      
+      {# Notification bell with dropdown #}
+      <div class="relative">
+        <button id="notifToggle" class="relative p-2 rounded-full bg-white shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <svg class="h-6 w-6 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+          </svg>
+          <span id="notifCount" class="absolute -top-1 -right-1 inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-white bg-red-600 rounded-full hidden">0</span>
+        </button>
+        
+        <div id="notifList" class="hidden origin-top-right absolute right-0 mt-2 w-80 max-h-96 overflow-y-auto bg-white rounded-lg shadow-xl ring-1 ring-black ring-opacity-5 transition-all transform opacity-0 scale-95 z-10">
+          <div class="py-1">
+            <ul id="notifItems" class="divide-y divide-gray-100"></ul>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-
-  {# Contenu principal #}
-  <div class="p-6">
-
-    {# Votre Taxi #}
-    <h2 class="text-lg font-semibold">Votre Taxi</h2>
-    <div class="mb-4">
-      <p class="text-gray-800">
-        📌 <span class="font-medium">{{ taxi.marque }} {{ taxi.modele }}</span>
-        (<span class="text-sm text-gray-600">{{ taxi.immatriculation }}</span>)
-      </p>
-      <p class="text-gray-600">Statut : <span class="font-medium">{{ taxi.statut }}</span></p>
-    </div>
-    <form action="{{ path('taxiste_taxi_change_status', {'id': taxi.id}) }}"
-          method="post" class="mb-8 inline-block">
-      {% set st = taxi.statut|lower %}
-      <button type="submit"
-              class="font-bold py-2 px-6 rounded-lg shadow-md transition duration-200
-                     {{ st in ['disponible','en course'] 
-                        ? 'bg-red-600 hover:bg-red-700 text-white' 
-                        : 'bg-green-600 hover:bg-green-700 text-white' }}">
-        {% if st in ['disponible','en course'] %}
-          Passer en indisponible
-        {% else %}
-          Passer en disponible
-        {% endif %}
-      </button>
-    </form>
-
-    {# Tableau des Courses #}
-    <h2 class="text-lg font-semibold mb-2">Vos Courses</h2>
-    <div class="overflow-x-auto">
-      <table class="w-full border-collapse bg-white">
-        <thead>
-          <tr class="bg-gray-100">
-            <th class="py-2 px-4 border text-left">Date</th>
-            <th class="py-2 px-4 border text-left">Départ</th>
-            <th class="py-2 px-4 border text-left">Arrivée</th>
-            <th class="py-2 px-4 border text-left">Distance</th>
-            <th class="py-2 px-4 border text-left">Montant</th>
-            <th class="py-2 px-4 border text-left">Client</th>
-            <th class="py-2 px-4 border text-left">Statut</th>
-            <th class="py-2 px-4 border text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for course in courses %}
-            <tr class="hover:bg-gray-50">
-              <td class="py-2 px-4 border">{{ course.dateCourse|date('d/m/Y H:i') }}</td>
-
-              {# on stocke coords "lat, lng" dans data-coords #}
-              <td class="py-2 px-4 border">
-                <span class="geo" data-coords="{{ course.villeDepart }}">Chargement…</span>
-              </td>
-              <td class="py-2 px-4 border">
-                <span class="geo" data-coords="{{ course.villeArrivee }}">Chargement…</span>
-              </td>
-
-              <td class="py-2 px-4 border">{{ course.distanceKm }} km</td>
-              <td class="py-2 px-4 border">{{ course.montant }} DNT</td>
-              <td class="py-2 px-4 border">{{ course.user.name }}</td>
-              <td class="py-2 px-4 border">{{ course.statut }}</td>
-              <td class="py-2 px-4 border space-x-2">
-                {% set cs = course.statut|lower %}
-                {% if cs == 'en attente' %}
-                  <form action="{{ path('taxiste_course_accept', {'id': course.id}) }}"
-                        method="post" class="inline-block">
-                    <button type="submit"
-                            class="font-bold py-2 px-3 rounded-lg shadow-md transition duration-200
-                                   bg-green-500 hover:bg-green-600 text-white">
-                      Accepter
-                    </button>
-                  </form>
-                  <form action="{{ path('taxiste_course_refuse', {'id': course.id}) }}"
-                        method="post" class="inline-block"
-                        onsubmit="return confirm('Refuser cette course ?');">
-                    <button type="submit"
-                            class="font-bold py-2 px-3 rounded-lg shadow-md transition duration-200
-                                   bg-red-500 hover:bg-red-600 text-white">
-                      Refuser
-                    </button>
-                  </form>
-                {% elseif cs == 'acceptée' %}
-                  <form action="{{ path('taxiste_course_start', {'id': course.id}) }}"
-                        method="post" class="inline-block">
-                    <button type="submit"
-                            class="font-bold py-2 px-3 rounded-lg shadow-md transition duration-200
-                                   bg-indigo-600 hover:bg-indigo-700 text-white">
-                      Déclencher
-                    </button>
-                  </form>
-                {% elseif cs == 'en course' %}
-                  <form action="{{ path('taxiste_course_finish', {'id': course.id}) }}"
-                        method="post" class="inline-block">
-                    <button type="submit"
-                            class="font-bold py-2 px-3 rounded-lg shadow-md transition duration-200
-                                   bg-purple-700 hover:bg-purple-800 text-white">
-                      Terminer
-                    </button>
-                  </form>
+    
+    {# Main content grid #}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {# Vehicle card #}
+      <div class="lg:col-span-1">
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+          <div class="px-4 py-5 sm:px-6 bg-indigo-700">
+            <h3 class="text-lg font-medium text-white">Votre véhicule</h3>
+          </div>
+          <div class="px-4 py-5 sm:p-6">
+            <div class="flex items-center">
+              <div class="flex-shrink-0 bg-indigo-100 rounded-md p-3">
+                <svg class="h-8 w-8 text-indigo-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                </svg>
+              </div>
+              <div class="ml-4">
+                <h4 class="text-lg font-semibold text-gray-900">{{ taxi.marque }} {{ taxi.modele }}</h4>
+                <p class="text-sm text-gray-500">{{ taxi.immatriculation }}</p>
+              </div>
+            </div>
+            
+            <div class="mt-6">
+              <form action="{{ path('taxiste_taxi_change_status', {'id': taxi.id}) }}" method="post">
+                {% set st = taxi.statut|lower %}
+                <button type="submit" class="w-full flex items-center justify-center px-4 py-3 border border-transparent rounded-md shadow-sm text-sm font-medium text-white {% if st in ['disponible','en course'] %}bg-red-600 hover:bg-red-700{% else %}bg-green-600 hover:bg-green-700{% endif %} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
+                  {% if st in ['disponible','en course'] %}
+                    <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    Passer indisponible
+                  {% else %}
+                    <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Passer disponible
+                  {% endif %}
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+        {# Stats card #}
+        <div class="mt-6 bg-white overflow-hidden shadow rounded-lg">
+          <div class="px-4 py-5 sm:px-6 bg-indigo-700">
+            <h3 class="text-lg font-medium text-white">Statistiques</h3>
+          </div>
+          <div class="px-4 py-5 sm:p-6">
+            <dl class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div class="px-4 py-2 bg-gray-50 rounded-lg overflow-hidden">
+                <dt class="text-sm font-medium text-gray-500 truncate">Courses aujourd'hui</dt>
+                <dd class="mt-1 text-2xl font-semibold text-gray-900">{{ stats.today.courses }}</dd>
+              </div>
+              <div class="px-4 py-2 bg-gray-50 rounded-lg overflow-hidden">
+                <dt class="text-sm font-medium text-gray-500 truncate">Gains aujourd'hui</dt>
+                <dd class="mt-1 text-2xl font-semibold text-gray-900"> {{ stats.today.earnings|number_format(2)}} DT</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+      
+      {# Courses table #}
+      <div class="lg:col-span-2">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div class="px-4 py-5 sm:px-6 bg-indigo-700">
+            <h3 class="text-lg font-medium text-white">Historique des courses</h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trajet</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                {% for course in courses %}
+                <tr class="hover:bg-gray-50 transition-colors duration-150">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-gray-900">{{ course.dateCourse|date('d/m/Y') }}</div>
+                    <div class="text-sm text-gray-500">{{ course.dateCourse|date('H:i') }}</div>
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                        <svg class="h-6 w-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                      </div>
+                      <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-900">{{ course.user.name }}</div>
+                        <div class="text-sm text-gray-500">
+                          <span class="geo" data-coords="{{ course.villeDepart }}">...</span> →
+                          <span class="geo" data-coords="{{ course.villeArrivee }}">...</span>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900 font-semibold">{{ course.montant }} DNT</div>
+                    <div class="text-sm text-gray-500">{{ course.distanceKm }} km</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                      {% if course.statut|lower == 'en attente' %}bg-yellow-100 text-yellow-800
+                      {% elseif course.statut|lower == 'acceptée' %}bg-blue-100 text-blue-800
+                      {% elseif course.statut|lower == 'en course' %}bg-purple-100 text-purple-800
+                      {% elseif course.statut|lower == 'terminée' %}bg-green-100 text-green-800
+                      {% else %}bg-gray-100 text-gray-800{% endif %}">
+                      {{ course.statut }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    {% set cs = course.statut|lower %}
+                    {% if cs == 'en attente' %}
+                      <div class="flex space-x-2">
+                        <form action="{{ path('taxiste_course_accept', {'id': course.id}) }}" method="post">
+                          <button type="submit" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 px-3 py-1 rounded-md hover:bg-indigo-100 transition-colors duration-200">
+                            Accepter
+                          </button>
+                        </form>
+                        <form action="{{ path('taxiste_course_refuse', {'id': course.id}) }}" method="post" onsubmit="return confirm('Refuser cette course ?');">
+                          <button type="submit" class="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1 rounded-md hover:bg-red-100 transition-colors duration-200">
+                            Refuser
+                          </button>
+                        </form>
+                      </div>
+                    {% elseif cs == 'acceptée' %}
+                      <form action="{{ path('taxiste_course_start', {'id': course.id}) }}" method="post">
+                        <button type="submit" class="text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-1 rounded-md transition-colors duration-200">
+                          Déclencher
+                        </button>
+                      </form>
+                    {% elseif cs == 'en course' %}
+                      <form action="{{ path('taxiste_course_finish', {'id': course.id}) }}" method="post">
+                        <button type="submit" class="text-white bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded-md transition-colors duration-200">
+                          Terminer
+                        </button>
+                      </form>
+                    {% else %}
+                      <span class="text-gray-500">—</span>
+                    {% endif %}
+                  </td>
+                </tr>
                 {% else %}
-                  <span class="text-sm text-gray-600">—</span>
-                {% endif %}
-              </td>
-            </tr>
-          {% else %}
-            <tr>
-              <td colspan="8" class="py-4 px-4 border text-center text-gray-500">
-                Aucune course trouvée.
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+                <tr>
+                  <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                    Aucune course trouvée.
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
-
   </div>
 </div>
 {% endblock %}
 
 {% block javascripts %}
-  {{ parent() }}
-  <script>
-    // --- Notifications pop-up ---
-    const toggleBtn  = document.getElementById('notifToggle'),
-          notifList  = document.getElementById('notifList'),
-          notifItems = document.getElementById('notifItems'),
-          notifCount = document.getElementById('notifCount');
+{{ parent() }}
+<script>
+  // --- Notifications pop-up ---
+  const toggleBtn  = document.getElementById('notifToggle'),
+        notifList  = document.getElementById('notifList'),
+        notifItems = document.getElementById('notifItems'),
+        notifCount = document.getElementById('notifCount');
 
-    // stopPropagation dans la liste
-    notifList.addEventListener('click', e => e.stopPropagation());
+  // stopPropagation dans la liste
+  notifList.addEventListener('click', e => e.stopPropagation());
 
-    async function toggleNotifications() {
-      const hidden = notifList.classList.contains('hidden');
-      if (hidden) {
-        const resp = await fetch('{{ path("taxiste_notifications_ajax") }}');
-        const courses = await resp.json();
-        notifItems.innerHTML = '';
-        if (courses.length) {
-          courses.forEach(c => {
-            const dateTxt = c.date ? `<span class="text-sm text-gray-500">le ${c.date}</span>` : '';
-            const li = document.createElement('li');
-            li.className = `
-              bg-white hover:bg-gray-50 rounded-lg p-4 flex space-x-3
-              transition-shadow shadow-sm hover:shadow-md cursor-pointer
-            `;
-            li.innerHTML = `
-              <svg class="h-6 w-6 text-indigo-500 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none"
-                   viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M3 10l1.528 3.056a9 9 0 0016.944 0L22 10M5 10v6a7 7 0 0014 0v-6"/>
-              </svg>
-              <div class="flex-1">
-                <p class="font-medium text-gray-800">
-                  De <span class="font-semibold">${c.depart}</span> à <span class="font-semibold">${c.arrivee}</span>
-                </p>
-                <div class="mt-1 flex items-center space-x-2">
-                  <span class="text-xs text-gray-500">#${c.id}</span>
-                  ${dateTxt}
-                </div>
-              </div>`;
-            notifItems.appendChild(li);
-          });
-          notifCount.textContent = courses.length;
-          notifCount.classList.remove('hidden');
-        } else {
+  async function toggleNotifications() {
+    const hidden = notifList.classList.contains('hidden');
+    if (hidden) {
+      const resp = await fetch('{{ path("taxiste_notifications_ajax") }}');
+      const courses = await resp.json();
+      notifItems.innerHTML = '';
+      if (courses.length) {
+        courses.forEach(c => {
+          const dateTxt = c.date ? `<span class="text-xs text-gray-500">${c.date}</span>` : '';
           const li = document.createElement('li');
-          li.className = 'px-4 py-3 text-gray-500 text-center';
-          li.textContent = 'Aucune course en attente.';
+          li.className = 'px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors duration-150';
+          li.innerHTML = `
+            <div class="flex items-start">
+              <div class="flex-shrink-0 pt-0.5">
+                <div class="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                  <svg class="h-6 w-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="ml-3 flex-1">
+                <p class="text-sm font-medium text-gray-900">Nouvelle course #${c.id}</p>
+                <p class="text-sm text-gray-500 mt-1">De ${c.depart} à ${c.arrivee}</p>
+                ${dateTxt}
+              </div>
+            </div>
+          `;
           notifItems.appendChild(li);
-          notifCount.classList.add('hidden');
-        }
-        notifList.classList.remove('hidden');
-        requestAnimationFrame(() => {
-          notifList.classList.replace('opacity-0','opacity-100');
-          notifList.classList.replace('scale-95','scale-100');
         });
+        notifCount.textContent = courses.length;
+        notifCount.classList.remove('hidden');
       } else {
-        notifList.classList.replace('opacity-100','opacity-0');
-        notifList.classList.replace('scale-100','scale-95');
-        notifList.addEventListener('transitionend', () => notifList.classList.add('hidden'), { once: true });
+        const li = document.createElement('li');
+        li.className = 'px-4 py-3 text-gray-500 text-center';
+        li.textContent = 'Aucune nouvelle notification';
+        notifItems.appendChild(li);
+        notifCount.classList.add('hidden');
       }
-    }
-
-    toggleBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      toggleNotifications();
-    });
-    document.addEventListener('click', () => {
-      if (!notifList.classList.contains('hidden')) toggleNotifications();
-    });
-
-    // --- Reverse-geocoding pour le tableau ---
-    async function reverseGeocode(lat, lng) {
-      const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`;
-      try {
-        const r = await fetch(url);
-        if (!r.ok) throw '';
-        const j = await r.json();
-        const addr = j.address || {};
-        const city = addr.city || addr.town || addr.village || addr.county || 'Lieu inconnu';
-        const road = addr.road || 'Unnamed road';
-        return `${city} – ${road}`;
-      } catch {
-        return `${lat}, ${lng}`;
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('span.geo').forEach(async el => {
-        const [lat, lng] = el.dataset.coords.split(',').map(s => s.trim());
-        el.textContent = await reverseGeocode(lat, lng);
+      notifList.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        notifList.classList.replace('opacity-0','opacity-100');
+        notifList.classList.replace('scale-95','scale-100');
       });
+    } else {
+      notifList.classList.replace('opacity-100','opacity-0');
+      notifList.classList.replace('scale-100','scale-95');
+      notifList.addEventListener('transitionend', () => notifList.classList.add('hidden'), { once: true });
+    }
+  }
+
+  toggleBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    toggleNotifications();
+  });
+  document.addEventListener('click', () => {
+    if (!notifList.classList.contains('hidden')) toggleNotifications();
+  });
+
+  // --- Reverse-geocoding pour le tableau ---
+  async function reverseGeocode(lat, lng) {
+    const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`;
+    try {
+      const r = await fetch(url);
+      if (!r.ok) throw '';
+      const j = await r.json();
+      const addr = j.address || {};
+      const city = addr.city || addr.town || addr.village || addr.county || 'Lieu inconnu';
+      const road = addr.road || 'Unnamed road';
+      return `${city} – ${road}`;
+    } catch {
+      return `${lat}, ${lng}`;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('span.geo').forEach(async el => {
+      const [lat, lng] = el.dataset.coords.split(',').map(s => s.trim());
+      el.textContent = await reverseGeocode(lat, lng);
     });
-  </script>
+  });
+</script>
 {% endblock %}

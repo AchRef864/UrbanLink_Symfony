@@ -24,53 +24,64 @@ class TaxisteController extends AbstractController
     #[Route('/dashboard', name: 'taxi_dashboard')]
     public function dashboard(
         EntityManagerInterface $em,
-        OpenCageGeocoder $geocoder
+        OpenCageGeocoder $geocoder,
+        CourseRepository $courseRepo
     ): Response {
         $user = $this->getUser();
         if (!in_array('ROLE_TAXI', $user->getRoles())) {
             throw $this->createAccessDeniedException('Accès refusé.');
         }
 
-        // Récupère le taxi du user
-        /** @var Taxi|null $taxi */
+        // Récupération du taxi associé
         $taxi = $em->getRepository(Taxi::class)->findOneBy(['user' => $user]);
+        
+        // Récupération des courses
+        $courses = $taxi ? $em->getRepository(Course::class)->findBy(
+            ['taxi' => $taxi],
+            ['dateCourse' => 'DESC']
+        ) : [];
 
-        // Toutes les courses de ce taxi
-        $courses = $taxi
-            ? $em->getRepository(Course::class)->findBy(
-                ['taxi' => $taxi],
-                ['dateCourse' => 'DESC']
-              )
-            : [];
-
-        // Prépare le reverse-geocoding pour chaque course
+        // Géocodage inversé
         $presentation = [];
         foreach ($courses as $c) {
-            $dep = 'Coordonnées invalides';
-            if ($coords = $c->getVilleDepart()) {
-                if (strpos($coords, ',') !== false) {
-                    list($lat, $lon) = explode(',', $coords);
-                    $dep = $geocoder->reverseGeocode(trim($lat), trim($lon));
-                }
-            }
-            $arr = 'Coordonnées invalides';
-            if ($coords2 = $c->getVilleArrivee()) {
-                if (strpos($coords2, ',') !== false) {
-                    list($lat2, $lon2) = explode(',', $coords2);
-                    $arr = $geocoder->reverseGeocode(trim($lat2), trim($lon2));
-                }
-            }
+            $dep = $this->getFormattedAddress($geocoder, $c->getVilleDepart());
+            $arr = $this->getFormattedAddress($geocoder, $c->getVilleArrivee());
+            
             $presentation[$c->getId()] = [
                 'depart'  => $dep,
                 'arrivee' => $arr,
             ];
         }
 
+        // Statistiques
+        $todayStats = $courseRepo->getTodayStats($user);
+        $weekStats = $courseRepo->getWeekStats($user);
+
         return $this->render('taxiste/dashboard.html.twig', [
-            'taxi'         => $taxi,
-            'courses'      => $courses,
+            'taxi' => $taxi,
+            'courses' => $courses,
             'presentation' => $presentation,
+            'stats' => [
+                'today' => [
+                    'courses' => $todayStats['count'],
+                    'earnings' => $todayStats['earnings']
+                ],
+                'week' => [
+                    'courses' => $weekStats['count'],
+                    'earnings' => $weekStats['earnings']
+                ]
+            ]
         ]);
+    }
+
+    private function getFormattedAddress(OpenCageGeocoder $geocoder, ?string $coords): string
+    {
+        if (!$coords || strpos($coords, ',') === false) {
+            return 'Adresse inconnue';
+        }
+
+        [$lat, $lon] = explode(',', $coords);
+        return $geocoder->reverseGeocode(trim($lat), trim($lon)) ?? 'Adresse inconnue';
     }
     #[Route('/admin/taxiste', name: 'taxiste_liste')]
     public function taxiste(UserRepository $userRepo): Response
