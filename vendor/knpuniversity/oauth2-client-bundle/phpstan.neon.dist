@@ -1,0 +1,37 @@
+parameters:
+	level: 5
+	inferPrivatePropertyTypeFromConstructor: true
+	paths:
+		- ./src/
+	excludePaths:
+		- */cache/*
+	ignoreErrors:
+		# False positive: clients are not dependencies of this project.
+		-
+			message: '#Method KnpU\\OAuth2ClientBundle\\Client\\Provider\\\w+::fetchUserFromToken\(\) has invalid return type .+#'
+			path: ./src/Client/Provider/
+		-
+			message: '#Method KnpU\\OAuth2ClientBundle\\Client\\Provider\\\w+::fetchUser\(\) has invalid return type .+#'
+			path: ./src/Client/Provider/
+		-
+			message: '#Class League\\OAuth2\\Client\\Provider\\Passage not found\.#'
+			path: ./src/Client/Provider
+		-
+			message: '#Call to method getLogoutUrl\(\) on an unknown class League\\OAuth2\\Client\\Provider\\Passage\.#'
+			path: ./src/Client/Provider
+
+		# False positive: using `::class` is not an error for those providers `::getProviderClass()` method.
+		-
+			message: '#Class [a-zA-Z0-9\\_]+ not found#'
+			path: ./src/DependencyInjection/Providers
+
+		# The DependencyInjection returns are very complex to deal with
+		-
+			message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface::scalarNode\(\)\.#'
+			path: ./src/DependencyInjection/Providers
+		-
+			message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface::arrayNode\(\)\.#'
+			path: ./src/DependencyInjection/Providers
+		-
+			message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\)\.#'
+			path: ./src/DependencyInjection
