@@ -15,9 +15,10 @@ RUN apk add --no-cache \
 # Step 3: Install Composer (PHP package manager)
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Step 4: Install Symfony CLI
-RUN curl -sS https://get.symfony.com/cli/installer | bash
-ENV PATH="$PATH:/root/.symfony*/bin"
+# Step 4: Install Symfony CLI properly
+RUN apk add --no-cache bash
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.alpine.sh' | bash
+RUN apk add symfony-cli
 
 # Step 5: Add git safe directory configuration to fix ownership issues
 RUN git config --global --add safe.directory /var/www/html
@@ -28,11 +29,16 @@ WORKDIR /var/www/html
 # Step 7: Copy your Symfony app to the container
 COPY . .
 
-# Step 8: Install app dependencies via Composer
+# Step 8: Create a custom script to handle symfony commands
+RUN echo '#!/bin/sh' > /usr/local/bin/symfony-cmd && \
+    echo 'php bin/console "$@"' >> /usr/local/bin/symfony-cmd && \
+    chmod +x /usr/local/bin/symfony-cmd
+
+# Step 9: Install app dependencies via Composer
 RUN composer install --no-interaction --prefer-dist
 
-# Step 9: Expose the port your app will run on
+# Step 10: Expose the port your app will run on
 EXPOSE 8000
 
-# Step 10: Set the command to run Symfony using the PHP FPM server
+# Step 11: Set the command to run Symfony using the PHP FPM server
 CMD ["php-fpm"]
