@@ -123,6 +123,10 @@
             <h4>{{ pendingCount }}</h4>
             <div class="stat-label">Pending</div>
         </div>
+                <div class="stat-card">
+            <h4>{{ closedCount }}</h4>
+            <div class="stat-label">Closed</div>
+        </div>
     </div>
 
     <div class="card-3d">
@@ -172,7 +176,7 @@
                                 {% elseif avi.statut == 'not processed' %}
                                     <span class="bg-yellow-500 text-white py-1 px-3 rounded-full text-xs font-bold uppercase">Pending</span>
                                 {% else %}
-                                    <span class="bg-red-500 text-white py-1 px-3 rounded-full text-xs font-bold uppercase">N/A</span>
+                                    <span class="bg-red-500 text-white py-1 px-3 rounded-full text-xs font-bold uppercase">Closed</span>
                                 {% endif %}
                             </td>
                             <td class="px-6 py-3 space-x-2">
