@@ -26,19 +26,25 @@ RUN git config --global --add safe.directory /var/www/html
 # Step 6: Set working directory inside the container
 WORKDIR /var/www/html
 
-# Step 7: Copy your Symfony app to the container
+# Step 7: Copy composer files first for better caching
+COPY composer.json composer.lock ./
+
+# Step 8: Install symfony/runtime package before main installation
+RUN composer require symfony/runtime --no-scripts
+
+# Step 9: Copy the rest of the application
 COPY . .
 
-# Step 8: Create a custom script to handle symfony commands
+# Step 10: Create a custom script to handle symfony commands
 RUN echo '#!/bin/sh' > /usr/local/bin/symfony-cmd && \
     echo 'php bin/console "$@"' >> /usr/local/bin/symfony-cmd && \
     chmod +x /usr/local/bin/symfony-cmd
 
-# Step 9: Install app dependencies via Composer
+# Step 11: Install app dependencies via Composer
 RUN composer install --no-interaction --prefer-dist
 
-# Step 10: Expose the port your app will run on
+# Step 12: Expose the port your app will run on
 EXPOSE 8000
 
-# Step 11: Set the command to run Symfony using the PHP FPM server
+# Step 13: Set the command to run Symfony using the PHP FPM server
 CMD ["php-fpm"]
