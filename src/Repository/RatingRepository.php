@@ -37,4 +37,15 @@ class RatingRepository extends ServiceEntityRepository
             'user' => $user,
         ]);
     }
+    /**
+     * @return array<int, array{id:int, avgRating: float}>
+     */
+    public function getAverageRatingsByTaxi(): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select('IDENTITY(r.taxi) AS id, AVG(r.note) AS avgRating')
+            ->groupBy('r.taxi')
+            ->getQuery()
+            ->getArrayResult();
+    }
 }

@@ -2,171 +2,216 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>URBANLINK MAINTENANCE REPORT #{{ maintenance.id }}</title>
+    <title>URBANLINK MAINTENANCE RECEIPT #{{ maintenance.id }}</title>
     <style>
         @page {
-            margin: 2cm;
+            margin: 1cm;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333333;
-            line-height: 1.5;
+            line-height: 1.4;
+            max-width: 800px;
+            margin: 0 auto;
         }
-        .header {
-            border-bottom: 3px solid #0056b3;
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 20px;
             padding-bottom: 15px;
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
+            border-bottom: 2px solid #0056b3;
         }
         .logo {
-            height: 60px;
+            height: 50px;
+            margin-bottom: 10px;
         }
-        .document-title {
-            color: #0056b3;
-            font-size: 24px;
+        .receipt-title {
+            font-size: 22px;
             font-weight: 700;
-            margin: 0;
+            color: #0056b3;
+            margin: 5px 0;
             text-transform: uppercase;
         }
-        .document-info {
-            text-align: right;
-            font-size: 12px;
-            color: #666666;
+        .receipt-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
         }
-        .document-ref {
-            font-weight: bold;
-            color: #0056b3;
-        }
-        .section-title {
-            background-color: #f5f5f5;
-            color: #0056b3;
-            padding: 8px 12px;
+        .receipt-number {
             font-size: 16px;
             font-weight: 600;
-            margin: 25px 0 15px 0;
-            border-left: 4px solid #0056b3;
+            margin: 10px 0;
         }
-        .details-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 25px;
-        }
-        .details-table th {
-            background-color: #f8f9fa;
-            color: #495057;
-            text-align: left;
-            padding: 10px 12px;
-            font-weight: 600;
-            border-bottom: 2px solid #dee2e6;
-            width: 30%;
-        }
-        .details-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #dee2e6;
-            vertical-align: top;
-        }
-        .status-badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .status-0 { background-color: #d4edda; color: #155724; }
-        .status-1 { background-color: #fff3cd; color: #856404; }
-        .status-2 { background-color: #f8d7da; color: #721c24; }
-        .footer {
-            margin-top: 40px;
-            padding-top: 15px;
-            border-top: 1px solid #dee2e6;
-            font-size: 10px;
-            color: #6c757d;
-            text-align: center;
-        }
-        .signature-area {
-            margin-top: 50px;
+        .receipt-details {
             display: flex;
             justify-content: space-between;
+            margin-bottom: 25px;
+            font-size: 12px;
+            color: #555;
+        }
+        .receipt-section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            background-color: #0056b3;
+            color: white;
+            padding: 6px 10px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        .detail-label {
+            width: 150px;
+            font-weight: 600;
+            color: #555;
+        }
+        .detail-value {
+            flex: 1;
+        }
+        .service-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+        .service-table th {
+            background-color: #f0f0f0;
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #ddd;
+        }
+        .service-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .total-row {
+            font-weight: 600;
+            background-color: #f8f8f8;
+        }
+        .notes-box {
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+        .signature-area {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
         }
         .signature-box {
             width: 45%;
-            border-top: 1px dashed #999;
-            padding-top: 10px;
+            text-align: center;
             font-size: 12px;
+        }
+        .signature-line {
+            border-top: 1px dashed #999;
+            margin: 40px 0 5px 0;
         }
         .qr-code-container {
             text-align: center;
-            margin: 30px 0;
+            margin: 20px 0;
         }
         .qr-code {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border: 1px solid #ddd;
             padding: 5px;
             background: white;
         }
         .qr-code-label {
-            font-size: 12px;
-            margin-top: 8px;
+            font-size: 11px;
+            margin-top: 5px;
             color: #666;
         }
+        .receipt-footer {
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+            font-size: 10px;
+            color: #777;
+            text-align: center;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .status-0 { background-color: #d4edda; color: #155724; }
+        .status-1 { background-color: #fff3cd; color: #856404; }
+        .status-2 { background-color: #f8d7da; color: #721c24; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div>
-            <img src="https://www.urbanlink.tn/wp-content/uploads/2022/11/logo-urbanlink.png" alt="UrbanLink Logo" class="logo">
-            <h1 class="document-title">Maintenance Report</h1>
-        </div>
-        <div class="document-info">
-            <div>Document ID: <span class="document-ref">MNT-{{ maintenance.id|date('Ymd') }}-{{ maintenance.id }}</span></div>
-            <div>Generated on: {{ "now"|date("F j, Y H:i") }}</div>
+    <div class="receipt-header">
+        <img src="https://www.urbanlink.tn/wp-content/uploads/2022/11/logo-urbanlink.png" alt="UrbanLink Logo" class="logo">
+        <h1 class="receipt-title">Maintenance Receipt</h1>
+        <div class="receipt-subtitle">Service Record & Payment Confirmation</div>
+        <div class="receipt-number">Receipt #MNT-{{ maintenance.id|date('Ymd') }}-{{ maintenance.id }}</div>
+        <div class="receipt-details">
+            <div>Date: {{ "now"|date("F j, Y") }}</div>
+            <div>Time: {{ "now"|date("H:i") }}</div>
         </div>
     </div>
 
-    <div class="section-title">Vehicle Information</div>
-    <table class="details-table">
-        <tr>
-            <th>Vehicle</th>
-            <td>{{ maintenance.vehicle.brand }} {{ maintenance.vehicle.model }} ({{ maintenance.vehicle.licensePlate }})</td>
-        </tr>
-        <tr>
-            <th>Vehicle Type</th>
-            <td>{{ maintenance.vehicle.type }}</td>
-        </tr>
-        <tr>
-            <th>Year</th>
-            <td>{{ maintenance.vehicle.year }}</td>
-        </tr>
-    </table>
+    <div class="receipt-section">
+        <div class="section-title">Vehicle Information</div>
+        <div class="detail-row">
+            <div class="detail-label">Vehicle:</div>
+            <div class="detail-value">{{ maintenance.vehicle.brand }} {{ maintenance.vehicle.model }}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">License Plate:</div>
+            <div class="detail-value">{{ maintenance.vehicle.licensePlate }}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Vehicle Type:</div>
+            <div class="detail-value">{{ maintenance.vehicle.type }}</div>
+        </div>
+    </div>
 
-    <div class="section-title">Maintenance Details</div>
-    <table class="details-table">
-        <tr>
-            <th>Maintenance ID</th>
-            <td>{{ maintenance.id }}</td>
-        </tr>
-        <tr>
-            <th>Service Date</th>
-            <td>{{ maintenance.maintenanceDate|date('F j, Y') }}</td>
-        </tr>
-        <tr>
-            <th>Service Type</th>
-            <td>{{ maintenance.serviceType }}</td>
-        </tr>
-        <tr>
-            <th>Service Provider</th>
-            <td>{{ maintenance.serviceProvider }}</td>
-        </tr>
-        <tr>
-            <th>Cost</th>
-            <td>{{ maintenance.cost|number_format(3, '.', ',') }} TND</td>
-        </tr>
-        <tr>
-            <th>Current Status</th>
-            <td>
+    <div class="receipt-section">
+        <div class="section-title">Service Details</div>
+        <table class="service-table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ maintenance.serviceType }}</td>
+                    <td>{{ maintenance.maintenanceDate|date('M j, Y') }}</td>
+                    <td>{{ maintenance.cost|number_format(3, '.', ',') }} TND</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="2" style="text-align: right;">TOTAL:</td>
+                    <td>{{ maintenance.cost|number_format(3, '.', ',') }} TND</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="receipt-section">
+        <div class="section-title">Service Provider</div>
+        <div class="detail-row">
+            <div class="detail-label">Provider:</div>
+            <div class="detail-value">{{ maintenance.serviceProvider }}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Status:</div>
+            <div class="detail-value">
                 <span class="status-badge status-{{ maintenance.status }}">
                     {% if maintenance.status == 0 %}
                         Not in maintenance
@@ -176,40 +221,29 @@
                         Reserved
                     {% endif %}
                 </span>
-            </td>
-        </tr>
-    </table>
-
-    <div class="section-title">Service Notes</div>
-    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px; margin-bottom: 30px;">
-        {% if maintenance.description %}
-            {{ maintenance.description|nl2br }}
-        {% else %}
-            <em>No additional notes provided for this service.</em>
-        {% endif %}
+            </div>
+        </div>
     </div>
 
-    <div class="signature-area">
-        <div class="signature-box">
-            <strong>Technician Signature:</strong><br><br><br>
-            <div>Name: _________________________</div>
-            <div>Date: _________________________</div>
-        </div>
-        <div class="signature-box">
-            <strong>Fleet Manager Approval:</strong><br><br><br>
-            <div>Name: _________________________</div>
-            <div>Date: _________________________</div>
+    <div class="receipt-section">
+        <div class="section-title">Service Notes</div>
+        <div class="notes-box">
+            {% if maintenance.description %}
+                {{ maintenance.description|nl2br }}
+            {% else %}
+                <em>No additional notes provided for this service.</em>
+            {% endif %}
         </div>
     </div>
 
     <div class="qr-code-container">
         <img src="{{ qrCode }}" alt="QR Code" class="qr-code">
-        <div class="qr-code-label">Scan for maintenance details</div>
+        <div class="qr-code-label">Scan to verify this receipt</div>
     </div>
 
-    <div class="footer">
-        <p>URBANLINK TUNISIA • {{ "now"|date("Y") }} • This is an official maintenance document</p>
-        <p>Confidential - For internal use only</p>
+    <div class="receipt-footer">
+        <p>URBANLINK TUNISIA • {{ "now"|date("Y") }} • This is an official maintenance receipt</p>
+        <p>Thank you for your business • www.urbanlink.tn</p>
     </div>
 </body>
 </html>

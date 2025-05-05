@@ -2,38 +2,44 @@
 
 parameters:
     MAILER_FROM: '%env(MAILER_FROM)%'
-    twilio_sid:   '%env(TWILIO_SID)%'
+    twilio_sid: '%env(TWILIO_SID)%'
     twilio_token: '%env(TWILIO_AUTH_TOKEN)%'
     twilio_number: '%env(TWILIO_PHONE_NUMBER)%'
-    recaptcha.site_key:   '%env(RECAPTCHA_SITE_KEY)%'
+    recaptcha.site_key: '%env(RECAPTCHA_SITE_KEY)%'
     recaptcha.secret_key: '%env(RECAPTCHA_SECRET_KEY)%'
     stripe_public_key: '%env(STRIPE_PUBLIC_KEY)%'
     stripe_secret_key: '%env(STRIPE_SECRET_KEY)%'
     opencage.api_key: '%env(OPENCAGE_API_KEY)%'
     app.user_image_upload_path: '%kernel.project_dir%/public/uploads/users/images'
+    TELEGRAM_BOT_TOKEN: '%env(TELEGRAM_BOT_TOKEN)%'
     gemini_api_key: '%env(GEMINI_API_KEY)%'
+    plate_recognizer_api_key: '%env(PLATE_RECOGNIZER_API_KEY)%'
     oauth.enabled: true
     oauth.google_enabled: true
     oauth.facebook_enabled: true
+    gemini_model:   '%env(GEMINI_MODEL)%'
+   # voicerss_key: '%env(VOICERSS_API_KEY)%'
+
+
 
 twig:
     globals:
-        stripe_public_key: '%env(STRIPE_PUBLIC_KEY)%'
-        stripe_secret_key: '%env(STRIPE_SECRET_KEY)%'
+        stripe_public_key: '%stripe_public_key%'
+        stripe_secret_key: '%stripe_secret_key%'
 
 services:
+    # Par défaut, tous les services sont autowired, autoconfigured et privés
     _defaults:
         autowire: true
         autoconfigure: true
+        public: false
+        
+    Symfony\Component\Mercure\PublisherInterface: '@mercure.hub.default.publisher'
+    # ── Event Subscriber pour l'authentification ─────────────────────────────────
     App\EventSubscriber\AuthenticationSubscriber:
-        tags:
-            - { name: kernel.event_subscriber }
-    # Makes all classes in src/ available as services
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        tags: [kernel.event_subscriber]
 
-
-    # makes classes in src/ available to be used as services
+    # ── Chargement automatique de votre code applicatif ────────────────────────────
     App\:
         resource: '../src/'
         exclude:
@@ -41,16 +47,16 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # Explicit service definitions (when autowiring isn't enough)
+    # ── Services externes ─────────────────────────────────────────────────────────
     App\Service\OpenCageGeocoder:
         arguments:
-            $apiKey: '%env(OPENCAGE_API_KEY)%'
-            
+            $apiKey: '%opencage.api_key%'
+
     App\Service\TwilioService:
         arguments:
-            $sid:    '%twilio_sid%'
-            $token:  '%twilio_token%'
-            $from:   '%twilio_number%'
+            $sid: '%twilio_sid%'
+            $token: '%twilio_token%'
+            $from: '%twilio_number%'
             $logger: '@logger'
 
     App\Service\RecaptchaValidator:
@@ -58,25 +64,53 @@ services:
             $secretKey: '%recaptcha.secret_key%'
             $httpClient: '@Symfony\Contracts\HttpClient\HttpClientInterface'
 
-    # Explicitly configure LoginController with the recaptcha site key
+    App\Service\GeminiService:
+         arguments:
+             $client: '@http_client'  # Or the name of your HttpClient service
+             $apiKey: '%env(GEMINI_API_KEY)%' # Assuming you store your API key in .env
+             $doctrine: '@doctrine'
+
+    App\Controller\TelegramWebhookController:
+        arguments:
+            $params: '@parameter_bag'
+            $taxiRepository: '@App\Repository\TaxiRepository'
+            $entityManager: '@doctrine.orm.entity_manager'
+    
+
+
+    # ── Contrôleur de login (reCAPTCHA) ───────────────────────────────────────────
     App\Controller\Auth\LoginController:
         arguments:
             $recaptchaSiteKey: '%recaptcha.site_key%'
 
-    # Controllers are registered as services
+    # ── Enregistrement de tous les Controllers comme services ─────────────────────
     App\Controller\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
 
-    # Repositories are registered as services
+    # ── Enregistrement de tous les Repository Doctrine comme services ────────────
     App\Repository\:
         resource: '../src/Repository/'
         tags: ['doctrine.repository_service']
 
-    App\Service\GeminiService:
+    Dompdf\Dompdf:
         arguments:
-            $client: '@http_client'  # Or the name of your HttpClient service
-            $apiKey: '%env(GEMINI_API_KEY)%' # Assuming you store your API key in .env
-            $doctrine: '@doctrine'
+            $options:
+                isRemoteEnabled: true
 
-  
+    # ── Handlers Telegram Bot (découverte automatique via autoconfigure) ─────────
+    # Toutes vos classes dans src/Telegram/Command/ qui implémentent CommandInterface
+    # seront automatiquement taggées boshurik_telegram_bot.command
+   
+        # autowire/autoconfigure sont hérités de _defaults
+           
+
+    App\Service\BadWordFilterService:
+        arguments:
+            $endpoint: 'https://www.purgomalum.com/service/plain'
+
+   # App\Service\TextToSpeechService:
+    #    arguments:
+     #       $apiKey: '%voicerss_key%' 
+      #      $httpClient: '@Symfony\Contracts\HttpClient\HttpClientInterface'
+            

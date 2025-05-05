@@ -245,4 +245,22 @@
     {% endif %}
   </div>
 </div>
+<div class="text-center my-5">
+  <h3>Téléchargez votre rapport PDF</h3>
+
+  <div class="my-3">
+    <img
+      src="{{ path('report_qr', {'userId': app.user.id}) }}"
+      alt="QR Code Rapport"
+      style="width:200px; height:200px;"
+    />
+  </div>
+
+  <a
+    href="{{ path('report_pdf', {'userId': app.user.id}) }}"
+    class="btn btn-primary"
+  >
+    Télécharger le PDF
+  </a>
+</div>
 {% endblock %}

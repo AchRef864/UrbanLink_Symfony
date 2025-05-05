@@ -26,7 +26,6 @@ class AbonnementRepository extends ServiceEntityRepository
 
     public function findWithFilters(
         string $searchTerm = '', 
-        string $etat = '', 
         ?float $minPrice = null, 
         ?float $maxPrice = null
     ) {
@@ -35,11 +34,6 @@ class AbonnementRepository extends ServiceEntityRepository
         if ($searchTerm) {
             $qb->andWhere('a.type LIKE :searchTerm OR a.description LIKE :searchTerm')
                ->setParameter('searchTerm', '%'.$searchTerm.'%');
-        }
-        
-        if ($etat) {
-            $qb->andWhere('a.etat = :etat')
-               ->setParameter('etat', $etat);
         }
         
         if ($minPrice !== null) {

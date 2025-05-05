@@ -1,0 +1,44 @@
+{
+    "name": "php-translation/extractor",
+    "description": "Extract translations form the source code",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tobias Nyholm",
+            "email": "tobias.nyholm@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "nikic/php-parser": "^4.0 || ^5.0",
+        "symfony/finder": "^5.4 || ^6.4 || ^7.0",
+        "twig/twig": "^2.0 || ^3.0",
+        "doctrine/annotations": "^1.7 || ^2.0"
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^5.4 || ^6.4 || ^7.0",
+        "symfony/translation": "^5.4 || ^6.4 || ^7.0",
+        "symfony/validator": "^5.4 || ^6.4 || ^7.0",
+        "symfony/twig-bridge": "^5.4 || ^6.4 || ^7.0",
+        "knplabs/knp-menu": "^3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Translation\\Extractor\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Translation\\Extractor\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-ci": "vendor/bin/phpunit --coverage-text --coverage-clover=build/coverage.xml"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        }
+    }
+}

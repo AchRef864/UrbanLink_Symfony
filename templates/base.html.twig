@@ -316,7 +316,7 @@
         </li>
         <li>
           <a href="{{ path('app_avis_index') }}" class="{{ app.request.get('_route') starts with 'app_avis_' ? 'active' : '' }}">
-            <i class="fas fa-comment-dots"></i> Rate
+            <i class="fas fa-comment-dots"></i> Complaints
           </a>
         </li>
 
@@ -333,10 +333,11 @@
           <a href="{{ path('abonnement_list') }}" class="{{ app.request.get('_route') starts with 'abonnement_' ? 'active' : '' }}">
             <i class="fas fa-id-card"></i> Subscriptions
           </a>
-
+        </li>
+        <li>
           <a href="{{ path('app_admin_reservations') }}" class="{{ app.request.get('_route') starts with 'abonnement_' ? 'active' : '' }}">
-        <i class="fas fa-id-card"></i> Subscriptions list
-      </a>
+            <i class="fas fa-id-card"></i> Subscriptions List
+          </a>
         </li>
 
         <li class="nav-item">
@@ -375,11 +376,7 @@
             <i class="fas fa-chart-bar"></i> Statistiques users
           </a>
         </li>
-        <li>
-          <a href="{{ path('admin_pdf_generator') }}" class="{{ app.request.get('_route') == 'admin_pdf_generator' ? 'active' : '' }}">
-            <i class="fas fa-file-pdf"></i> Generates PDF
-          </a>
-        </li>
+
 
         <div class="sidebar-divider"></div>
 
@@ -389,7 +386,7 @@
           </a>
         </li>
         <li>
-          <a href="{{ path('app_logout') }}" class="text-red-500">
+          <a href="{{ path('app_logout') }}" class="text-red-500 hover:text-red-700 transition-colors duration-200">
             <i class="fas fa-sign-out-alt"></i> Logout
           </a>
         </li>

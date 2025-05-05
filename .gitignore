@@ -1,31 +1,47 @@
-
-###> symfony/framework-bundle ###
+###> Symfony ###
 /.env.local
 /.env.local.php
 /.env.*.local
+/.env.test
+/.env.test.local
 /config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
-/var/
-/vendor/
-###< symfony/framework-bundle ###
+/var/                  # Cache & logs
+/vendor/               # Composer dependencies
+/public/bundles/       # Webpack Encore bundles
+/phpunit.xml           # PHPUnit config
+.phpunit.result.cache  # PHPUnit cache
+###< Symfony ###
 
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
-###< phpunit/phpunit ###
+###> Symfony Asset Mapper ###
+/assets/vendor/        # Frontend dependencies (if using AssetMapper)
+###< Symfony Asset Mapper ###
 
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
+###> Webpack Encore ###
+/node_modules/         # Node.js dependencies
+/public/build/        # Encore build output
+npm-debug.log         # NPM error logs
+yarn-error.log        # Yarn error logs
+###< Webpack Encore ###
 
-###> symfony/asset-mapper ###
-/assets/vendor/
-###< symfony/asset-mapper ###
+###> IDE & Editor ###
+/.idea/                # PHPStorm
+/.vscode/             # VS Code
+/*.iml                # IntelliJ config
+/.swp                 # Vim swap files
+###< IDE & Editor ###
 
-###> symfony/webpack-encore-bundle ###
-/node_modules/
-/public/build/
-npm-debug.log
-yarn-error.log
-###< symfony/webpack-encore-bundle ###
+###> OS & Tooling ###
+.DS_Store             # macOS metadata
+Thumbs.db             # Windows thumbnail cache
+*.bak                 # Backup files
+###< OS & Tooling ###
+
+###> Docker ###
+docker-compose.override.yml
+.env.docker
+###< Docker ###
+
+###> Composer ###
+/composer.lock        # Only ignore in libraries, NOT in apps!
+                      # (Uncomment if this is a library)
+###< Composer ###

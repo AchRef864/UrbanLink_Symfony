@@ -1,0 +1,1 @@
+{"version":1,"defects":{"App\\Tests\\Service\\GeminiApiLiveTest::testGeminiApiResponds":4},"times":{"App\\Tests\\Service\\GeminiApiLiveTest::testGeminiApiResponds":3.546,"App\\Tests\\Api\\GeminiConnectivityTest::testApiEndpointIsReachable":1.063}}

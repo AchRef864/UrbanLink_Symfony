@@ -162,6 +162,7 @@ class ProfileController extends AbstractController
         return $this->redirectToRoute('app_profile');
     }
 
+    /*
     #[Route('/change-password', name: 'app_change_password')]
     #[IsGranted('ROLE_USER')]
     public function changePassword(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
@@ -187,6 +188,42 @@ class ProfileController extends AbstractController
 
         return $this->render('profile/change_password.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+    */
+
+    #[Route('/change-password', name: 'app_change_password')]
+    #[IsGranted('ROLE_USER')]
+    public function changePassword(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException('You must be logged in to change your password.');
+        }
+
+        // Prevent OAuth users from changing password
+        if ($user->getPassword() === '') {
+            $this->addFlash('error', 'OAuth-authenticated users cannot change password through this form.');
+            return $this->redirectToRoute('app_profile');
+        }
+
+        $form = $this->createForm(ChangePasswordFormType::class); // Use dedicated password change form
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $plainPassword = $form->get('plainPassword')->getData();
+            $user->setPassword($passwordHasher->hashPassword($user, $plainPassword));
+
+            $entityManager->flush();
+            $this->addFlash('success', 'Password changed successfully!');
+
+            // Optional: Add security measure like logging out other sessions
+            return $this->redirectToRoute('app_profile');
+        }
+
+        return $this->render('profile/change_password.html.twig', [
+            'form' => $form->createView(),
+            'is_oauth_user' => ($user->getPassword() === '')
         ]);
     }
 }

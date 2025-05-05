@@ -1,0 +1,15 @@
+# src/VoiceBundle/Resources/config/services.yaml
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  # Autodiscover et enregistre tous les services dans src/VoiceBundle/
+  App\VoiceBundle\:
+    resource: '../../*'
+    exclude:
+      - '../../DependencyInjection'
+      - '../../Resources'
+      - '../../Tests'

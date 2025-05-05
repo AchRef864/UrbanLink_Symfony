@@ -1,200 +1,834 @@
 {# templates/dashboard/client.html.twig #}
 {% extends 'basef.html.twig' %}
 
-{% block title %}Client Dashboard{% endblock %}
+{% block title %}My Dashboard | RideShare{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/argon-dashboard-tailwind.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        .sidebar {
-            width: 250px;
-            transform: translateX(-100%);
+        :root {
+            --primary: #4361ee;
+            --primary-light: #f0f4ff;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #ffffff;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #ef233c;
+            --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            --card-radius: 16px;
+            --sidebar-width: 280px;
+            --neutral-100: #f9fafb;
+            --neutral-200: #f3f4f6;
+            --neutral-300: #e5e7eb;
+            --neutral-400: #d1d5db;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-tertiary: #9ca3af;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--neutral-100);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+        
+        .dashboard-header {
+            background: var(--light);
+            color: var(--text-primary);
+            border-radius: 0 0 24px 24px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+        
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, var(--primary-light) 0%, rgba(255,255,255,0) 70%);
+            opacity: 0.8;
+        }
+        
+        .transport-card {
+            background: var(--light);
+            border-radius: var(--card-radius);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--neutral-200);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .transport-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        }
+        
+        .transport-card.gradient-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--primary);
+            background: var(--primary-light);
+            transition: all 0.3s ease;
+        }
+        
+        .transport-card:hover .card-icon {
+            transform: scale(1.05);
+        }
+        
+        .action-btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            background: var(--primary-light);
+            color: var(--primary);
+            border: 1px solid rgba(67, 97, 238, 0.15);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+            background: rgba(67, 97, 238, 0.1);
+        }
+        
+        .action-btn i {
+            margin-right: 8px;
             transition: transform 0.3s ease;
         }
-        .sidebar-open .sidebar {
-            transform: translateX(0);
+        
+        .action-btn:hover i {
+            transform: scale(1.1);
         }
-        .overlay {
-            display: none;
-            position: fixed;
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+        }
+        
+        .progress-container {
+            height: 6px;
+            border-radius: 3px;
+            background-color: var(--neutral-200);
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            background: var(--primary);
+            border-radius: 3px;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 10;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.4) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            animation: shimmer 2s infinite;
         }
-        .sidebar-open .overlay {
-            display: block;
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
-        @media (min-width: 1024px) {
-            .sidebar {
-                transform: translateX(0);
-            }
-            .sidenav-trigger {
-                display: none;
-            }
+        
+        .rating-stars {
+            color: #f59e0b;
         }
-        .stats-card {
-            width: 350px;
-            border-radius: 30px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            background: white;
+        
+        .rating-stars .empty {
+            color: var(--neutral-300);
         }
-        .stats-header {
-            background: linear-gradient(to right, #3b82f6, #6366f1);
+        
+        .nav-pill {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-pill:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .nav-pill.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 18px;
+            height: 18px;
+            background-color: var(--accent);
             color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        .action-btn {
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 12px 20px;
-            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .time-pill {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50px;
+            padding: 4px 12px;
+            font-size: 12px;
             font-weight: 600;
+        }
+        
+        .trip-dot {
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .trip-dot::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--primary);
+        }
+        
+        .trip-dot.end::before {
+            background-color: var(--accent);
+        }
+        
+        .trip-line {
+            position: relative;
+            padding-left: 20px;
+            margin-left: 5px;
+        }
+        
+        .trip-line::before {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--neutral-300);
+        }
+        
+        .driver-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .floating-action-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.25);
+            z-index: 50;
             transition: all 0.3s ease;
-            text-align: center;
         }
-        .action-btn i {
-            margin-right: 8px;
+        
+        .floating-action-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 16px rgba(67, 97, 238, 0.3);
         }
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        
+        .skeleton {
+            background-color: var(--neutral-200);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
         }
-        .user-details-card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            padding: 24px;
+        
+        .skeleton::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.5) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            animation: shimmer 2s infinite;
+        }
+        
+        .weather-card {
+            background: var(--light);
+            color: var(--text-primary);
+            border-radius: var(--card-radius);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--neutral-200);
+        }
+        
+        .weather-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.03) 0%, rgba(247, 37, 133, 0.03) 100%);
+        }
+        
+        .activity-item {
+            transition: all 0.2s ease;
+            border-left: 2px solid transparent;
+            padding-left: 10px;
+            margin-left: -12px;
+        }
+        
+        .activity-item:hover {
+            border-left: 2px solid var(--primary);
+            background-color: var(--primary-light);
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .activity-icon {
+            transition: all 0.2s ease;
+        }
+        
+        .activity-item:hover .activity-icon {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Light dashboard panels */
+        .dashboard-panel {
+            background: var(--light);
+            border-radius: var(--card-radius);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--neutral-200);
+        }
+        
+        .dashboard-panel-header {
+            border-bottom: 1px solid var(--neutral-200);
+            padding: 16px 20px;
+        }
+        
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-3px);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .dashboard-header {
+                border-radius: 0 0 16px 16px;
+            }
+            
+            .action-btn {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+            
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+            }
         }
     </style>
 {% endblock %}
 
 {% block body %}
-    <body class="m-0 font-sans text-base antialiased font-normal leading-default bg-gray-50 text-slate-500">
-    <div class="absolute w-full bg-blue-500 min-h-75"></div>
-
-    <!-- Sidebar Trigger -->
-    <div class="fixed top-4 left-4 z-50 lg:hidden">
-        <a href="javascript:;" class="sidenav-trigger p-2 bg-white rounded-lg shadow">
-            <div class="w-5 overflow-hidden">
-                <i class="ease relative block h-0.5 rounded-sm bg-slate-600 transition-all"></i>
-                <i class="ease relative block h-0.5 rounded-sm bg-slate-600 transition-all mt-1"></i>
-                <i class="ease relative block h-0.5 rounded-sm bg-slate-600 transition-all mt-1"></i>
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="dashboard-header px-6 pt-8 pb-6 animate__animated animate__fadeIn">
+            <div class="flex justify-between items-start mb-8 relative">
+                <div>
+                    <h1 class="text-2xl font-bold">Welcome back, {{ app.user.name }}</h1>
+                    <p class="text-gray-500 mt-1">Ready for your next ride?</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button class="p-2 rounded-full bg-white hover:bg-gray-50 transition border border-gray-100">
+                            <i class="fas fa-bell text-gray-600"></i>
+                            <span class="notification-badge">3</span>
+                        </button>
+                    </div>
+                    <div class="flex items-center">
+                        <img src="https://ui-avatars.com/api/?name={{ app.user.name|url_encode }}&background=random" alt="User" class="user-avatar">
+                    </div>
+                </div>
             </div>
-        </a>
+            
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 animate__animated animate__fadeInUp animate__delay-1s">
+                <div class="transport-card p-4 gradient-border">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-sm text-gray-500">Completed Rides</p>
+                            <h3 class="text-2xl font-bold">24</h3>
+                            <p class="text-xs text-green-500 mt-1"><i class="fas fa-arrow-up mr-1"></i> 12% from last month</p>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="transport-card p-4 gradient-border">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-sm text-gray-500">Money Saved</p>
+                            <h3 class="text-2xl font-bold">$156</h3>
+                            <p class="text-xs text-green-500 mt-1"><i class="fas fa-piggy-bank mr-1"></i> $32 this week</p>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="transport-card p-4 gradient-border">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-sm text-gray-500">Carbon Saved</p>
+                            <h3 class="text-2xl font-bold">42kg</h3>
+                            <p class="text-xs text-green-500 mt-1"><i class="fas fa-leaf mr-1"></i> Equivalent to 3 trees</p>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <div class="p-6">
+            {% if is_granted('ROLE_CLIENT') %}
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left Column -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <!-- Quick Actions -->
+                        <div class="transport-card p-6 animate__animated animate__fadeInLeft">
+                            <h2 class="text-xl font-bold mb-6">Get Around</h2>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <a href="{{ path('reservation_affichage')}}" class="action-btn">
+                                    <i class="fas fa-car"></i> Book Ride
+                                </a>
+                                <a href="{{ path('app_abonnement_index')}}" class="action-btn">
+                                    <i class="fas fa-bus"></i> Subscription
+                                </a>
+                                <a href="{{ path('reservation_list')}}" class="action-btn">
+                                    <i class="fas fa-bicycle"></i> My Reservation
+                                </a>
+                                <a href="{{ path('app_abonnement_mes_reservations')}}" class="action-btn">
+                                    <i class="fas fa-train"></i> My subscription
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Active Trip -->
+                        <div class="transport-card p-6 animate__animated animate__fadeInLeft animate__delay-1s">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-xl font-bold">Current Trip</h2>
+                                <span class="status-badge bg-blue-50 text-blue-600">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mr-2 animate-pulse"></span>
+                                    In Progress
+                                </span>
+                            </div>
+                            
+                            <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                                <div class="flex justify-between mb-2">
+                                    <div class="trip-dot">
+                                        <p class="text-sm text-gray-500">From</p>
+                                        <p class="font-medium">Central Station</p>
+                                    </div>
+                                    <div class="trip-dot end">
+                                        <p class="text-sm text-gray-500 text-right">To</p>
+                                        <p class="font-medium text-right">Tech Park</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="trip-line">
+                                    <div class="progress-container mb-2">
+                                        <div class="progress-bar" style="width: 65%"></div>
+                                    </div>
+                                    <p class="text-sm text-gray-500 text-center">12 minutes remaining (3.2km)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                                <div class="flex items-center">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Driver" class="driver-avatar mr-4">
+                                    <div>
+                                        <p class="font-medium">David Wilson</p>
+                                        <div class="rating-stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt empty"></i>
+                                            <span class="text-gray-500 text-sm ml-1">4.7 (128 rides)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="p-3 bg-gray-50 text-blue-600 rounded-full hover:bg-blue-50 transition">
+                                        <i class="fas fa-phone-alt"></i>
+                                    </button>
+                                    <button class="p-3 bg-gray-50 text-blue-600 rounded-full hover:bg-blue-50 transition">
+                                        <i class="fas fa-comment"></i>
+                                    </button>
+                                    <button class="p-3 bg-gray-50 text-blue-600 rounded-full hover:bg-blue-50 transition">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Upcoming Trips -->
+                        <div class="transport-card p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-xl font-bold">Upcoming Trips</h2>
+                                <a href="#" class="text-sm text-blue-600 hover:text-blue-800">View All</a>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover-lift">
+                                    <div class="flex items-center">
+                                        <div class="mr-4 p-3 bg-blue-50 rounded-lg">
+                                            <i class="fas fa-car text-blue-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Airport Transfer</p>
+                                            <p class="text-sm text-gray-500">Tomorrow, 6:30 AM</p>
+                                        </div>
+                                    </div>
+                                    <span class="time-pill">Confirmed</span>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover-lift">
+                                    <div class="flex items-center">
+                                        <div class="mr-4 p-3 bg-purple-50 rounded-lg">
+                                            <i class="fas fa-users text-purple-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Office Carpool</p>
+                                            <p class="text-sm text-gray-500">Mon, 8:00 AM</p>
+                                        </div>
+                                    </div>
+                                    <span class="time-pill bg-yellow-50 text-yellow-600">Pending</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column -->
+                    <div class="space-y-6">
+                        <!-- User Profile -->
+                        <div class="transport-card p-6 animate__animated animate__fadeInRight">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-xl font-bold">Your Profile</h2>
+                                <a href="{{ path('app_profile_myprofile') }}" class="text-sm text-blue-600 hover:text-blue-800 flex items-center">
+                                    Edit <i class="fas fa-edit ml-1"></i>
+                                </a>
+                            </div>
+                            
+                            <div class="flex items-center mb-6">
+                                <img src="https://ui-avatars.com/api/?name={{ app.user.name|url_encode }}&background=random" alt="User" class="user-avatar mr-4">
+                                <div>
+                                    <h3 class="font-bold">{{ app.user.name }}</h3>
+                                    <p class="text-sm text-gray-500">{{ user.email }}</p>
+                                    <span class="status-badge bg-green-50 text-green-600 mt-1">
+                                        <i class="fas fa-check-circle mr-1"></i> Verified
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                    <div class="mr-3 p-2 bg-blue-50 rounded-lg">
+                                        <i class="fas fa-phone text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Phone</p>
+                                        <p class="font-medium">{{ user.phone }}</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                    <div class="mr-3 p-2 bg-purple-50 rounded-lg">
+                                        <i class="fas fa-id-card text-purple-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Member Since</p>
+                                        <p class="font-medium">January 2023</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                    <div class="mr-3 p-2 bg-amber-50 rounded-lg">
+                                        <i class="fas fa-star text-amber-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Your Rating</p>
+                                        <div class="flex items-center">
+                                            <div class="rating-stars mr-2">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt empty"></i>
+                                            </div>
+                                            <span class="text-sm">4.5</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                    <div class="mr-3 p-2 bg-red-50 rounded-lg">
+                                        <i class="fas fa-credit-card text-red-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Payment Method</p>
+                                        <p class="font-medium">•••• •••• •••• 4242</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Weather & Traffic -->
+                        <div 
+                        class="weather-card p-6 cursor-pointer" 
+                        onclick="window.location.href='{{ path('app_wathercontroller') }}'"
+                    >
+                        <div class="flex justify-between items-center mb-4 relative">
+                            <div>
+                                <h2 class="text-xl font-bold">Current Weather</h2>
+                                <p class="text-sm text-gray-500">Sunny, 24°C</p>
+                            </div>
+                            <i class="fas fa-sun text-4xl text-amber-500"></i>
+                        </div>
+                        <div class="flex justify-between text-sm relative">
+                            <div>
+                                <p class="text-gray-500">Humidity</p>
+                                <p class="font-medium">42%</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500">Wind</p>
+                                <p class="font-medium">12 km/h</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500">Traffic</p>
+                                <p class="font-medium">Moderate</p>
+                            </div>
+                        </div>
+                    </div>
+                        
+                        <!-- Recent Activity -->
+                        <div class="transport-card p-6">
+                            <h2 class="text-xl font-bold mb-6">Recent Activity</h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start activity-item p-2">
+                                    <div class="mr-3 mt-1">
+                                        <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center activity-icon">
+                                            <i class="fas fa-car"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Ride completed</p>
+                                        <p class="text-sm text-gray-500">Downtown to Tech Park</p>
+                                        <p class="text-xs text-gray-400 mt-1">Today, 8:30 AM • $12.50</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start activity-item p-2">
+                                    <div class="mr-3 mt-1">
+                                        <div class="w-10 h-10 rounded-full bg-green-50 text-green-600 flex items-center justify-center activity-icon">
+                                            <i class="fas fa-users"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Carpool joined</p>
+                                        <p class="text-sm text-gray-500">North Station to Mall</p>
+                                        <p class="text-xs text-gray-400 mt-1">Yesterday, 5:15 PM • $8.20</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start activity-item p-2">
+                                    <div class="mr-3 mt-1">
+                                        <div class="w-10 h-10 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center activity-icon">
+                                            <i class="fas fa-subscription"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Subscription renewed</p>
+                                        <p class="text-sm text-gray-500">Monthly Premium Plan</p>
+                                        <p class="text-xs text-gray-400 mt-1">Yesterday, 10:45 AM • $24.99</p>
+                                    </div>
+                                </div>
+                                
+                                <a href="#" class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center justify-center pt-2">
+                                    View all activity <i class="fas fa-chevron-right ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Floating Action Button -->
+                <a href="{{ path('reservation_affichage')}}" class="floating-action-btn animate__animated animate__bounceIn animate__delay-2s">
+                    <i class="fas fa-plus"></i>
+                </a>
+            {% else %}
+                <div class="transport-card p-6 animate__animated animate__shakeX">
+                    <div class="flex items-center p-4 bg-red-50 rounded-lg">
+                        <div class="mr-3 p-2 bg-red-100 rounded-full">
+                            <i class="fas fa-exclamation-circle text-red-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-red-800">Access Restricted</h3>
+                            <p class="text-sm text-red-600">You don't have client privileges to view this dashboard.</p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
     </div>
+{% endblock %}
 
-    <!-- Overlay -->
-    <div class="overlay"></div>
-
-
-    <!-- Main Content -->
-    <main class="relative h-full max-height-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
-        <!-- Navbar -->
-        <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start">
-            <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
-                <nav>
-                    <h4 class="mb-0 font-bold text-slate-700">Client Dashboard</h4>
-                    <p class="mb-0 font-bold text-white" >Welcome back, {{ app.user.name }}</p>
-                </nav>
-            </div>
-        </nav>
-
-        <div class="w-full px-6 py-6 mx-auto">
-            <div class="flex flex-col items-center justify-center min-h-[60vh]">
-                {% if is_granted('ROLE_CLIENT') %}
-                    <!-- User Details Card -->
-                    <div class="user-details-card w-full max-w-3xl mb-8">
-                        <h3 class="text-xl font-bold text-slate-700 mb-4">Your Account Details</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="flex items-center p-4 bg-gray-50 rounded-lg">
-                                <div class="mr-4 p-3 bg-blue-100 rounded-full">
-                                    <i class="fas fa-envelope text-blue-500"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Email</p>
-                                    <p class="font-semibold">{{ user.email }}</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center p-4 bg-gray-50 rounded-lg">
-                                <div class="mr-4 p-3 bg-green-100 rounded-full">
-                                    <i class="fas fa-phone text-green-500"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Phone</p>
-                                    <p class="font-semibold">{{ user.phone }}</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center p-4 bg-gray-50 rounded-lg">
-                                <div class="mr-4 p-3 bg-amber-100 rounded-full">
-                                    <i class="fas fa-user-shield text-amber-500"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Status</p>
-                                    <p class="font-semibold">
-                                        <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
-                                    </p>
-                                </div>
-                        </div>
-                    </div>
-
-                    <!-- Quick Actions -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-3xl">
-                        <a href="{{ path('app_profile_myprofile') }}" class="action-btn bg-gradient-to-tl from-blue-600 to-indigo-400 text-yellow">
-                            <i class="fas fa-user-edit"></i>
-                            Edit Profile
-                        </a>
-                    </div>
-                {% else %}
-                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 max-w-3xl w-full" role="alert">
-                        <div class="flex items-center">
-                            <i class="fas fa-exclamation-circle mr-2"></i>
-                            <strong class="font-bold">Warning! </strong>
-                            <span class="block sm:inline">You don't have proper client privileges.</span>
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-
-        </div>
-    </main>
-
+{% block javascripts %}
+    {{ parent() }}
     <script>
+        // Add some interactive elements
         document.addEventListener('DOMContentLoaded', function() {
-            const body = document.body;
-            const sidenavTrigger = document.querySelector('.sidenav-trigger');
-            const sidenavClose = document.querySelector('.sidenav-close');
-            const overlay = document.querySelector('.overlay');
-
-            if (sidenavTrigger) {
-                sidenavTrigger.addEventListener('click', function() {
-                    body.classList.add('sidebar-open');
+            // Animate cards on hover
+            const cards = document.querySelectorAll('.transport-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.classList.add('shadow-lg');
                 });
-            }
-
-            if (sidenavClose) {
-                sidenavClose.addEventListener('click', function() {
-                    body.classList.remove('sidebar-open');
+                card.addEventListener('mouseleave', function() {
+                    this.classList.remove('shadow-lg');
                 });
+            });
+            
+            // Simulate loading progress
+            const progressBar = document.querySelector('.progress-bar');
+            if (progressBar) {
+                let width = 0;
+                const interval = setInterval(() => {
+                    if (width >= 65) {
+                        clearInterval(interval);
+                    } else {
+                        width++;
+                        progressBar.style.width = width + '%';
+                    }
+                }, 50);
             }
-
-            if (overlay) {
-                overlay.addEventListener('click', function() {
-                    body.classList.remove('sidebar-open');
+            
+            // Notification badge animation
+            const notificationBadge = document.querySelector('.notification-badge');
+            if (notificationBadge) {
+                setInterval(() => {
+                    notificationBadge.classList.toggle('animate-pulse');
+                }, 2000);
+            }
+            
+            // Add click handlers for activity items
+            const activityItems = document.querySelectorAll('.activity-item');
+            activityItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Add your click handler logic here
+                    console.log('Activity item clicked');
                 });
-            }
+            });
         });
     </script>
-    </body>
 {% endblock %}

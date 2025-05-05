@@ -156,16 +156,7 @@
             background-color: rgba(67, 97, 238, 0.1);
         }
         
-        /* Status Badges */
-        .custom-badge {
-            display: inline-block;
-            padding: 0.35rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: capitalize;
-            letter-spacing: 0.5px;
-        }
+      
         
         .custom-badge-active {
             background-color: rgba(76, 201, 240, 0.15);
@@ -383,15 +374,7 @@
                 </div>
                 
                 <!-- Status filter -->
-                <div>
-                    <label for="etat" class="block text-sm font-medium mb-1">Statut</label>
-                    <select id="etat" name="etat" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                        <option value="">Tous</option>
-                        <option value="actif" {{ etat == 'actif' ? 'selected' : '' }}>Actif</option>
-                        <option value="expiré" {{ etat == 'expiré' ? 'selected' : '' }}>Expiré</option>
-                        <option value="annulé" {{ etat == 'annulé' ? 'selected' : '' }}>Annulé</option>
-                    </select>
-                </div>
+           
                 
                 <!-- Price range -->
                 <div>
@@ -452,7 +435,6 @@
                             <th>Type</th>
                             <th>Prix</th>
                             <th>Période</th>
-                            <th>Statut</th>
                             <th class="text-right">Actions</th>
                         </tr>
                     </thead>
@@ -499,16 +481,7 @@
                                 </td>
                                 
                                 <!-- Status -->
-                                <td>
-                                    {% set statusClass = {
-                                        'actif': 'custom-badge-active',
-                                        'expiré': 'custom-badge-expired',
-                                        'annulé': 'custom-badge-cancelled'
-                                    } %}
-                                    <span class="custom-badge {{ statusClass[abonnement.etat]|default('') }}">
-                                        {{ abonnement.etat }}
-                                    </span>
-                                </td>
+                                
                                 
                                 <!-- Actions -->
                                 <td class="text-right">

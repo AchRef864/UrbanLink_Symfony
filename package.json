@@ -26,27 +26,34 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@hotwired/stimulus": "^3.0.0",
+    "@rateyo/jquery": "^3.0.0-alpha.2",
+    "@symfony/stimulus-bridge": "^3.2.0",
     "@symfony/stimulus-bundle": "^2.24.0",
-    "browserslist": "^4.24.4"
+    "browserslist": "^4.24.4",
+    "jquery": "^3.7.1",
+    "rateyo": "^3.0.0-alpha.2"
   },
   "devDependencies": {
     "@babel/core": "^7.17.0",
     "@babel/preset-env": "^7.16.0",
+    "@hotwired/stimulus": "^3.2.2",
+    "@symfony/stimulus-bridge": "^4.0.1",
     "@symfony/webpack-encore": "^5.1.0",
     "autoprefixer": "^10.4.21",
+    "caniuse-lite": "^1.0.30001714",
     "core-js": "^3.38.0",
     "css-loader": "^7.1.2",
+    "electron-to-chromium": "^1.5.137",
     "postcss": "^8.5.3",
     "regenerator-runtime": "^0.13.9",
     "sass": "^1.86.3",
     "sass-loader": "^16.0.5",
     "style-loader": "^4.0.0",
-    "tailwindcss": "^3.3.3",
+    "tailwindcss": "^3.4.17",
+    "update-browserslist-db": "^1.1.3",
     "webpack": "^5.99.5",
     "webpack-cli": "^5.1.4",
-    "webpack-notifier": "^1.15.0",
-    "caniuse-lite": "^1.0.30001714",
-    "electron-to-chromium": "^1.5.137",
-    "update-browserslist-db": "^1.1.3"
+    "webpack-notifier": "^1.15.0"
   }
 }

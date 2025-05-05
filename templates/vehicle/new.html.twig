@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends base_template is defined ? base_template : 'base.html.twig' %}
 
 {% block title %}Add New Vehicle{% endblock %}
 
@@ -524,6 +524,34 @@
             20%, 60% { transform: translateX(-5px); }
             40%, 80% { transform: translateX(5px); }
         }
+
+        /* Error state styling */
+        .is-invalid {
+            border-color: var(--danger) !important;
+        }
+
+        .is-invalid:focus {
+            box-shadow: 0 0 0 3px rgba(239, 71, 111, 0.15) !important;
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+
+        .image-preview-container.is-invalid {
+            border-color: var(--danger) !important;
+            border-style: dashed !important;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
     </style>
 </head>
 <body>
@@ -798,9 +826,15 @@ document.getElementById('vehicleForm').addEventListener('submit', function(e) {
         { id: 'brand', name: 'Brand' },
         { id: 'model', name: 'Model' },
         { id: 'licensePlate', name: 'License Plate' },
-        { id: 'driverId', name: 'Driver' },
-        { id: 'image', name: 'Vehicle Image' }
+        { id: 'year', name: 'Year' },
+        { id: 'seats', name: 'Number of Seats' },
+        { id: 'color', name: 'Vehicle Color' }
     ];
+    
+    // Add driverId if admin
+    {% if is_granted('ROLE_ADMIN') %}
+        requiredFields.push({ id: 'driverId', name: 'Driver' });
+    {% endif %}
     
     requiredFields.forEach(field => {
         const input = document.getElementById(field.id);
@@ -808,29 +842,31 @@ document.getElementById('vehicleForm').addEventListener('submit', function(e) {
             showError(input, `${field.name} is required`);
             isValid = false;
         }
-        
-        // Special handling for file input
-        if (input.type === 'file') {
-            if (!input.files || input.files.length === 0) {
-                const container = document.getElementById('previewContainer');
-                container.classList.add('is-invalid');
-                showError(input, `${field.name} is required`);
-                isValid = false;
-            }
-        }
     });
     
-    // Validate year
+    // Special handling for image input
+    const imageInput = document.getElementById('image');
+    if (!imageInput.files || imageInput.files.length === 0) {
+        const container = document.getElementById('previewContainer');
+        container.classList.add('is-invalid');
+        showError(imageInput, 'Vehicle Image is required');
+        isValid = false;
+    }
+    
+    // Validate year range
     const yearInput = document.getElementById('year');
     if (yearInput.value < 1900 || yearInput.value > new Date().getFullYear() + 1) {
         showError(yearInput, `Please enter a valid year between 1900 and ${new Date().getFullYear() + 1}`);
         isValid = false;
     }
     
-    // Validate seats
+    // Validate seats range based on vehicle type
     const seatsInput = document.getElementById('seats');
-    if (seatsInput.value < 1 || seatsInputInput.value > 50) {
-        showError(seatsInput, 'Please enter a valid number of seats (1-50)');
+    const vehicleType = document.getElementById('typeHidden').value;
+    const maxSeats = seatLimits[vehicleType] || 50;
+    
+    if (seatsInput.value < 1 || seatsInput.value > maxSeats) {
+        showError(seatsInput, `Please enter a valid number of seats (1-${maxSeats})`);
         isValid = false;
     }
     
@@ -843,6 +879,28 @@ document.getElementById('vehicleForm').addEventListener('submit', function(e) {
         }
     }
 });
+
+function showError(input, message) {
+    // For file inputs, we style the container instead
+    if (input.type === 'file') {
+        const container = document.getElementById('previewContainer');
+        container.classList.add('is-invalid');
+    } else {
+        input.classList.add('is-invalid');
+    }
+    
+    const error = document.createElement('div');
+    error.className = 'error-message';
+    error.textContent = message;
+    
+    // Insert the error message after the input or its container
+    if (input.type === 'file') {
+        const container = document.getElementById('previewContainer');
+        container.parentNode.insertBefore(error, container.nextSibling);
+    } else {
+        input.parentNode.appendChild(error);
+    }
+}
 
 function showError(input, message) {
     input.classList.add('is-invalid');

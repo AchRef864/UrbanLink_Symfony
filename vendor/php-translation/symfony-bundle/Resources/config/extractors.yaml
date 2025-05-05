@@ -1,0 +1,28 @@
+services:
+    _instanceof:
+        PhpParser\NodeVisitor:
+            tags:
+                - { name: 'php_translation.visitor', type: 'php' }
+
+    Translation\Extractor\FileExtractor\PHPFileExtractor:
+        tags:
+            - { name: 'php_translation.extractor', type: 'php' }
+
+    Translation\Extractor\FileExtractor\TwigFileExtractor:
+        arguments: ['@twig']
+        tags:
+            - { name: 'php_translation.extractor', type: 'twig' }
+
+    # PHP Visitors:
+    Translation\Extractor\Visitor\Php\:
+        resource: "%extractor_vendor_dir%/Visitor/Php/*"
+
+    Translation\Extractor\Visitor\Php\SourceLocationContainerVisitor: ~
+
+    # Twig Visitors:
+    Translation\Extractor\Visitor\Twig\TwigVisitor:
+        tags:
+            - { name: 'php_translation.visitor', type: 'twig' }
+
+    Translation\Extractor\Visitor\Php\Symfony\ValidationAnnotation:
+        arguments: ['@validator']
