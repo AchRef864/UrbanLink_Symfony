@@ -15,24 +15,73 @@ use App\Repository\UserRepository;
 use App\Repository\TaxiRepository;
 use App\Repository\CourseRepository;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Service\OpenCageGeocoder;
+use Symfony\Component\Mercure\PublisherInterface;
 
 class TaxisteController extends AbstractController
 {
     #[Route('/dashboard', name: 'taxi_dashboard')]
-    public function dashboard(EntityManagerInterface $em): Response
-    {
+    public function dashboard(
+        EntityManagerInterface $em,
+        OpenCageGeocoder $geocoder,
+        CourseRepository $courseRepo
+    ): Response {
         $user = $this->getUser();
         if (!in_array('ROLE_TAXI', $user->getRoles())) {
             throw $this->createAccessDeniedException('Accès refusé.');
         }
-        
+
+        // Récupération du taxi associé
         $taxi = $em->getRepository(Taxi::class)->findOneBy(['user' => $user]);
-        $courses = $em->getRepository(Course::class)->findBy(['taxi' => $taxi]);
         
+        // Récupération des courses
+        $courses = $taxi ? $em->getRepository(Course::class)->findBy(
+            ['taxi' => $taxi],
+            ['dateCourse' => 'DESC']
+        ) : [];
+
+        // Géocodage inversé
+        $presentation = [];
+        foreach ($courses as $c) {
+            $dep = $this->getFormattedAddress($geocoder, $c->getVilleDepart());
+            $arr = $this->getFormattedAddress($geocoder, $c->getVilleArrivee());
+            
+            $presentation[$c->getId()] = [
+                'depart'  => $dep,
+                'arrivee' => $arr,
+            ];
+        }
+
+        // Statistiques
+        $todayStats = $courseRepo->getTodayStats($user);
+        $weekStats = $courseRepo->getWeekStats($user);
+
         return $this->render('taxiste/dashboard.html.twig', [
             'taxi' => $taxi,
             'courses' => $courses,
+            'presentation' => $presentation,
+            'stats' => [
+                'today' => [
+                    'courses' => $todayStats['count'],
+                    'earnings' => $todayStats['earnings']
+                ],
+                'week' => [
+                    'courses' => $weekStats['count'],
+                    'earnings' => $weekStats['earnings']
+                ]
+            ]
         ]);
+    }
+
+    private function getFormattedAddress(OpenCageGeocoder $geocoder, ?string $coords): string
+    {
+        if (!$coords || strpos($coords, ',') === false) {
+            return 'Adresse inconnue';
+        }
+
+        [$lat, $lon] = explode(',', $coords);
+        return $geocoder->reverseGeocode(trim($lat), trim($lon)) ?? 'Adresse inconnue';
     }
     #[Route('/admin/taxiste', name: 'taxiste_liste')]
     public function taxiste(UserRepository $userRepo): Response
@@ -278,5 +327,49 @@ public function finishCourse(Request $request, Course $course, EntityManagerInte
 
         $this->addFlash('success', "Votre taxi est maintenant : $newStatus.");
         return $this->redirectToRoute('taxiste_dashboard');
+    }
+    #[Route('/taxiste/notifications', name: 'taxiste_notifications_ajax', methods: ['GET'])]
+    public function notifications(
+        CourseRepository $courseRepo,
+        OpenCageGeocoder $geocoder
+    ): JsonResponse {
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+        $taxi = $user->getTaxis()->first();
+
+        if (!$taxi) {
+            return $this->json([]);
+        }
+
+        // Ne garder que les 10 dernières courses en attente
+        $pending = $courseRepo->findBy(
+            ['taxi' => $taxi, 'statut' => 'En attente'],
+            ['dateReservation' => 'DESC'],
+            10
+        );
+
+        $data = [];
+        foreach ($pending as $c) {
+            // même reverse-geocoding
+            $dep = 'Coordonnées invalides';
+            if (strpos($c->getVilleDepart(), ',') !== false) {
+                list($lat, $lon) = explode(',', $c->getVilleDepart());
+                $dep = $geocoder->reverseGeocode(trim($lat), trim($lon));
+            }
+            $arr = 'Coordonnées invalides';
+            if (strpos($c->getVilleArrivee(), ',') !== false) {
+                list($lat2, $lon2) = explode(',', $c->getVilleArrivee());
+                $arr = $geocoder->reverseGeocode(trim($lat2), trim($lon2));
+            }
+
+            $data[] = [
+                'id'       => $c->getId(),
+                'depart'   => $dep,
+                'arrivee'  => $arr,
+                'dateRes'  => $c->getDateReservation()->format('d/m/Y H:i'),
+            ];
+        }
+
+        return $this->json($data);
     }
 }

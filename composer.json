@@ -7,15 +7,17 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "boshurik/telegram-bot-bundle": "*",
         "doctrine/dbal": "^3",
         "doctrine/doctrine-bundle": "^2.13",
         "doctrine/doctrine-migrations-bundle": "^3.4",
         "doctrine/orm": "^3.3",
-        "dompdf/dompdf": "^3.1",
-        "endroid/qr-code": "4",
+        "dompdf/dompdf": "2.0",
+        "endroid/qr-code": "^5.0",
         "geocoder-php/google-maps-provider": "^4.8",
         "google/cloud-text-to-speech": "^2.1",
         "hwi/oauth-bundle": "*",
+        "irazasyed/telegram-bot-sdk": "^3.15",
         "knplabs/knp-paginator-bundle": "^6.7",
         "knplabs/knp-snappy": "^1.5",
         "knplabs/knp-snappy-bundle": "^1.10",
@@ -39,7 +41,7 @@
         "symfony/http-foundation": "6.4.*",
         "symfony/intl": "6.4.*",
         "symfony/mailer": "6.4.*",
-        "symfony/mercure-bundle": "*",
+        "symfony/mercure-bundle": "^0.3.9",
         "symfony/mime": "6.4.*",
         "symfony/monolog-bundle": "^3.0",
         "symfony/notifier": "6.4.*",
@@ -62,7 +64,8 @@
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/intl-extra": "^3.20",
         "twig/twig": "^2.12|^3.0",
-        "twilio/sdk": "^8.5"
+        "twilio/sdk": "^8.5",
+        "vich/uploader-bundle": "*"
     },
     "config": {
         "allow-plugins": {

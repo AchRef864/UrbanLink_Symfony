@@ -1,146 +1,545 @@
 {# templates/dashboard/admin.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Admin Dashboard{% endblock %}
+{% block title %}Admin Dashboard | RideShare Analytics{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
-    {# Inclusions des styles CSS et Font Awesome #}
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
-    {# Assurez-vous que ce chemin est correct pour votre installation d'Argon Dashboard Tailwind #}
-    <link href="{{ asset('assets/css/argon-dashboard-tailwind.css') }}" rel="stylesheet" />
-
-    {# Styles spécifiques au calendrier #}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- ApexCharts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    
     <style>
-        /* Styles pour le calendrier iPhone */
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #6366F1;
+            --secondary: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --gray: #6B7280;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F3F4F6;
+            color: var(--dark);
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: #E5E7EB;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .badge-primary {
+            background: #E0E7FF;
+            color: var(--primary);
+        }
+        
+        .badge-success {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .badge-warning {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        
+        .badge-danger {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
         .iphone-calendar {
-            width: 350px; /* Largeur fixe */
-            max-width: 100%; /* S'assurer qu'il s'adapte sur les petits écrans */
-            border-radius: 30px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Ombre pour l'effet de profondeur */
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             background: white;
-            margin: 0 auto; /* Centrer horizontalement */
         }
+        
         .calendar-header {
-            background: linear-gradient(to right, #3b82f6, #6366f1); /* Gradient moderne */
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
             color: white;
-            padding: 20px;
+            padding: 15px;
             text-align: center;
         }
+        
         .calendar-weekdays {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             padding: 10px 0;
-            background: #f8fafc; /* Couleur de fond légère */
-            text-align: center; /* Centrer le texte des jours */
-            font-weight: 500; /* Semi-gras pour les jours */
-            color: #4a5568; /* Couleur de texte pour les jours */
+            background: #f8fafc;
+            text-align: center;
+            font-weight: 500;
+            color: var(--gray);
         }
+        
         .calendar-days {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 5px; /* Espace entre les jours */
+            gap: 5px;
             padding: 10px;
         }
+        
         .calendar-day {
             height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%; /* Forme ronde */
-            cursor: pointer; /* Indiquer l'interactivité */
-            transition: background-color 0.2s ease, color 0.2s ease; /* Transition au survol */
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
+        
         .calendar-day.today {
-            background: #3b82f6; /* Couleur de fond pour aujourd'hui */
-            color: white; /* Couleur du texte pour aujourd'hui */
-            font-weight: bold; /* Gras pour aujourd'hui */
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
         }
-         /* Effet au survol pour les jours qui ne sont pas 'today' */
-         .calendar-day:not(.today):hover {
-             background-color: #e2e8f0; /* Changer le fond au survol */
-             color: #2d3748; /* Changer la couleur du texte au survol */
-         }
-
-        /* Suppression des styles custom non utilisés pour la sidebar/overlay */
-        /* .sidenav-trigger i, .sidebar, .sidebar-open .sidebar, .overlay, .sidebar-open .overlay, @media (min-width: 1024px) .sidebar, @media (min-width: 1024px) .sidenav-trigger */
+        
+        .calendar-day:not(.today):hover {
+            background-color: #e2e8f0;
+            color: var(--dark);
+        }
     </style>
 {% endblock %}
 
 {% block body %}
-    <body class="m-0 font-sans text-base antialiased font-normal leading-default bg-gray-50 text-slate-500">
-    {# Div de fond avec couleur d'Argon Dashboard #}
-    <div class="absolute w-full bg-blue-500 min-h-75"></div>
-
-    <!-- Sidebar Trigger -->
-    <div class="fixed top-4 left-4 z-50 lg:hidden">
-        <a href="javascript:" class="sidenav-trigger p-2 bg-white rounded-lg shadow">
-            <div class="w-5 overflow-hidden">
-                <i class="ease relative block h-0.5 rounded-sm bg-slate-600 transition-all"></i>
-                <i class="ease relative block h-0.5 rounded-sm bg-slate-600 transition-all mt-1"></i>
-                <i class="ease relative block h-0.5 rounded-sm bg-slate-600 transition-all mt-1"></i>
-            </div>
-        </a>
-    </div>
-
-    <!-- Overlay -->
-    <div class="overlay"></div>
-
-    <div style="margin-left: 80px;">
-        <!-- Main Content -->
-        <main class="relative h-full max-height-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
-            <!-- Navbar -->
-            <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start">
-                <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
-                    <nav>
-                        <h4 class="mb-0 font-bold text-slate-700">Admin Dashboard</h4>
-                    </nav>
+<div class="min-h-screen">
+    <!-- Header -->
+    <header class="dashboard-header py-6 px-4 lg:px-8">
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl lg:text-3xl font-bold">Admin Dashboard</h1>
+                    <p class="opacity-90 mt-1">Platform Analytics & Management</p>
                 </div>
-            </nav>
-
-            <div class="w-full px-6 py-6 mx-auto">
-                <!-- Calendar Container -->
-                <div class="flex flex-col items-center justify-center min-h-[60vh]">
-                    <!-- iPhone Style Calendar -->
-                    <div class="iphone-calendar mb-8">
-                        <div class="calendar-header">
-                            <h3 class="text-xl font-bold">{{ "now"|date("F Y") }}</h3>
-                        </div>
-                        <div class="calendar-weekdays">
-                            {% for day in ['S', 'M', 'T', 'W', 'T', 'F', 'S'] %}
-                                <div class="text-center text-sm text-slate-500 font-medium">{{ day }}</div>
-                            {% endfor %}
-                        </div>
-                        <div class="calendar-days">
-                            {% set firstDayOfMonth = "now"|date("Y-m-01")|date("w") %}
-                            {% set daysInMonth = "now"|date("t") %}
-                            {% set today = "now"|date("j") %}
-
-                            {% for i in 0..(firstDayOfMonth-1) %}
-                                <div class="calendar-day"></div>
-                            {% endfor %}
-
-                            {% for day in 1..daysInMonth %}
-                                <div class="calendar-day {% if day == today %}today{% else %}hover:bg-gray-100{% endif %}">
-                                    {{ day }}
-                                </div>
-                            {% endfor %}
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-indigo-600 font-bold">
+                            A
                         </div>
                     </div>
                 </div>
             </div>
-        </main>
-    </div>
+        </div>
+    </header>
 
-    {# Inclusion du script JS d'Argon Dashboard (peut être nécessaire pour d'autres choses, ou peut être retiré si seul le calendrier est affiché) #}
-    <script src="{{ asset('assets/js/argon-dashboard-tailwind.js') }}" async></script>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 lg:px-8 py-8 -mt-8">
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="stat-card p-6">
+                <div class="flex justify-between">
+                    <div>
+                        <h3 class="text-gray-500 text-sm font-medium">TOTAL USERS</h3>
+                        <div class="mt-2 flex items-end">
+                            <span class="text-3xl font-bold">1,248</span>
+                            <span class="ml-2 text-green-500 text-sm font-medium">+12%</span>
+                        </div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex justify-between text-sm text-gray-600 mb-1">
+                        <span>Drivers: 428</span>
+                        <span>Riders: 820</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill bg-indigo-500" style="width: 65%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card p-6">
+                <div class="flex justify-between">
+                    <div>
+                        <h3 class="text-gray-500 text-sm font-medium">ACTIVE VEHICLES</h3>
+                        <div class="mt-2 flex items-end">
+                            <span class="text-3xl font-bold">387</span>
+                            <span class="ml-2 text-green-500 text-sm font-medium">+8%</span>
+                        </div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                        <i class="fas fa-car"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex justify-between text-sm text-gray-600 mb-1">
+                        <span>Verified: 342</span>
+                        <span>Pending: 45</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill bg-green-500" style="width: 88%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card p-6">
+                <div class="flex justify-between">
+                    <div>
+                        <h3 class="text-gray-500 text-sm font-medium">TODAY'S RIDES</h3>
+                        <div class="mt-2 flex items-end">
+                            <span class="text-3xl font-bold">216</span>
+                            <span class="ml-2 text-green-500 text-sm font-medium">+5%</span>
+                        </div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                        <i class="fas fa-route"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex justify-between text-sm text-gray-600 mb-1">
+                        <span>Completed: 184</span>
+                        <span>In Progress: 32</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill bg-blue-500" style="width: 85%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card p-6">
+                <div class="flex justify-between">
+                    <div>
+                        <h3 class="text-gray-500 text-sm font-medium">REVENUE</h3>
+                        <div class="mt-2 flex items-end">
+                            <span class="text-3xl font-bold">$8,742</span>
+                            <span class="ml-2 text-green-500 text-sm font-medium">+18%</span>
+                        </div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex justify-between text-sm text-gray-600 mb-1">
+                        <span>Today: $1,245</span>
+                        <span>This week: $5,672</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill bg-purple-500" style="width: 72%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    {# Suppression du script JS custom pour la sidebar #}
-    {# <script> ... </script> #}
+        <!-- Main Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- User Growth Chart -->
+            <div class="chart-container lg:col-span-2">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold">User Growth</h2>
+                    <div class="flex space-x-2">
+                        <button class="text-xs px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full">Monthly</button>
+                        <button class="text-xs px-3 py-1 bg-gray-100 text-gray-600 rounded-full">Weekly</button>
+                        <button class="text-xs px-3 py-1 bg-gray-100 text-gray-600 rounded-full">Daily</button>
+                    </div>
+                </div>
+                <canvas id="userGrowthChart" height="250"></canvas>
+            </div>
+            
+            <!-- Calendar -->
+            <div class="iphone-calendar">
+                <div class="calendar-header">
+                    <h3 class="text-xl font-bold">{{ "now"|date("F Y") }}</h3>
+                </div>
+                <div class="calendar-weekdays">
+                    {% for day in ['S', 'M', 'T', 'W', 'T', 'F', 'S'] %}
+                        <div>{{ day }}</div>
+                    {% endfor %}
+                </div>
+                <div class="calendar-days">
+                    {% set firstDayOfMonth = "now"|date("Y-m-01")|date("w") %}
+                    {% set daysInMonth = "now"|date("t") %}
+                    {% set today = "now"|date("j") %}
 
-    </body>
+                    {% for i in 0..(firstDayOfMonth-1) %}
+                        <div class="calendar-day"></div>
+                    {% endfor %}
+
+                    {% for day in 1..daysInMonth %}
+                        <div class="calendar-day {% if day == today %}today{% endif %}">
+                            {{ day }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Second Row Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Ride Types Distribution -->
+            <div class="chart-container">
+                <h2 class="text-lg font-bold mb-4">Ride Types</h2>
+                <canvas id="rideTypesChart" height="250"></canvas>
+            </div>
+            
+            <!-- Vehicle Types -->
+            <div class="chart-container">
+                <h2 class="text-lg font-bold mb-4">Vehicle Types</h2>
+                <canvas id="vehicleTypesChart" height="250"></canvas>
+            </div>
+            
+            <!-- Subscription Plans -->
+            <div class="chart-container">
+                <h2 class="text-lg font-bold mb-4">Subscription Plans</h2>
+                <div id="subscriptionChart" style="height: 250px;"></div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="stat-card p-6 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold">Recent Activity</h2>
+                <a href="#" class="text-sm text-indigo-600 font-medium">View All</a>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition">
+                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 mr-3 mt-1">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <h4 class="font-medium">New vehicle registered</h4>
+                            <span class="text-xs text-gray-500">2 min ago</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Toyota Camry (ABC-1234) by driver Michael S.</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition">
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mr-3 mt-1">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <h4 class="font-medium">Ride completed</h4>
+                            <span class="text-xs text-gray-500">15 min ago</span>
+                        </div>
+                        <p class="text-sm text-gray-600">8.2 mi trip from Downtown to Airport</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition">
+                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 mr-3 mt-1">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <h4 class="font-medium">New user registered</h4>
+                            <span class="text-xs text-gray-500">1 hour ago</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Sarah J. signed up as a rider</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition">
+                    <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 mr-3 mt-1">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <h4 class="font-medium">New 5-star rating</h4>
+                            <span class="text-xs text-gray-500">3 hours ago</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Driver Alex K. received perfect rating</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // User Growth Chart (Line Chart)
+    const userGrowthCtx = document.getElementById('userGrowthChart').getContext('2d');
+    const userGrowthChart = new Chart(userGrowthCtx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [
+                {
+                    label: 'Drivers',
+                    data: [120, 190, 170, 220, 250, 290, 310, 350, 380, 410, 420, 428],
+                    borderColor: '#4F46E5',
+                    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                    tension: 0.3,
+                    fill: true
+                },
+                {
+                    label: 'Riders',
+                    data: [350, 420, 450, 500, 550, 600, 650, 700, 750, 800, 810, 820],
+                    borderColor: '#10B981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.3,
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Ride Types Distribution (Doughnut Chart)
+    const rideTypesCtx = document.getElementById('rideTypesChart').getContext('2d');
+    const rideTypesChart = new Chart(rideTypesCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Standard', 'Premium', 'Pool', 'Luxury', 'XL'],
+            datasets: [{
+                data: [45, 20, 25, 5, 5],
+                backgroundColor: [
+                    '#4F46E5',
+                    '#10B981',
+                    '#3B82F6',
+                    '#F59E0B',
+                    '#EF4444'
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'right',
+                }
+            }
+        }
+    });
+
+    // Vehicle Types (Bar Chart)
+    const vehicleTypesCtx = document.getElementById('vehicleTypesChart').getContext('2d');
+    const vehicleTypesChart = new Chart(vehicleTypesCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Sedan', 'SUV', 'Van', 'Luxury', 'Electric'],
+            datasets: [{
+                label: 'Vehicle Count',
+                data: [180, 120, 50, 20, 17],
+                backgroundColor: [
+                    'rgba(79, 70, 229, 0.7)',
+                    'rgba(16, 185, 129, 0.7)',
+                    'rgba(59, 130, 246, 0.7)',
+                    'rgba(245, 158, 11, 0.7)',
+                    'rgba(239, 68, 68, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(79, 70, 229, 1)',
+                    'rgba(16, 185, 129, 1)',
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(245, 158, 11, 1)',
+                    'rgba(239, 68, 68, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Subscription Plans (ApexCharts Radial Bar)
+    const subscriptionChart = new ApexCharts(document.querySelector("#subscriptionChart"), {
+        series: [75, 50, 25],
+        chart: {
+            height: 350,
+            type: 'radialBar',
+        },
+        plotOptions: {
+            radialBar: {
+                dataLabels: {
+                    name: {
+                        fontSize: '22px',
+                    },
+                    value: {
+                        fontSize: '16px',
+                    },
+                    total: {
+                        show: true,
+                        label: 'Subscriptions',
+                        formatter: function (w) {
+                            return '150/500';
+                        }
+                    }
+                }
+            }
+        },
+        labels: ['Premium', 'Business', 'Standard'],
+        colors: ['#4F46E5', '#10B981', '#3B82F6'],
+    });
+    subscriptionChart.render();
+});
+</script>
 {% endblock %}

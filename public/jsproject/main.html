@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌦️ Météo Pro Plus</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-cloud-sun"></i> Météo Pro Plus</h1>
+      <p class="subtitle">Votre application météo intelligente</p>
+    </header>
+
+    <div class="weather-box">
+      <div class="search-container">
+        <input type="text" id="cityInput" placeholder="Entrez une ville..." autocomplete="off">
+        <button id="searchBtn">
+          <i class="fas fa-search"></i> Rechercher
+        </button>
+        <button id="locationBtn">
+          <i class="fas fa-location-arrow"></i> Ma position
+        </button>
+      </div>
+
+      <div class="settings-container">
+        <label for="unitSelect">Unités :</label>
+        <select id="unitSelect">
+          <option value="metric">Celsius (°C)</option>
+          <option value="imperial">Fahrenheit (°F)</option>
+          <option value="standard">Kelvin (K)</option>
+        </select>
+        
+        <button id="themeToggle">
+          <i class="fas fa-moon"></i> Mode nuit
+        </button>
+      </div>
+
+      <div class="loading hidden" id="loading">
+        <div class="spinner"></div>
+        <p>Chargement en cours...</p>
+      </div>
+
+      <div id="weather" class="weather-display"></div>
+      
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="forecast">Prévisions</button>
+        <button class="tab-btn" data-tab="prayerTimes">Horaires de prière</button>
+        <button class="tab-btn" data-tab="airQuality">Qualité de l'air</button>
+        <button class="tab-btn" data-tab="alerts">Alertes</button>
+      </div>
+      
+      <div id="forecast" class="tab-content active"></div>
+      <div id="prayerTimes" class="tab-content"></div>
+      <div id="airQuality" class="tab-content"></div>
+      <div id="alerts" class="tab-content"></div>
+
+      <div class="chart-container hidden" id="chartContainer">
+        <canvas id="weatherChart"></canvas>
+      </div>
+
+      <div id="errorContainer" class="hidden"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2023 Météo Pro Plus | Données fournies par OpenWeatherMap et AlAdhan</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="jssssssssssssssssssss.js"></script>
+</body>
+</html>

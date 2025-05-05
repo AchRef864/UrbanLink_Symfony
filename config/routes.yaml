@@ -5,11 +5,11 @@ controllers:
     type: attribute
 # Route pour la page de connexion
 
-app_home2:
+app_home:
     path: /
     controller: App\Controller\HomeController::index
 
-app_home:
+app_homes:
     path: /home
     controller: App\Controller\DashboardController::home
 
@@ -233,6 +233,13 @@ maintenance_delete:
 maintenance_by_vehicle:
     path: /maintenances/vehicle/{vehicleId}
     controller: App\Controller\MaintenanceController::findByVehicleId
+    
+# config/routes/telegram.yaml
+telegram_webhook:
+    path: /telegram/webhook
+    controller: App\Controller\TelegramWebhookController::webhook
+
+
 hwi_oauth_connect:
     resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
     prefix: /connect

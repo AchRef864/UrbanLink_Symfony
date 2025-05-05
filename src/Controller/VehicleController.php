@@ -239,7 +239,7 @@ class VehicleController extends AbstractController
     }
     
     #[Route('/my-vehicle', name: 'my_vehicle', methods: ['GET'])]
-    public function myVehicle(EntityManagerInterface $em): Response
+    public function myVehicle(Request $request, EntityManagerInterface $em): Response
     {
         // Get the currently logged-in user
         $user = $this->getUser();
@@ -248,8 +248,23 @@ class VehicleController extends AbstractController
             throw $this->createAccessDeniedException('You must be logged in to view your vehicle');
         }
 
-        // Find vehicles assigned to this user
-        $vehicles = $em->getRepository(Vehicle::class)->findBy(['driver' => $user]);
+        // Get search term and sort direction from request
+        $searchTerm = $request->query->get('search', '');
+        $sortDirection = $request->query->get('sort', '');
+
+        // Find vehicles assigned to this user, optionally filtered by license plate
+        $queryBuilder = $em->getRepository(Vehicle::class)
+            ->createQueryBuilder('v')
+            ->where('v.driver = :user')
+            ->setParameter('user', $user);
+
+        if ($searchTerm) {
+            $queryBuilder->andWhere('v.licensePlate LIKE :searchTerm')
+                ->setParameter('searchTerm', '%' . $searchTerm . '%');
+        }
+
+        $queryBuilder->orderBy('v.brand', 'ASC');
+        $vehicles = $queryBuilder->getQuery()->getResult();
 
         // For each vehicle, fetch its maintenance records
         $vehiclesWithMaintenance = [];
@@ -273,9 +288,21 @@ class VehicleController extends AbstractController
             ];
         }
 
+        // Sort vehicles by total maintenance cost if requested
+        if ($sortDirection) {
+            usort($vehiclesWithMaintenance, function($a, $b) use ($sortDirection) {
+                if ($sortDirection === 'asc') {
+                    return $a['totalMaintenanceCost'] <=> $b['totalMaintenanceCost'];
+                } else {
+                    return $b['totalMaintenanceCost'] <=> $a['totalMaintenanceCost'];
+                }
+            });
+        }
+
         return $this->render('vehicle/my_vehicle.html.twig', [
             'vehiclesWithMaintenance' => $vehiclesWithMaintenance,
             'user' => $user,
+            'searchTerm' => $searchTerm
         ]);
     }
 

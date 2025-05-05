@@ -1,0 +1,22 @@
+{
+    "name": "app/voice-bundle",
+    "type": "symfony-bundle",
+    "description": "Bundle interne pour commande vocale (Web Speech API) via Stimulus",
+    "license": "MIT",
+    "autoload": {
+      "psr-4": {
+        "App\\VoiceBundle\\": ""
+      }
+    },
+    "extra": {
+      "branch-alias": {
+        "dev-main": "1.0-dev"
+      }
+    },
+    "require": {
+      "php": ">=8.1",
+      "symfony/framework-bundle": "^6.4",
+      "@symfony/ux-stimulus": "^2.0"
+    }
+  }
+  

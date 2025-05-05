@@ -1,0 +1,31 @@
+{% extends 'basef.html.twig' %}
+
+{% block title %}Confirmation de réservation{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mt-5 mb-4">Confirmation de votre réservation</h1>
+        
+        <div class="card">
+            <div class="card-header">
+                Référence: {{ reservation.reference }}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Abonnement: {{ reservation.abonnement.nom }}</h5>
+                <p class="card-text">
+                    <strong>Nom:</strong> {{ reservation.fullname }}<br>
+                    <strong>Période:</strong> Du {{ reservation.dateDebut|date('d/m/Y') }} au {{ reservation.dateFin|date('d/m/Y') }}<br>
+                    <strong>Durée:</strong> {{ reservation.dateDebut|date_diff(reservation.dateFin).days + 1 }} jours<br>
+                    <strong>Statut:</strong> <span class="badge bg-{{ reservation.statut == 'confirmé' ? 'success' : (reservation.statut == 'annulé' ? 'danger' : 'warning') }}">
+                        {{ reservation.statut }}
+                    </span><br>
+                    <strong>Prix total:</strong> {{ reservation.getTotalPrice()|number_format(2, ',', ' ') }} €
+                </p>
+                
+                <a href="{{ path('app_abonnement_reservation_index') }}" class="btn btn-primary">
+                    Retour à la liste des abonnements
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

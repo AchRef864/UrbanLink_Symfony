@@ -46,6 +46,15 @@
 {% endblock %}
 
 {% block body %}
+{% if form.vars.errors|length > 0 %}
+    <div class="mb-4 p-4 bg-red-100 text-red-500 border border-red-300 rounded">
+      {{ form_errors(form) }}
+    </div>
+  {% endif %}
+
+  {# Démarrage du formulaire (validation HTML5 désactivée) #}
+  {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
     <div class="min-h-screen bg-gray-50">
         <div class="bg-gradient-to-r from-blue-600 to-blue-500 shadow">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -96,6 +105,20 @@
                             {% endfor %}
 
                             {{ form_start(form, {'attr': {'class': 'space-y-8', 'enctype': 'multipart/form-data'}}) }}
+                            {% if app.user.image %}
+                            <div class="mt-2">
+                            <img src="{{ asset(app.user.image) }}" alt="Current Profile Picture" class="rounded-full h-16 w-16 object-cover shadow-sm">
+                        
+                                </div>
+                                
+                                
+                            {% else %}
+                                <img src="{{ asset('images/default.png') }}"
+                                    alt="default avatar"
+                                    class="rounded-circle"
+                                    style="width:40px; height:40px; object-fit:cover;" />
+                            {% endif %}
+
 
                             <div class="space-y-6">
                                 <div>
@@ -162,13 +185,7 @@
                                         <div class="mt-1 text-sm text-red-600">
                                             {{ form_errors(form.image) }}
                                         </div>
-                                        {% if app.user.image %}
-                                            <div class="mt-2">
-                                                <img src="{{ asset(app.user.image) }}" alt="Current Profile Picture" class="rounded-full h-16 w-16 object-cover shadow-sm">
-                                                <p class="text-xs text-gray-500">Current profile picture</p>
-                                            </div>
-                                        {% endif %}
-                                    </div>
+                                        
 
                                     {% if form.plainPassword is defined %}
                                         <div class="sm:col-span-6 pt-6 border-t border-gray-200">

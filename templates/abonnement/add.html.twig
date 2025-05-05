@@ -1,0 +1,381 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un Abonnement{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a0ca3;
+            --primary-light: #4895ef;
+            --secondary: #7209b7;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #577590;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --text: #2b2d42;
+            --text-light: #8d99ae;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --border: #dee2e6;
+        }
+        
+        .dark {
+            --primary: #4895ef;
+            --primary-dark: #3a0ca3;
+            --primary-light: #4cc9f0;
+            --secondary: #b5179e;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #577590;
+            --light: #343a40;
+            --dark: #f8f9fa;
+            --text: #f8f9fa;
+            --text-light: #adb5bd;
+            --bg: #212529;
+            --card-bg: #2b2d42;
+            --border: #495057;
+        }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .custom-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .dark .custom-card {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .custom-header {
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem;
+        }
+        
+        .custom-title {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .custom-subtitle {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+        
+        .custom-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .custom-btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.25);
+        }
+        
+        .custom-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(67, 97, 238, 0.35);
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+        }
+        
+        .custom-btn-secondary {
+            background-color: var(--light);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        
+        .custom-btn-secondary:hover {
+            background-color: var(--border);
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+            font-size: 0.875rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background-color: var(--card-bg);
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        .form-error {
+            color: var(--danger);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        .image-preview-container {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 8px;
+            border: 1px dashed var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-color: var(--light);
+        }
+        
+        .image-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .image-placeholder {
+            color: var(--text-light);
+            font-size: 1.5rem;
+        }
+        
+        .flash-message {
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+        }
+        
+        .flash-success {
+            background-color: rgba(76, 201, 240, 0.15);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+        
+        .flash-error {
+            background-color: rgba(247, 37, 133, 0.15);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="w-full px-4 py-6 mx-auto max-w-7xl">
+    {% for message in app.flashes('success') %}
+        <div class="flash-message flash-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="flash-message flash-error">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="custom-card">
+        <div class="custom-header flex flex-col md:flex-row justify-between items-start md:items-center">
+            <div class="mb-4 md:mb-0">
+                <h1 class="custom-title">Ajouter un Abonnement</h1>
+                <p class="custom-subtitle">Remplissez le formulaire pour créer un nouvel abonnement</p>
+            </div>
+            <a href="{{ path('abonnement_list') }}" class="custom-btn custom-btn-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="mr-2">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+                Retour à la liste
+            </a>
+        </div>
+
+        <div class="p-6">
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'space-y-6'}}) }}
+
+            <div>
+                {{ form_label(form.type, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.type, {'attr': {
+                    'class': 'form-input',
+                    'onchange': 'updateSubscriptionDetails()'
+                }}) }}
+                <div class="form-error">{{ form_errors(form.type) }}</div>
+            </div>
+
+            <div>
+                {{ form_label(form.prix, null, {'label_attr': {'class': 'form-label'}}) }}
+                <div class="relative">
+                    <span class="absolute left-3 top-3 text-slate-500 dark:text-slate-400"></span>
+                    {{ form_widget(form.prix, {'attr': {
+                        'class': 'form-input pl-10',
+                        'readonly': 'readonly',
+                        'id': 'abonnement_prix'
+                    }}) }}
+                </div>
+                <div class="form-error">{{ form_errors(form.prix) }}</div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 form-grid">
+                <div>
+                    {{ form_label(form.date_debut, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.date_debut, {'attr': {
+                        'class': 'form-input',
+                        'onchange': 'updateSubscriptionDetails()'
+                    }}) }}
+                    <div class="form-error">{{ form_errors(form.date_debut) }}</div>
+                </div>
+                <div>
+                    {{ form_label(form.date_fin, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.date_fin, {'attr': {
+                        'class': 'form-input',
+                        'id': 'abonnement_date_fin',
+                        'readonly': true
+                    }}) }}
+                    <div class="form-error">{{ form_errors(form.date_fin) }}</div>
+                </div>
+            </div>
+
+            <div>
+                {{ form_label(form.imageFile, null, {'label_attr': {'class': 'form-label'}}) }}
+                <div class="flex items-center space-x-4">
+                    <div class="image-preview-container">
+                        <div id="preview-image" class="image-placeholder">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        {{ form_widget(form.imageFile, {'attr': {
+                            'class': 'form-input',
+                            'onchange': 'previewImage(this)'
+                        }}) }}
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">PNG, JPG ou JPEG (Max. 2MB)</p>
+                    </div>
+                </div>
+                <div class="form-error">{{ form_errors(form.imageFile) }}</div>
+            </div>
+
+            <div class="pt-4 text-right">
+                <button type="submit" class="custom-btn custom-btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="mr-2">
+                        <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+                    </svg>
+                    Enregistrer
+                </button>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        const PRICES = {
+            'mensuel': 50,
+            'trimestriel': 140,
+            'annuel': 200
+        };
+
+        function updateSubscriptionDetails() {
+            const typeSelect = document.querySelector('#{{ form.type.vars.id }}');
+            const priceInput = document.getElementById('abonnement_prix');
+            const dateDebutInput = document.querySelector('#{{ form.date_debut.vars.id }}');
+            const dateFinInput = document.getElementById('abonnement_date_fin');
+            
+            // Update price
+            if (typeSelect && priceInput) {
+                priceInput.value = PRICES[typeSelect.value] || 0;
+            }
+            
+            // Update end date
+            if (typeSelect && dateDebutInput && dateFinInput && dateDebutInput.value) {
+                const dateDebut = new Date(dateDebutInput.value);
+                let dateFin = new Date(dateDebut);
+                
+                switch (typeSelect.value) {
+                    case 'mensuel':
+                        dateFin.setMonth(dateFin.getMonth() + 1);
+                        break;
+                    case 'trimestriel':
+                        dateFin.setMonth(dateFin.getMonth() + 3);
+                        break;
+                    case 'annuel':
+                        dateFin.setFullYear(dateFin.getFullYear() + 1);
+                        break;
+                }
+                
+                dateFinInput.value = dateFin.toISOString().split('T')[0];
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const typeSelect = document.querySelector('#{{ form.type.vars.id }}');
+            const dateDebutInput = document.querySelector('#{{ form.date_debut.vars.id }}');
+            
+            if (typeSelect) {
+                typeSelect.addEventListener('change', updateSubscriptionDetails);
+                updateSubscriptionDetails();
+            }
+            
+            if (dateDebutInput) {
+                dateDebutInput.addEventListener('change', updateSubscriptionDetails);
+            }
+        });
+
+        function previewImage(input) {
+            const preview = document.getElementById('preview-image');
+            const file = input.files[0];
+            const reader = new FileReader();
+
+            if (file) {
+                reader.onloadend = function() {
+                    if (preview.tagName === 'DIV') {
+                        const img = document.createElement('img');
+                        img.id = 'preview-image';
+                        img.className = 'image-preview';
+                        img.src = reader.result;
+                        preview.parentNode.replaceChild(img, preview);
+                    } else {
+                        preview.src = reader.result;
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+{% endblock %}

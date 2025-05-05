@@ -470,16 +470,52 @@
         }
     }
 
-    .btn-pdf {
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    .btn-excel {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: white;
-        box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+        box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
     }
     
-    .btn-pdf:hover {
-        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-        box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4);
+    .btn-excel:hover {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
         transform: translateY(-2px);
+    }
+
+    .export-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 1.5rem;
+    }
+
+    .sorting-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 1.5rem;
+    }
+
+    .sorting-container .btn-group {
+        box-shadow: 0 4px 10px rgba(94, 96, 206, 0.1);
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .sorting-container .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+    }
+
+    .sorting-container .btn.active {
+        background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        color: white;
+        border-color: transparent;
+    }
+
+    .sorting-container .btn svg {
+        width: 14px;
+        height: 14px;
     }
 </style>
 
@@ -491,13 +527,18 @@
             </svg>
             Maintenance <span class="gradient-text">Management</span>
         </h1>
-        <a href="{{ path('maintenance_new') }}" class="btn btn-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-            Add Maintenance
-        </a>
+        <div>
+            <a href="{{ path('maintenance_export_excel') }}" class="btn btn-excel" style="margin-right: 1rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <path d="M16 13H8"></path>
+                    <path d="M16 17H8"></path>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                Export to Excel
+            </a>
+        </div>
     </div>
 
     <div class="stats-container">
@@ -562,7 +603,6 @@
                 <option value="">Select Search Category</option>
                 <option value="vehicle" {% if category == 'vehicle' %}selected{% endif %}>Vehicle</option>
                 <option value="service" {% if category == 'service' %}selected{% endif %}>Service Type</option>
-                <option value="provider" {% if category == 'provider' %}selected{% endif %}>Service Provider</option>
             </select>
 
             {% if category == 'vehicle' %}
@@ -612,6 +652,46 @@
                 </button>
             {% endif %}
         </form>
+
+        {# Add this after the search form #}
+        <div class="sorting-container">
+        <div class="btn-group" role="group">
+            <a href="{{ path('admin_maintenances_index', {'sort': 'date_asc', 'category': category, 'search': searchTerm}) }}" 
+            class="btn btn-outline-primary {{ app.request.query.get('sort') == 'date_asc' ? 'active' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                </svg>
+                Date (Oldest)
+            </a>
+            <a href="{{ path('admin_maintenances_index', {'sort': 'date_desc', 'category': category, 'search': searchTerm}) }}" 
+            class="btn btn-outline-primary {{ app.request.query.get('sort') == 'date_desc' ? 'active' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                </svg>
+                Date (Newest)
+            </a>
+            <a href="{{ path('admin_maintenances_index', {'sort': 'price_asc', 'category': category, 'search': searchTerm}) }}" 
+            class="btn btn-outline-primary {{ app.request.query.get('sort') == 'price_asc' ? 'active' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="7" y1="17" x2="17" y2="17"></line>
+                    <line x1="7" y1="12" x2="17" y2="12"></line>
+                    <line x1="7" y1="7" x2="17" y2="7"></line>
+                    <polyline points="17 4 21 8 17 12"></polyline>
+                </svg>
+                Price (Low to High)
+            </a>
+            <a href="{{ path('admin_maintenances_index', {'sort': 'price_desc', 'category': category, 'search': searchTerm}) }}" 
+            class="btn btn-outline-primary {{ app.request.query.get('sort') == 'price_desc' ? 'active' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="7" y1="17" x2="17" y2="17"></line>
+                    <line x1="7" y1="12" x2="17" y2="12"></line>
+                    <line x1="7" y1="7" x2="17" y2="7"></line>
+                    <polyline points="21 16 17 12 21 8"></polyline>
+                </svg>
+                Price (High to Low)
+            </a>
+        </div>
+        </div>
 
         {% if maintenances is not empty %}
             <div class="table-container">
@@ -671,20 +751,13 @@
                                                 <circle cx="12" cy="12" r="3"></circle>
                                             </svg>
                                         </a>
-                                        <a href="{{ path('maintenance_edit', {id: maintenance.id}) }}" class="btn btn-primary" title="Edit Record">
+                                        <a href="{{ path('admin_maintenances_edit', {id: maintenance.id}) }}" class="btn btn-primary" title="Edit Record">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                                                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                             </svg>
                                         </a>
-                                        <a href="{{ path('maintenance_export_pdf', {id: maintenance.id}) }}" class="btn btn-pdf" title="Export to PDF">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                                <polyline points="7 10 12 15 17 10"></polyline>
-                                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                                            </svg>
-                                        </a>
-                                        <form method="post" action="{{ path('maintenance_delete', {id: maintenance.id}) }}" onsubmit="return confirm('Are you sure you want to delete this maintenance record?');">
+                                        <form method="post" action="{{ path('admin_maintenances_delete', {id: maintenance.id}) }}" onsubmit="return confirm('Are you sure you want to delete this maintenance record?');">
                                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ maintenance.id) }}">
                                             <button class="btn btn-danger" title="Delete Record">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
