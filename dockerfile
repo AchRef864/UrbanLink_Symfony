@@ -43,11 +43,14 @@ RUN echo '#!/bin/sh' > /usr/local/bin/symfony-cmd && \
     echo 'php bin/console "$@"' >> /usr/local/bin/symfony-cmd && \
     chmod +x /usr/local/bin/symfony-cmd
 
-# Step 12: Install app dependencies via Composer
-RUN composer install --no-interaction --prefer-dist
+# Step 12: Install app dependencies via Composer - skip auto-scripts to avoid bundle issues
+RUN composer install --no-interaction --prefer-dist --no-scripts
 
 # Step 13: Expose the port your app will run on
 EXPOSE 8000
 
-# Step 14: Set the command to run Symfony using the PHP FPM server
+# Step 14: Configure app permissions and run any necessary setups
+RUN chown -R www-data:www-data var
+
+# Step 15: Set the command to run Symfony using the PHP FPM server
 CMD ["php-fpm"]
