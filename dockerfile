@@ -52,5 +52,5 @@ EXPOSE 8000
 # Step 14: Configure app permissions and run any necessary setups
 RUN chown -R www-data:www-data var
 
-# Step 15: Set the command to run Symfony using the PHP FPM server
-CMD ["php-fpm"]
+# Step 15: Set the command to run Symfony using PHP's built-in web server
+CMD ["php", "-S", "0.0.0.0:8000", "-t", "public/"]
