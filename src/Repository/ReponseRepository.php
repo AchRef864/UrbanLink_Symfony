@@ -16,21 +16,42 @@ class ReponseRepository extends ServiceEntityRepository
         parent::__construct($registry, Reponse::class);
     }
 
+    public function getRatingStatsForAvis(int $avisId): array
+    {
+        $qb = $this->createQueryBuilder('r');
+        $qb->select('r.rate as rating, COUNT(r.id) as count')
+            ->where('r.avis = :avisId')
+            ->andWhere('r.rate IS NOT NULL')
+            ->groupBy('r.rate')
+            ->setParameter('avisId', $avisId);
+    
+        $results = $qb->getQuery()->getResult();
+    
+        $stats = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
+        foreach ($results as $result) {
+            $rating = (int)$result['rating'];
+            if (isset($stats[$rating])) {
+                $stats[$rating] = $result['count'];
+            }
+        }
+    
+        return $stats;
+    }
+    
     public function getGlobalRatingStats(): array
     {
-        $qb = $this->createQueryBuilder('r')
-            ->select('r.rate as rating, COUNT(r.id) as count')
+        $qb = $this->createQueryBuilder('r');
+        $qb->select('r.rate as rating, COUNT(r.id) as count')
             ->where('r.rate IS NOT NULL')
             ->groupBy('r.rate');
     
         $results = $qb->getQuery()->getResult();
     
-        $stats = array_fill_keys(range(1, 5), 0);
-        
+        $stats = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
         foreach ($results as $result) {
             $rating = (int)$result['rating'];
             if (isset($stats[$rating])) {
-                $stats[$rating] = (int)$result['count'];
+                $stats[$rating] = $result['count'];
             }
         }
     

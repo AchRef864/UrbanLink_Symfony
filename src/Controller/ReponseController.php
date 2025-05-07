@@ -24,13 +24,12 @@ final class ReponseController extends AbstractController
         ]);
     }
 
-    // Responses for a specific complaint
-    #[Route('/avis/{id}', name: 'app_avis_reponsess', methods: ['GET'])]
+    #[Route('/avis/{id}', name: 'app_avis_reponses', methods: ['GET'])]
     public function reponsesForAvis(ReponseRepository $reponseRepository, int $id): Response
     {
         $reponses = $reponseRepository->findBy(['avis' => $id]);
-        $globalRatingStats = $reponseRepository->getGlobalRatingStats();
-    
+        $globalRatingStats = $reponseRepository->getRatingStatsForAvis($id);
+
         return $this->render('avis/reponses.html.twig', [
             'reponses' => $reponses,
             'avis_id' => $id,
@@ -66,7 +65,6 @@ final class ReponseController extends AbstractController
             $entityManager->persist($reponse);
             $entityManager->flush();
 
-            // Send SMS if user's phone exists
             $avisUser = $avis->getUser();
             if ($avisUser && $avisUser->getPhone()) {
                 $smsMessage = sprintf(
@@ -81,7 +79,7 @@ final class ReponseController extends AbstractController
                     $this->addFlash('error', 'Failed to send SMS notification.');
                 }
             }
-            return $this->redirectToRoute('app_avis_reponsess', ['id' => $avisId]);
+            return $this->redirectToRoute('app_avis_reponses', ['id' => $avisId]);
         }
 
         return $this->render('reponse/new.html.twig', [
@@ -102,18 +100,18 @@ final class ReponseController extends AbstractController
     public function edit(Request $request, Reponse $reponse, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
-    
+
         if (!$user || !in_array('ROLE_ADMIN', $user->getRoles(), true)) {
             throw $this->createAccessDeniedException('Only admins can edit responses.');
         }
-    
+
         $form = $this->createForm(ReponseType::class, $reponse);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_avis_reponsess', ['id' => $reponse->getAvis()->getId()]);
+            return $this->redirectToRoute('app_avis_reponses', ['id' => $reponse->getAvis()->getId()]);
         }
 
         return $this->render('reponse/edit.html.twig', [
@@ -130,39 +128,59 @@ final class ReponseController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_avis_reponsess', ['id' => $reponse->getAvis()->getId()]);
+        return $this->redirectToRoute('app_avis_reponses', ['id' => $reponse->getAvis()->getId()]);
     }
 
     #[Route('/{id}/rate', name: 'app_reponse_rate', methods: ['POST'])]
     public function rate(
-        Request $request,
-        ReponseRepository $repo,
-        EntityManagerInterface $em,
+        Request $request, 
+        ReponseRepository $repo, 
+        EntityManagerInterface $em, 
         int $id
     ): Response {
+        // 1. Add security check to ensure only clients can rate
+        $this->denyAccessUnlessGranted('ROLE_CLIENT');
+
         $reponse = $repo->find($id);
         if (!$reponse) {
             throw $this->createNotFoundException('Response not found.');
         }
 
-        $rate = (int) $request->request->get('rate', 0);
-        if ($rate >= 1 && $rate <= 5) {
-            $reponse->setRate($rate);
-
-            // ——— NEW: mark complaint closed ———
-            $avis = $reponse->getAvis();
-            $avis->setStatut('closed');
-
-            $em->flush();
-            $this->addFlash('success', 'Thank you for your rating!');
+        // 2. Additional validation - check if rating already exists
+        if ($reponse->getRate() !== null) {
+            $this->addFlash('error', 'This response has already been rated.');
+            return $this->redirectToRoute('app_avis_reponses', [
+                'id' => $reponse->getAvis()->getId(),
+            ]);
         }
 
-        return $this->redirectToRoute('app_avis_reponsess', [
+        // 3. Get and validate rate
+        $rate = (int) $request->request->get('rate', 0);
+        if ($rate < 1 || $rate > 5) {
+            $this->addFlash('error', 'Invalid rating value. Please provide a rating between 1 and 5.');
+            return $this->redirectToRoute('app_avis_reponses', [
+                'id' => $reponse->getAvis()->getId(),
+            ]);
+        }
+
+        // 4. Set rating and update status
+        $reponse->setRate($rate);
+
+        // 5. Optional: Verify the avis exists before trying to close it
+        $avis = $reponse->getAvis();
+        if ($avis) {
+            $avis->setStatut('closed');
+        }
+
+        $em->flush();
+        $this->addFlash('success', 'Thank you for your rating!');
+
+        // 6. Use the correct route name with the correct parameter
+        return $this->redirectToRoute('app_avis_reponses', [
             'id' => $reponse->getAvis()->getId(),
         ]);
     }
 
-    
     #[Route('/stats/global', name: 'app_reponse_global_stats', methods: ['GET'])]
     public function globalStats(ReponseRepository $reponseRepository): Response
     {
@@ -170,5 +188,4 @@ final class ReponseController extends AbstractController
             'stats' => $reponseRepository->getGlobalRatingStats()
         ]);
     }
-
 }

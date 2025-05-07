@@ -63,7 +63,7 @@
 
         .status-processed { background-color: #10B981; color: #fff; }
         .status-pending   { background-color: #FACC15; color: #1F2937; }
-        .status-closed    { background-color: #6B7280; color: #fff; }
+        .status-closed    { background-color: #EF4444; color: #fff; }
         .status-na        { background-color: #EF4444; color: #fff; }
 
         .search-form input {
@@ -139,7 +139,7 @@
         <div class="header-3d">
             <h2>Complaints Management</h2>
             <div class="flex items-center gap-2">
-                <form method="get" action="{{ path('app_avis_index') }}" class="search-form">
+                <form method="get" action="{{ path('app_avis_front') }}" class="search-form">
                     <input type="text" name="search" id="search" value="{{ search }}" placeholder="Search complaints..." class="mr-2">
                     <button type="submit" class="btn-primary">Search</button>
                 </form>
