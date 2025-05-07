@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'basef.html.twig' %}
 
 {% block title %}Leave a Complaint{% endblock %}
 
@@ -204,7 +204,7 @@
                 <button type="submit" class="submit-btn">
                     {{ button_label|default('Submit Complaint') }}
                 </button>
-                <a href="{{ path('app_avis_index') }}" class="back-link">
+                <a href="{{ path('app_avis_front') }}" class="back-link">
                     ← Back to complaints list
                 </a>
             </div>
