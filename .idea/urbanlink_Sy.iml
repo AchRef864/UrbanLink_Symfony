@@ -206,6 +206,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/telegram-bot/api" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/vich/uploader-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/voku/portable-ascii" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/knpuniversity/oauth2-client-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/oauth2-client" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

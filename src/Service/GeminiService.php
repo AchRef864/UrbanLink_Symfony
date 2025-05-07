@@ -4,11 +4,11 @@ namespace App\Service;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, JsonResponse, Response};
-use Symfony\Contracts\HttpClient\HttpClientInterface; // Corrected namespace
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 
-class GeminiService extends AbstractController // Inherit from AbstractController for json()
+class GeminiService extends AbstractController
 {
     private HttpClientInterface $client;
     private string $apiKey;
@@ -22,11 +22,12 @@ class GeminiService extends AbstractController // Inherit from AbstractControlle
         $this->doctrine = $doctrine;
     }
 
-    public function ask(string $question, array $data = []): string
+    public function ask(string $question, array $contextData = []): string
     {
         $schema = $this->getDatabaseContext();
+        $data = $this->retrieveRelevantData($question);
 
-        $prompt = $this->buildPrompt($question, $schema, $data);
+        $prompt = $this->buildPrompt($question, $schema, array_merge($contextData, $data));
 
         try {
             $response = $this->client->request(
@@ -48,27 +49,76 @@ class GeminiService extends AbstractController // Inherit from AbstractControlle
                 ]
             );
 
-            $data = $response->toArray();
-            return $data['candidates'][0]['content']['parts'][0]['text']
+            $responseData = $response->toArray();
+            error_log("Gemini API Response: " . json_encode($responseData, JSON_PRETTY_PRINT));
+
+            return $responseData['candidates'][0]['content']['parts'][0]['text']
                 ?? "Sorry, I couldn't process that request.";
         } catch (\Exception $e) {
-            // Log the error (consider using Symfony's logger)
             error_log("LLM API Error: " . $e->getMessage());
             return "Sorry, there was an error communicating with the language model. Please try again.";
         }
     }
 
+    private function retrieveRelevantData(string $question, int $limit = 3): array
+    {
+        $data = [];
+        $conn = $this->doctrine->getConnection();
+
+        $questionParts = explode(' ', strtolower($question));
+        $potentialTable = '';
+        foreach ($questionParts as $part) {
+            if (in_array(rtrim($part, 's'), $this->getTableNames())) {
+                $potentialTable = rtrim($part, 's');
+                break;
+            }
+        }
+
+        if ($potentialTable) {
+            try {
+                $sql = "SELECT * FROM $potentialTable LIMIT :limit";
+                $stmt = $conn->prepare($sql);
+                $results = $stmt->executeQuery(['limit' => $limit])->fetchAllAssociative();
+                if (!empty($results)) {
+                    $data[$potentialTable] = $results;
+                }
+            } catch (\Exception $e) {
+                error_log("Erreur lors de la récupération des données pour la table '$potentialTable': " . $e->getMessage());
+            }
+        }
+
+        return $data;
+    }
+
+    private function getTableNames(): array
+    {
+        $conn = $this->doctrine->getConnection();
+        $sql = "SHOW TABLES";
+        $stmt = $conn->executeQuery($sql);
+        $tables = $stmt->fetchAllAssociative();
+        $tableNames = [];
+
+        foreach ($tables as $tableInfo) {
+            $tableName = $tableInfo[0] ?? null;
+            if ($tableName) {
+                $tableNames[] = $tableName;
+            }
+        }
+
+        return $tableNames;
+    }
+
     private function buildPrompt(string $question, string $schema, array $data = []): string
     {
         $prompt = <<<PROMPT
-You are a database assistant for a non-technical administrator. 
+You are a database assistant for a non-technical administrator.
 You have access to the following database schema:
 
 $schema
 
 Answer the following question about the database in a clear, concise, and direct way that a database administrator with no programming or SQL knowledge would understand.
 
-If data is provided, use it to give a precise and accurate answer.  If no data is provided, answer based on the schema alone.
+If relevant data from the database is provided below, use it to give a precise and accurate answer. If no relevant data is provided, answer based on the schema alone.
 
 Avoid providing SQL queries unless explicitly asked.
 
@@ -77,7 +127,8 @@ Question: $question
 PROMPT;
 
         if (!empty($data)) {
-            $prompt .= "\n\nData:\n" . json_encode($data, JSON_PRETTY_PRINT);
+            $prompt .= "\n\nRelevant Data:\n" . json_encode($data, JSON_PRETTY_PRINT);
+            $prompt .= "\n\nBased on this data, please answer the question.";
         }
 
         return $prompt;
@@ -102,19 +153,18 @@ PROMPT;
         return $schema;
     }
 
-    public function fetchData(string $tableName, string $select = '*', string $where = null, array $params = []): array
+    public function fetchData(string $table, array|string $select = '*', string $where = '', array $params = []): array
     {
         $conn = $this->doctrine->getConnection();
-        $sql = "SELECT $select FROM $tableName";
+        $sql = "SELECT " . (is_array($select) ? implode(', ', $select) : $select) . " FROM " . $table;
 
-        if ($where) {
-            $sql .= " WHERE $where";
+        if (!empty($where)) {
+            $sql .= " WHERE " . $where;
         }
 
         $stmt = $conn->prepare($sql);
-        $stmt->execute($params);
-
-        return $stmt->fetchAllAssociative();
+        $resultSet = $stmt->executeQuery($params);
+        return $resultSet->fetchAllAssociative();
     }
 
     public function countRows(string $tableName, string $where = null, array $params = []): int
@@ -127,14 +177,10 @@ PROMPT;
         }
 
         $stmt = $conn->prepare($sql);
-        $stmt->executeStatement(); // Use executeStatement() for COUNT queries
-
-        // Fetch the result
-        $count = $stmt->fetchNumeric()[0]; // Fetch the first column of the first row
-
+        $stmt->executeStatement($params);
+        $count = $stmt->fetchOne();
         return (int) $count;
     }
-
 
     private function handleCountRows(string $question, GeminiService $gemini, string $tableName): JsonResponse
     {
@@ -171,7 +217,6 @@ PROMPT;
 
     private function handleReservations(string $question, GeminiService $gemini): JsonResponse
     {
-        // This is a placeholder; you'll need more specific logic here
         $response = $gemini->ask($question);
         $this->updateConversationHistory($question, $response);
         return $this->json(['response' => $response]);
@@ -179,7 +224,6 @@ PROMPT;
 
     private function handleTaxis(string $question, GeminiService $gemini): JsonResponse
     {
-        // Placeholder - more specific taxi handling needed
         $response = $gemini->ask($question);
         $this->updateConversationHistory($question, $response);
         return $this->json(['response' => $response]);
@@ -187,12 +231,9 @@ PROMPT;
 
     private function handleEmailOfUserId(string $question, GeminiService $gemini): JsonResponse
     {
-        // Extract the user_id from the question
         if (preg_match('/user_id\s*=\s*(\d+)/', $question, $matches)) {
             $userId = (int) $matches[1];
-
             $email = $gemini->fetchData('users', 'email', 'user_id = ?', [$userId]);
-
             if ($email) {
                 $response = "The email of user_id " . $userId . " is: " . $email[0]['email'];
             } else {
@@ -201,7 +242,6 @@ PROMPT;
         } else {
             $response = "Please specify a user_id to find the email.";
         }
-
         $this->updateConversationHistory($question, $response);
         return $this->json(['response' => $response]);
     }
@@ -215,7 +255,6 @@ PROMPT;
 
     private function handleShowDataRequest(string $question, GeminiService $gemini): JsonResponse
     {
-        // This is a placeholder; you'll need more specific logic here
         $response = $gemini->ask("The user wants to see data. Please ask them to be more specific about which table and columns they are interested in.", []);
         $this->updateConversationHistory($question, $response);
         return $this->json(['response' => $response]);
@@ -291,6 +330,16 @@ PROMPT;
         return $this->json(['response' => $response]);
     }
 
+    public function fetchOne(string $sql, array $params = []): ?array
+    {
+        $statement = $this->connection->prepare($sql);
+        $resultSet = $statement->executeQuery($params);
+        $result = $resultSet->fetchAssociative();
+
+        return $result ?: null;
+    }
+
+
     #[Route('/urban-talk', name: 'urban_talk', methods: ['POST'])]
     public function chat(Request $request, GeminiService $gemini): JsonResponse
     {
@@ -303,7 +352,6 @@ PROMPT;
         $question = trim(strtolower($data['question']));
 
         try {
-            //  Simple Keyword-Based Routing (Extend this!)
             if (str_contains($question, 'how many users')) {
                 return $this->handleHowManyUsers($question, $gemini);
             }
@@ -352,7 +400,6 @@ PROMPT;
                 return $this->handleCountRows($question, $gemini, trim($matches[1]));
             }
 
-            //  Default to LLM if no specific handler is found
             $response = $gemini->ask($this->buildContextualPrompt($question));
             $this->updateConversationHistory($question, $response);
             return $this->json(['response' => $response]);
@@ -366,16 +413,16 @@ PROMPT;
     private function buildContextualPrompt(string $question): string
     {
         $prompt = <<<PROMPT
-You are a database assistant for a non-technical administrator. 
+You are a database assistant for a non-technical administrator.
 You have access to the following database schema:
 
 {$this->getDatabaseSchema()}
 
 Answer the following question about the database in a clear, concise, and direct way that a database administrator with no programming or SQL knowledge would understand.
 
-If data is provided, use it to give a precise and accurate answer.  If no data is provided, answer based on the schema alone.
+If data is provided, use it to give a precise and accurate answer. If no data is provided, answer based on the schema alone.
 
-*Important:* Do not display raw data from the tables. Instead, offer to answer specific questions about the data.
+*Important:* Do not display raw data from the tables directly unless specifically asked. Instead, summarize or provide specific information based on the data.
 
 Avoid providing SQL queries unless explicitly asked.
 
