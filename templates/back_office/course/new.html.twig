@@ -102,6 +102,7 @@
 {% endblock %}
 
 {% block javascripts %}
+  {{ parent() }}
   <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
   <script src="https://js.arcgis.com/4.25/" defer></script>
   <script>
