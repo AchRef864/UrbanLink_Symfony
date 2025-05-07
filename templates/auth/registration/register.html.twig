@@ -30,21 +30,21 @@
             --shadow-primary: 0 4px 14px 0 rgba(59, 130, 246, 0.3);
             --shadow-primary-hover: 0 6px 20px 0 rgba(59, 130, 246, 0.4);
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
-
+        
         body {
             background: transparent; /* Changed from gradient to transparent */
             color: var(--dark);
             min-height: 100vh;
             line-height: 1.6;
         }
-
+        
         /* Enhanced Navbar with glass morphism */
         .navbar {
             position: fixed;
@@ -60,12 +60,12 @@
             border-radius: 0 0 16px 16px;
             transition: var(--transition);
         }
-
+        
         .navbar.scrolled {
             box-shadow: var(--shadow);
             padding: 0.75rem 2rem;
         }
-
+        
         .navbar-container {
             display: flex;
             justify-content: space-between;
@@ -73,7 +73,7 @@
             max-width: 1280px;
             margin: 0 auto;
         }
-
+        
         .logo {
             display: flex;
             align-items: center;
@@ -83,27 +83,27 @@
             text-decoration: none;
             transition: var(--transition);
         }
-
+        
         .logo:hover {
             color: var(--primary);
         }
-
+        
         .logo img {
             height: 2rem;
             margin-right: 0.75rem;
             transition: transform 0.3s ease;
         }
-
+        
         .logo:hover img {
             transform: rotate(-5deg) scale(1.05);
         }
-
+        
         .nav-links {
             display: flex;
             list-style: none;
             gap: 1rem;
         }
-
+        
         .nav-link {
             display: flex;
             align-items: center;
@@ -116,11 +116,11 @@
             border-radius: 8px;
             position: relative;
         }
-
+        
         .nav-link:hover {
             color: var(--primary);
         }
-
+        
         .nav-link::after {
             content: '';
             position: absolute;
@@ -132,16 +132,16 @@
             transition: var(--transition);
             transform: translateX(-50%);
         }
-
+        
         .nav-link:hover::after {
             width: 60%;
         }
-
+        
         .nav-link i {
             margin-right: 0.5rem;
             opacity: 0.75;
         }
-
+        
         main {
             padding-top: 6rem;
             min-height: calc(100vh - 6rem);
@@ -149,7 +149,7 @@
             align-items: center;
             justify-content: center;
         }
-
+        
         /* Enhanced Register Container */
         .register-container {
             display: flex;
@@ -164,12 +164,12 @@
             transform: translateY(0);
             transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
-
+        
         .register-container:hover {
             transform: translateY(-5px);
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
         }
-
+        
         /* Enhanced Image Section */
         .register-image {
             flex: 1;
@@ -189,7 +189,7 @@
         .register-container {
             overflow: hidden;
         }
-
+        
         .register-image::before {
             content: "";
             position: absolute;
@@ -200,7 +200,7 @@
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.85) 0%, rgba(16, 185, 129, 0.75) 100%);
             z-index: 1;
         }
-
+        
         .register-image-content {
             position: relative;
             z-index: 2;
@@ -210,7 +210,7 @@
             width: 90%;
             animation: fadeInUp 0.8s ease;
         }
-
+        
         .register-image-content h2 {
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
@@ -218,7 +218,7 @@
             line-height: 1.2;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
+        
         .register-image-content p {
             font-size: 1.125rem;
             line-height: 1.7;
@@ -226,7 +226,7 @@
             margin: 0 auto 2rem;
             opacity: 0.9;
         }
-
+        
         /* Form Container */
         .register-form-container {
             flex: 1;
@@ -235,12 +235,12 @@
             overflow-y: auto;
             max-height: 90vh;
         }
-
+        
         .form-header {
             margin-bottom: 2rem;
             animation: fadeIn 0.6s ease;
         }
-
+        
         .form-header h1 {
             font-size: 2rem;
             font-weight: 800;
@@ -252,12 +252,12 @@
             color: transparent;
             display: inline-block;
         }
-
+        
         .form-header p {
             color: #64748b;
             font-size: 0.95rem;
         }
-
+        
         /* Form Sections */
         .form-section {
             margin-bottom: 2rem;
@@ -267,15 +267,15 @@
             opacity: 0;
             animation-delay: 0.2s;
         }
-
+        
         .form-section:nth-child(2) {
             animation-delay: 0.3s;
         }
-
+        
         .form-section:nth-child(3) {
             animation-delay: 0.4s;
         }
-
+        
         .form-section-title {
             font-size: 1.1rem;
             font-weight: 700;
@@ -284,7 +284,7 @@
             display: flex;
             align-items: center;
         }
-
+        
         .form-section-title::before {
             content: '';
             display: inline-block;
@@ -294,24 +294,24 @@
             background: var(--primary);
             margin-right: 0.75rem;
         }
-
+        
         /* Form Groups */
         .form-group {
             margin-bottom: 1.25rem;
             position: relative;
         }
-
+        
         .form-row {
             display: flex;
             gap: 1.25rem;
             margin-bottom: 1.25rem;
         }
-
+        
         .form-row .form-group {
             flex: 1;
             margin-bottom: 0;
         }
-
+        
         .form-label {
             display: block;
             font-size: 0.875rem;
@@ -319,7 +319,7 @@
             margin-bottom: 0.5rem;
             color: var(--dark);
         }
-
+        
         /* Enhanced Form Controls */
         .form-control {
             width: 100%;
@@ -330,32 +330,32 @@
             transition: var(--transition);
             background-color: #f8fafc;
         }
-
+        
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
             background-color: white;
         }
-
+        
         .form-control::placeholder {
             color: #94a3b8;
             opacity: 1;
         }
-
+        
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 2fr;
             gap: 1.25rem;
         }
-
+        
         .form-text {
             display: block;
             margin-top: 0.5rem;
             font-size: 0.75rem;
             color: #64748b;
         }
-
+        
         .form-error {
             color: var(--danger);
             font-size: 0.75rem;
@@ -363,12 +363,12 @@
             display: flex;
             align-items: center;
         }
-
+        
         .form-error i {
             margin-right: 0.25rem;
             font-size: 0.9em;
         }
-
+        
         /* Checkbox Styles */
         .form-check {
             display: flex;
@@ -377,7 +377,7 @@
             position: relative;
             margin-top: 0.5rem;
         }
-
+        
         .form-check-input {
             position: absolute;
             margin-top: 0.25rem;
@@ -390,7 +390,7 @@
             transition: var(--transition);
             cursor: pointer;
         }
-
+        
         .form-check-input:checked {
             background-color: var(--primary);
             border-color: var(--primary);
@@ -399,30 +399,30 @@
             background-position: center;
             background-repeat: no-repeat;
         }
-
+        
         .form-check-input:focus {
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
         }
-
+        
         .form-check-label {
             font-size: 0.875rem;
             color: var(--dark);
             cursor: pointer;
             line-height: 1.5;
         }
-
+        
         .form-check-label a {
             color: var(--primary);
             font-weight: 600;
             text-decoration: none;
             transition: var(--transition);
         }
-
+        
         .form-check-label a:hover {
             text-decoration: underline;
             color: var(--primary-dark);
         }
-
+        
         /* Button Styles */
         .btn {
             display: inline-flex;
@@ -438,18 +438,18 @@
             position: relative;
             overflow: hidden;
         }
-
+        
         .btn-primary {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             box-shadow: var(--shadow-primary);
         }
-
+        
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: var(--shadow-primary-hover);
         }
-
+        
         .btn-primary::before {
             content: '';
             position: absolute;
@@ -460,22 +460,22 @@
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: 0.5s;
         }
-
+        
         .btn-primary:hover::before {
             left: 100%;
         }
-
+        
         .btn-block {
             width: 100%;
         }
-
+        
         /* File Upload Styles */
         .file-upload {
             position: relative;
             display: inline-block;
             width: 100%;
         }
-
+        
         .file-upload-label {
             display: flex;
             flex-direction: column;
@@ -489,51 +489,51 @@
             transition: var(--transition);
             background-color: #f8fafc;
         }
-
+        
         .file-upload-label:hover {
             border-color: var(--primary-light);
             background-color: rgba(59, 130, 246, 0.05);
             transform: translateY(-2px);
         }
-
+        
         .file-upload-label.dragover {
             border-color: var(--primary);
             background-color: rgba(59, 130, 246, 0.1);
             box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
         }
-
+        
         .file-upload-icon {
             font-size: 1.75rem;
             color: #94a3b8;
             margin-bottom: 0.75rem;
             transition: var(--transition);
         }
-
+        
         .file-upload-label:hover .file-upload-icon {
             color: var(--primary);
             transform: scale(1.1);
         }
-
+        
         .file-upload-text {
             font-size: 0.875rem;
             color: #64748b;
             transition: var(--transition);
         }
-
+        
         .file-upload-label:hover .file-upload-text {
             color: var(--primary);
         }
-
+        
         .file-upload-input {
             position: absolute;
             left: 0;
             top: 0;
             width: 100%;
-            height: 100%;
+            height: 100%;  
             opacity: 0;
             cursor: pointer;
         }
-
+        
         /* Form Footer */
         .form-footer {
             margin-top: 2rem;
@@ -544,19 +544,19 @@
             opacity: 0;
             animation-delay: 0.5s;
         }
-
+        
         .form-footer-link {
             color: var(--primary);
             font-weight: 600;
             text-decoration: none;
             transition: var(--transition);
         }
-
+        
         .form-footer-link:hover {
             text-decoration: underline;
             color: var(--primary-dark);
         }
-
+        
         /* Background Animation */
         .moving-background {
             position: fixed;
@@ -567,7 +567,7 @@
             z-index: -3; /* Make sure this is lower than overlay */
             overflow: hidden;
         }
-
+        
         .moving-background::before {
             content: "";
             position: absolute;
@@ -575,13 +575,13 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background-image:
-                    radial-gradient(circle at 80% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 20%),
-                    radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 20%),
-                    radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.08) 0%, transparent 30%);
+            background-image: 
+                radial-gradient(circle at 80% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.08) 0%, transparent 30%);
             animation: backgroundMove 25s infinite linear;
         }
-
+        
         @keyframes backgroundMove {
             0% {
                 transform: rotate(0deg);
@@ -590,7 +590,7 @@
                 transform: rotate(360deg);
             }
         }
-
+        
         /* Floating Elements */
         .floating-element {
             position: absolute;
@@ -599,7 +599,7 @@
             backdrop-filter: blur(5px);
             animation: float 15s infinite ease-in-out;
         }
-
+        
         .floating-element:nth-child(1) {
             width: 100px;
             height: 100px;
@@ -607,7 +607,7 @@
             left: 10%;
             animation-delay: 0s;
         }
-
+        
         .floating-element:nth-child(2) {
             width: 150px;
             height: 150px;
@@ -615,7 +615,7 @@
             right: 10%;
             animation-delay: 2s;
         }
-
+        
         @keyframes float {
             0%, 100% {
                 transform: translateY(0) rotate(0deg);
@@ -624,7 +624,7 @@
                 transform: translateY(-20px) rotate(5deg);
             }
         }
-
+        
         /* City Skyline Animation */
         .city-animation {
             position: absolute;
@@ -637,7 +637,7 @@
             z-index: 1;
             animation: cityMove 30s infinite linear;
         }
-
+        
         @keyframes cityMove {
             0% {
                 background-position-x: 0;
@@ -646,7 +646,7 @@
                 background-position-x: 1000px;
             }
         }
-
+        
         /* Animations */
         @keyframes fadeIn {
             from {
@@ -658,7 +658,7 @@
                 transform: translateY(0);
             }
         }
-
+        
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -669,72 +669,72 @@
                 transform: translateY(0);
             }
         }
-
+        
         /* Responsive Design */
         @media (max-width: 992px) {
             .register-image {
                 display: none;
             }
-
+            
             .register-form-container {
                 padding: 2.5rem;
             }
-
+            
             .register-container {
                 width: 90%;
                 margin: 1.5rem auto;
             }
         }
-
+        
         @media (max-width: 768px) {
             .navbar {
                 padding: 0.75rem 1.5rem;
             }
-
+            
             .register-form-container {
                 padding: 2rem;
             }
-
+            
             .form-header h1 {
                 font-size: 1.75rem;
             }
-
+            
             .form-row {
                 flex-direction: column;
                 gap: 1rem;
             }
-
+            
             .form-grid {
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
         }
-
+        
         @media (max-width: 576px) {
             .navbar {
                 padding: 0.75rem 1rem;
             }
-
+            
             .nav-links {
                 gap: 0.5rem;
             }
-
+            
             .nav-link {
                 padding: 0.5rem;
             }
-
+            
             .register-form-container {
                 padding: 1.5rem;
             }
-
+            
             .form-header h1 {
                 font-size: 1.5rem;
             }
-
+            
             .form-section-title {
                 font-size: 1rem;
             }
-
+            
             .btn {
                 padding: 0.85rem 1.5rem;
             }
@@ -766,312 +766,313 @@
     </style>
 {% endblock %}
 
-
 {% block javascripts %}
     {{ parent() }}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // ─── Navbar scroll effect ───────────────────────────────────────────────────
+            // Add scroll effect to navbar
             const navbar = document.querySelector('.navbar');
             if (navbar) {
-                window.addEventListener('scroll', () => {
-                    navbar.classList.toggle('scrolled', window.scrollY > 10);
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 10) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
                 });
             }
-
-            // ─── Phone number formatting ───────────────────────────────────────────────
+            
+            // Country code and phone number handling
             const countrySelect = document.getElementById('countrySelect');
             const phoneInput = document.getElementById('phoneInput');
             const form = document.querySelector('form');
-
+            
             if (form) {
                 form.addEventListener('submit', function(e) {
                     if (countrySelect && phoneInput) {
                         const selectedOption = countrySelect.options[countrySelect.selectedIndex];
                         const countryCode = selectedOption.getAttribute('data-code');
-                        const number = phoneInput.value.replace(/\D/g, '');
-                        if (!number.startsWith(countryCode.replace('+', ''))) {
-                            phoneInput.value = countryCode + number;
+                        const phoneNumber = phoneInput.value;
+                        
+                        if (!phoneNumber.startsWith(countryCode)) {
+                            phoneInput.value = countryCode + phoneNumber;
                         }
                     }
                 });
             }
-
-            // ─── Role select: Toggle license field ─────────────────────────────────────
-            const roleSelect = document.getElementById('roleSelect');
-            const licenseField = document.getElementById('licenseField');
-
-            function toggleLicenseField() {
-                const showRoles = ['ROLE_DRIVER', 'ROLE_TAXI'];
-                if (roleSelect && licenseField) {
-                    licenseField.style.display = showRoles.includes(roleSelect.value) ? '' : 'none';
-                }
-            }
-
-            if (roleSelect) {
-                roleSelect.addEventListener('change', toggleLicenseField);
-                toggleLicenseField(); // Initialize on page load
-            }
-
-            // ─── Drag & drop file upload preview ───────────────────────────────────────
+            
+            // Enhanced file upload with drag and drop
             const fileInput = document.getElementById('registrationForm_image');
             const fileLabel = document.querySelector('.file-upload-label');
-
+            
             if (fileInput && fileLabel) {
-                ['dragenter','dragover','dragleave','drop'].forEach(evt => {
-                    fileLabel.addEventListener(evt, e => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    });
-                });
-
-                ['dragenter','dragover'].forEach(evt => {
-                    fileLabel.addEventListener(evt, () => fileLabel.classList.add('dragover'));
-                });
-                ['dragleave','drop'].forEach(evt => {
-                    fileLabel.addEventListener(evt, () => fileLabel.classList.remove('dragover'));
-                });
-
+                // Handle file selection
                 fileInput.addEventListener('change', function() {
-                    if (this.files[0]) updateFileLabel(this.files[0]);
-                });
-
-                fileLabel.addEventListener('drop', function(e) {
-                    const dt = e.dataTransfer;
-                    fileInput.files = dt.files;
-                    updateFileLabel(dt.files[0]);
-                });
-
-                function updateFileLabel(file) {
-                    const txt = document.querySelector('.file-upload-text');
-                    const icon = document.querySelector('.file-upload-icon');
-                    if (txt && icon) {
-                        txt.textContent = file.name;
-                        icon.className = 'fas fa-check-circle file-upload-icon';
-                        icon.style.color = 'var(--success)';
-                        fileLabel.style.borderColor = 'var(--success)';
-                        fileLabel.style.backgroundColor = 'rgba(34,197,94,0.05)';
+                    if (this.files && this.files[0]) {
+                        updateFileLabel(this.files[0]);
                     }
-
+                });
+                
+                // Drag and drop functionality
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    fileLabel.addEventListener(eventName, preventDefaults, false);
+                });
+                
+                function preventDefaults(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    fileLabel.addEventListener(eventName, highlight, false);
+                });
+                
+                ['dragleave', 'drop'].forEach(eventName => {
+                    fileLabel.addEventListener(eventName, unhighlight, false);
+                });
+                
+                function highlight() {
+                    fileLabel.classList.add('dragover');
+                }
+                
+                function unhighlight() {
+                    fileLabel.classList.remove('dragover');
+                }
+                
+                fileLabel.addEventListener('drop', handleDrop, false);
+                
+                function handleDrop(e) {
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    fileInput.files = files;
+                    updateFileLabel(files[0]);
+                }
+                
+                function updateFileLabel(file) {
+                    const fileName = file.name;
+                    const uploadText = document.querySelector('.file-upload-text');
+                    const uploadIcon = document.querySelector('.file-upload-icon');
+                    
+                    if (uploadText && uploadIcon) {
+                        uploadText.textContent = fileName;
+                        uploadIcon.className = 'fas fa-check-circle file-upload-icon';
+                        uploadIcon.style.color = 'var(--success)';
+                        
+                        // Change border style to show selection
+                        fileLabel.style.borderStyle = 'solid';
+                        fileLabel.style.borderColor = 'var(--success)';
+                        fileLabel.style.backgroundColor = 'rgba(34, 197, 94, 0.05)';
+                    }
+                    
+                    // Preview image if it's an image file
                     if (file.type.match('image.*')) {
                         const reader = new FileReader();
+                        
                         reader.onload = function(e) {
                             const preview = document.createElement('div');
-                            Object.assign(preview.style, {
-                                backgroundImage: `url(${e.target.result})`,
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center',
-                                position: 'absolute',
-                                top: 0, left: 0,
-                                width: '100%', height: '100%',
-                                opacity: 0.3,
-                                borderRadius: '10px'
-                            });
+                            preview.style.backgroundImage = `url(${e.target.result})`;
+                            preview.style.backgroundSize = 'cover';
+                            preview.style.backgroundPosition = 'center';
+                            preview.style.width = '100%';
+                            preview.style.height = '100%';
+                            preview.style.position = 'absolute';
+                            preview.style.top = '0';
+                            preview.style.left = '0';
+                            preview.style.opacity = '0.3';
+                            preview.style.borderRadius = '10px';
                             fileLabel.appendChild(preview);
-                        };
+                        }
+                        
                         reader.readAsDataURL(file);
                     }
                 }
             }
-
-            // ─── Floating background elements ───────────────────────────────────────────
+            
+            // Add floating elements dynamically
             const movingBackground = document.querySelector('.moving-background');
             if (movingBackground) {
                 for (let i = 0; i < 3; i++) {
-                    const el = document.createElement('div');
-                    el.className = 'floating-element';
-                    movingBackground.appendChild(el);
+                    const element = document.createElement('div');
+                    element.className = 'floating-element';
+                    movingBackground.appendChild(element);
                 }
             }
         });
     </script>
 {% endblock %}
 
-
 {% block body %}
     <div class="background-image"></div>
     <div class="background-overlay"></div>
     <div class="moving-background"></div>
-    <div class="register-container">
-        <div class="register-image">
-            <div class="city-animation"></div>
-            <div class="register-image-content">
-                <h2>Join Our Community</h2>
-                <p>Connect with fellow commuters and discover smarter ways to navigate your city with UrbanLink.</p>
+        <div class="register-container">
+            <div class="register-image">
+                <div class="city-animation"></div>
+                <div class="register-image-content">
+                    <h2>Join Our Community</h2>
+                    <p>Connect with fellow commuters and discover smarter ways to navigate your city with UrbanLink.</p>
+                </div>
             </div>
-        </div>
-
-        <div class="register-form-container">
-            <div class="form-header">
-                <h1>Create Your Account</h1>
-                <p>Sign up to start your UrbanLink journey</p>
-            </div>
-
-            {{ form_start(registrationForm, {
-                'attr': {
-                    'class': 'text-left',
-                    'role': 'form',
-                    'novalidate': 'novalidate',
-                    'enctype': 'multipart/form-data'
-                }
-            }) }}
-
-            <!-- Personal Information Section -->
-            <div class="form-section">
-                <h3 class="form-section-title">Personal Information</h3>
-
-                <!-- Name Field -->
-                <div class="form-group">
-                    <label class="form-label" for="{{ registrationForm.name.vars.id }}">Full Name</label>
-                    {{ form_widget(registrationForm.name, {
-                        'attr': {
-                            'class': 'form-control',
-                            'placeholder': 'Enter your full name'
-                        }
-                    }) }}
-                    {{ form_errors(registrationForm.name, { 'attr': {'class': 'form-error'} }) }}
+            
+            <div class="register-form-container">
+                <div class="form-header">
+                    <h1>Create Your Account</h1>
+                    <p>Sign up to start your UrbanLink journey</p>
                 </div>
 
-                <!-- Email Field -->
-                <div class="form-group">
-                    <label class="form-label" for="{{ registrationForm.email.vars.id }}">Email Address</label>
-                    {{ form_widget(registrationForm.email, {
-                        'attr': {
-                            'class': 'form-control',
-                            'placeholder': 'Enter your email address'
-                        }
-                    }) }}
-                    {{ form_errors(registrationForm.email, { 'attr': {'class': 'form-error'} }) }}
-                </div>
+                {{ form_start(registrationForm, {
+                    'attr': {
+                        'class': 'text-left',
+                        'role': 'form',
+                        'novalidate': 'novalidate',
+                        'enctype': 'multipart/form-data'
+                    }
+                }) }}
 
-                <!-- Phone Field -->
-                <div class="form-group">
-                    <label class="form-label">Phone Number</label>
-                    <div class="form-grid">
-                        <select
+                <!-- Personal Information Section -->
+                <div class="form-section">
+                    <h3 class="form-section-title">Personal Information</h3>
+                    
+                    <!-- Name Field -->
+                    <div class="form-group">
+                        <label class="form-label" for="{{ registrationForm.name.vars.id }}">Full Name</label>
+                        {{ form_widget(registrationForm.name, {
+                            'attr': {
+                                'class': 'form-control',
+                                'placeholder': 'Enter your full name'
+                            }
+                        }) }}
+                        {{ form_errors(registrationForm.name, { 'attr': {'class': 'form-error'} }) }}
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="form-group">
+                        <label class="form-label" for="{{ registrationForm.email.vars.id }}">Email Address</label>
+                        {{ form_widget(registrationForm.email, {
+                            'attr': {
+                                'class': 'form-control',
+                                'placeholder': 'Enter your email address'
+                            }
+                        }) }}
+                        {{ form_errors(registrationForm.email, { 'attr': {'class': 'form-error'} }) }}
+                    </div>
+
+                    <!-- Phone Field -->
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <div class="form-grid">
+                            <select
                                 id="countrySelect"
                                 class="form-control"
-                        >
-                            <option value="US" data-code="+1">United States (+1)</option>
-                            <option value="TN" data-code="+216">Tunisia (+216)</option>
-                            <option value="FR" data-code="+33">France (+33)</option>
-                            <option value="DE" data-code="+49">Germany (+49)</option>
-                            <option value="GB" data-code="+44">UK (+44)</option>
-                        </select>
-                        {{ form_widget(registrationForm.phone, {
-                            'attr': {
-                                'id': 'phoneInput',
-                                'class': 'form-control',
-                                'placeholder': 'Phone number'
-                            }
-                        }) }}
-                    </div>
-                    {{ form_errors(registrationForm.phone, { 'attr': {'class': 'form-error'} }) }}
-                </div>
-
-                <!-- Role Field -->
-                <div class="form-group">
-                    <label for="roleSelect" class="form-label">Role</label>
-                    <select id="roleSelect" name="registrationForm[role]" class="form-control">
-                        <option value="ROLE_CLIENT">Client</option>
-                        <option value="ROLE_DRIVER">Driver</option>
-                        <option value="ROLE_TAXI">Taxi</option>
-                    </select>
-                </div>
-
-            </div>
-
-            <!-- Address & License Section -->
-            <div class="form-section">
-                <h3 class="form-section-title">Address & License</h3>
-
-                <!-- Home Address Field -->
-                <div class="form-group">
-                    <label class="form-label" for="{{ registrationForm.homeAddress.vars.id }}">Home Address</label>
-                    {{ form_widget(registrationForm.homeAddress, {
-                        'attr': {
-                            'class': 'form-control',
-                            'placeholder': 'Enter your home address'
-                        }
-                    }) }}
-                    {{ form_errors(registrationForm.homeAddress, { 'attr': {'class': 'form-error'} }) }}
-                </div>
-
-                <!-- License Field (only for DRIVER or TAXI) -->
-                <div class="form-group" id="licenseField" style="display: none;">
-                    {{ form_label(registrationForm.license, 'License Number', { 'label_attr': { 'class': 'form-label' } }) }}
-                    {{ form_widget(registrationForm.license, {
-                        'attr': {
-                            'class': 'form-control',
-                            'placeholder': "Enter your driver's license number"
-                        }
-                    }) }}
-                    {{ form_errors(registrationForm.license) }}
-                </div>
-
-            </div>
-
-            <!-- Profile & Security Section -->
-            <div class="form-section">
-                <h3 class="form-section-title">Profile & Security</h3>
-
-                <!-- Image Upload Field -->
-                <div class="form-group">
-                    <label class="form-label">Profile Image</label>
-                    <div class="file-upload">
-                        <label class="file-upload-label">
-                            <i class="fas fa-cloud-upload-alt file-upload-icon"></i>
-                            <span class="file-upload-text">Click to upload an image</span>
-                            {{ form_widget(registrationForm.image, {
+                            >
+                                <option value="US" data-code="+1">United States (+1)</option>
+                                <option value="TN" data-code="+216">Tunisia (+216)</option>
+                                <option value="FR" data-code="+33">France (+33)</option>
+                                <option value="DE" data-code="+49">Germany (+49)</option>
+                                <option value="GB" data-code="+44">UK (+44)</option>
+                            </select>
+                            {{ form_widget(registrationForm.phone, {
                                 'attr': {
-                                    'class': 'file-upload-input'
+                                    'id': 'phoneInput',
+                                    'class': 'form-control',
+                                    'placeholder': 'Phone number'
                                 }
                             }) }}
-                        </label>
+                        </div>
+                        {{ form_errors(registrationForm.phone, { 'attr': {'class': 'form-error'} }) }}
                     </div>
-                    {{ form_errors(registrationForm.image, { 'attr': {'class': 'form-error'} }) }}
                 </div>
 
-                <!-- Password Field -->
-                <div class="form-group">
-                    <label class="form-label" for="{{ registrationForm.plainPassword.vars.id }}">Password</label>
-                    {{ form_widget(registrationForm.plainPassword, {
-                        'attr': {
-                            'class': 'form-control',
-                            'placeholder': 'Choose a secure password'
-                        }
-                    }) }}
-                    {{ form_errors(registrationForm.plainPassword, { 'attr': {'class': 'form-error'} }) }}
-                </div>
-
-                <!-- Terms Checkbox -->
-                <div class="form-group">
-                    <div class="form-check">
-                        {{ form_widget(registrationForm.agreeTerms, {
+                <!-- Address & License Section -->
+                <div class="form-section">
+                    <h3 class="form-section-title">Address & License</h3>
+                    
+                    <!-- Home Address Field -->
+                    <div class="form-group">
+                        <label class="form-label" for="{{ registrationForm.homeAddress.vars.id }}">Home Address</label>
+                        {{ form_widget(registrationForm.homeAddress, {
                             'attr': {
-                                'class': 'form-check-input'
+                                'class': 'form-control',
+                                'placeholder': 'Enter your home address'
                             }
                         }) }}
-                        <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">
-                            I agree to the <a href="#">Terms and Conditions</a>
-                        </label>
+                        {{ form_errors(registrationForm.homeAddress, { 'attr': {'class': 'form-error'} }) }}
                     </div>
-                    {{ form_errors(registrationForm.agreeTerms, { 'attr': {'class': 'form-error'} }) }}
+
+                    <!-- License Field -->
+                    <div class="form-group">
+                        <label class="form-label" for="{{ registrationForm.license.vars.id }}">License Number</label>
+                        {{ form_widget(registrationForm.license, {
+                            'attr': {
+                                'class': 'form-control',
+                                'placeholder': 'Enter your driver\'s license number'
+                            }
+                        }) }}
+                        {{ form_errors(registrationForm.license, { 'attr': {'class': 'form-error'} }) }}
+                    </div>
                 </div>
+
+                <!-- Profile & Security Section -->
+                <div class="form-section">
+                    <h3 class="form-section-title">Profile & Security</h3>
+                    
+                    <!-- Image Upload Field -->
+                    <div class="form-group">
+                        <label class="form-label">Profile Image</label>
+                        <div class="file-upload">
+                            <label class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt file-upload-icon"></i>
+                                <span class="file-upload-text">Click to upload an image</span>
+                                {{ form_widget(registrationForm.image, {
+                                    'attr': {
+                                        'class': 'file-upload-input'
+                                    }
+                                }) }}
+                            </label>
+                        </div>
+                        {{ form_errors(registrationForm.image, { 'attr': {'class': 'form-error'} }) }}
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="form-group">
+                        <label class="form-label" for="{{ registrationForm.plainPassword.vars.id }}">Password</label>
+                        {{ form_widget(registrationForm.plainPassword, {
+                            'attr': {
+                                'class': 'form-control',
+                                'placeholder': 'Choose a secure password'
+                            }
+                        }) }}
+                        {{ form_errors(registrationForm.plainPassword, { 'attr': {'class': 'form-error'} }) }}
+                    </div>
+
+                    <!-- Terms Checkbox -->
+                    <div class="form-group">
+                        <div class="form-check">
+                            {{ form_widget(registrationForm.agreeTerms, {
+                                'attr': {
+                                    'class': 'form-check-input'
+                                }
+                            }) }}
+                            <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">
+                                I agree to the <a href="#">Terms and Conditions</a>
+                            </label>
+                        </div>
+                        {{ form_errors(registrationForm.agreeTerms, { 'attr': {'class': 'form-error'} }) }}
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+
+                <div class="form-footer">
+                    Already have an account?
+                    <a href="{{ path('app_login') }}" class="form-footer-link">Sign in here</a>
+                </div>
+
+                {{ form_rest(registrationForm) }}
+                {{ form_end(registrationForm) }}
             </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary btn-block">
-                <i class="fas fa-user-plus"></i> Create Account
-            </button>
-
-            <div class="form-footer">
-                Already have an account?
-                <a href="{{ path('app_login') }}" class="form-footer-link">Sign in here</a>
-            </div>
-
-            {{ form_rest(registrationForm) }}
-            {{ form_end(registrationForm) }}
         </div>
-    </div>
 {% endblock %}

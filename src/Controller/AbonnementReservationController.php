@@ -296,4 +296,14 @@
         ]);
     }
 
+
+    #[Route('/admin/reservation/{id}', name: 'app_admin_reservation_show', methods: ['GET'])]
+#[IsGranted('ROLE_ADMIN')]
+public function show(AbonnementReservation $reservation): Response
+{
+    return $this->render('abonnement_reservation/Detail.html.twig', [
+        'reservation' => $reservation,
+    ]);
+}
+
     }

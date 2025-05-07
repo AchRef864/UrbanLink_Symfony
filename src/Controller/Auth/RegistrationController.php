@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Controller\Auth;
 
 use App\Entity\User;
@@ -7,7 +8,6 @@ use App\Form\RegistrationFormType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,16 +50,6 @@ class RegistrationController extends AbstractController
                         $form->get('plainPassword')->getData()
                     )
                 );
-
-                // Role & License logic
-                $role = $user->getRole();
-                if ($role === 'client') {
-                    $user->setLicense(null);
-                } else {
-                    if (empty($user->getLicense())) {
-                        $user->setLicense($this->generateLicenseNumber());
-                    }
-                }
 
                 $entityManager->persist($user);
                 $entityManager->flush();
