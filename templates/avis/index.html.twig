@@ -100,11 +100,13 @@
             background: #fff;
             border-radius: 0.75rem;
             box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+            height: 400px;
+            position: relative;
         }
         #complaintTypesChart {
-            max-width: 250px;
-            max-height: 250px;
-            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+            max-height: 350px;
         }
     </style>
 {% endblock %}
@@ -214,6 +216,9 @@
 
         <div class="chart-container">
             <h6 class="mb-4">Complaint Types Breakdown</h6>
+            <div id="chart-stats" class="text-center mb-2">
+                <small>Taxi: {{ stats['taxi complaint'] }} | Subscription: {{ stats['subscription complaint'] }} | Vehicle: {{ stats['vehicle complaint'] }}</small>
+            </div>
             <canvas id="complaintTypesChart"></canvas>
         </div>
     </div>
@@ -227,58 +232,121 @@
     {{ parent() }}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('#datatable-search').DataTable({
-                searching: false,
-                info: false,
-                paging: false,
-                responsive: true,
-                autoWidth: false
-            });
-
-            const counts = [
-                {{ stats['taxi complaint'] }},
-                {{ stats['subscription complaint'] }},
-                {{ stats['vehicle complaint'] }}
-            ];
-            const baseLabels = [
-                'Taxi Complaint',
-                'Subscription Complaint',
-                'Vehicle Complaint'
-            ];
-            const total = counts.reduce((sum, c) => sum + c, 0) || 1;
-
-            const labelsWithPct = counts.map((count, i) => {
-                const pct = ((count * 100) / total).toFixed(1);
-                return `${baseLabels[i]} (${pct}%)`;
-            });
-
-            const ctx = document.getElementById('complaintTypesChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: labelsWithPct,
-                    datasets: [{
-                        data: counts,
-                        backgroundColor: ['#f59e0b', '#10b981', '#3b82f6'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
+        // Wait for document to be fully loaded
+        window.addEventListener('load', function() {
+            // Initialize DataTable
+            if ($.fn.DataTable) {
+                $('#datatable-search').DataTable({
+                    searching: false,
+                    info: false,
+                    paging: false,
                     responsive: true,
-                    plugins: {
-                        legend: { position: 'bottom' },
-                        tooltip: {
-                            callbacks: {
-                                label: ctx => `${ctx.label}: ${ctx.parsed} complaints`
+                    autoWidth: false
+                });
+            }
+            
+            // Debug info
+            console.log("DOM loaded, initializing chart...");
+            
+            // Find our chart canvas
+            const chartCanvas = document.getElementById('complaintTypesChart');
+            
+            if (!chartCanvas) {
+                console.error("Cannot find chart canvas element!");
+                return;
+            }
+            
+            console.log("Canvas found, dimensions:", chartCanvas.width, chartCanvas.height);
+            
+            // Get the chart data
+            const taxiCount = {{ stats['taxi complaint']|default(0) }};
+            const subscriptionCount = {{ stats['subscription complaint']|default(0) }};
+            const vehicleCount = {{ stats['vehicle complaint']|default(0) }};
+            
+            console.log("Chart data:", taxiCount, subscriptionCount, vehicleCount);
+            
+            // Prepare chart data
+            const chartData = {
+                labels: ['Taxi Complaints', 'Subscription Complaints', 'Vehicle Complaints'],
+                datasets: [{
+                    data: [taxiCount, subscriptionCount, vehicleCount],
+                    backgroundColor: ['#f59e0b', '#10b981', '#3b82f6'],
+                    borderColor: ['#fff', '#fff', '#fff'],
+                    borderWidth: 2,
+                    hoverOffset: 15
+                }]
+            };
+            
+            // Check if Chart.js is loaded
+            if (typeof Chart === 'undefined') {
+                console.error("Chart.js is not loaded!");
+                const errorDiv = document.createElement('div');
+                errorDiv.innerHTML = "Chart library not loaded. Please check your internet connection.";
+                errorDiv.style.color = "red";
+                errorDiv.style.padding = "20px";
+                errorDiv.style.textAlign = "center";
+                chartCanvas.parentNode.appendChild(errorDiv);
+                return;
+            }
+            
+            // Create chart with alternative renderer
+            try {
+                const pieChart = new Chart(chartCanvas, {
+                    type: 'pie',
+                    data: chartData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 20,
+                                    boxWidth: 15,
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw || 0;
+                                        const total = context.dataset.data.reduce((acc, val) => acc + val, 0) || 1;
+                                        const percentage = Math.round((value / total) * 100);
+                                        return `${label}: ${value} (${percentage}%)`;
+                                    }
+                                }
                             }
                         }
                     }
-                }
-            });
+                });
+                
+                console.log("Chart initialized successfully");
+                
+            } catch (error) {
+                console.error("Error creating chart:", error);
+                
+                // Display fallback text representation
+                const fallbackDiv = document.createElement('div');
+                fallbackDiv.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <p><strong>Chart Data:</strong></p>
+                        <p>Taxi Complaints: ${taxiCount}</p>
+                        <p>Subscription Complaints: ${subscriptionCount}</p>
+                        <p>Vehicle Complaints: ${vehicleCount}</p>
+                    </div>
+                `;
+                chartCanvas.parentNode.replaceChild(fallbackDiv, chartCanvas);
+            }
         });
     </script>
 {% endblock %}

@@ -1,7 +1,7 @@
 {# templates/taxiste/dashboard.html.twig #}
 {% extends 'base_taxiste.html.twig' %}
 
-{% block title %}Tableau de bord Taxiste{% endblock %}
+{% block title %}Taxi Driver Dashboard{% endblock %}
 
 {% block body %}
 <div class="min-h-screen bg-gray-50">
@@ -9,13 +9,13 @@
     {# Header with status and notifications #}
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900">Tableau de bord</h1>
+        <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
         <p class="text-indigo-600 mt-1 flex items-center">
           <span class="relative flex h-3 w-3 mr-2">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full {% if taxi.statut|lower in ['disponible','en course'] %}bg-green-400{% else %}bg-red-400{% endif %} opacity-75"></span>
             <span class="relative inline-flex rounded-full h-3 w-3 {% if taxi.statut|lower in ['disponible','en course'] %}bg-green-500{% else %}bg-red-500{% endif %}"></span>
           </span>
-          Statut: {{ taxi.statut }}
+          Status: {{ taxi.statut }}
         </p>
       </div>
       
@@ -42,7 +42,7 @@
       <div class="lg:col-span-1">
         <div class="bg-white overflow-hidden shadow rounded-lg">
           <div class="px-4 py-5 sm:px-6 bg-indigo-700">
-            <h3 class="text-lg font-medium text-white">Votre véhicule</h3>
+            <h3 class="text-lg font-medium text-white">Your Vehicle</h3>
           </div>
           <div class="px-4 py-5 sm:p-6">
             <div class="flex items-center">
@@ -65,12 +65,12 @@
                     <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                     </svg>
-                    Passer indisponible
+                    Set as Unavailable
                   {% else %}
                     <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
-                    Passer disponible
+                    Set as Available
                   {% endif %}
                 </button>
               </form>
@@ -81,16 +81,16 @@
         {# Stats card #}
         <div class="mt-6 bg-white overflow-hidden shadow rounded-lg">
           <div class="px-4 py-5 sm:px-6 bg-indigo-700">
-            <h3 class="text-lg font-medium text-white">Statistiques</h3>
+            <h3 class="text-lg font-medium text-white">Statistics</h3>
           </div>
           <div class="px-4 py-5 sm:p-6">
             <dl class="grid grid-cols-1 gap-5 sm:grid-cols-2">
               <div class="px-4 py-2 bg-gray-50 rounded-lg overflow-hidden">
-                <dt class="text-sm font-medium text-gray-500 truncate">Courses aujourd'hui</dt>
+                <dt class="text-sm font-medium text-gray-500 truncate">Rides Today</dt>
                 <dd class="mt-1 text-2xl font-semibold text-gray-900">{{ stats.today.courses }}</dd>
               </div>
               <div class="px-4 py-2 bg-gray-50 rounded-lg overflow-hidden">
-                <dt class="text-sm font-medium text-gray-500 truncate">Gains aujourd'hui</dt>
+                <dt class="text-sm font-medium text-gray-500 truncate">Today's Earnings</dt>
                 <dd class="mt-1 text-2xl font-semibold text-gray-900"> {{ stats.today.earnings|number_format(2)}} DT</dd>
               </div>
             </dl>
@@ -98,20 +98,20 @@
         </div>
       </div>
       
-      {# Courses table #}
+      {# Rides table #}
       <div class="lg:col-span-2">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg">
           <div class="px-4 py-5 sm:px-6 bg-indigo-700">
-            <h3 class="text-lg font-medium text-white">Historique des courses</h3>
+            <h3 class="text-lg font-medium text-white">Ride History</h3>
           </div>
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trajet</th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Route</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
@@ -140,7 +140,7 @@
                     </div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900 font-semibold">{{ course.montant }} DNT</div>
+                    <div class="text-sm text-gray-900 font-semibold">{{ course.montant }} DT</div>
                     <div class="text-sm text-gray-500">{{ course.distanceKm }} km</div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
@@ -159,25 +159,25 @@
                       <div class="flex space-x-2">
                         <form action="{{ path('taxiste_course_accept', {'id': course.id}) }}" method="post">
                           <button type="submit" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 px-3 py-1 rounded-md hover:bg-indigo-100 transition-colors duration-200">
-                            Accepter
+                            Accept
                           </button>
                         </form>
-                        <form action="{{ path('taxiste_course_refuse', {'id': course.id}) }}" method="post" onsubmit="return confirm('Refuser cette course ?');">
+                        <form action="{{ path('taxiste_course_refuse', {'id': course.id}) }}" method="post" onsubmit="return confirm('Decline this ride?');">
                           <button type="submit" class="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1 rounded-md hover:bg-red-100 transition-colors duration-200">
-                            Refuser
+                            Decline
                           </button>
                         </form>
                       </div>
                     {% elseif cs == 'acceptée' %}
                       <form action="{{ path('taxiste_course_start', {'id': course.id}) }}" method="post">
                         <button type="submit" class="text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-1 rounded-md transition-colors duration-200">
-                          Déclencher
+                          Start
                         </button>
                       </form>
                     {% elseif cs == 'en course' %}
                       <form action="{{ path('taxiste_course_finish', {'id': course.id}) }}" method="post">
                         <button type="submit" class="text-white bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded-md transition-colors duration-200">
-                          Terminer
+                          Finish
                         </button>
                       </form>
                     {% else %}
@@ -188,7 +188,7 @@
                 {% else %}
                 <tr>
                   <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                    Aucune course trouvée.
+                    No rides found.
                   </td>
                 </tr>
                 {% endfor %}
@@ -211,7 +211,7 @@
         notifItems = document.getElementById('notifItems'),
         notifCount = document.getElementById('notifCount');
 
-  // stopPropagation dans la liste
+  // stopPropagation in list
   notifList.addEventListener('click', e => e.stopPropagation());
 
   async function toggleNotifications() {
@@ -235,8 +235,8 @@
                 </div>
               </div>
               <div class="ml-3 flex-1">
-                <p class="text-sm font-medium text-gray-900">Nouvelle course #${c.id}</p>
-                <p class="text-sm text-gray-500 mt-1">De ${c.depart} à ${c.arrivee}</p>
+                <p class="text-sm font-medium text-gray-900">New ride #${c.id}</p>
+                <p class="text-sm text-gray-500 mt-1">From ${c.depart} to ${c.arrivee}</p>
                 ${dateTxt}
               </div>
             </div>
@@ -248,7 +248,7 @@
       } else {
         const li = document.createElement('li');
         li.className = 'px-4 py-3 text-gray-500 text-center';
-        li.textContent = 'Aucune nouvelle notification';
+        li.textContent = 'No new notifications';
         notifItems.appendChild(li);
         notifCount.classList.add('hidden');
       }
@@ -272,7 +272,7 @@
     if (!notifList.classList.contains('hidden')) toggleNotifications();
   });
 
-  // --- Reverse-geocoding pour le tableau ---
+  // --- Reverse-geocoding for table ---
   async function reverseGeocode(lat, lng) {
     const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`;
     try {
@@ -280,7 +280,7 @@
       if (!r.ok) throw '';
       const j = await r.json();
       const addr = j.address || {};
-      const city = addr.city || addr.town || addr.village || addr.county || 'Lieu inconnu';
+      const city = addr.city || addr.town || addr.village || addr.county || 'Unknown location';
       const road = addr.road || 'Unnamed road';
       return `${city} – ${road}`;
     } catch {
@@ -295,4 +295,5 @@
     });
   });
 </script>
+{# mmh #}
 {% endblock %}
