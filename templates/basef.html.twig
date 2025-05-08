@@ -253,6 +253,20 @@
                         </ul>
                     </li>
                 {% endif %}
+                 <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTaxi"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-taxi me-1"></i> Taxi
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownTaxi">
+                        <li><a class="dropdown-item" href="{{ path('user_course_new') }}">
+                            <i class="fas fa-car-side me-2"></i> Booking taxi
+                        </a></li>
+                        <li><a class="dropdown-item" href="{{ path('user_courses') }}">
+                            <i class="fas fa-clock me-2"></i> Ride History
+                        </a></li>
+                    </ul>
+                </li>
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownRoutes" role="button" 

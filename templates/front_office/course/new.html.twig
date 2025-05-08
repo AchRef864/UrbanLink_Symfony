@@ -1,103 +1,450 @@
-{% extends 'baseh.html.twig' %}
-{% block title %}Réserver une Course{% endblock %}
-{% block page_title %}Réserver une Course{% endblock %}
+{% extends 'basef.html.twig' %}
+{% block title %}Book a Ride{% endblock %}
+{% block page_title %}Book a Ride{% endblock %}
 
 {% block stylesheets %}
   {{ parent() }}
   <style>
-    /* Style pour le bouton actif */
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4895ef;
+      --success-color: #4cc9f0;
+      --light-bg: #f8f9fa;
+      --dark-text: #212529;
+      --border-radius: 12px;
+    }
+
+    body {
+      font-family: 'Roboto', 'Segoe UI', sans-serif;
+      background-color: var(--light-bg);
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    .header-section {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 2rem;
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1.5rem;
+    }
+
+    .header-section h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .header-section p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 0 1.5rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-panel {
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      padding: 2rem;
+      transition: all 0.3s ease;
+      margin-bottom: 1.5rem;
+    }
+
+    .map-container {
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      padding: 2rem;
+    }
+
+    .form-fields-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .form-fields-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .form-fields-full {
+      grid-column: 1 / -1;
+    }
+
+    .map-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .mode-btn {
+      background-color: #e9ecef;
+      color: var(--dark-text);
+      border: none;
+      border-radius: 30px;
+      padding: 0.8rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .mode-btn:hover {
+      background-color: #dee2e6;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .mode-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
     .active-mode {
-      background-color: #4F46E5 !important; /* Bleu foncé */
+      background-color: var(--primary-color) !important;
       color: white !important;
+      box-shadow: 0 6px 16px rgba(67, 97, 238, 0.3);
+    }
+
+    #userMapDiv {
+      height: 60vh;
+      width: 100%;
+      border-radius: var(--border-radius);
+      border: 2px solid #e9ecef;
+      overflow: hidden;
+    }
+
+    .map-instructions {
+      background-color: #f1f3f5;
+      border-left: 4px solid var(--accent-color);
+      padding: 1.25rem;
+      margin: 1rem 0 1.5rem 0;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+      font-size: 1rem;
+    }
+
+    .info-display {
+      background-color: #f8f9fa;
+      border-radius: var(--border-radius);
+      padding: 1rem 1.25rem;
+      border: 1px solid #e9ecef;
+      font-size: 1rem;
+      cursor: default;
+      transition: all 0.2s ease;
+      color: #495057;
+      font-weight: 500;
+    }
+
+    .info-display:hover {
+      background-color: #f1f3f5;
+      border-color: #ced4da;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #495057;
+      font-size: 1rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      border: 1px solid #ced4da;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background-color: #f8f9fa;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+      outline: none;
+      background-color: #fff;
+    }
+
+    .footer-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e9ecef;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      padding: 1rem 2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.25);
+    }
+
+    .back-link {
+      color: #6c757d;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--border-radius);
+    }
+
+    .back-link:hover {
+      color: var(--dark-text);
+      background-color: #f1f3f5;
+    }
+
+    .error-container {
+      background-color: #ffe3e3;
+      border-left: 4px solid #ff6b6b;
+      color: #c92a2a;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    }
+
+    .selection-mode-display {
+      display: inline-flex;
+      align-items: center;
+      background-color: #e9ecef;
+      padding: 0.7rem 1.25rem;
+      border-radius: 30px;
+      font-weight: 600;
+      margin-left: 1rem;
+      color: var(--dark-text);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-panel, .map-container {
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .booking-info-card {
+      background-color: #f1f3f5;
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      border: 1px solid #e9ecef;
+    }
+
+    .booking-info-title {
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .info-item {
+      padding: 0.75rem;
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    .info-label {
+      font-size: 0.85rem;
+      color: #6c757d;
+      margin-bottom: 0.25rem;
+    }
+
+    .info-value {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--dark-text);
     }
   </style>
 {% endblock %}
 
 {% block body %}
-<div class="bg-white shadow-md rounded-2xl p-6 max-w-3xl mx-auto">
-  <h1 class="text-xl font-semibold text-slate-700 mb-6">Ajouter une Course</h1>
+<div class="app-container">
+  <div class="header-section">
+    <h1>Book a Ride</h1>
+    <p>Choose a taxi and select your pickup and drop-off locations</p>
+  </div>
 
-  {# Affichage global des erreurs du formulaire #}
   {% if form.vars.errors|length > 0 %}
-    <div class="mb-4 p-4 bg-red-100 text-red-500 border border-red-300 rounded">
+    <div class="error-container mx-auto px-4" style="max-width: 1400px;">
       {{ form_errors(form) }}
     </div>
   {% endif %}
 
-  {# Démarrage du formulaire (validation HTML5 désactivée) #}
-  {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {# Champ taxi masqué – renseigné via la carte #}
-      <div class="mb-4" style="display: none;">
-        {{ form_label(form.taxi) }}
-        {{ form_widget(form.taxi) }}
-        <div class="text-red-500 text-sm mt-1">{{ form_errors(form.taxi) }}</div>
-      </div>
-      <div class="mb-4">
-        {{ form_label(form.dateCourse) }}
-        {{ form_widget(form.dateCourse, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
-        <div class="text-red-500 text-sm mt-1">{{ form_errors(form.dateCourse) }}</div>
-      </div>
-      {# Champs ville masqués dans le formulaire #}
-      <div class="mb-4" style="display: none;">
-        {{ form_label(form.villeDepart) }}
-        {{ form_widget(form.villeDepart) }}
-        <div class="text-red-500 text-sm mt-1">{{ form_errors(form.villeDepart) }}</div>
-      </div>
-      <div class="mb-4" style="display: none;">
-        {{ form_label(form.villeArrivee) }}
-        {{ form_widget(form.villeArrivee) }}
-        <div class="text-red-500 text-sm mt-1">{{ form_errors(form.villeArrivee) }}</div>
-      </div>
-      {# Zones d'affichage pour la sélection visible #}
-      <div class="mb-4">
-        <label class="block font-medium mb-1">Ville de départ</label>
-        <span id="displayDepart" class="block w-full px-4 py-2 border rounded-lg bg-gray-100"></span>
+  <div class="content-grid">
+    <div class="form-panel">
+      {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        {# Hidden fields #}
+        <div style="display: none;">
+          {{ form_widget(form.taxi) }}
+          {{ form_widget(form.villeDepart) }}
+          {{ form_widget(form.villeArrivee) }}
+        </div>
         
-      </div>
-      <div class="mb-4">
-        <label class="block font-medium mb-1">Ville d'arrivée</label>
-        <span id="displayArrivee" class="block w-full px-4 py-2 border rounded-lg bg-gray-100"></span>
-      </div>
-      {# Champs distance et montant en lecture seule #}
-      <div class="mb-4">
-        {{ form_label(form.distanceKm) }}
-        {{ form_widget(form.distanceKm, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg', 'readonly': 'readonly'}}) }}
-      </div>
-      <div class="mb-4">
-        {{ form_label(form.montant) }}
-        {{ form_widget(form.montant, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg', 'readonly': 'readonly'}}) }}
-      </div>
-      {% if form.statut is defined %}
-      <div class="mb-4">
-        {{ form_label(form.statut) }}
-        {{ form_widget(form.statut, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
-      </div>
-      {% endif %}
+        <div class="form-fields-grid">
+          <div class="form-group">
+            <label class="form-label" for="{{ form.dateCourse.vars.id }}">Ride Date</label>
+            {{ form_widget(form.dateCourse, {'attr': {'class': 'form-control'}}) }}
+            <div class="text-red-500 text-sm mt-1">{{ form_errors(form.dateCourse) }}</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Pickup Location</label>
+            <div id="displayDepart" class="info-display">Select on map</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Drop-off Location</label>
+            <div id="displayArrivee" class="info-display">Select on map</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="{{ form.distanceKm.vars.id }}">Distance (km)</label>
+            {{ form_widget(form.distanceKm, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
+          </div>
+        </div>
+
+        <div class="booking-info-card">
+          <div class="booking-info-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M11 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1z"/>
+              <path d="M2 1a1 1 0 0 0-1 1v4.5a2.5 2.5 0 0 0 5 0V2a1 1 0 0 0-1-1H2zm3.5 3.5a.5.5 0 0 1-1 0V2a.5.5 0 0 1 1 0v2.5z"/>
+              <path d="M2 11.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1zm5-5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1zm5 5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1z"/>
+            </svg>
+            Fare Estimate
+          </div>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Estimated Fare (USD)</div>
+              <div class="info-value">{{ form_widget(form.montant, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}</div>
+            </div>
+            {% if form.statut is defined %}
+            <div class="info-item">
+              <div class="info-label">Status</div>
+              <div class="info-value">{{ form_widget(form.statut, {'attr': {'class': 'form-control'}}) }}</div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="footer-actions">
+          <button type="submit" class="btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5Z"/>
+            </svg>
+            Book My Ride
+          </button>
+          <a href="{{ path('user_courses') }}" class="back-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+            </svg>
+            Back to Rides List
+          </a>
+        </div>
+      {{ form_end(form) }}
     </div>
 
-    {# Boutons de mode pour la carte #}
-    <div class="mb-4">
-  <button type="button" id="selectTaxiBtn" class="mode-btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded">Taxi</button>
-  <button type="button" id="selectDepartBtn" class="mode-btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded">Départ</button>
-  <button type="button" id="selectArriveeBtn" class="mode-btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded">Arrivée</button>
-  <span id="selectionModeDisplay" class="ml-4 font-semibold">Mode: Sélection du taxi</span>
-</div>
+    <div class="map-container">
+      <div class="map-controls">
+        <button type="button" id="selectTaxiBtn" class="mode-btn active-mode">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M4.5 5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1ZM3 5a2 2 0 1 1 4 0 2 2 0 0 1-4 0Z"/>
+            <path d="M14 10a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V5h2.64c.57 0 1.11.2 1.53.564.708-.566 1.703-.682 2.53-.32.922-.4 2.029-.131 2.82.43H14V4.5a1.5 1.5 0 0 0-1.5-1.5h-1.75a.75.75 0 1 1 0-1.5h1.75a3 3 0 0 1 3 3V10Z"/>
+            <path fill-rule="evenodd" d="M13 10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v6Z"/>
+          </svg>
+          Taxi
+        </button>
+        <button type="button" id="selectDepartBtn" class="mode-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
+            <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
+          </svg>
+          Pickup
+        </button>
+        <button type="button" id="selectArriveeBtn" class="mode-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="m14.12 10.163 1.715.858c.22.11.22.424 0 .534L8.267 15.34a.598.598 0 0 1-.534 0L.165 11.555a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.66z"/>
+            <path d="M7.733.063a.598.598 0 0 1 .534 0l7.568 3.784a.3.3 0 0 1 0 .535L8.267 8.165a.598.598 0 0 1-.534 0L.165 4.382a.299.299 0 0 1 0-.535L7.733.063z"/>
+            <path d="m14.12 6.576 1.715.858c.22.11.22.424 0 .534l-7.568 3.784a.598.598 0 0 1-.534 0L.165 7.968a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.659z"/>
+          </svg>
+          Drop-off
+        </button>
+        <div id="selectionModeDisplay" class="selection-mode-display">Mode: Selecting taxi</div>
+      </div>
 
-
-    {# Conteneur pour la carte #}
-    <div class="mb-4">
-      <label class="block font-medium mb-2">Interagissez avec la carte :</label>
-      <div id="userMapDiv" style="height: 500px; width: 100%; border: 1px solid #ccc;"></div>
+      <div class="map-instructions">
+        <p><strong>Instructions:</strong> First select a taxi (shown in blue), then set your pickup and drop-off points to calculate the ride fare.</p>
+      </div>
+      
+      <div id="userMapDiv"></div>
     </div>
-
-    <div class="mt-6 flex justify-between items-center">
-      <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition">
-        Réserver
-      </button>
-      <a href="{{ path('user_courses') }}" class="text-sm text-slate-500 hover:underline">← Retour à la liste</a>
-    </div>
-  {{ form_end(form) }}
+  </div>
 </div>
 {% endblock %}
 
@@ -114,38 +461,38 @@
         "esri/geometry/geometryEngine"
       ], function(Map, MapView, Graphic, geometryEngine) {
 
-        // Variables pour stocker les marqueurs et le tarif du taxi sélectionné
+        // Variables to store markers and selected taxi rate
         var departMarker = null;
         var arriveeMarker = null;
-        var selectedTaxiMarker = null; // Permet de n'avoir qu'un taxi sélectionné en vert
+        var selectedTaxiMarker = null; // Allows only one taxi to be selected (in green)
         var selectedTaxiRate = null;
         var selectionMode = "taxi"; // Modes: "taxi", "depart", "arrivee"
-        document.getElementById("selectionModeDisplay").textContent = "Mode: Sélection du taxi";
+        document.getElementById("selectionModeDisplay").textContent = "Mode: Selecting taxi";
 
-        // Boutons pour changer le mode
+        // Buttons to change mode
         document.getElementById("selectTaxiBtn").addEventListener("click", function() {
-  selectionMode = "taxi";
-  document.getElementById("selectionModeDisplay").textContent = "Mode: Sélection du taxi";
-  console.log("Mode taxi activé");
-  updateModeButtons("selectTaxiBtn");
-});
+          selectionMode = "taxi";
+          document.getElementById("selectionModeDisplay").textContent = "Mode: Selecting taxi";
+          console.log("Taxi mode activated");
+          updateModeButtons("selectTaxiBtn");
+        });
 
         document.getElementById("selectDepartBtn").addEventListener("click", function() {
-  selectionMode = "depart";
-  document.getElementById("selectionModeDisplay").textContent = "Mode: Sélection du départ";
-  console.log("Mode départ activé");
-  updateModeButtons("selectDepartBtn");
-});
+          selectionMode = "depart";
+          document.getElementById("selectionModeDisplay").textContent = "Mode: Selecting pickup";
+          console.log("Pickup mode activated");
+          updateModeButtons("selectDepartBtn");
+        });
 
         document.getElementById("selectArriveeBtn").addEventListener("click", function() {
-  selectionMode = "arrivee";
-  document.getElementById("selectionModeDisplay").textContent = "Mode: Sélection de l'arrivée";
-  console.log("Mode arrivée activé");
-  updateModeButtons("selectArriveeBtn");
-});
+          selectionMode = "arrivee";
+          document.getElementById("selectionModeDisplay").textContent = "Mode: Selecting drop-off";
+          console.log("Drop-off mode activated");
+          updateModeButtons("selectArriveeBtn");
+        });
 
 
-        // Création de la carte
+        // Create map
         var map = new Map({ basemap: "streets-navigation-vector" });
         var view = new MapView({
           container: "userMapDiv",
@@ -154,27 +501,28 @@
           zoom: 12
         });
 
-        // Fonction utilitaire pour ajouter un marqueur
+        // Utility function to add a marker
         function addMarker(geometry, color, size) {
           return new Graphic({
             geometry: geometry,
             symbol: { type: "simple-marker", color: color, size: size || "12px" }
           });
         }
-function updateModeButtons(activeButtonId) {
-  var modeButtons = document.querySelectorAll(".mode-btn");
-  modeButtons.forEach(function(button) {
-    button.classList.remove("active-mode");
-  });
-  document.getElementById(activeButtonId).classList.add("active-mode");
-}
+        
+        function updateModeButtons(activeButtonId) {
+          var modeButtons = document.querySelectorAll(".mode-btn");
+          modeButtons.forEach(function(button) {
+            button.classList.remove("active-mode");
+          });
+          document.getElementById(activeButtonId).classList.add("active-mode");
+        }
 
-        // Fonction utilitaire pour calculer la distance en kilomètres
+        // Utility function to calculate distance in kilometers
         function computeDistance(from, to) {
           return geometryEngine.distance(from, to, "kilometers");
         }
 
-        // Récupérer la position de l'utilisateur et charger les taxis proches
+        // Get user position and load nearby taxis
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
             var userLng = position.coords.longitude;
@@ -198,92 +546,92 @@ function updateModeButtons(activeButtonId) {
                 });
               })
               .catch(function(error) {
-                console.error("Erreur lors de la récupération des taxis :", error);
+                console.error("Error fetching nearby taxis:", error);
               });
           });
         } else {
-          console.warn("La géolocalisation n'est pas supportée par ce navigateur.");
+          console.warn("Geolocation is not supported by this browser.");
         }
 
-        // Gestion des clics sur la carte
+        // Handle map clicks
         view.on("click", function(event) {
-          console.log("Clic détecté en mode :", selectionMode);
+          console.log("Click detected in mode:", selectionMode);
           view.hitTest(event).then(function(response) {
             var results = response.results;
-            console.log("Résultats hitTest :", results);
+            console.log("HitTest results:", results);
             var clickedGeometry = null;
 
             if (selectionMode === "taxi") {
-              // Mode taxi : Recherche d'un taxi parmi les graphiques
+              // Taxi mode: Search for a taxi among graphics
               var taxiGraphic = results.find(function(result) {
                 return result.graphic.attributes && result.graphic.attributes.taxiId;
               });
               if (taxiGraphic) {
                 clickedGeometry = taxiGraphic.graphic.geometry;
                 selectedTaxiRate = taxiGraphic.graphic.attributes.tarifBase;
-                console.log("Taxi sélectionné, Tarif :", selectedTaxiRate);
+                console.log("Taxi selected, Rate:", selectedTaxiRate);
 
-                // Supprimer le précédent taxi sélectionné
+                // Remove previous selected taxi
                 if (selectedTaxiMarker) {
                   view.graphics.remove(selectedTaxiMarker);
                 }
 
-                // Ajouter le nouveau marqueur en vert
+                // Add new marker in green
                 selectedTaxiMarker = addMarker(clickedGeometry, "green", "14px");
                 selectedTaxiMarker.attributes = taxiGraphic.graphic.attributes;
                 view.graphics.add(selectedTaxiMarker);
                 document.getElementById('{{ form.taxi.vars.id }}').value = taxiGraphic.graphic.attributes.taxiId;
 
-                // Recalculer la distance et le montant si départ et arrivée existent
+                // Recalculate distance and amount if pickup and drop-off exist
                 if (departMarker && arriveeMarker && selectedTaxiRate) {
                   var distanceKm = computeDistance(departMarker.geometry, arriveeMarker.geometry);
-                  console.log("Distance recalculée :", distanceKm);
+                  console.log("Distance recalculated:", distanceKm);
                   document.getElementById('{{ form.distanceKm.vars.id }}').value = distanceKm.toFixed(2);
                   var montant = distanceKm * selectedTaxiRate;
-                  console.log("Montant recalculé :", montant);
+                  console.log("Amount recalculated:", montant);
                   document.getElementById('{{ form.montant.vars.id }}').value = montant.toFixed(2);
                 }
                 return;
               } else {
-                console.log("Aucun taxi détecté en mode taxi.");
+                console.log("No taxi detected in taxi mode.");
                 return;
               }
             }
             else if (selectionMode === "depart") {
-              // Mode départ : Traitement du point de départ
+              // Pickup mode: Processing pickup point
               var nonTaxiResults = results.filter(function(result) {
                 return !(result.graphic.attributes && result.graphic.attributes.taxiId);
               });
               if (nonTaxiResults.length > 0) {
                 clickedGeometry = nonTaxiResults[0].graphic.geometry;
-                console.log("HitTest non-taxi trouvé pour départ :", clickedGeometry);
+                console.log("HitTest non-taxi found for pickup:", clickedGeometry);
               }
               if (!clickedGeometry) {
                 clickedGeometry = event.mapPoint;
-                console.log("Utilisation de event.mapPoint pour départ :", clickedGeometry);
+                console.log("Using event.mapPoint for pickup:", clickedGeometry);
               }
               var lat = clickedGeometry.latitude || clickedGeometry.y;
               var lng = clickedGeometry.longitude || clickedGeometry.x;
               var coordText = lat.toFixed(4) + ", " + lng.toFixed(4);
-              document.getElementById('{{ form.villeDepart.vars.id }}').value = coordText;      // Met à jour l'input caché
+              document.getElementById('{{ form.villeDepart.vars.id }}').value = coordText;      // Update hidden input
               document.getElementById("displayDepart").textContent = coordText;        
-              // Mise à jour du marqueur de départ
+              // Update pickup marker
               if (departMarker) { view.graphics.remove(departMarker); }
               departMarker = addMarker(clickedGeometry, "orange", "12px");
               view.graphics.add(departMarker);
             }
             else if (selectionMode === "arrivee") {
-              // Mode arrivée : Traitement du point d'arrivée
+              // Drop-off mode: Processing drop-off point
               var nonTaxiResults = results.filter(function(result) {
                 return !(result.graphic.attributes && result.graphic.attributes.taxiId);
               });
               if (nonTaxiResults.length > 0) {
                 clickedGeometry = nonTaxiResults[0].graphic.geometry;
-                console.log("HitTest non-taxi trouvé pour arrivée :", clickedGeometry);
+                console.log("HitTest non-taxi found for drop-off:", clickedGeometry);
               }
               if (!clickedGeometry) {
                 clickedGeometry = event.mapPoint;
-                console.log("Utilisation de event.mapPoint pour arrivée :", clickedGeometry);
+                console.log("Using event.mapPoint for drop-off:", clickedGeometry);
               }
               var lat = clickedGeometry.latitude || clickedGeometry.y;
               var lng = clickedGeometry.longitude || clickedGeometry.x;
@@ -295,13 +643,13 @@ function updateModeButtons(activeButtonId) {
               view.graphics.add(arriveeMarker);
             }
 
-            // Calcul du montant s'il y a déjà des points départ et arrivée et un taxi sélectionné
+            // Calculate amount if there are already pickup and drop-off points and a selected taxi
             if (departMarker && arriveeMarker && selectedTaxiRate) {
               var distanceKm = computeDistance(departMarker.geometry, arriveeMarker.geometry);
-              console.log("Distance calculée :", distanceKm);
+              console.log("Distance calculated:", distanceKm);
               document.getElementById('{{ form.distanceKm.vars.id }}').value = distanceKm.toFixed(2);
               var montant = distanceKm * selectedTaxiRate;
-              console.log("Montant calculé :", montant);
+              console.log("Amount calculated:", montant);
               document.getElementById('{{ form.montant.vars.id }}').value = montant.toFixed(2);
             }
           });

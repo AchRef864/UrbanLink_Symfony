@@ -420,6 +420,60 @@
                 height: 40px;
             }
         }
+        .driver-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    
+    .progress-container {
+        height: 6px;
+        background-color: #e5e7eb;
+        border-radius: 3px;
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        height: 100%;
+        background-color: #3b82f6;
+        border-radius: 3px;
+        transition: width 0.5s ease;
+    }
+    
+    .trip-dot {
+        position: relative;
+        padding-left: 18px;
+    }
+    
+    .trip-dot:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 10px;
+        height: 10px;
+        background-color: #3b82f6;
+        border-radius: 50%;
+        transform: translateY(-50%);
+    }
+    
+    .trip-dot.end:before {
+        background-color: #10b981;
+    }
+    
+    .trip-line {
+        position: relative;
+        margin-top: 16px;
+    }
+    
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 14px;
+    }
     </style>
 {% endblock %}
 
@@ -440,19 +494,32 @@
                         </button>
                     </div>
                     <div class="flex items-center">
-                        <img src="https://ui-avatars.com/api/?name={{ app.user.name|url_encode }}&background=random" alt="User" class="user-avatar">
+                        {% if app.user.image %}
+                            <img src="{{ path('user_avatar', {id: app.user.id}) }}" alt="User" class="user-avatar">
+                        {% else %}
+                            <img src="https://ui-avatars.com/api/?name={{ app.user.name|url_encode }}&background=random" alt="User" class="user-avatar">
+                        {% endif %}
                     </div>
                 </div>
             </div>
             
             <!-- Quick Stats -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 animate__animated animate__fadeInUp animate__delay-1s">
+                <!-- Completed Rides -->
                 <div class="transport-card p-4 gradient-border">
                     <div class="flex justify-between items-center">
                         <div>
                             <p class="text-sm text-gray-500">Completed Rides</p>
-                            <h3 class="text-2xl font-bold">24</h3>
-                            <p class="text-xs text-green-500 mt-1"><i class="fas fa-arrow-up mr-1"></i> 12% from last month</p>
+                            <h3 class="text-2xl font-bold">
+                                {{ app.user.reservations|filter(r => r.status == 'Confirmed' and not r.isCancelled and r.trajet and r.trajet.arrivalTime < date() )|length }}
+                            </h3>
+                            {% set lastMonthCount = app.user.reservations|filter(r => r.status == 'Confirmed' and not r.isCancelled and r.trajet and r.trajet.arrivalTime < date() and r.trajet.arrivalTime > date('-1 month'))|length %}
+                            {% set prevMonthCount = app.user.reservations|filter(r => r.status == 'Confirmed' and not r.isCancelled and r.trajet and r.trajet.arrivalTime < date('-1 month') and r.trajet.arrivalTime > date('-2 months'))|length %}
+                            {% set growth = lastMonthCount > 0 and prevMonthCount > 0 ? ((lastMonthCount - prevMonthCount) / prevMonthCount * 100)|round : 0 %}
+                            <p class="text-xs {{ growth >= 0 ? 'text-green-500' : 'text-red-500' }} mt-1">
+                                <i class="fas {{ growth >= 0 ? 'fa-arrow-up' : 'fa-arrow-down' }} mr-1"></i> 
+                                {{ growth|abs }}% from last month
+                            </p>
                         </div>
                         <div class="card-icon">
                             <i class="fas fa-car"></i>
@@ -460,12 +527,28 @@
                     </div>
                 </div>
                 
+                <!-- Money Saved -->
                 <div class="transport-card p-4 gradient-border">
                     <div class="flex justify-between items-center">
                         <div>
                             <p class="text-sm text-gray-500">Money Saved</p>
-                            <h3 class="text-2xl font-bold">$156</h3>
-                            <p class="text-xs text-green-500 mt-1"><i class="fas fa-piggy-bank mr-1"></i> $32 this week</p>
+                            {% set totalSaved = 0 %}
+                            {% set weeklySaved = 0 %}
+                            {% for reservation in app.user.reservations|filter(r => r.status == 'Confirmed' and not r.isCancelled and r.trajet) %}
+                                {% if reservation.trajet.typeTransport == 'Carpooling' %}
+                                    {% set estimatedIndividualCost = reservation.trajet.price * 0.7 %} {# Assuming 30% savings #}
+                                    {% set saved = estimatedIndividualCost - (reservation.totalPrice / reservation.numberOfSeats) %}
+                                    {% set totalSaved = totalSaved + saved %}
+                                    {% if reservation.trajet.departureTime > date('-1 week') %}
+                                        {% set weeklySaved = weeklySaved + saved %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <h3 class="text-2xl font-bold">${{ totalSaved|number_format(2) }}</h3>
+                            <p class="text-xs text-green-500 mt-1">
+                                <i class="fas fa-piggy-bank mr-1"></i> 
+                                ${{ weeklySaved|number_format(2) }} this week
+                            </p>
                         </div>
                         <div class="card-icon">
                             <i class="fas fa-piggy-bank"></i>
@@ -473,12 +556,23 @@
                     </div>
                 </div>
                 
+                <!-- Carbon Saved -->
                 <div class="transport-card p-4 gradient-border">
                     <div class="flex justify-between items-center">
                         <div>
                             <p class="text-sm text-gray-500">Carbon Saved</p>
-                            <h3 class="text-2xl font-bold">42kg</h3>
-                            <p class="text-xs text-green-500 mt-1"><i class="fas fa-leaf mr-1"></i> Equivalent to 3 trees</p>
+                            {% set carbonTotal = 0 %}
+                            {% for reservation in app.user.reservations|filter(r => r.status == 'Confirmed' and not r.isCancelled and r.trajet) %}
+                                {% if reservation.trajet.typeTransport == 'Carpooling' %}
+                                    {# Assuming 0.2kg CO2 per km saved by carpooling #}
+                                    {% set carbonTotal = carbonTotal + (reservation.trajet.distance * 0.2) %}
+                                {% endif %}
+                            {% endfor %}
+                            <h3 class="text-2xl font-bold">{{ carbonTotal|round }}kg</h3>
+                            <p class="text-xs text-green-500 mt-1">
+                                <i class="fas fa-leaf mr-1"></i> 
+                                Equivalent to {{ (carbonTotal / 14)|round }} trees
+                            </p>
                         </div>
                         <div class="card-icon">
                             <i class="fas fa-leaf"></i>
@@ -514,12 +608,66 @@
                         </div>
                         
                         <!-- Active Trip -->
+                        {# templates/reservation/current_trip.html.twig #}
+
+                        {# Check if there is a current trip #}
+                        {% set now = "now"|date("Y-m-d H:i:s") %}
+                        {% set currentTrip = null %}
+
+                        {# Find the current trip from user's reservations #}
+                        {% if app.user %}
+                            {% for reservation in app.user.reservations %}
+                                {% if currentTrip is null and reservation.status == 'Confirmed' and not reservation.isCancelled %}
+                                    {% if reservation.trajet and reservation.trajet.departureTime|date("Y-m-d H:i:s") <= now and reservation.trajet.arrivalTime|date("Y-m-d H:i:s") >= now %}
+                                        {% set currentTrip = reservation %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+
                         <div class="transport-card p-6 animate__animated animate__fadeInLeft animate__delay-1s">
+                            <!-- Current Trip Section -->
+                        {% if currentTrip %}
+                            {# Calculate time values #}
+                            {% set now = "now"|date("U") %}
+                            {% set departure_time = currentTrip.trajet.departureTime|date("U") %}
+                            {% set arrival_time = currentTrip.trajet.arrivalTime|date("U") %}
+                            {% set total_duration = arrival_time - departure_time %}
+                            {% set elapsed = now - departure_time %}
+                            {% set remaining = arrival_time - now %}
+                            
+                            {# Calculate percentage remaining #}
+                            {% if total_duration > 0 %}
+                                {% if elapsed < 0 %}
+                                    {# Trip hasn't started yet #}
+                                    {% set percentage_remaining = 100 %}
+                                    {% set status_text = "Starts in " ~ ((elapsed * -1)/60)|round ~ " minutes" %}
+                                {% elseif elapsed < total_duration %}
+                                    {# Trip in progress #}
+                                    {% set percentage_remaining = 100 - ((elapsed / total_duration) * 100)|round %}
+                                    {% set status_text = (remaining/60)|round ~ " minutes remaining" %}
+                                {% else %}
+                                    {# Trip completed #}
+                                    {% set percentage_remaining = 0 %}
+                                    {% set status_text = "Trip completed" %}
+                                {% endif %}
+                            {% else %}
+                                {# Invalid duration #}
+                                {% set percentage_remaining = 0 %}
+                                {% set status_text = "Completed" %}
+                            {% endif %}
+                            
+                            {# Ensure percentage stays between 0-100 #}
+                            {% set percentage_remaining = percentage_remaining > 100 ? 100 : (percentage_remaining < 0 ? 0 : percentage_remaining) %}
+                            
+                            {# Calculate progress percentage for the bar (inverse of remaining) #}
+                            {% set progress_percent = 100 - percentage_remaining %}
+
                             <div class="flex justify-between items-center mb-6">
                                 <h2 class="text-xl font-bold">Current Trip</h2>
                                 <span class="status-badge bg-blue-50 text-blue-600">
                                     <span class="w-2 h-2 bg-blue-500 rounded-full mr-2 animate-pulse"></span>
-                                    In Progress
+                                    {{ percentage_remaining }}% remaining
                                 </span>
                             </div>
                             
@@ -527,37 +675,104 @@
                                 <div class="flex justify-between mb-2">
                                     <div class="trip-dot">
                                         <p class="text-sm text-gray-500">From</p>
-                                        <p class="font-medium">Central Station</p>
+                                        <p class="font-medium">{{ currentTrip.trajet.departure }}</p>
                                     </div>
                                     <div class="trip-dot end">
                                         <p class="text-sm text-gray-500 text-right">To</p>
-                                        <p class="font-medium text-right">Tech Park</p>
+                                        <p class="font-medium text-right">{{ currentTrip.trajet.destination }}</p>
                                     </div>
                                 </div>
                                 
                                 <div class="trip-line">
                                     <div class="progress-container mb-2">
-                                        <div class="progress-bar" style="width: 65%"></div>
+                                        <div class="progress-bar" style="width: {{ progress_percent }}%"></div>
                                     </div>
-                                    <p class="text-sm text-gray-500 text-center">12 minutes remaining (3.2km)</p>
+                                    <p class="text-sm text-gray-500 text-center">
+                                        {{ status_text }}
+                                        {% if currentTrip.trajet.distance and status_text != "Trip completed" %}
+                                            ({{ currentTrip.trajet.distance }}km left)
+                                        {% endif %}
+                                    </p>
                                 </div>
                             </div>
-                            
+
+                            {# Rest of your driver/vehicle display code #}
                             <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                                <div class="flex items-center">
-                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Driver" class="driver-avatar mr-4">
-                                    <div>
-                                        <p class="font-medium">David Wilson</p>
-                                        <div class="rating-stars">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half-alt empty"></i>
-                                            <span class="text-gray-500 text-sm ml-1">4.7 (128 rides)</span>
+                                {% if currentTrip.trajet.vehicle and currentTrip.trajet.vehicle.driver %}
+                                    {% set driver = currentTrip.trajet.vehicle.driver %}
+                                    <div class="flex items-center">
+                                        {% if driver.image %}
+                                            <img src="{{ path('user_avatar', {id: driver.id}) }}" alt="Driver" class="driver-avatar mr-4">
+                                        {% else %}
+                                            <div class="driver-avatar mr-4 bg-gray-200 flex items-center justify-center">
+                                                <span class="text-gray-500">{{ driver.name|first|upper }}</span>
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <p class="font-medium">{{ driver.name }}</p>
+                                            {% if driver.rating is defined %}
+                                                <div class="rating-stars">
+                                                    {% for i in 1..5 %}
+                                                        {% if i <= driver.rating|round(0, 'floor') %}
+                                                            <i class="fas fa-star"></i>
+                                                        {% elseif i <= driver.rating %}
+                                                            <i class="fas fa-star-half-alt"></i>
+                                                        {% else %}
+                                                            <i class="far fa-star"></i>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    <span class="text-gray-500 text-sm ml-1">
+                                                        {{ driver.rating|number_format(1) }}
+                                                        {% if driver.rideCount is defined %}
+                                                            ({{ driver.rideCount }} rides)
+                                                        {% endif %}
+                                                    </span>
+                                                </div>
+                                            {% endif %}
+                                            
+                                            {# Vehicle details #}
+                                            {% if currentTrip.trajet.vehicle %}
+                                                <div class="mt-2 text-sm text-gray-600">
+                                                    <div class="flex items-center">
+                                                        <i class="fas fa-car text-blue-500 mr-2"></i>
+                                                        <span>{{ currentTrip.trajet.vehicle.brand }} {{ currentTrip.trajet.vehicle.model }}</span>
+                                                    </div>
+                                                    <div class="flex items-center mt-1">
+                                                        <i class="fas fa-palette text-blue-500 mr-2"></i>
+                                                        <span style="display:inline-block; width:20px; height:20px; border-radius:50%; background-color: {{ currentTrip.trajet.vehicle.color }};" title="{{ currentTrip.trajet.vehicle.color|capitalize }}"></span>
+                                                        <span class="mx-2">•</span>
+                                                        <i class="fas fa-id-card text-blue-500 mr-1"></i>
+                                                        <span>{{ currentTrip.trajet.vehicle.licensePlate }}</span>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     </div>
-                                </div>
+                                {% else %}
+                                    <div class="flex items-center">
+                                        <div class="driver-avatar mr-4 bg-gray-200 flex items-center justify-center">
+                                            <span class="text-gray-500">?</span>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Driver information unavailable</p>
+                                            {% if currentTrip.trajet.vehicle %}
+                                                <div class="mt-2 text-sm text-gray-600">
+                                                    <div class="flex items-center">
+                                                        <i class="fas fa-car text-blue-500 mr-2"></i>
+                                                        <span>{{ currentTrip.trajet.vehicle.brand }} {{ currentTrip.trajet.vehicle.model }}</span>
+                                                    </div>
+                                                    <div class="flex items-center mt-1">
+                                                        <i class="fas fa-palette text-blue-500 mr-2"></i>
+                                                        <span style="display:inline-block; width:20px; height:20px; border-radius:50%; background-color: {{ currentTrip.trajet.vehicle.color }};" title="{{ currentTrip.trajet.vehicle.color|capitalize }}"></span>
+                                                        <span class="mx-2">•</span>
+                                                        <i class="fas fa-id-card text-blue-500 mr-1"></i>
+                                                        <span>{{ currentTrip.trajet.vehicle.licensePlate }}</span>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
                                 <div class="flex space-x-2">
                                     <button class="p-3 bg-gray-50 text-blue-600 rounded-full hover:bg-blue-50 transition">
                                         <i class="fas fa-phone-alt"></i>
@@ -565,13 +780,27 @@
                                     <button class="p-3 bg-gray-50 text-blue-600 rounded-full hover:bg-blue-50 transition">
                                         <i class="fas fa-comment"></i>
                                     </button>
-                                    <button class="p-3 bg-gray-50 text-blue-600 rounded-full hover:bg-blue-50 transition">
+                                    <a href="{{ path('app_mapcontroller') }}" class="p-3 bg-gray-50 text-blue-600 rounded-full hover:bg-blue-50 transition">
                                         <i class="fas fa-map-marker-alt"></i>
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
+                        {% else %}
+                            <div class="text-center py-8">
+                                <div class="mb-4">
+                                    <svg class="w-16 h-16 mx-auto text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                    </svg>
+                                </div>
+                                <h2 class="text-xl font-bold mb-2">No Current Rides</h2>
+                                <p class="text-gray-500">You don't have any active trips at the moment.</p>
+                                <a href="{{ path('reservation_affichage') }}" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition inline-block">
+                                    Book a New Trip
+                                </a>
+                            </div>
+                        {% endif %}
                         </div>
-                        
+
                         <!-- Upcoming Trips -->
                         <div class="transport-card p-6">
                             <div class="flex justify-between items-center mb-6">
@@ -621,13 +850,14 @@
                             </div>
                             
                             <div class="flex items-center mb-6">
-                                <img src="https://ui-avatars.com/api/?name={{ app.user.name|url_encode }}&background=random" alt="User" class="user-avatar mr-4">
+                                {% if app.user.image %} 
+                                    <img src="{{ path('user_avatar', {id: app.user.id}) }}" alt="User" class="user-avatar">
+                                {% else %}
+                                    <img src="https://ui-avatars.com/api/?name={{ app.user.name|url_encode }}&background=random" alt="User" class="user-avatar">
+                                {% endif %}
                                 <div>
                                     <h3 class="font-bold">{{ app.user.name }}</h3>
                                     <p class="text-sm text-gray-500">{{ user.email }}</p>
-                                    <span class="status-badge bg-green-50 text-green-600 mt-1">
-                                        <i class="fas fa-check-circle mr-1"></i> Verified
-                                    </span>
                                 </div>
                             </div>
                             
@@ -798,20 +1028,6 @@
                     this.classList.remove('shadow-lg');
                 });
             });
-            
-            // Simulate loading progress
-            const progressBar = document.querySelector('.progress-bar');
-            if (progressBar) {
-                let width = 0;
-                const interval = setInterval(() => {
-                    if (width >= 65) {
-                        clearInterval(interval);
-                    } else {
-                        width++;
-                        progressBar.style.width = width + '%';
-                    }
-                }, 50);
-            }
             
             // Notification badge animation
             const notificationBadge = document.querySelector('.notification-badge');

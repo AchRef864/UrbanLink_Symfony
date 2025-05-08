@@ -1,20 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Statistiques Chauffeurs{% endblock %}
+{% block title %}Driver Statistics{% endblock %}
 
 {% block body %}
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
-    <!-- Bar chart : nombre de courses -->
+    <!-- Bar chart: number of rides -->
     <div class="bg-white p-4 rounded shadow w-full">
-      <h6 class="font-semibold mb-2">Top 5 Chauffeurs (Nombre de courses)</h6>
+      <h6 class="font-semibold mb-2">Top 5 Drivers (Number of Rides)</h6>
       <div class="h-64">
         <canvas id="chart-count" class="w-full h-full"></canvas>
       </div>
     </div>
 
-    <!-- Bar chart : revenu total -->
+    <!-- Bar chart: total revenue -->
     <div class="bg-white p-4 rounded shadow w-full">
-      <h6 class="font-semibold mb-2">Top 5 Chauffeurs (Revenu total)</h6>
+      <h6 class="font-semibold mb-2">Top 5 Drivers (Total Revenue)</h6>
       <div class="h-64">
         <canvas id="chart-revenue" class="w-full h-full"></canvas>
       </div>
@@ -22,27 +22,27 @@
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
-    <!-- Sous-performants -->
+    <!-- Underperformers -->
     <div class="bg-white p-4 rounded shadow w-full">
-      <h6 class="font-semibold mb-2">Taxis sous-performants (&lt; 3 courses/semaine)</h6>
+      <h6 class="font-semibold mb-2">Underperforming Taxis (&lt; 3 rides/week)</h6>
       <ul class="list-disc pl-5">
         {% for t in underperformers %}
-          <li>{{ t.name }} — {{ t.count }} courses la semaine dernière</li>
+          <li>{{ t.name }} — {{ t.count }} rides last week</li>
         {% else %}
-          <li>Aucun taxi sous-performant.</li>
+          <li>No underperforming taxis.</li>
         {% endfor %}
       </ul>
     </div>
 
-    <!-- Donut chart : taux d’acceptation -->
+    <!-- Donut chart: acceptance rate -->
     <div class="bg-white p-4 rounded shadow w-full">
-      <h6 class="font-semibold mb-2">Taux d’acceptation des courses</h6>
+      <h6 class="font-semibold mb-2">Ride Acceptance Rate</h6>
       <div class="h-64">
         <canvas id="chart-donut" class="w-full h-full"></canvas>
       </div>
       <p class="mt-2 text-sm">
-        Acceptées : <strong>{{ accepted }}</strong> /
-        Refusées : <strong>{{ refused }}</strong>
+        Accepted: <strong>{{ accepted }}</strong> /
+        Rejected: <strong>{{ refused }}</strong>
       </p>
     </div>
   </div>
@@ -63,7 +63,7 @@
       data: {
         labels: topCountLabels,
         datasets: [{
-          label: 'Nombre de courses',
+          label: 'Number of rides',
           data: topCountData,
           backgroundColor: 'rgba(54, 162, 235, 0.6)',
           borderColor:     'rgba(54, 162, 235, 1)',
@@ -82,7 +82,7 @@
       data: {
         labels: topRevLabels,
         datasets: [{
-          label: 'Revenu total (TND)',
+          label: 'Total revenue (TND)',
           data: topRevData,
           backgroundColor: 'rgba(75, 192, 192, 0.6)',
           borderColor:     'rgba(75, 192, 192, 1)',
@@ -99,7 +99,7 @@
     new Chart(document.getElementById('chart-donut'), {
       type: 'doughnut',
       data: {
-        labels: ['Acceptées', 'Refusées'],
+        labels: ['Accepted', 'Rejected'],
         datasets: [{
           data: acceptData,
           backgroundColor: ['rgba(40, 167, 69, 0.6)', 'rgba(220, 53, 69, 0.6)'],
