@@ -6,10 +6,96 @@
     {{ parent() }}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
     {{ encore_entry_link_tags('app') }}
     <style>
-        .rate-container { display: inline-block; }
+        /* Rating Container Styles */
+        .rate-container {
+            display: inline-block;
+            min-width: 120px;
+            min-height: 30px;
+            margin-bottom: 10px;
+        }
+        
+        /* Force RateYo styles to be visible */
+        .jq-ry-container {
+            padding: 0 !important;
+            line-height: 0 !important;
+            min-width: 120px !important;
+        }
+        
+        .jq-ry-container > svg {
+            display: inline-block !important;
+            width: 20px !important;
+            height: 20px !important;
+        }
+        
+        /* Form Styles */
+        .rating-form {
+            margin-top: 10px;
+        }
+        
+        .rating-submit-btn {
+            padding: 5px 10px;
+            background-color: #4a5568;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        /* Table Styles */
+        #reponses-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        #reponses-table th, #reponses-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        #reponses-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        /* Card Styles */
+        .card-3d {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .header-3d {
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #2D3748, #4A5568);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-3d h6 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        .btn-add {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-add:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
     </style>
 {% endblock %}
 
@@ -23,12 +109,12 @@
     </div>
 
     <div class="table-3d overflow-x-auto">
-        <table id="reponses-table">
+        <table id="reponses-table" class="display">
             <thead>
                 <tr>
                     <th>Comment</th>
                     <th>Date</th>
-                    <th>Admin's Email</th>
+                    <th>Admin</th>
                     <th>Rating</th>
                     {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
                         <th>Actions</th>
@@ -39,30 +125,39 @@
                 {% for reponse in reponses %}
                     <tr data-id="{{ reponse.id }}">
                         <td>{{ reponse.commentaire }}</td>
-                        <td>{{ reponse.dateReponse|date('Y-m-d') }}</td>
+                        <td>{{ reponse.dateReponse|date('Y-m-d H:i') }}</td>
                         <td>{{ reponse.user ? reponse.user.username : 'Unknown' }}</td>
                         <td>
-                            <div class="rate-yo" id="rating-{{ reponse.id }}" data-rate="{{ reponse.rate ?? 0 }}" data-readonly="{{ reponse.rate ? 'true' : 'false' }}"></div>
-                            {% if reponse.rate is null %}
-                                <form method="post" action="{{ path('app_reponse_rate', {'id': reponse.id}) }}">
-                                    <input type="hidden" name="rate" id="rate-input-{{ reponse.id }}" value="">
-                                    <button type="submit" class="btn btn-sm btn-primary mt-2">Submit</button>
-                                </form>
-                            {% endif %}
+                            <div class="rate-container">
+                                <div class="rate-yo" 
+                                    id="rating-{{ reponse.id }}" 
+                                    data-rate="{{ reponse.rate ?? 0 }}" 
+                                    data-readonly="{{ (reponse.rate is not null or not (app.user and 'ROLE_CLIENT' in app.user.roles)) ? 'true' : 'false' }}">
+                                </div>
+                                {% if reponse.rate is null and app.user and 'ROLE_CLIENT' in app.user.roles %}
+                                    <form method="post" action="{{ path('app_reponse_rate', {'id': reponse.id}) }}" class="rating-form">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('rate' ~ reponse.id) }}">
+                                        <input type="hidden" name="rate" id="rate-input-{{ reponse.id }}" value="">
+                                        <button type="submit" class="rating-submit-btn">Submit Rating</button>
+                                    </form>
+                                {% endif %}
+                            </div>
                         </td>
                         {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
-                            <td>
-                                <a href="{{ path('app_reponse_edit', {'id': reponse.id}) }}">Edit</a>
+                            <td class="action-buttons">
+                                <a href="{{ path('app_reponse_edit', {'id': reponse.id}) }}" class="btn-edit">Edit</a>
                                 <form method="post" action="{{ path('app_reponse_delete', {'id': reponse.id}) }}" onsubmit="return confirm('Are you sure?');">
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reponse.id) }}">
-                                    <button type="submit">Delete</button>
+                                    <button type="submit" class="btn-delete">Delete</button>
                                 </form>
                             </td>
                         {% endif %}
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="5">No responses found.</td>
+                        <td colspan="{% if app.user and 'ROLE_ADMIN' in app.user.roles %}5{% else %}4{% endif %}">
+                            No responses found for this complaint.
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -75,28 +170,64 @@
     {{ parent() }}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
     {{ encore_entry_script_tags('app') }}
+    
     <script>
-        $(function() {
-            $('#reponses-table').DataTable();
+        $(document).ready(function() {
+            console.log('Document ready - initializing components');
+            
+            // Initialize DataTable
+            $('#reponses-table').DataTable({
+                responsive: true,
+                searching: false,
+                paging: false,
+                info: false
+            });
+            
+            // Debug: Check if RateYo is loaded
+            if (typeof $.fn.rateYo === 'undefined') {
+                console.error('RateYo plugin not loaded!');
+            } else {
+                console.log('RateYo plugin loaded successfully');
+            }
             
             // Initialize RateYo for each rating element
             $('.rate-yo').each(function() {
                 const $el = $(this);
                 const id = $el.attr('id').split('-')[1];
-                const rating = parseFloat($el.data('rate'));
+                const rating = parseFloat($el.data('rate')) || 0;
                 const readonly = $el.data('readonly') === 'true';
                 
-                $el.rateYo({
+                console.log(`Initializing rating for #${$el.attr('id')}`, {
                     rating: rating,
-                    fullStar: true,
-                    readOnly: readonly,
-                    onSet: function(rating) {
-                        if (!readonly) {
-                            $('#rate-input-' + id).val(rating);
-                        }
-                    }
+                    readonly: readonly
                 });
+                
+                try {
+                    $el.rateYo({
+                        rating: rating,
+                        starWidth: "20px",
+                        fullStar: true,
+                        readOnly: readonly,
+                        normalFill: "#A0A0A0",
+                        ratedFill: "#FFD700",
+                        spacing: "5px",
+                        onSet: function(newRating) {
+                            if (!readonly) {
+                                console.log(`Rating set to: ${newRating} for response ${id}`);
+                                $('#rate-input-' + id).val(newRating);
+                            }
+                        }
+                    });
+                    
+                    // Debug: Check if stars were rendered
+                    if ($el.find('svg').length === 0) {
+                        console.error('No stars rendered for #' + $el.attr('id'));
+                    }
+                } catch (e) {
+                    console.error('Error initializing RateYo:', e);
+                }
             });
         });
     </script>

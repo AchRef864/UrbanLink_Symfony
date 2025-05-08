@@ -7,46 +7,81 @@
     {{ parent() }}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
         :root {
             --primary: #4361ee;
-            --primary-light: #e6f0ff;
+            --primary-light: #f0f4ff;
             --secondary: #3a0ca3;
             --accent: #f72585;
-            --light: #f8f9fa;
+            --light: #ffffff;
             --dark: #212529;
             --success: #4cc9f0;
             --warning: #f8961e;
             --danger: #ef233c;
-            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
             --card-radius: 16px;
+            --sidebar-width: 280px;
+            --neutral-100: #f9fafb;
+            --neutral-200: #f3f4f6;
+            --neutral-300: #e5e7eb;
+            --neutral-400: #d1d5db;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-tertiary: #9ca3af;
         }
         
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-            color: #334155;
+            background-color: var(--neutral-100);
+            color: var(--text-primary);
+            overflow-x: hidden;
         }
         
         .dashboard-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
+            background: var(--light);
+            color: var(--text-primary);
             border-radius: 0 0 24px 24px;
-            box-shadow: 0 4px 24px rgba(67, 97, 238, 0.3);
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+        
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, var(--primary-light) 0%, rgba(255,255,255,0) 70%);
+            opacity: 0.8;
         }
         
         .transport-card {
-            background: white;
+            background: var(--light);
             border-radius: var(--card-radius);
             box-shadow: var(--card-shadow);
             transition: all 0.3s ease;
-            border: none;
+            border: 1px solid var(--neutral-200);
             overflow: hidden;
+            position: relative;
         }
         
         .transport-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        }
+        
+        .transport-card.gradient-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary);
         }
         
         .card-icon {
@@ -57,7 +92,13 @@
             align-items: center;
             justify-content: center;
             font-size: 20px;
-            color: white;
+            color: var(--primary);
+            background: var(--primary-light);
+            transition: all 0.3s ease;
+        }
+        
+        .transport-card:hover .card-icon {
+            transform: scale(1.05);
         }
         
         .action-btn {
@@ -69,10 +110,25 @@
             align-items: center;
             justify-content: center;
             text-decoration: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            background: var(--primary-light);
+            color: var(--primary);
+            border: 1px solid rgba(67, 97, 238, 0.15);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+            background: rgba(67, 97, 238, 0.1);
         }
         
         .action-btn i {
             margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .action-btn:hover i {
+            transform: scale(1.1);
         }
         
         .status-badge {
@@ -90,23 +146,57 @@
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.12);
         }
         
         .progress-container {
-            height: 8px;
-            border-radius: 4px;
-            background-color: #e2e8f0;
+            height: 6px;
+            border-radius: 3px;
+            background-color: var(--neutral-200);
+            overflow: hidden;
         }
         
         .progress-bar {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 4px;
+            background: var(--primary);
+            border-radius: 3px;
             height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.4) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
         
         .rating-stars {
             color: #f59e0b;
+        }
+        
+        .rating-stars .empty {
+            color: var(--neutral-300);
         }
         
         .nav-pill {
@@ -118,11 +208,11 @@
         }
         
         .nav-pill:hover {
-            background-color: rgba(67, 97, 238, 0.1);
+            background-color: var(--primary-light);
         }
         
         .nav-pill.active {
-            background-color: rgba(67, 97, 238, 0.2);
+            background-color: var(--primary-light);
             color: var(--primary);
             font-weight: 600;
         }
@@ -133,7 +223,7 @@
             right: -4px;
             width: 18px;
             height: 18px;
-            background-color: var(--danger);
+            background-color: var(--accent);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -141,6 +231,13 @@
             justify-content: center;
             font-size: 10px;
             font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
         
         .time-pill {
@@ -151,64 +248,333 @@
             font-size: 12px;
             font-weight: 600;
         }
+        
+        .trip-dot {
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .trip-dot::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--primary);
+        }
+        
+        .trip-dot.end::before {
+            background-color: var(--accent);
+        }
+        
+        .trip-line {
+            position: relative;
+            padding-left: 20px;
+            margin-left: 5px;
+        }
+        
+        .trip-line::before {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--neutral-300);
+        }
+        
+        .driver-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .floating-action-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.25);
+            z-index: 50;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-action-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 16px rgba(67, 97, 238, 0.3);
+        }
+        
+        .skeleton {
+            background-color: var(--neutral-200);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skeleton::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.5) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            animation: shimmer 2s infinite;
+        }
+        
+        .weather-card {
+            background: var(--light);
+            color: var(--text-primary);
+            border-radius: var(--card-radius);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--neutral-200);
+        }
+        
+        .weather-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.03) 0%, rgba(247, 37, 133, 0.03) 100%);
+        }
+        
+        .activity-item {
+            transition: all 0.2s ease;
+            border-left: 2px solid transparent;
+            padding-left: 10px;
+            margin-left: -12px;
+        }
+        
+        .activity-item:hover {
+            border-left: 2px solid var(--primary);
+            background-color: var(--primary-light);
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .activity-icon {
+            transition: all 0.2s ease;
+        }
+        
+        .activity-item:hover .activity-icon {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Light dashboard panels */
+        .dashboard-panel {
+            background: var(--light);
+            border-radius: var(--card-radius);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--neutral-200);
+        }
+        
+        .dashboard-panel-header {
+            border-bottom: 1px solid var(--neutral-200);
+            padding: 16px 20px;
+        }
+        
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-3px);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .dashboard-header {
+                border-radius: 0 0 16px 16px;
+            }
+            
+            .action-btn {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+            
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+            }
+        }
+        .driver-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    
+    .progress-container {
+        height: 6px;
+        background-color: #e5e7eb;
+        border-radius: 3px;
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        height: 100%;
+        background-color: #3b82f6;
+        border-radius: 3px;
+        transition: width 0.5s ease;
+    }
+    
+    .trip-dot {
+        position: relative;
+        padding-left: 18px;
+    }
+    
+    .trip-dot:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 10px;
+        height: 10px;
+        background-color: #3b82f6;
+        border-radius: 50%;
+        transform: translateY(-50%);
+    }
+    
+    .trip-dot.end:before {
+        background-color: #10b981;
+    }
+    
+    .trip-line {
+        position: relative;
+        margin-top: 16px;
+    }
+    
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 14px;
+    }
     </style>
 {% endblock %}
 
 {% block body %}
     <div class="min-h-screen">
         <!-- Header -->
-        <header class="dashboard-header px-6 pt-8 pb-6">
-            <div class="flex justify-between items-start mb-8">
+        <header class="dashboard-header px-6 pt-8 pb-6 animate__animated animate__fadeIn">
+            <div class="flex justify-between items-start mb-8 relative">
                 <div>
                     <h1 class="text-2xl font-bold">Welcome back, {{ app.user.name }}</h1>
-                    <p class="text-blue-100 opacity-90 mt-1">Ready for your next ride?</p>
+                    <p class="text-gray-500 mt-1">Ready for your next ride?</p>
                 </div>
                 <div class="flex items-center space-x-4">
                     <div class="relative">
-                        <button class="p-2 rounded-full bg-white bg-opacity-20 hover:bg-opacity-30 transition">
-                            <i class="fas fa-bell text-white"></i>
+                        <button class="p-2 rounded-full bg-white hover:bg-gray-50 transition border border-gray-100">
+                            <i class="fas fa-bell text-gray-600"></i>
                             <span class="notification-badge">3</span>
                         </button>
                     </div>
                     <div class="flex items-center">
-                        <img src="https://ui-avatars.com/api/?name={{ app.user.name|url_encode }}&background=random" alt="User" class="user-avatar">
+                        {% if app.user.image %}
+                            <img src="{{ path('user_avatar', {id: app.user.id}) }}" alt="User" class="user-avatar">
+                        {% else %}
+                            <img src="https://ui-avatars.com/api/?name={{ app.user.name|url_encode }}&background=random" alt="User" class="user-avatar">
+                        {% endif %}
                     </div>
                 </div>
             </div>
             
             <!-- Quick Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="transport-card p-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 animate__animated animate__fadeInUp animate__delay-1s">
+                <!-- Completed Rides -->
+                <div class="transport-card p-4 gradient-border">
                     <div class="flex justify-between items-center">
                         <div>
                             <p class="text-sm text-gray-500">Completed Rides</p>
-                            <h3 class="text-2xl font-bold">24</h3>
+                            <h3 class="text-2xl font-bold">
+                                {{ app.user.reservations|filter(r => r.status == 'Confirmed' and not r.isCancelled and r.trajet and r.trajet.arrivalTime < date() )|length }}
+                            </h3>
+                            {% set lastMonthCount = app.user.reservations|filter(r => r.status == 'Confirmed' and not r.isCancelled and r.trajet and r.trajet.arrivalTime < date() and r.trajet.arrivalTime > date('-1 month'))|length %}
+                            {% set prevMonthCount = app.user.reservations|filter(r => r.status == 'Confirmed' and not r.isCancelled and r.trajet and r.trajet.arrivalTime < date('-1 month') and r.trajet.arrivalTime > date('-2 months'))|length %}
+                            {% set growth = lastMonthCount > 0 and prevMonthCount > 0 ? ((lastMonthCount - prevMonthCount) / prevMonthCount * 100)|round : 0 %}
+                            <p class="text-xs {{ growth >= 0 ? 'text-green-500' : 'text-red-500' }} mt-1">
+                                <i class="fas {{ growth >= 0 ? 'fa-arrow-up' : 'fa-arrow-down' }} mr-1"></i> 
+                                {{ growth|abs }}% from last month
+                            </p>
                         </div>
-                        <div class="card-icon bg-blue-100 text-blue-600">
+                        <div class="card-icon">
                             <i class="fas fa-car"></i>
                         </div>
                     </div>
                 </div>
                 
-                <div class="transport-card p-4">
+                <!-- Money Saved -->
+                <div class="transport-card p-4 gradient-border">
                     <div class="flex justify-between items-center">
                         <div>
                             <p class="text-sm text-gray-500">Money Saved</p>
-                            <h3 class="text-2xl font-bold">$156</h3>
+                            {% set totalSaved = 0 %}
+                            {% set weeklySaved = 0 %}
+                            {% for reservation in app.user.reservations|filter(r => r.status == 'Confirmed' and not r.isCancelled and r.trajet) %}
+                                {% if reservation.trajet.typeTransport == 'Carpooling' %}
+                                    {% set estimatedIndividualCost = reservation.trajet.price * 0.7 %} {# Assuming 30% savings #}
+                                    {% set saved = estimatedIndividualCost - (reservation.totalPrice / reservation.numberOfSeats) %}
+                                    {% set totalSaved = totalSaved + saved %}
+                                    {% if reservation.trajet.departureTime > date('-1 week') %}
+                                        {% set weeklySaved = weeklySaved + saved %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <h3 class="text-2xl font-bold">${{ totalSaved|number_format(2) }}</h3>
+                            <p class="text-xs text-green-500 mt-1">
+                                <i class="fas fa-piggy-bank mr-1"></i> 
+                                ${{ weeklySaved|number_format(2) }} this week
+                            </p>
                         </div>
-                        <div class="card-icon bg-green-100 text-green-600">
+                        <div class="card-icon">
                             <i class="fas fa-piggy-bank"></i>
                         </div>
                     </div>
                 </div>
                 
-                <div class="transport-card p-4">
+                <!-- Carbon Saved -->
+                <div class="transport-card p-4 gradient-border">
                     <div class="flex justify-between items-center">
                         <div>
                             <p class="text-sm text-gray-500">Carbon Saved</p>
-                            <h3 class="text-2xl font-bold">42kg</h3>
+                            {% set carbonTotal = 0 %}
+                            {% for reservation in app.user.reservations|filter(r => r.status == 'Confirmed' and not r.isCancelled and r.trajet) %}
+                                {% if reservation.trajet.typeTransport == 'Carpooling' %}
+                                    {# Assuming 0.2kg CO2 per km saved by carpooling #}
+                                    {% set carbonTotal = carbonTotal + (reservation.trajet.distance * 0.2) %}
+                                {% endif %}
+                            {% endfor %}
+                            <h3 class="text-2xl font-bold">{{ carbonTotal|round }}kg</h3>
+                            <p class="text-xs text-green-500 mt-1">
+                                <i class="fas fa-leaf mr-1"></i> 
+                                Equivalent to {{ (carbonTotal / 14)|round }} trees
+                            </p>
                         </div>
-                        <div class="card-icon bg-amber-100 text-amber-600">
+                        <div class="card-icon">
                             <i class="fas fa-leaf"></i>
                         </div>
                     </div>
@@ -223,74 +589,250 @@
                     <!-- Left Column -->
                     <div class="lg:col-span-2 space-y-6">
                         <!-- Quick Actions -->
-                        <div class="transport-card p-6">
+                        <div class="transport-card p-6 animate__animated animate__fadeInLeft">
                             <h2 class="text-xl font-bold mb-6">Get Around</h2>
-                            <div class="grid grid-cols-2 gap-4">
-                                <a href="#" class="action-btn bg-blue-600 text-white hover:bg-blue-700">
-                                    <i class="fas fa-car"></i> Book a Ride
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <a href="{{ path('reservation_affichage')}}" class="action-btn">
+                                    <i class="fas fa-car"></i> Book Ride
                                 </a>
-                                <a href="#" class="action-btn bg-purple-600 text-white hover:bg-purple-700">
-                                    <i class="fas fa-bus"></i> Find Bus
+                                <a href="{{ path('app_abonnement_index')}}" class="action-btn">
+                                    <i class="fas fa-bus"></i> Subscription
                                 </a>
-                                <a href="#" class="action-btn bg-green-600 text-white hover:bg-green-700">
-                                    <i class="fas fa-users"></i> Join Carpool
+                                <a href="{{ path('reservation_list')}}" class="action-btn">
+                                    <i class="fas fa-bicycle"></i> My Reservation
                                 </a>
-                                <a href="#" class="action-btn bg-amber-500 text-white hover:bg-amber-600">
-                                    <i class="fas fa-bicycle"></i> Rent Bike
+                                <a href="{{ path('app_abonnement_mes_reservations')}}" class="action-btn">
+                                    <i class="fas fa-train"></i> My subscription
                                 </a>
                             </div>
                         </div>
                         
                         <!-- Active Trip -->
-                        <div class="transport-card p-6">
+                        {# templates/reservation/current_trip.html.twig #}
+
+                        {# Check if there is a current trip #}
+                        {% set now = "now"|date("Y-m-d H:i:s") %}
+                        {% set currentTrip = null %}
+
+                        {# Find the current trip from user's reservations #}
+                        {% if app.user %}
+                            {% for reservation in app.user.reservations %}
+                                {% if currentTrip is null and reservation.status == 'Confirmed' and not reservation.isCancelled %}
+                                    {% if reservation.trajet and reservation.trajet.departureTime|date("Y-m-d H:i:s") <= now and reservation.trajet.arrivalTime|date("Y-m-d H:i:s") >= now %}
+                                        {% set currentTrip = reservation %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+                        <div class="transport-card p-6 animate__animated animate__fadeInLeft animate__delay-1s">
+                            <!-- Current Trip Section -->
+                        {% if currentTrip %}
+                            {# Calculate time values #}
+                            {% set now = "now"|date("U") %}
+                            {% set departure_time = currentTrip.trajet.departureTime|date("U") %}
+                            {% set arrival_time = currentTrip.trajet.arrivalTime|date("U") %}
+                            {% set total_duration = arrival_time - departure_time %}
+                            {% set elapsed = now - departure_time %}
+                            {% set remaining = arrival_time - now %}
+                            
+                            {# Calculate percentage remaining #}
+                            {% if total_duration > 0 %}
+                                {% if elapsed < 0 %}
+                                    {# Trip hasn't started yet #}
+                                    {% set percentage_remaining = 100 %}
+                                    {% set status_text = "Starts in " ~ ((elapsed * -1)/60)|round ~ " minutes" %}
+                                {% elseif elapsed < total_duration %}
+                                    {# Trip in progress #}
+                                    {% set percentage_remaining = 100 - ((elapsed / total_duration) * 100)|round %}
+                                    {% set status_text = (remaining/60)|round ~ " minutes remaining" %}
+                                {% else %}
+                                    {# Trip completed #}
+                                    {% set percentage_remaining = 0 %}
+                                    {% set status_text = "Trip completed" %}
+                                {% endif %}
+                            {% else %}
+                                {# Invalid duration #}
+                                {% set percentage_remaining = 0 %}
+                                {% set status_text = "Completed" %}
+                            {% endif %}
+                            
+                            {# Ensure percentage stays between 0-100 #}
+                            {% set percentage_remaining = percentage_remaining > 100 ? 100 : (percentage_remaining < 0 ? 0 : percentage_remaining) %}
+                            
+                            {# Calculate progress percentage for the bar (inverse of remaining) #}
+                            {% set progress_percent = 100 - percentage_remaining %}
+
                             <div class="flex justify-between items-center mb-6">
                                 <h2 class="text-xl font-bold">Current Trip</h2>
-                                <span class="status-badge bg-blue-100 text-blue-800">
-                                    <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-                                    In Progress
+                                <span class="status-badge bg-blue-50 text-blue-600">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mr-2 animate-pulse"></span>
+                                    {{ percentage_remaining }}% remaining
                                 </span>
                             </div>
                             
                             <div class="mb-6 p-4 bg-gray-50 rounded-lg">
                                 <div class="flex justify-between mb-2">
-                                    <div>
+                                    <div class="trip-dot">
                                         <p class="text-sm text-gray-500">From</p>
-                                        <p class="font-medium">Central Station</p>
+                                        <p class="font-medium">{{ currentTrip.trajet.departure }}</p>
                                     </div>
-                                    <div class="text-right">
-                                        <p class="text-sm text-gray-500">To</p>
-                                        <p class="font-medium">Tech Park</p>
+                                    <div class="trip-dot end">
+                                        <p class="text-sm text-gray-500 text-right">To</p>
+                                        <p class="font-medium text-right">{{ currentTrip.trajet.destination }}</p>
                                     </div>
                                 </div>
                                 
-                                <div class="progress-container mb-2">
-                                    <div class="progress-bar" style="width: 65%"></div>
+                                <div class="trip-line">
+                                    <div class="progress-container mb-2">
+                                        <div class="progress-bar" style="width: {{ progress_percent }}%"></div>
+                                    </div>
+                                    <p class="text-sm text-gray-500 text-center">
+                                        {{ status_text }}
+                                        {% if currentTrip.trajet.distance and status_text != "Trip completed" %}
+                                            ({{ currentTrip.trajet.distance }}km left)
+                                        {% endif %}
+                                    </p>
                                 </div>
-                                <p class="text-sm text-gray-500 text-center">12 minutes remaining (3.2km)</p>
                             </div>
-                            
-                            <div class="flex items-center justify-between pt-4 border-t">
-                                <div class="flex items-center">
-                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Driver" class="user-avatar mr-4">
-                                    <div>
-                                        <p class="font-medium">David Wilson</p>
-                                        <div class="rating-stars">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half-alt"></i>
-                                            <span class="text-gray-500 text-sm ml-1">4.7 (128 rides)</span>
+
+                            {# Rest of your driver/vehicle display code #}
+                            <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                                {% if currentTrip.trajet.vehicle and currentTrip.trajet.vehicle.driver %}
+                                    {% set driver = currentTrip.trajet.vehicle.driver %}
+                                    <div class="flex items-center">
+                                        {% if driver.image %}
+                                            <img src="{{ path('user_avatar', {id: driver.id}) }}" alt="Driver" class="driver-avatar mr-4">
+                                        {% else %}
+                                            <div class="driver-avatar mr-4 bg-gray-200 flex items-center justify-center">
+                                                <span class="text-gray-500">{{ driver.name|first|upper }}</span>
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <p class="font-medium">{{ driver.name }}</p>
+                                            {% if driver.rating is defined %}
+                                                <div class="rating-stars">
+                                                    {% for i in 1..5 %}
+                                                        {% if i <= driver.rating|round(0, 'floor') %}
+                                                            <i class="fas fa-star"></i>
+                                                        {% elseif i <= driver.rating %}
+                                                            <i class="fas fa-star-half-alt"></i>
+                                                        {% else %}
+                                                            <i class="far fa-star"></i>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    <span class="text-gray-500 text-sm ml-1">
+                                                        {{ driver.rating|number_format(1) }}
+                                                        {% if driver.rideCount is defined %}
+                                                            ({{ driver.rideCount }} rides)
+                                                        {% endif %}
+                                                    </span>
+                                                </div>
+                                            {% endif %}
+                                            
+                                            {# Vehicle details #}
+                                            {% if currentTrip.trajet.vehicle %}
+                                                <div class="mt-2 text-sm text-gray-600">
+                                                    <div class="flex items-center">
+                                                        <i class="fas fa-car text-blue-500 mr-2"></i>
+                                                        <span>{{ currentTrip.trajet.vehicle.brand }} {{ currentTrip.trajet.vehicle.model }}</span>
+                                                    </div>
+                                                    <div class="flex items-center mt-1">
+                                                        <i class="fas fa-palette text-blue-500 mr-2"></i>
+                                                        <span style="display:inline-block; width:20px; height:20px; border-radius:50%; background-color: {{ currentTrip.trajet.vehicle.color }};" title="{{ currentTrip.trajet.vehicle.color|capitalize }}"></span>
+                                                        <span class="mx-2">•</span>
+                                                        <i class="fas fa-id-card text-blue-500 mr-1"></i>
+                                                        <span>{{ currentTrip.trajet.vehicle.licensePlate }}</span>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     </div>
-                                </div>
+                                {% else %}
+                                    <div class="flex items-center">
+                                        <div class="driver-avatar mr-4 bg-gray-200 flex items-center justify-center">
+                                            <span class="text-gray-500">?</span>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Driver information unavailable</p>
+                                            {% if currentTrip.trajet.vehicle %}
+                                                <div class="mt-2 text-sm text-gray-600">
+                                                    <div class="flex items-center">
+                                                        <i class="fas fa-car text-blue-500 mr-2"></i>
+                                                        <span>{{ currentTrip.trajet.vehicle.brand }} {{ currentTrip.trajet.vehicle.model }}</span>
+                                                    </div>
+                                                    <div class="flex items-center mt-1">
+                                                        <i class="fas fa-palette text-blue-500 mr-2"></i>
+                                                        <span style="display:inline-block; width:20px; height:20px; border-radius:50%; background-color: {{ currentTrip.trajet.vehicle.color }};" title="{{ currentTrip.trajet.vehicle.color|capitalize }}"></span>
+                                                        <span class="mx-2">•</span>
+                                                        <i class="fas fa-id-card text-blue-500 mr-1"></i>
+                                                        <span>{{ currentTrip.trajet.vehicle.licensePlate }}</span>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
                                 <div class="flex space-x-2">
-                                    <button class="p-3 bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200">
+                                    <button class="p-3 bg-gray-50 text-blue-600 rounded-full hover:bg-blue-50 transition">
                                         <i class="fas fa-phone-alt"></i>
                                     </button>
-                                    <button class="p-3 bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200">
+                                    <button class="p-3 bg-gray-50 text-blue-600 rounded-full hover:bg-blue-50 transition">
                                         <i class="fas fa-comment"></i>
                                     </button>
+                                    <a href="{{ path('app_mapcontroller') }}" class="p-3 bg-gray-50 text-blue-600 rounded-full hover:bg-blue-50 transition">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-8">
+                                <div class="mb-4">
+                                    <svg class="w-16 h-16 mx-auto text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                    </svg>
+                                </div>
+                                <h2 class="text-xl font-bold mb-2">No Current Rides</h2>
+                                <p class="text-gray-500">You don't have any active trips at the moment.</p>
+                                <a href="{{ path('reservation_affichage') }}" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition inline-block">
+                                    Book a New Trip
+                                </a>
+                            </div>
+                        {% endif %}
+                        </div>
+
+                        <!-- Upcoming Trips -->
+                        <div class="transport-card p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-xl font-bold">Upcoming Trips</h2>
+                                <a href="#" class="text-sm text-blue-600 hover:text-blue-800">View All</a>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover-lift">
+                                    <div class="flex items-center">
+                                        <div class="mr-4 p-3 bg-blue-50 rounded-lg">
+                                            <i class="fas fa-car text-blue-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Airport Transfer</p>
+                                            <p class="text-sm text-gray-500">Tomorrow, 6:30 AM</p>
+                                        </div>
+                                    </div>
+                                    <span class="time-pill">Confirmed</span>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover-lift">
+                                    <div class="flex items-center">
+                                        <div class="mr-4 p-3 bg-purple-50 rounded-lg">
+                                            <i class="fas fa-users text-purple-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Office Carpool</p>
+                                            <p class="text-sm text-gray-500">Mon, 8:00 AM</p>
+                                        </div>
+                                    </div>
+                                    <span class="time-pill bg-yellow-50 text-yellow-600">Pending</span>
                                 </div>
                             </div>
                         </div>
@@ -299,26 +841,29 @@
                     <!-- Right Column -->
                     <div class="space-y-6">
                         <!-- User Profile -->
-                        <div class="transport-card p-6">
+                        <div class="transport-card p-6 animate__animated animate__fadeInRight">
                             <div class="flex items-center justify-between mb-6">
                                 <h2 class="text-xl font-bold">Your Profile</h2>
-                                <a href="{{ path('app_profile_myprofile') }}" class="text-sm text-blue-600 hover:text-blue-800">Edit</a>
+                                <a href="{{ path('app_profile_myprofile') }}" class="text-sm text-blue-600 hover:text-blue-800 flex items-center">
+                                    Edit <i class="fas fa-edit ml-1"></i>
+                                </a>
                             </div>
                             
                             <div class="flex items-center mb-6">
-                                <img src="https://ui-avatars.com/api/?name={{ app.user.name|url_encode }}&background=random" alt="User" class="user-avatar mr-4">
+                                {% if app.user.image %} 
+                                    <img src="{{ path('user_avatar', {id: app.user.id}) }}" alt="User" class="user-avatar">
+                                {% else %}
+                                    <img src="https://ui-avatars.com/api/?name={{ app.user.name|url_encode }}&background=random" alt="User" class="user-avatar">
+                                {% endif %}
                                 <div>
                                     <h3 class="font-bold">{{ app.user.name }}</h3>
                                     <p class="text-sm text-gray-500">{{ user.email }}</p>
-                                    <span class="status-badge bg-green-100 text-green-800 mt-1">
-                                        <i class="fas fa-check-circle mr-1"></i> Verified
-                                    </span>
                                 </div>
                             </div>
                             
-                            <div class="space-y-4">
-                                <div class="flex items-center p-3 bg-gray-50 rounded-lg">
-                                    <div class="mr-3 p-2 bg-blue-100 rounded-lg">
+                            <div class="space-y-3">
+                                <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                    <div class="mr-3 p-2 bg-blue-50 rounded-lg">
                                         <i class="fas fa-phone text-blue-600"></i>
                                     </div>
                                     <div>
@@ -327,8 +872,8 @@
                                     </div>
                                 </div>
                                 
-                                <div class="flex items-center p-3 bg-gray-50 rounded-lg">
-                                    <div class="mr-3 p-2 bg-purple-100 rounded-lg">
+                                <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                    <div class="mr-3 p-2 bg-purple-50 rounded-lg">
                                         <i class="fas fa-id-card text-purple-600"></i>
                                     </div>
                                     <div>
@@ -337,9 +882,9 @@
                                     </div>
                                 </div>
                                 
-                                <div class="flex items-center p-3 bg-gray-50 rounded-lg">
-                                    <div class="mr-3 p-2 bg-amber-100 rounded-lg">
-                                        <i class="fas fa-star text-amber-600"></i>
+                                <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                    <div class="mr-3 p-2 bg-amber-50 rounded-lg">
+                                        <i class="fas fa-star text-amber-500"></i>
                                     </div>
                                     <div>
                                         <p class="text-sm text-gray-500">Your Rating</p>
@@ -349,22 +894,60 @@
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
+                                                <i class="fas fa-star-half-alt empty"></i>
                                             </div>
                                             <span class="text-sm">4.5</span>
                                         </div>
                                     </div>
                                 </div>
+                                
+                                <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                    <div class="mr-3 p-2 bg-red-50 rounded-lg">
+                                        <i class="fas fa-credit-card text-red-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Payment Method</p>
+                                        <p class="font-medium">•••• •••• •••• 4242</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        
+                        <!-- Weather & Traffic -->
+                        <div 
+                        class="weather-card p-6 cursor-pointer" 
+                        onclick="window.location.href='{{ path('app_wathercontroller') }}'"
+                    >
+                        <div class="flex justify-between items-center mb-4 relative">
+                            <div>
+                                <h2 class="text-xl font-bold">Current Weather</h2>
+                                <p class="text-sm text-gray-500">Sunny, 24°C</p>
+                            </div>
+                            <i class="fas fa-sun text-4xl text-amber-500"></i>
+                        </div>
+                        <div class="flex justify-between text-sm relative">
+                            <div>
+                                <p class="text-gray-500">Humidity</p>
+                                <p class="font-medium">42%</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500">Wind</p>
+                                <p class="font-medium">12 km/h</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500">Traffic</p>
+                                <p class="font-medium">Moderate</p>
+                            </div>
+                        </div>
+                    </div>
                         
                         <!-- Recent Activity -->
                         <div class="transport-card p-6">
                             <h2 class="text-xl font-bold mb-6">Recent Activity</h2>
                             <div class="space-y-4">
-                                <div class="flex items-start">
+                                <div class="flex items-start activity-item p-2">
                                     <div class="mr-3 mt-1">
-                                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                                        <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center activity-icon">
                                             <i class="fas fa-car"></i>
                                         </div>
                                     </div>
@@ -375,9 +958,9 @@
                                     </div>
                                 </div>
                                 
-                                <div class="flex items-start">
+                                <div class="flex items-start activity-item p-2">
                                     <div class="mr-3 mt-1">
-                                        <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                                        <div class="w-10 h-10 rounded-full bg-green-50 text-green-600 flex items-center justify-center activity-icon">
                                             <i class="fas fa-users"></i>
                                         </div>
                                     </div>
@@ -388,6 +971,19 @@
                                     </div>
                                 </div>
                                 
+                                <div class="flex items-start activity-item p-2">
+                                    <div class="mr-3 mt-1">
+                                        <div class="w-10 h-10 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center activity-icon">
+                                            <i class="fas fa-subscription"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Subscription renewed</p>
+                                        <p class="text-sm text-gray-500">Monthly Premium Plan</p>
+                                        <p class="text-xs text-gray-400 mt-1">Yesterday, 10:45 AM • $24.99</p>
+                                    </div>
+                                </div>
+                                
                                 <a href="#" class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center justify-center pt-2">
                                     View all activity <i class="fas fa-chevron-right ml-1"></i>
                                 </a>
@@ -395,8 +991,13 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Floating Action Button -->
+                <a href="{{ path('reservation_affichage')}}" class="floating-action-btn animate__animated animate__bounceIn animate__delay-2s">
+                    <i class="fas fa-plus"></i>
+                </a>
             {% else %}
-                <div class="transport-card p-6">
+                <div class="transport-card p-6 animate__animated animate__shakeX">
                     <div class="flex items-center p-4 bg-red-50 rounded-lg">
                         <div class="mr-3 p-2 bg-red-100 rounded-full">
                             <i class="fas fa-exclamation-circle text-red-600"></i>
@@ -410,4 +1011,40 @@
             {% endif %}
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        // Add some interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate cards on hover
+            const cards = document.querySelectorAll('.transport-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.classList.add('shadow-lg');
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.classList.remove('shadow-lg');
+                });
+            });
+            
+            // Notification badge animation
+            const notificationBadge = document.querySelector('.notification-badge');
+            if (notificationBadge) {
+                setInterval(() => {
+                    notificationBadge.classList.toggle('animate-pulse');
+                }, 2000);
+            }
+            
+            // Add click handlers for activity items
+            const activityItems = document.querySelectorAll('.activity-item');
+            activityItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Add your click handler logic here
+                    console.log('Activity item clicked');
+                });
+            });
+        });
+    </script>
 {% endblock %}

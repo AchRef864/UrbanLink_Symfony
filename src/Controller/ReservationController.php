@@ -403,4 +403,9 @@ public function indexAdmin(Request $request, ReservationRepository $reservationR
             'controller_name' => 'WathercontrollerController',
         ]);
     }
+    #[Route('/map', name: 'app_mapcontroller')]
+    public function map(): Response
+    {
+        return $this->render('reservation/map.html.twig');
+    }
 }

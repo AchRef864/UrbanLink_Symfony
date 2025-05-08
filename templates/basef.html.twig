@@ -94,7 +94,7 @@
         }
 
         .nav-item {
-            margin: 0 0.5rem;
+            margin: 1rem;
         }
 
         .nav-link {
@@ -233,7 +233,7 @@
     {% block header %}
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" aria-label="Main navigation">
         <div class="container">
-            <a class="navbar-brand" href="{{ path('driver_dashboard') }}">
+            <a class="navbar-brand" href="{{ path('client_dashboard') }}">
                 <i class="fas fa-bus" aria-hidden="true"></i> UrbanLink
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -279,10 +279,9 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTaxi" role="button" 
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-taxi me-1" aria-hidden="true"></i> Taxi
+                            <i class="fas fa-taxi me-1" aria-hidden="true"></i> Subscription
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownAbonnement">
-                             {# Exemples d'items de dropdown - Remplacez # et le texte #}
                             <li><a class="dropdown-item" href="{{ path('app_abonnement_mes_reservations') }}">Mes abonnements</a></li>
                             <li><a class="dropdown-item" href="{{ path('app_abonnement_index') }}">Souscrire un abonnement</a></li>
                         </ul>
