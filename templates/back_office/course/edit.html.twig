@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier une Course{% endblock %}
-{% block page_title %}Modifier une Course{% endblock %}
+{% block title %}Edit a Ride{% endblock %}
+{% block page_title %}Edit a Ride{% endblock %}
 
 {% block body %}
 <div class="bg-white shadow-md rounded-2xl p-6 max-w-4xl mx-auto border border-yellow-300">
   <div class="px-6 py-3 rounded-t-2xl" style="background-color: #FFEB3B;">
-    <h1 class="text-xl font-bold" style="color: #FF9800;">Modifier une Course</h1>
+    <h1 class="text-xl font-bold" style="color: #FF9800;">Edit a Ride</h1>
   </div>
 
   {% if form.vars.errors|length > 0 %}
@@ -15,10 +15,10 @@
     </div>
   {% endif %}
 
-  {# Démarrer le formulaire (validation HTML5 désactivée) #}
+  {# Start form (HTML5 validation disabled) #}
   {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {# Champ taxi masqué – renseigné via la carte #}
+      {# Hidden taxi field - filled via map #}
       <div class="mb-4" style="display: none;">
         {{ form_label(form.taxi) }}
         {{ form_widget(form.taxi) }}
@@ -26,12 +26,12 @@
       </div>
       
       <div class="mb-4">
-        {{ form_label(form.dateCourse) }}
+        {{ form_label(form.dateCourse, 'Ride Date') }}
         {{ form_widget(form.dateCourse, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
         <div class="text-red-500 text-sm mt-1">{{ form_errors(form.dateCourse) }}</div>
       </div>
       
-      {# Champs de ville masqués dans le formulaire #}
+      {# Hidden city fields in the form #}
       <div class="mb-4" style="display: none;">
         {{ form_label(form.villeDepart) }}
         {{ form_widget(form.villeDepart) }}
@@ -43,54 +43,54 @@
         <div class="text-red-500 text-sm mt-1">{{ form_errors(form.villeArrivee) }}</div>
       </div>
       
-      {# Zones d'affichage pour la sélection visible #}
+      {# Display areas for visible selection #}
       <div class="mb-4">
-        <label class="block font-medium mb-1">Ville de départ</label>
+        <label class="block font-medium mb-1">Departure City</label>
         <span id="displayDepart" class="block w-full px-4 py-2 border rounded-lg bg-gray-100"></span>
       </div>
       <div class="mb-4">
-        <label class="block font-medium mb-1">Ville d'arrivée</label>
+        <label class="block font-medium mb-1">Arrival City</label>
         <span id="displayArrivee" class="block w-full px-4 py-2 border rounded-lg bg-gray-100"></span>
       </div>
       
-      {# Champs distance et montant en lecture seule #}
+      {# Read-only distance and amount fields #}
       <div class="mb-4">
-        {{ form_label(form.distanceKm) }}
+        {{ form_label(form.distanceKm, 'Distance (km)') }}
         {{ form_widget(form.distanceKm, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg','readonly': 'readonly'}}) }}
       </div>
       <div class="mb-4">
-        {{ form_label(form.montant) }}
+        {{ form_label(form.montant, 'Fare') }}
         {{ form_widget(form.montant, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg','readonly': 'readonly'}}) }}
       </div>
       
       {% if form.statut is defined %}
       <div class="mb-4">
-        {{ form_label(form.statut) }}
+        {{ form_label(form.statut, 'Status') }}
         {{ form_widget(form.statut, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
         <div class="text-red-500 text-sm mt-1">{{ form_errors(form.statut) }}</div>
       </div>
       {% endif %}
     </div>
 
-    {# Boutons de mode pour la carte #}
+    {# Map mode buttons #}
     <div class="mb-4">
       <button type="button" id="selectTaxiBtn" class="mode-btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded">Taxi</button>
-      <button type="button" id="selectDepartBtn" class="mode-btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded">Départ</button>
-      <button type="button" id="selectArriveeBtn" class="mode-btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded">Arrivée</button>
-      <span id="selectionModeDisplay" class="ml-4 font-semibold">Mode: Sélection du taxi</span>
+      <button type="button" id="selectDepartBtn" class="mode-btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded">Departure</button>
+      <button type="button" id="selectArriveeBtn" class="mode-btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded">Arrival</button>
+      <span id="selectionModeDisplay" class="ml-4 font-semibold">Mode: Taxi selection</span>
     </div>
 
-    {# Conteneur pour la carte #}
+    {# Map container #}
     <div class="mb-4">
-      <label class="block font-medium mb-2">Interagissez avec la carte :</label>
+      <label class="block font-medium mb-2">Interact with the map :</label>
       <div id="userMapDiv" style="height: 500px; width: 100%; border: 1px solid #ccc;"></div>
     </div>
 
     <div class="mt-6 flex justify-between items-center">
       <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition">
-        Enregistrer
+        Save
       </button>
-      <a href="{{ path('course_index') }}" class="text-sm text-slate-500 hover:underline">← Retour à la liste</a>
+      <a href="{{ path('course_index') }}" class="text-sm text-slate-500 hover:underline">← Back to list</a>
     </div>
   {{ form_end(form) }}
 </div>
@@ -119,15 +119,15 @@
         "esri/geometry/geometryEngine"
       ], function(Map, MapView, Graphic, geometryEngine) {
 
-        // Variables pour stocker les marqueurs et sélections
+        // Variables to store markers and selections
         var departMarker = null;
         var arriveeMarker = null;
         var selectedTaxiMarker = null;
         var selectedTaxiRate = null;
         var selectionMode = "taxi"; // Modes: "taxi", "depart", "arrivee"
-        document.getElementById("selectionModeDisplay").textContent = "Mode: Sélection du taxi";
+        document.getElementById("selectionModeDisplay").textContent = "Mode: Taxi selection";
 
-        // Fonction pour mettre à jour les boutons de mode
+        // Function to update mode buttons
         function updateModeButtons(activeButtonId) {
           var modeButtons = document.querySelectorAll(".mode-btn");
           modeButtons.forEach(function(button) {
@@ -136,24 +136,24 @@
           document.getElementById(activeButtonId).classList.add("active-mode");
         }
 
-        // Boutons pour changer le mode
+        // Buttons to change mode
         document.getElementById("selectTaxiBtn").addEventListener("click", function () {
           selectionMode = "taxi";
-          document.getElementById("selectionModeDisplay").textContent = "Mode: Sélection du taxi";
+          document.getElementById("selectionModeDisplay").textContent = "Mode: Taxi selection";
           updateModeButtons("selectTaxiBtn");
-          console.log("Mode taxi activé");
+          console.log("Taxi mode activated");
         });
         document.getElementById("selectDepartBtn").addEventListener("click", function () {
           selectionMode = "depart";
-          document.getElementById("selectionModeDisplay").textContent = "Mode: Sélection du départ";
+          document.getElementById("selectionModeDisplay").textContent = "Mode: Departure selection";
           updateModeButtons("selectDepartBtn");
-          console.log("Mode départ activé");
+          console.log("Departure mode activated");
         });
         document.getElementById("selectArriveeBtn").addEventListener("click", function () {
           selectionMode = "arrivee";
-          document.getElementById("selectionModeDisplay").textContent = "Mode: Sélection de l'arrivée";
+          document.getElementById("selectionModeDisplay").textContent = "Mode: Arrival selection";
           updateModeButtons("selectArriveeBtn");
-          console.log("Mode arrivée activé");
+          console.log("Arrival mode activated");
         });
 
         var map = new Map({ basemap: "streets-navigation-vector" });
@@ -198,25 +198,23 @@
                 });
               })
               .catch(function (error) {
-                console.error("Erreur lors de la récupération des taxis :", error);
+                console.error("Error fetching taxis: ", error);
               });
           });
         } else {
-          console.warn("La géolocalisation n'est pas supportée par ce navigateur.");
+          console.warn("Geolocation is not supported by this browser.");
         }
 
-        // Gestion des clics sur la carte
+        // Map click handling
         view.on("click", function (event) {
-          // Pour les modes 'depart' et 'arrivee', utiliser directement event.mapPoint
           if (selectionMode === "depart") {
             var clickedPoint = event.mapPoint;
             var lat = clickedPoint.latitude || clickedPoint.y;
             var lng = clickedPoint.longitude || clickedPoint.x;
             var coordText = lat.toFixed(4) + ", " + lng.toFixed(4);
-            // Mettre à jour les champs et l'affichage visible de ville de départ
             document.getElementById('{{ form.villeDepart.vars.id }}').value = coordText;
             document.getElementById("displayDepart").textContent = coordText;
-            console.log("Départ sélectionné :", coordText);
+            console.log("Departure selected: ", coordText);
             if (departMarker) { view.graphics.remove(departMarker); }
             departMarker = addMarker(clickedPoint, "orange", "12px");
             view.graphics.add(departMarker);
@@ -225,46 +223,42 @@
             var lat = clickedPoint.latitude || clickedPoint.y;
             var lng = clickedPoint.longitude || clickedPoint.x;
             var coordText = lat.toFixed(4) + ", " + lng.toFixed(4);
-            // Mise à jour des champs et de l'affichage visible pour l'arrivée
             document.getElementById('{{ form.villeArrivee.vars.id }}').value = coordText;
             document.getElementById("displayArrivee").textContent = coordText;
-            console.log("Arrivée sélectionnée :", coordText);
+            console.log("Arrival selected: ", coordText);
             if (arriveeMarker) { view.graphics.remove(arriveeMarker); }
             arriveeMarker = addMarker(clickedPoint, "purple", "12px");
             view.graphics.add(arriveeMarker);
-          }
-          else if (selectionMode === "taxi") {
+          } else if (selectionMode === "taxi") {
             view.hitTest(event).then(function (response) {
               var results = response.results;
               var taxiResult = results.find(function (result) {
                 return result.graphic.attributes && result.graphic.attributes.taxiId;
               });
               if (taxiResult) {
-                // Réinitialiser le taxi sélectionné s'il en existait un
                 if (selectedTaxiMarker) {
                   selectedTaxiMarker.symbol.color = "blue";
                   view.graphics.refresh();
                 }
                 selectedTaxiRate = taxiResult.graphic.attributes.tarifBase;
-                console.log("Taxi sélectionné, Tarif:", selectedTaxiRate);
+                console.log("Selected taxi, Rate:", selectedTaxiRate);
                 view.graphics.remove(taxiResult.graphic);
                 selectedTaxiMarker = addMarker(taxiResult.graphic.geometry, "green", "14px");
                 selectedTaxiMarker.attributes = taxiResult.graphic.attributes;
                 view.graphics.add(selectedTaxiMarker);
                 document.getElementById('{{ form.taxi.vars.id }}').value = taxiResult.graphic.attributes.taxiId;
               } else {
-                console.log("Aucun taxi détecté en mode taxi.");
+                console.log("No taxi detected in taxi mode.");
               }
             });
           }
 
-          // Calcul si départ, arrivée et tarif taxi sont définis
           if (departMarker && arriveeMarker && selectedTaxiRate) {
             var distanceKm = computeDistance(departMarker.geometry, arriveeMarker.geometry);
             document.getElementById('{{ form.distanceKm.vars.id }}').value = distanceKm.toFixed(2);
             var montant = distanceKm * selectedTaxiRate;
             document.getElementById('{{ form.montant.vars.id }}').value = montant.toFixed(2);
-            console.log("Distance:", distanceKm, "Montant:", montant);
+            console.log("Distance:", distanceKm, "Amount:", montant);
           }
         });
       });

@@ -241,73 +241,34 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-<<<<<<< HEAD:templates/base_taxiste.html.twig
                 <ul class="navbar-nav ms-auto">                   
                     {# Logout Button #}
-=======
-                <ul class="navbar-nav ms-auto">
-                {% if is_granted('ROLE_DRIVER') %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownVehicles" role="button" 
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-car me-1" aria-hidden="true"></i> Vehicles
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownVehicles">
-                            <li><a class="dropdown-item" href="{{ path('my_vehicle')}}">Vehicle List</a></li>
-                        </ul>
-                    </li>
-                {% endif %}
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownRoutes" role="button" 
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-route me-1" aria-hidden="true"></i> Routes
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownRoutes">
-                            <li><a class="dropdown-item" href="{{ path('reservation_affichage')}}">Plan a Route</a></li>
-                            <li><a class="dropdown-item" href="{{ path('reservation_list')}}">My Routes</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownReviews" role="button" 
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-comment-dots me-1" aria-hidden="true"></i> Reviews
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownReviews">
-                            <li><a class="dropdown-item" href="{{ path('app_avis_new_front') }}">Add Review</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_avis_front') }}">Review History</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTaxi" role="button" 
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-taxi me-1" aria-hidden="true"></i> Taxi
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownTaxi">
-                            <li><a class="dropdown-item" href="{{ path('user_course_new') }}">Book a Taxi</a></li>
-                            <li><a class="dropdown-item" href="{{ path('user_courses') }}">Ride History</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSubscription" role="button" 
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-id-card me-1" aria-hidden="true"></i> Subscription
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownSubscription">
-                            <li><a class="dropdown-item" href="{{ path('app_abonnement_mes_reservations') }}">My Subscriptions</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_abonnement_index') }}">Subscribe</a></li>
-                        </ul>
-                    </li>
-
->>>>>>> 03ae647df28a08a64472f5fa756e624f54c8e601:templates/basef.html.twig
-                    <li class="nav-item ms-lg-3 my-2 my-lg-0">
-                        <a class="nav-link btn btn-accent rounded-pill px-3" href="{{ path('app_logout') }}">
-                            <i class="fas fa-sign-out-alt me-1" aria-hidden="true"></i> Logout
-                        </a>
-                    </li>
+                    <li class="nav-item dropdown ms-lg-3 my-2 my-lg-0">
+                    <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdownProfile"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Mon compte">
+                        {% if app.user and app.user.image %}
+                            <img src="{{ path('user_avatar', {id: app.user.id}) }}"
+                                 alt="{{ app.user.username }}"
+                                 class="rounded-circle"
+                                 style="width:40px; height:40px; object-fit:cover;" />
+                        {% else %}
+                            <i class="fas fa-user-circle fa-2x text-secondary"></i>
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownProfile">
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_profile_myprofile') }}">
+                                <i class="fas fa-user me-2"></i> Profil
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_logout') }}">
+                                <i class="fas fa-sign-out-alt me-2"></i> Déconnexion
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 </ul>
             </div>
         </div>

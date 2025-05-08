@@ -1,38 +1,146 @@
 {% extends 'basef.html.twig' %}
 
-{% block title %}Noter le Taxiste{% endblock %}
+{% block title %}Rate the Taxi Driver{% endblock %}
 
 {% block body %}
-<div class="max-w-3xl mx-auto my-5 px-4">
-  <h1 class="text-2xl font-bold mb-4">Noter le Taxiste</h1>
-
-  <div class="bg-white shadow rounded-lg mb-6 p-6">
-    <h2 class="text-xl font-semibold mb-2">
-      Taxi : {{ taxi.marque }} {{ taxi.modele }} - {{ taxi.immatriculation }}
-    </h2>
-    {% if totalRatings > 0 %}
-      <p class="text-gray-700">
-        Note moyenne : <strong class="text-blue-600">{{ avgRating|number_format(1) }} / 10</strong>
-        ({{ totalRatings }} avis)
-      </p>
-    {% else %}
-      <p class="text-gray-700">Aucun avis pour le moment.</p>
-    {% endif %}
+<div class="max-w-3xl mx-auto my-8 px-4 space-y-6">
+  <!-- Rating Header -->
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-2">Rate Your Driver</h1>
+    <div class="flex items-center justify-center space-x-2">
+      <svg class="w-6 h-6 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+      </svg>
+      <span class="text-lg text-gray-600">Share your experience</span>
+    </div>
   </div>
 
-  <form action="{{ path('taxi_rate', {'id': taxi.id}) }}" method="post" class="bg-white shadow rounded-lg p-6">
-    <div class="mb-4">
-      <label for="note" class="block text-gray-700 font-medium mb-2">Votre note (1 à 10)</label>
-      <input type="number" id="note" name="note" min="1" max="10" class="w-full border border-gray-300 rounded p-2" value="{{ rating.note|default('') }}" required>
+  <!-- Taxi Details Card -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
+    <div class="flex items-center space-x-4 mb-4">
+      <div class="bg-blue-100 p-3 rounded-lg">
+        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+        </svg>
+      </div>
+      <div>
+        <h2 class="text-xl font-semibold text-gray-800">
+          {{ taxi.marque }} {{ taxi.modele }} 
+          <span class="text-blue-600">• {{ taxi.immatriculation }}</span>
+        </h2>
+        <div class="mt-2">
+          {% if totalRatings > 0 %}
+            <div class="flex items-center space-x-2">
+              <div class="flex items-center">
+                {% for i in 1..5 %}
+                  <svg class="w-5 h-5 {{ avgRating >= i*2 ? 'text-yellow-400' : 'text-gray-300' }}" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                  </svg>
+                {% endfor %}
+              </div>
+              <span class="text-gray-600">
+                {{ avgRating|number_format(1) }} ({{ totalRatings }} reviews)
+              </span>
+            </div>
+          {% else %}
+            <p class="text-gray-500">Be the first to rate this driver</p>
+          {% endif %}
+        </div>
+      </div>
     </div>
-    <div class="mb-4">
-      <label for="commentaire" class="block text-gray-700 font-medium mb-2">Votre commentaire (optionnel)</label>
-      <textarea id="commentaire" name="commentaire" class="w-full border border-gray-300 rounded p-2" rows="3">{{ rating.commentaire|default('') }}</textarea>
+  </div>
+
+  <!-- Rating Form -->
+  <form action="{{ path('taxi_rate', {'id': taxi.id}) }}" method="post" class="bg-white rounded-2xl shadow-lg p-6 space-y-6">
+    <!-- Rating Input -->
+    <div class="space-y-2">
+      <label class="block text-lg font-medium text-gray-700">Your Rating</label>
+      <div class="rating-stars flex space-x-2" id="starContainer">
+        {% for i in 1..10 %}
+          <button type="button" 
+                  class="star w-8 h-8 transition-colors duration-200 {{ (rating.note|default(0)) >= i ? 'text-yellow-400' : 'text-gray-300' }}"
+                  data-value="{{ i }}">
+            ★
+          </button>
+        {% endfor %}
+      </div>
+      <input type="hidden" id="note" name="note" value="{{ rating.note|default('') }}">
     </div>
-    <button type="submit" class="w-full font-bold py-2 px-4 rounded transition duration-200"
-            style="background-color: #2563eb !important; color: #ffffff !important;">
-      Envoyer votre évaluation
+
+    <!-- Comment Input -->
+    <div class="space-y-2">
+      <label class="block text-lg font-medium text-gray-700">Your Feedback</label>
+      <textarea id="commentaire" 
+                name="commentaire" 
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                rows="4"
+                placeholder="Share details about your experience...">{{ rating.commentaire|default('') }}</textarea>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" 
+            class="w-full py-3 px-6 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
+      Submit Review
     </button>
   </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const stars = document.querySelectorAll('.star');
+  const noteInput = document.getElementById('note');
+  
+  // Initialize with existing value
+  let currentRating = parseInt(noteInput.value) || 0;
+  updateStars(currentRating);
+
+  stars.forEach(star => {
+    star.addEventListener('click', function() {
+      currentRating = parseInt(this.dataset.value);
+      noteInput.value = currentRating;
+      updateStars(currentRating);
+    });
+
+    star.addEventListener('mouseover', function() {
+      const hoverValue = parseInt(this.dataset.value);
+      highlightStars(hoverValue);
+    });
+
+    star.addEventListener('mouseout', function() {
+      updateStars(currentRating);
+    });
+  });
+
+  function highlightStars(value) {
+    stars.forEach(star => {
+      const starValue = parseInt(star.dataset.value);
+      star.classList.toggle('text-yellow-300', starValue <= value);
+      star.classList.toggle('text-gray-300', starValue > value);
+    });
+  }
+
+  function updateStars(value) {
+    stars.forEach(star => {
+      const starValue = parseInt(star.dataset.value);
+      star.classList.toggle('text-yellow-400', starValue <= value);
+      star.classList.toggle('text-gray-300', starValue > value);
+      star.classList.remove('text-yellow-300');
+    });
+  }
+});
+</script>
+
+<style>
+  .star {
+    transition: all 0.2s ease;
+    cursor: pointer;
+    font-size: 1.5rem;
+  }
+  .star:hover {
+    transform: scale(1.2);
+  }
+  .text-yellow-300 { color: #fcd34d; } /* Hover color */
+  .text-yellow-400 { color: #fbbf24; } /* Selected color */
+  .text-gray-300 { color: #d1d5db; }   /* Inactive color */
+</style>
 {% endblock %}

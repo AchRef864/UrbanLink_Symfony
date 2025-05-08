@@ -124,11 +124,11 @@ class CourseController extends AbstractController
                     'courseId' => $course->getId(),
                 ];
                 // Crée et publie l’Update
-                $update = new Update(
-                    $topic,
-                    json_encode($data)
-                );
-                $hub->publish($update);
+                //$update = new Update(
+                 //   $topic,
+                 //   json_encode($data)
+                //);
+                //$hub->publish($update);
             }
             // ——————————————————————————
 

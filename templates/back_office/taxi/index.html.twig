@@ -1,7 +1,7 @@
 {# templates/back_office/taxi/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Gestion des Taxis{% endblock %}
+{% block title %}Taxi Management{% endblock %}
 {% block page_title %}Taxis{% endblock %}
 
 {% block stylesheets %}
@@ -9,7 +9,7 @@
   {# DataTables CSS via CDN #}
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
   <style>
-    /* Carte avec effet 3D */
+    /* 3D Card effect */
     .card-3d {
       background-color: #fff;
       border-radius: 0.75rem;
@@ -22,7 +22,7 @@
       transform: translateY(-5px);
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
     }
-    /* En-tête avec dégradé et titre blanc */
+    /* Header with gradient and white title */
     .header-3d {
       padding: 1.25rem;
       background: linear-gradient(135deg, #2D3748, #4A5568);
@@ -37,7 +37,7 @@
       margin: 0;
       color: #fff;
     }
-    /* Bouton Ajouter Taxi en blanc */
+    /* Add Taxi button in white */
     .btn-add {
       display: inline-block;
       padding: 0.75rem 1.5rem;
@@ -57,7 +57,7 @@
       transform: translateY(-1px);
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
     }
-    /* Container de la table */
+    /* Table container */
     .table-3d {
       padding: 1rem;
     }
@@ -74,11 +74,11 @@
 <div class="container mx-auto p-6">
   <div class="card-3d">
     <div class="header-3d">
-      <h6>Liste des Taxis</h6>
-      {# Bouton Ajouter Taxi dans l'en-tête avec texte et bordure blancs #}
+      <h6>Taxi List</h6>
+      {# Add Taxi button in header with white text and border #}
       <a href="{{ path('taxi_user_list') }}">
         <button type="button" class="btn-add hover:-translate-y-px active:opacity-85 hover:shadow-md">
-          + Ajouter Taxi ou Modifier Taxi
+          + Add Taxi or Edit Taxi
         </button>
       </a>
     </div>
@@ -86,14 +86,14 @@
       <table id="datatable-search" class="w-full text-sm text-left">
         <thead>
           <tr>
-            <th class="px-6 py-3 uppercase tracking-wider">Nom Taxiste</th>
-            <th class="px-6 py-3 uppercase tracking-wider">Immatriculation</th>
-            <th class="px-6 py-3 uppercase tracking-wider">Marque</th>
-            <th class="px-6 py-3 uppercase tracking-wider">Modèle</th>
-            <th class="px-6 py-3 uppercase tracking-wider">Année</th>
-            <th class="px-6 py-3 uppercase tracking-wider">Capacité</th>
+            <th class="px-6 py-3 uppercase tracking-wider">Driver Name</th>
+            <th class="px-6 py-3 uppercase tracking-wider">License Plate</th>
+            <th class="px-6 py-3 uppercase tracking-wider">Brand</th>
+            <th class="px-6 py-3 uppercase tracking-wider">Model</th>
+            <th class="px-6 py-3 uppercase tracking-wider">Year</th>
+            <th class="px-6 py-3 uppercase tracking-wider">Capacity</th>
             <th class="px-6 py-3 uppercase tracking-wider">Zone</th>
-            <th class="px-6 py-3 uppercase tracking-wider text-center">Statut</th>
+            <th class="px-6 py-3 uppercase tracking-wider text-center">Status</th>
             <th class="px-6 py-3 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
@@ -110,39 +110,39 @@
               <td class="px-6 py-3 text-center">
                 {% if taxi.statut == 'Disponible' %}
                   <span class="bg-green-500 text-white py-1 px-3 rounded-full text-xs font-bold uppercase">
-                    Disponible
+                    Available
                   </span>
                 {% elseif taxi.statut == 'Occupé' %}
                   <span class="bg-yellow-500 text-white py-1 px-3 rounded-full text-xs font-bold uppercase">
-                    Occupé
+                    Busy
                   </span>
                 {% else %}
                   <span class="bg-red-500 text-white py-1 px-3 rounded-full text-xs font-bold uppercase">
-                    Indisponible
+                    Unavailable
                   </span>
                 {% endif %}
               </td>
               <td class="px-6 py-3 space-x-2">
-                {# Bouton Modifier avec la couleur imposée (#00007d) #}
+                {# Edit button with required color (#00007d) #}
                 <a href="{{ path('taxi_edit', {'id': taxi.id}) }}">
                   <button type="button" class="mr-3 inline-block px-4 py-1.5 font-bold text-center uppercase align-middle transition-all rounded-lg cursor-pointer leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md text-white"
                           style="background: #00007d;">
-                    Modifier
+                    Edit
                   </button>
                 </a>
-                {# Bouton Supprimer avec la couleur imposée (#b91c1c) #}
-                <form method="post" action="{{ path('taxi_delete', {'id': taxi.id}) }}" class="inline" onsubmit="return confirm('Confirmer la suppression ?');">
+                {# Delete button with required color (#b91c1c) #}
+                <form method="post" action="{{ path('taxi_delete', {'id': taxi.id}) }}" class="inline" onsubmit="return confirm('Confirm deletion?');">
                   <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ taxi.id) }}">
                   <button type="submit" class="inline-block px-4 py-1.5 font-bold text-center uppercase transition-all rounded-lg cursor-pointer leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md text-white"
                           style="background: #b91c1c;">
-                    Supprimer
+                    Delete
                   </button>
                 </form>
               </td>
             </tr>
           {% else %}
             <tr>
-              <td colspan="9" class="px-6 py-3 text-center text-gray-500">Aucun taxi trouvé.</td>
+              <td colspan="9" class="px-6 py-3 text-center text-gray-500">No taxis found.</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -160,14 +160,14 @@
     $(document).ready(function() {
       $('#datatable-search').DataTable({
         language: {
-          search: "Rechercher:",
-          lengthMenu: "Afficher _MENU_ entrées",
-          info: "Affichage de _START_ à _END_ sur _TOTAL_ entrées",
+          search: "Search:",
+          lengthMenu: "Show _MENU_ entries",
+          info: "Showing _START_ to _END_ of _TOTAL_ entries",
           paginate: {
-            previous: "Précédent",
-            next: "Suivant"
+            previous: "Previous",
+            next: "Next"
           },
-          zeroRecords: "Aucun enregistrement correspondant trouvé"
+          zeroRecords: "No matching records found"
         },
         responsive: true,
         autoWidth: false
