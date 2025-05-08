@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
-{% block title %}Ajouter une Course{% endblock %}
-{% block page_title %}Ajouter une Course{% endblock %}
+{% block title %}Add a Ride{% endblock %}
+{% block page_title %}Add a Ride{% endblock %}
 
 {% block stylesheets %}
   {{ parent() }}
@@ -15,7 +15,7 @@
 
 {% block body %}
 <div class="bg-white shadow-md rounded-2xl p-6 max-w-3xl mx-auto">
-  <h1 class="text-xl font-semibold text-slate-700 mb-6">Ajouter une Course</h1>
+  <h1 class="text-xl font-semibold text-slate-700 mb-6">Add a Ride</h1>
 
   {# Affichage global des erreurs du formulaire #}
   {% if form.vars.errors|length > 0 %}
@@ -34,43 +34,43 @@
         <div class="text-red-500 text-sm mt-1">{{ form_errors(form.taxi) }}</div>
       </div> 
       <div class="mb-4">
-        {{ form_label(form.dateCourse) }}
+        {{ form_label(form.dateCourse, 'Ride Date') }}
         {{ form_widget(form.dateCourse, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
         <div class="text-red-500 text-sm mt-1">{{ form_errors(form.dateCourse) }}</div>
       </div>
       {# Champs ville masqués dans le formulaire #}
       <div class="mb-4" style="display: none;">
-        {{ form_label(form.villeDepart) }}
+        {{ form_label(form.villeDepart, 'Departure City') }}
         {{ form_widget(form.villeDepart) }}
         <div class="text-red-500 text-sm mt-1">{{ form_errors(form.villeDepart) }}</div>
       </div>
       <div class="mb-4" style="display: none;">
-        {{ form_label(form.villeArrivee) }}
+        {{ form_label(form.villeArrivee, 'Arrival City') }}
         {{ form_widget(form.villeArrivee) }}
         <div class="text-red-500 text-sm mt-1">{{ form_errors(form.villeArrivee) }}</div>
       </div>
       {# Zones d'affichage pour la sélection visible #}
       <div class="mb-4">
-        <label class="block font-medium mb-1">Ville de départ</label>
+        <label class="block font-medium mb-1">Departure City</label>
         <span id="displayDepart" class="block w-full px-4 py-2 border rounded-lg bg-gray-100"></span>
         
       </div>
       <div class="mb-4">
-        <label class="block font-medium mb-1">Ville d'arrivée</label>
+        <label class="block font-medium mb-1">Arrival City</label>
         <span id="displayArrivee" class="block w-full px-4 py-2 border rounded-lg bg-gray-100"></span>
       </div>
       {# Champs distance et montant en lecture seule #}
       <div class="mb-4">
-        {{ form_label(form.distanceKm) }}
+        {{ form_label(form.distanceKm, 'Distance (km)') }}
         {{ form_widget(form.distanceKm, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg', 'readonly': 'readonly'}}) }}
       </div>
       <div class="mb-4">
-        {{ form_label(form.montant) }}
+        {{ form_label(form.montant, 'Fare') }}
         {{ form_widget(form.montant, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg', 'readonly': 'readonly'}}) }}
       </div>
       {% if form.statut is defined %}
       <div class="mb-4">
-        {{ form_label(form.statut) }}
+        {{ form_label(form.statut, 'Status') }}
         {{ form_widget(form.statut, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
       </div>
       {% endif %}
@@ -79,9 +79,9 @@
     {# Boutons de mode pour la carte #}
     <div class="mb-4">
   <button type="button" id="selectTaxiBtn" class="mode-btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded">Taxi</button>
-  <button type="button" id="selectDepartBtn" class="mode-btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded">Départ</button>
-  <button type="button" id="selectArriveeBtn" class="mode-btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded">Arrivée</button>
-  <span id="selectionModeDisplay" class="ml-4 font-semibold">Mode: Sélection du taxi</span>
+  <button type="button" id="selectDepartBtn" class="mode-btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded">Departure</button>
+  <button type="button" id="selectArriveeBtn" class="mode-btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded">Arrival</button>
+  <span id="selectionModeDisplay" class="ml-4 font-semibold">Mode: Taxi Selection</span>
 </div>
 
 
@@ -93,9 +93,9 @@
 
     <div class="mt-6 flex justify-between items-center">
       <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition">
-        Réserver
+        Book
       </button>
-      <a href="{{ path('course_index') }}" class="text-sm text-slate-500 hover:underline">← Retour à la liste</a>
+      <a href="{{ path('course_index') }}" class="text-sm text-slate-500 hover:underline">← Back to list</a>
     </div>
   {{ form_end(form) }}
 </div>
@@ -120,27 +120,27 @@
         var selectedTaxiMarker = null; // Permet de n'avoir qu'un taxi sélectionné en vert
         var selectedTaxiRate = null;
         var selectionMode = "taxi"; // Modes: "taxi", "depart", "arrivee"
-        document.getElementById("selectionModeDisplay").textContent = "Mode: Sélection du taxi";
+       document.getElementById("selectionModeDisplay").textContent = "Current Mode: Taxi Selection";
 
-        // Boutons pour changer le mode
-        document.getElementById("selectTaxiBtn").addEventListener("click", function() {
+// Mode selection buttons
+document.getElementById("selectTaxiBtn").addEventListener("click", function() {
   selectionMode = "taxi";
-  document.getElementById("selectionModeDisplay").textContent = "Mode: Sélection du taxi";
-  console.log("Mode taxi activé");
+  document.getElementById("selectionModeDisplay").textContent = "Current Mode: Taxi Selection";
+  console.log("Taxi selection mode activated");
   updateModeButtons("selectTaxiBtn");
 });
 
-        document.getElementById("selectDepartBtn").addEventListener("click", function() {
+document.getElementById("selectDepartBtn").addEventListener("click", function() {
   selectionMode = "depart";
-  document.getElementById("selectionModeDisplay").textContent = "Mode: Sélection du départ";
-  console.log("Mode départ activé");
+  document.getElementById("selectionModeDisplay").textContent = "Current Mode: Departure Point Selection";
+  console.log("Departure point selection mode activated");
   updateModeButtons("selectDepartBtn");
 });
 
-        document.getElementById("selectArriveeBtn").addEventListener("click", function() {
+document.getElementById("selectArriveeBtn").addEventListener("click", function() {
   selectionMode = "arrivee";
-  document.getElementById("selectionModeDisplay").textContent = "Mode: Sélection de l'arrivée";
-  console.log("Mode arrivée activé");
+  document.getElementById("selectionModeDisplay").textContent = "Current Mode: Arrival Point Selection";
+  console.log("Arrival point selection mode activated");
   updateModeButtons("selectArriveeBtn");
 });
 
@@ -198,11 +198,11 @@ function updateModeButtons(activeButtonId) {
                 });
               })
               .catch(function(error) {
-                console.error("Erreur lors de la récupération des taxis :", error);
+                console.error("Error while fetching taxis :", error);
               });
           });
         } else {
-          console.warn("La géolocalisation n'est pas supportée par ce navigateur.");
+          console.warn("Geolocation is not supported by this browser.");
         }
 
         // Gestion des clics sur la carte

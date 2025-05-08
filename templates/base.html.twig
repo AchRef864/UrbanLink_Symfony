@@ -333,11 +333,11 @@
 
         <li>
           <a href="{{ path('taxi_index') }}" class="{{ app.request.get('_route') starts with 'taxi_' ? 'active' : '' }}">
-            <i class="fas fa-taxi"></i> Taxis
+            <i class="fas fa-taxi"></i> Taxi
           </a>
         </li>
         <a href="{{ path('course_index') }}" class="{{ app.request.get('_route') starts with 'course_' ? 'active' : '' }}">
-          <i class="fas fa-bus"></i> Courses
+          <i class="fas fa-bus"></i> Rides
         </a>
         </li>
         <li>
@@ -369,12 +369,12 @@
         </li>
         <li>
           <a href="{{ path('course_stats') }}" class="{{ app.request.get('_route') starts with 'course_' ? 'active' : '' }}">
-            <i class="fas fa-chart-line"></i> Statistiques courses et taxis
+            <i class="fas fa-chart-line"></i> Rides and Taxis Statistics
           </a>
         </li>
         <li>
           <a href="{{ path('course_map') }}" class="{{ app.request.get('_route') == 'course_map' ? 'active' : '' }}">
-            <i class="fas fa-map"></i> Carte des courses
+            <i class="fas fa-map"></i> Ride map
           </a>
         </li>
         <li>
