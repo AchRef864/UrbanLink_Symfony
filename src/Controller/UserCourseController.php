@@ -79,7 +79,6 @@ class UserCourseController extends AbstractController
     public function new(
         Request $request,
         EntityManagerInterface $em,
-        PublisherInterface $publisher  // ← Symfony injectera mercure.hub.default.publisher
     ): Response {
         $course = new Course();
         $course->setDateCourse(new \DateTime());
@@ -109,7 +108,6 @@ class UserCourseController extends AbstractController
                 'courseId' => $course->getId(),
                 'statut'   => $course->getStatut(),
             ];
-            $publisher(new Update($topic, json_encode($data), true));
 
             $this->addFlash('success', 'Course ajoutée et taxiste notifié.');
             return $this->redirectToRoute('user_courses');
