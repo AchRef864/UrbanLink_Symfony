@@ -4,29 +4,33 @@ namespace App\Service;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, JsonResponse, Response};
-use Symfony\Contracts\HttpClient\HttpClientInterface; // Corrected namespace
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\DBAL\Schema\Column;
 
-class GeminiService extends AbstractController // Inherit from AbstractController for json()
+class GeminiService extends AbstractController
 {
     private HttpClientInterface $client;
     private string $apiKey;
     private ManagerRegistry $doctrine;
     private array $conversationHistory = [];
+    private \Doctrine\DBAL\Connection $connection; // Add the connection property
 
     public function __construct(HttpClientInterface $client, string $apiKey, ManagerRegistry $doctrine)
     {
         $this->client = $client;
         $this->apiKey = $apiKey;
         $this->doctrine = $doctrine;
+        $this->connection = $this->doctrine->getConnection(); // Initialize the connection
     }
 
-    public function ask(string $question, array $data = []): string
+    public function ask(string $question, array $contextData = []): string
     {
         $schema = $this->getDatabaseContext();
+        $data = $this->retrieveRelevantData($question);
 
-        $prompt = $this->buildPrompt($question, $schema, $data);
+        $prompt = $this->buildPrompt($question, $schema, array_merge($contextData, $data));
 
         try {
             $response = $this->client->request(
@@ -48,27 +52,88 @@ class GeminiService extends AbstractController // Inherit from AbstractControlle
                 ]
             );
 
-            $data = $response->toArray();
-            return $data['candidates'][0]['content']['parts'][0]['text']
+            $responseData = $response->toArray();
+            error_log("Gemini API Response: " . json_encode($responseData, JSON_PRETTY_PRINT));
+
+            return $responseData['candidates'][0]['content']['parts'][0]['text']
                 ?? "Sorry, I couldn't process that request.";
         } catch (\Exception $e) {
-            // Log the error (consider using Symfony's logger)
             error_log("LLM API Error: " . $e->getMessage());
             return "Sorry, there was an error communicating with the language model. Please try again.";
         }
     }
 
+    private function retrieveRelevantData(string $question, int $limit = 5): array
+    {
+        $data = [];
+        $conn = $this->doctrine->getConnection();
+
+        $questionParts = explode(' ', strtolower($question));
+        $potentialTable = '';
+        foreach ($questionParts as $part) {
+            if (in_array(rtrim($part, 's'), $this->getTableNames())) {
+                $potentialTable = rtrim($part, 's');
+                break;
+            }
+        }
+
+        if ($potentialTable) {
+            try {
+                $sql = "SELECT * FROM $potentialTable LIMIT :limit";
+                $stmt = $conn->prepare($sql);
+                $results = $stmt->executeQuery(['limit' => $limit])->fetchAllAssociative();
+                if (!empty($results)) {
+                    $tableData = ['data' => $results];
+                    $columns = $this->connection->getSchemaManager()->listTableColumns($potentialTable);
+                    $columnInfo = [];
+                    foreach ($columns as $column) {
+                        $columnInfo[$column->getName()] = $column->getType()->getName();
+                    }
+                    $tableData['columns'] = $columnInfo;
+                    $data[$potentialTable] = $tableData;
+                }
+            } catch (\Exception $e) {
+                error_log("Erreur lors de la récupération des données pour la table '$potentialTable': " . $e->getMessage());
+            }
+        }
+
+        // Consider fetching more detailed info based on keywords in the question
+        // For example, if the question asks about "status" in "orders", fetch distinct statuses.
+
+        return $data;
+    }
+
+    private function getTableNames(): array
+    {
+        $conn = $this->doctrine->getConnection();
+        $sql = "SHOW TABLES";
+        $stmt = $conn->executeQuery($sql);
+        $tables = $stmt->fetchAllAssociative();
+        $tableNames = [];
+
+        foreach ($tables as $tableInfo) {
+            $tableName = $tableInfo[0] ?? null;
+            if ($tableName) {
+                $tableNames[] = $tableName;
+            }
+        }
+
+        return $tableNames;
+    }
+
     private function buildPrompt(string $question, string $schema, array $data = []): string
     {
         $prompt = <<<PROMPT
-You are a database assistant for a non-technical administrator. 
+You are a database assistant for a non-technical administrator.
+Your primary goal is to help the administrator understand the data within the database in detail.
+
 You have access to the following database schema:
 
 $schema
 
-Answer the following question about the database in a clear, concise, and direct way that a database administrator with no programming or SQL knowledge would understand.
+Answer the following question about the database in a clear, concise, and direct way that a database administrator with no programming or SQL knowledge would understand. Focus on explaining what the data means and its characteristics.
 
-If data is provided, use it to give a precise and accurate answer.  If no data is provided, answer based on the schema alone.
+If relevant data from the database is provided below, use it to give a precise and accurate answer and provide insights into the data's content and structure. If no relevant data is provided, answer based on the schema alone.
 
 Avoid providing SQL queries unless explicitly asked.
 
@@ -77,7 +142,8 @@ Question: $question
 PROMPT;
 
         if (!empty($data)) {
-            $prompt .= "\n\nData:\n" . json_encode($data, JSON_PRETTY_PRINT);
+            $prompt .= "\n\nRelevant Data:\n" . json_encode($data, JSON_PRETTY_PRINT);
+            $prompt .= "\n\nBased on this data, please answer the question and provide detailed insights about the information presented. For example, explain the different values, their meaning, and any patterns you observe.";
         }
 
         return $prompt;
@@ -94,7 +160,17 @@ PROMPT;
 
             $columns = $this->doctrine->getConnection()->executeQuery("SHOW COLUMNS FROM $tableName")->fetchAllAssociative();
             foreach ($columns as $column) {
-                $schema .= "  - " . $column['Field'] . " (" . $column['Type'] . ")\n";
+                $schema .= "  - " . $column['Field'] . " (" . $column['Type'] . ")";
+                if ($column['Null'] === 'NO') {
+                    $schema .= " NOT NULL";
+                }
+                if (!empty($column['Key'])) {
+                    $schema .= " " . $column['Key'] . " KEY";
+                }
+                if ($column['Extra'] === 'auto_increment') {
+                    $schema .= " AUTO_INCREMENT";
+                }
+                $schema .= "\n";
             }
             $schema .= "\n";
         }
@@ -102,35 +178,29 @@ PROMPT;
         return $schema;
     }
 
-    public function fetchData(string $tableName, string $select = '*', string $where = null, array $params = []): array
+    public function fetchData(string $table, array|string $select = '*', string $where = '', array $params = []): array
     {
         $conn = $this->doctrine->getConnection();
-        $sql = "SELECT $select FROM $tableName";
+        $sql = "SELECT " . (is_array($select) ? implode(', ', $select) : $select) . " FROM " . $table;
 
-        if ($where) {
-            $sql .= " WHERE $where";
+        if (!empty($where)) {
+            $sql .= " WHERE " . $where;
         }
 
         $stmt = $conn->prepare($sql);
-        $stmt->execute($params);
-
-        return $stmt->fetchAllAssociative();
+        $resultSet = $stmt->executeQuery($params);
+        return $resultSet->fetchAllAssociative();
     }
 
     public function countRows(string $tableName, string $where = null, array $params = []): int
     {
         $conn = $this->doctrine->getConnection();
-        $sql = "SELECT COUNT(*) FROM $tableName";
+        $sql  = "SELECT COUNT(*) FROM `$tableName`" . ($where ? " WHERE $where" : "");
 
-        if ($where) {
-            $sql .= " WHERE $where";
-        }
-
-        $stmt = $conn->prepare($sql);
-        $stmt->executeStatement(); // Use executeStatement() for COUNT queries
-
-        // Fetch the result
-        $count = $stmt->fetchNumeric()[0]; // Fetch the first column of the first row
+        // executeQuery() renvoie un Result qui implémente fetchOne()
+        $count = $conn
+            ->executeQuery($sql, $params)
+            ->fetchOne();
 
         return (int) $count;
     }
@@ -156,7 +226,7 @@ PROMPT;
     {
         $roles = $gemini->fetchData('users', 'DISTINCT role');
         $roleList = array_column($roles, 'role');
-        $response = "The roles in the users table are: " . implode(", ", $roleList) . ".";
+        $response = "The different roles in the users table are: " . implode(", ", $roleList) . ".";
         $this->updateConversationHistory($question, $response);
         return $this->json(['response' => $response]);
     }
@@ -171,7 +241,6 @@ PROMPT;
 
     private function handleReservations(string $question, GeminiService $gemini): JsonResponse
     {
-        // This is a placeholder; you'll need more specific logic here
         $response = $gemini->ask($question);
         $this->updateConversationHistory($question, $response);
         return $this->json(['response' => $response]);
@@ -179,7 +248,6 @@ PROMPT;
 
     private function handleTaxis(string $question, GeminiService $gemini): JsonResponse
     {
-        // Placeholder - more specific taxi handling needed
         $response = $gemini->ask($question);
         $this->updateConversationHistory($question, $response);
         return $this->json(['response' => $response]);
@@ -187,12 +255,9 @@ PROMPT;
 
     private function handleEmailOfUserId(string $question, GeminiService $gemini): JsonResponse
     {
-        // Extract the user_id from the question
-        if (preg_match('/user_id\s*=\s*(\d+)/', $question, $matches)) {
+        if (preg_match('/email of user with id (\d+)/i', $question, $matches)) {
             $userId = (int) $matches[1];
-
             $email = $gemini->fetchData('users', 'email', 'user_id = ?', [$userId]);
-
             if ($email) {
                 $response = "The email of user_id " . $userId . " is: " . $email[0]['email'];
             } else {
@@ -201,7 +266,6 @@ PROMPT;
         } else {
             $response = "Please specify a user_id to find the email.";
         }
-
         $this->updateConversationHistory($question, $response);
         return $this->json(['response' => $response]);
     }
@@ -215,8 +279,7 @@ PROMPT;
 
     private function handleShowDataRequest(string $question, GeminiService $gemini): JsonResponse
     {
-        // This is a placeholder; you'll need more specific logic here
-        $response = $gemini->ask("The user wants to see data. Please ask them to be more specific about which table and columns they are interested in.", []);
+        $response = $gemini->ask("The user wants to see data. Please ask them to be more specific about which table and columns they are interested in, so you can provide detailed information.", []);
         $this->updateConversationHistory($question, $response);
         return $this->json(['response' => $response]);
     }
@@ -232,7 +295,17 @@ PROMPT;
 
             $columns = $this->doctrine->getConnection()->executeQuery("SHOW COLUMNS FROM $tableName")->fetchAllAssociative();
             foreach ($columns as $column) {
-                $schema .= "  - " . $column['Field'] . " (" . $column['Type'] . ")\n";
+                $schema .= "  - " . $column['Field'] . " (" . $column['Type'] . ")";
+                if ($column['Null'] === 'NO') {
+                    $schema .= " NOT NULL";
+                }
+                if (!empty($column['Key'])) {
+                    $schema .= " " . $column['Key'] . " KEY";
+                }
+                if ($column['Extra'] === 'auto_increment') {
+                    $schema .= " AUTO_INCREMENT";
+                }
+                $schema .= "\n";
             }
             $schema .= "\n";
         }
@@ -291,6 +364,27 @@ PROMPT;
         return $this->json(['response' => $response]);
     }
 
+    public function fetchOne(string $sql, array $params = []): ?array
+    {
+        $statement = $this->connection->prepare($sql);
+        $resultSet = $statement->executeQuery($params);
+        $result = $resultSet->fetchAssociative();
+
+        return $result ?: null;
+    }
+
+    public function fetchUsers(): array
+    {
+        $conn = $this->doctrine->getConnection();
+        $sql = "SELECT * FROM users LIMIT 10";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $users = $stmt->fetchAllAssociative();
+        return $users;
+    }
+
+
+
     #[Route('/urban-talk', name: 'urban_talk', methods: ['POST'])]
     public function chat(Request $request, GeminiService $gemini): JsonResponse
     {
@@ -303,7 +397,6 @@ PROMPT;
         $question = trim(strtolower($data['question']));
 
         try {
-            //  Simple Keyword-Based Routing (Extend this!)
             if (str_contains($question, 'how many users')) {
                 return $this->handleHowManyUsers($question, $gemini);
             }
@@ -325,15 +418,15 @@ PROMPT;
             }
 
             if (preg_match('/email of user with id (\d+)/i', $question, $matches)) {
-                return $this->handleEmailOfUserId($question, $gemini);
+                return $this->handleEmailOfUserId($question, $gemini, (int) $matches[1]); // Ensure ID is an integer
             }
 
             if (str_contains($question, 'add a user')) {
                 return $this->handleAddUser($question, $gemini);
             }
 
-            if (str_contains($question, 'show me data') || str_contains($question, 'display data') || str_contains($question, 'show all from')) {
-                return $this->handleShowDataRequest($question, $gemini);
+            if (str_contains($question, 'show me data') || str_contains($question, 'display data') || str_contains($question, 'show all from') || str_contains($question, 'show users table')) {
+                return $this->handleShowUsersData($gemini); // Use the dedicated handler
             }
 
             if (preg_match('/when did the user \'(.*?)\' join/i', $question, $matches)) {
@@ -352,30 +445,63 @@ PROMPT;
                 return $this->handleCountRows($question, $gemini, trim($matches[1]));
             }
 
-            //  Default to LLM if no specific handler is found
-            $response = $gemini->ask($this->buildContextualPrompt($question));
+            // If no specific handler is matched, use the general ask method with relevant data
+            $relevantData = $gemini->retrieveRelevantData($question);
+            $response     = $gemini->ask($this->buildContextualPrompt($question), $relevantData);
             $this->updateConversationHistory($question, $response);
+
             return $this->json(['response' => $response]);
 
         } catch (\Exception $e) {
-            $this->updateConversationHistory($question, 'Error: ' . $e->getMessage());
-            return $this->json(['response' => 'Error processing your request: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            $errorMessage = 'Error processing your request: ' . $e->getMessage();
+            $this->updateConversationHistory($question, $errorMessage);
+
+            // Log the error for debugging
+            $this->logger->error($errorMessage, [
+                'question' => $question,
+                'exception' => $e,
+            ]);
+
+            return $this->json(['response' => $errorMessage], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
+    private function handleShowUsersData(GeminiService $gemini): JsonResponse
+    {
+        try {
+            $users = $gemini->fetchUsers();
+            if (empty($users)) {
+                return $this->json(['response' => 'No users found in the database.'], Response::HTTP_OK);
+            }
+
+            return $this->json([
+                'columns' => array_keys($users[0] ?? []),
+                'rows'    => $users,
+            ]);
+        } catch (\Exception $e) {
+            $errorMessage = 'Error fetching user data: ' . $e->getMessage();
+            $this->logger->error($errorMessage, [
+                'exception' => $e,
+            ]);
+            return $this->json(['response' => $errorMessage], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+
     private function buildContextualPrompt(string $question): string
     {
-        $prompt = <<<PROMPT
-You are a database assistant for a non-technical administrator. 
+            $prompt = <<<PROMPT
+You are a database assistant for a non-technical administrator.
 You have access to the following database schema:
 
 {$this->getDatabaseSchema()}
 
-Answer the following question about the database in a clear, concise, and direct way that a database administrator with no programming or SQL knowledge would understand.
+Answer the following question about the database in a clear, concise, and direct way that a database administrator with no programming or SQL knowledge would understand. Focus on explaining what the data means and its characteristics.
 
-If data is provided, use it to give a precise and accurate answer.  If no data is provided, answer based on the schema alone.
+If data is provided, use it to give a precise and accurate answer and provide detailed insights about the information presented. If no data is provided, answer based on the schema alone.
 
-*Important:* Do not display raw data from the tables. Instead, offer to answer specific questions about the data.
+*Important:* Do not display raw data from the tables directly unless specifically asked. Instead, summarize or provide specific information based on the data and explain its meaning.
 
 Avoid providing SQL queries unless explicitly asked.
 
@@ -385,7 +511,7 @@ Previous Conversation:
 Question: $question
 
 PROMPT;
-
         return $prompt;
     }
+
 }

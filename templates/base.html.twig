@@ -259,6 +259,17 @@
           margin-left: 0;
           width: 100%;
         }
+        #urbanTalkTrigger.nav-link,
+        #urbanTalkTrigger.nav-link.active {
+          color: #000 !important;
+        }
+        #urbanTalkTrigger.nav-link {
+          color: black !important;
+        }
+
+        #urbanTalkTrigger.nav-link.active {
+          color: red !important;
+        }
       }
     </style>
   {% endblock %}
@@ -308,7 +319,7 @@
             <i class="fa-solid fa-bookmark"></i> Booking
           </a>
         </li>
-        
+
         <!-- Account Section -->
         <li class="w-full">
           <hr class="h-px mt-2 mb-2 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent" />
@@ -325,9 +336,9 @@
             <i class="fas fa-taxi"></i> Taxis
           </a>
         </li>
-          <a href="{{ path('course_index') }}" class="{{ app.request.get('_route') starts with 'course_' ? 'active' : '' }}">
-            <i class="fas fa-bus"></i> Courses
-          </a>
+        <a href="{{ path('course_index') }}" class="{{ app.request.get('_route') starts with 'course_' ? 'active' : '' }}">
+          <i class="fas fa-bus"></i> Courses
+        </a>
         </li>
         <li>
           <a href="{{ path('abonnement_list') }}" class="{{ app.request.get('_route') starts with 'abonnement_' ? 'active' : '' }}">
@@ -339,11 +350,11 @@
             <i class="fas fa-id-card"></i> Subscriptions List
           </a>
         </li>
-
         <li class="nav-item">
           <a href="#"
              id="urbanTalkTrigger"
-             class="nav-link {{ app.request.get('_route') starts with 'urbantalk_' ? 'active' : '' }}">
+             class="nav-link {{ app.request.get('_route') starts with 'urbantalk_' ? 'active' : '' }}"
+             style="color: black !important;">
             <i class="fas fa-robot mr-2"></i> UrbanTalk
           </a>
         </li>
@@ -354,11 +365,6 @@
         <li>
           <a href="{{ path('admin_user_manage') }}" class="{{ app.request.get('_route') starts with 'admin_user_' ? 'active' : '' }}">
             <i class="fas fa-users"></i> Users
-          </a>
-        </li>
-        <li>
-          <a href="{{ path('admin_user_delete') }}" class="{{ app.request.get('_route') == 'admin_user_delete' ? 'active' : '' }}">
-            <i class="fas fa-user-minus"></i> Update Profiles
           </a>
         </li>
         <li>

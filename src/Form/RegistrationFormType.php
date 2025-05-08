@@ -5,19 +5,19 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 
@@ -29,35 +29,45 @@ class RegistrationFormType extends AbstractType
             ->add('name', TextType::class, [
                 'constraints' => [
                     new NotBlank(['message' => 'Please enter your name']),
-                ]
+                ],
             ])
             ->add('email', TextType::class, [
                 'constraints' => [
                     new NotBlank(['message' => 'Please enter your email']),
                     new Email(['message' => 'Please enter a valid email address']),
-                ]
+                ],
             ])
             ->add('phone', TextType::class, [
                 'constraints' => [
                     new NotBlank(['message' => 'Please enter your phone number']),
                     new Length(['min' => 8, 'max' => 15]),
                     new Regex([
-                        'pattern' => '/^\+[0-9]{8,15}$/',
-                        'message' => 'Phone number must start with + followed by 8-15 digits'
-                    ])
-                ]
+                        'pattern' => '/^[0-9]{8,15}$/',
+                        'message' => 'Phone number must contain 8-15 digits only',
+                    ]),
+                ],
             ])
             ->add('homeAddress', TextType::class, [
                 'constraints' => [
                     new NotBlank(['message' => 'Please enter your home address']),
                 ],
             ])
+
+            ->add('license', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Regex([
+                        'pattern' => '/^[A-Z]{2}-[0-9]{6}$/',
+                        'message' => 'License must be in format XX-123456',
+                    ]),
+                ],
+            ])
             ->add('image', FileType::class, [
                 'mapped' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '50M', // Changed from 2M to 50M
-                        'mimeTypes' => ['image/*'], // Accepts any image type
+                        'maxSize' => '50M',
+                        'mimeTypes' => ['image/*'],
                         'mimeTypesMessage' => 'Please upload a valid image file',
                     ]),
                 ],
@@ -69,15 +79,6 @@ class RegistrationFormType extends AbstractType
                     new Length(['min' => 8]),
                 ],
             ])
-            ->add('license', TextType::class, [
-                'constraints' => [
-                    new NotBlank(['message' => 'Please enter your license number']),
-                    new Regex([
-                        'pattern' => '/^[A-Z]{2}-[0-9]{6}$/',
-                        'message' => 'License must be in format XX-123456'
-                    ])
-                ]
-            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -85,24 +86,28 @@ class RegistrationFormType extends AbstractType
                 ],
             ]);
 
+        // Remove license validation for clients
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $data = $event->getData();
+            $form = $event->getForm();
+
+            if (isset($data['role']) && $data['role'] === 'client') {
+                $form->add('license', TextType::class, [
+                    'required' => false,
+                    'constraints' => [],
+                ]);
+                $data['license'] = null;
+                $event->setData($data);
+            }
+        });
+
+        // Auto-set joining date
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $user = $event->getData();
             if ($user instanceof User && $user->getJoiningDate() === null) {
                 $user->setJoiningDate(new \DateTime());
             }
         });
-    }
-    private function generateLicenseNumber(): string
-    {
-        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $license = 'UL-';
-        $max = strlen($characters) - 1;
-
-        for ($i = 0; $i < 8; $i++) {
-            $license .= $characters[random_int(0, $max)];
-        }
-
-        return $license;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
