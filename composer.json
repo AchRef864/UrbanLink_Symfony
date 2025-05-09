@@ -13,6 +13,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.4",
         "doctrine/orm": "^3.3",
         "dompdf/dompdf": "2.0",
+        "phpoffice/phpspreadsheet": "^1.29",
         "endroid/qr-code": "^5.0",
         "geocoder-php/google-maps-provider": "^4.8",
         "google/cloud-text-to-speech": "^2.1",
