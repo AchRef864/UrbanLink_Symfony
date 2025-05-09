@@ -4,16 +4,20 @@ FROM php:8.2-fpm-alpine
 # Step 2: Set environment variable to allow Composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# Step 3: Install system dependencies and PHP extensions
-RUN apk add --no-cache \
-    bash \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
+# Step 3: Install system dependencies and PHP extensions (Alpine version)
+RUN apk update && apk add --no-cache \
     zip \
-    git \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql opcache
+    libzip-dev \
+    libpng-dev \
+    oniguruma-dev \
+    libxml2-dev \
+    && docker-php-ext-install \
+    zip \
+    gd \
+    mbstring \
+    dom \
+    xml \
+    pdo_mysql
 
 # Step 4: Install Composer (PHP package manager)
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
