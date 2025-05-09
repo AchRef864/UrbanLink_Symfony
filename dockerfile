@@ -11,15 +11,17 @@ RUN apk add --no-cache \
     libjpeg-turbo-dev \
     freetype-dev \
     zip \
+    libzip-dev \
+    oniguruma-dev \
+    libxml2-dev \
     git \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql opcache
+    && docker-php-ext-install gd pdo pdo_mysql opcache zip mbstring dom xml
 
 # Step 4: Install Composer (PHP package manager)
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Step 5: Install Symfony CLI properly
-RUN apk add --no-cache bash
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.alpine.sh' | bash
 RUN apk add symfony-cli
 
@@ -32,9 +34,7 @@ WORKDIR /var/www/html
 # Step 8: Copy composer files first for better caching
 COPY composer.json composer.lock ./
 
-# Step 9: Install symfony/runtime package before main installation
-RUN composer require symfony/runtime --no-scripts
-
+# Step 9: Remove the explicit symfony/runtime installation (it's already in composer.json)
 # Step 10: Copy the rest of the application
 COPY . .
 
