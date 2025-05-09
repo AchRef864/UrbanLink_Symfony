@@ -95,18 +95,6 @@ class MaintenanceType extends AbstractType
                     'rows' => 5
                 ]
             ])
-            ->add('status', ChoiceType::class, [
-                'choices' => [
-                    'Not in maintenance' => Maintenance::STATUS_NOT_IN_MAINTENANCE,
-                    'In maintenance' => Maintenance::STATUS_IN_MAINTENANCE,
-                    'Reserved' => Maintenance::STATUS_RESERVED,
-                ],
-                'required' => true,
-                'label' => 'Maintenance Status',
-                'attr' => [
-                    'class' => 'form-select'
-                ]
-            ])
         ;
         
         // Add a data transformer to handle null values for cost
