@@ -48,7 +48,7 @@ security:
         ROLE_CLIENT: ROLE_USER
 
     access_control:
-        - { path: ^/reservation/pdf, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/reservation/pdf, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/dashboard, roles: IS_AUTHENTICATED_FULLY }

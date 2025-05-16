@@ -1,4 +1,4 @@
-{% extends base_template is defined ? base_template : 'base.html.twig' %}
+{% extends base_template is defined ? base_template : 'basef.html.twig' %}
 
 {% block title %}Add New Vehicle{% endblock %}
 
@@ -648,7 +648,7 @@
                         
                         <div class="form-group">
                             <label class="form-label" for="year">Year</label>
-                            <input type="number" name="year" id="year" class="form-control" value="2023" min="1900" max="2025">
+                            <input type="number" name="year" id="year" class="form-control" value="{{ "now"|date("Y") }}" min="1900" max="{{ "now"|date("Y") }}">
                             <div class="input-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -853,10 +853,11 @@ document.getElementById('vehicleForm').addEventListener('submit', function(e) {
         isValid = false;
     }
     
-    // Validate year range
+    // In the form submit event listener, modify the year validation to this:
     const yearInput = document.getElementById('year');
-    if (yearInput.value < 1900 || yearInput.value > new Date().getFullYear() + 1) {
-        showError(yearInput, `Please enter a valid year between 1900 and ${new Date().getFullYear() + 1}`);
+    const currentYear = new Date().getFullYear();
+    if (yearInput.value < 1900 || yearInput.value > currentYear) {
+        showError(yearInput, `Please enter a valid year between 1900 and ${currentYear}`);
         isValid = false;
     }
     
@@ -926,6 +927,19 @@ document.querySelectorAll('input[required], select[required]').forEach(input => 
             if (error) error.remove();
         }
     });
+});
+
+// Add real-time validation for year field
+// Remove this block:
+document.getElementById('year').addEventListener('blur', function() {
+    const currentYear = new Date().getFullYear();
+    if (this.value < 1900 || this.value > currentYear) {
+        showError(this, `Please enter a valid year between 1900 and ${currentYear}`);
+    } else {
+        this.classList.remove('is-invalid');
+        const error = this.parentNode.querySelector('.error-message');
+        if (error) error.remove();
+    }
 });
 </script>
 </body>

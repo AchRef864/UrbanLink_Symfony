@@ -19,6 +19,7 @@ use Stripe\Checkout\Session;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\Writer\SvgWriter;
+use Endroid\QrCode\Writer\PngWriter;
 use Dompdf\Dompdf;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Dompdf\Options;
@@ -132,7 +133,6 @@ public function showDeletedTrajetDetails(Reservation $reservation): Response
     #[Route('/reservation/success/{id}', name: 'reservation_success')]
     public function success(Reservation $reservation): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         /** @var User $user */
         $user = $this->getUser();
@@ -149,7 +149,6 @@ public function showDeletedTrajetDetails(Reservation $reservation): Response
     #[Route('/reservation/cancel/{id}', name: 'reservation_cancel')]
     public function cancel(Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         /** @var User $user */
         $user = $this->getUser();
@@ -296,74 +295,78 @@ public function showDeletedTrajetDetails(Reservation $reservation): Response
     }
 
 
+#[Route('/reservation/pdf/{id}', name: 'reservation_pdf')]
+public function generatePdf(Reservation $reservation): Response
+{
+    // 1. Require login
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-
-    #[Route('/reservation/pdf/{id}', name: 'reservation_pdf')]
-    public function generatePdf(Reservation $reservation): Response
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        
-        /** @var \App\Entity\User $user */
-        $user = $this->getUser();
-    
-        if ($reservation->getUser() !== $user) {
-            throw $this->createAccessDeniedException('You do not have access to this reservation');
-        }
-    
-        // Generate QR code content
-        $qrContent = sprintf(
-            "Reservation #%d\nUser: %s\nRoute: %s → %s\nDate: %s\nSeats: %d\nPrice: %d€",
-            $reservation->getId(),
-            $reservation->getUser()->getName(),
-            $reservation->getTrajet()->getDeparture(),
-            $reservation->getTrajet()->getDestination(),
-            $reservation->getTrajet()->getDepartureTime()->format('d/m/Y H:i'),
-            $reservation->getNumberOfSeats(),
-            $reservation->getTotalPrice()
-        );
-    
-        $qrCode = Builder::create()
-    ->writer(new SvgWriter())
-        ->data($qrContent)
-        ->encoding(new Encoding('UTF-8'))
-        ->errorCorrectionLevel(new \Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh())  
-        ->size(300)  // Increased size for better readability
-        ->margin(6)
-        ->roundBlockSizeMode(new \Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin())  
-        ->build();
-    
-    $qrCodeImage = $qrCode->getDataUri();
-        // Generate PDF
-        $options = new Options();
-        $dompdf = new Dompdf();
-        $options->set('isHtml5ParserEnabled', true);
-        $options->set('isRemoteEnabled', true);
-        
-        $html = $this->renderView('reservation/pdf.html.twig', [
-            'reservation' => $reservation,
-            'qrCodeImage' => $qrCodeImage
-        ]);
-        
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        
-        $filename = sprintf('reservation-%d-%s.pdf', 
-            $reservation->getId(),
-            (new \DateTime())->format('Y-m-d')
-        );
-        
-        return new Response(
-            $dompdf->output(),
-            Response::HTTP_OK,
-            [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
-            ]
-        );
+    // 2. Check if the current user owns the reservation
+    if ($reservation->getUser() !== $this->getUser()) {
+        throw $this->createAccessDeniedException("You don't have access to this reservation.");
     }
 
+    // 3. Check if the reservation is confirmed
+    if ($reservation->getStatus() !== 'Confirmed') {
+        throw $this->createAccessDeniedException("This reservation is not confirmed.");
+    }
 
+    // 4. Check if the trajet still exists
+    if (!$reservation->getTrajet()) {
+        throw $this->createNotFoundException("The associated trajet no longer exists.");
+    }
+    
+    $qrContent = sprintf(
+        "Reservation #%d\nRoute: %s → %s\nDate: %s\nSeats: %d\nPrice: %d€",
+        $reservation->getId(),
+        $reservation->getTrajet()->getDeparture(),
+        $reservation->getTrajet()->getDestination(),
+        $reservation->getTrajet()->getDepartureTime()->format('d/m/Y H:i'),
+        $reservation->getNumberOfSeats(),
+        $reservation->getTotalPrice()
+    );
+
+  $qrCode = Builder::create()
+    ->writer(new PngWriter()) // Changed from SvgWriter to PngWriter
+    ->data($qrContent)
+    ->encoding(new Encoding('UTF-8'))
+    ->errorCorrectionLevel(new \Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh())  
+    ->size(300)
+    ->margin(6)
+    ->roundBlockSizeMode(new \Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin())  
+    ->build();
+
+$qrCodeImage = $qrCode->getDataUri();
+
+    $options = new Options();
+    $options->set('isHtml5ParserEnabled', true);
+    $options->set('isRemoteEnabled', true);
+
+    $dompdf = new Dompdf($options);
+
+    $html = $this->renderView('reservation/pdf.html.twig', [
+        'reservation' => $reservation,
+        'qrCodeImage' => $qrCodeImage,
+    ]);
+
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->render();
+
+    $filename = sprintf('reservation-%d-%s.pdf', 
+        $reservation->getId(),
+        (new \DateTime())->format('Y-m-d')
+    );
+
+    return new Response(
+        $dompdf->output(),
+        Response::HTTP_OK,
+        [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+        ]
+    );
+}
     
     #[Route('/admin/reservations', name: 'admin_reservations')]
 #[IsGranted('ROLE_ADMIN')]

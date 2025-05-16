@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends baseTemplate %}
 
 {% block title %}Create Maintenance{% endblock %}
 
@@ -301,6 +301,131 @@
             margin-top: 1rem;
             margin-bottom: 0;
         }
+
+        /* Custom Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 500px;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 1.5rem 2rem;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-body p {
+            margin: 0 0 1.5rem;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .modal-footer {
+            padding: 1rem 2rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .modal-btn {
+            padding: 0.65rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .modal-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .modal-btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .modal-btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 1px solid rgba(94, 96, 206, 0.3);
+        }
+
+        .modal-btn-secondary:hover {
+            background: rgba(94, 96, 206, 0.05);
+        }
+
+        .error-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1.5rem;
+        }
+
+        .error-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(239, 71, 111, 0.1);
+            color: var(--danger);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .error-list li:before {
+            content: '✕';
+            color: var(--danger);
+            font-weight: bold;
+        }
         
         /* Responsive */
         @media (max-width: 768px) {
@@ -319,8 +444,50 @@
             .card-header, .card-body {
                 padding: 1.5rem;
             }
+
+            .modal-container {
+                width: 95%;
+            }
+
+            .modal-header,
+            .modal-body,
+            .modal-footer {
+                padding: 1.25rem;
+            }
         }
     </style>
+
+    <!-- Modal Template -->
+    <div class="modal-overlay" id="error-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <span>Form Errors</span>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Please fix the following errors:</p>
+                <ul class="error-list" id="error-list"></ul>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-primary" id="modal-confirm">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="success-modal">
+        <div class="modal-container">
+            <div class="modal-header" style="background: linear-gradient(90deg, var(--success) 0%, #06b6d4 100%);">
+                <span>Success</span>
+                <button class="modal-close" id="success-modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="success-message"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-primary" id="success-modal-confirm">OK</button>
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         <h1 class="page-title">Fleet Management System</h1>
@@ -494,6 +661,60 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Initialize modals
+        const errorModal = document.getElementById('error-modal');
+        const successModal = document.getElementById('success-modal');
+        const modalClose = document.getElementById('modal-close');
+        const successModalClose = document.getElementById('success-modal-close');
+        const modalConfirm = document.getElementById('modal-confirm');
+        const successModalConfirm = document.getElementById('success-modal-confirm');
+        const errorList = document.getElementById('error-list');
+        const successMessage = document.getElementById('success-message');
+
+        // Modal control functions
+        function showErrorModal(errors) {
+            errorList.innerHTML = '';
+            errors.forEach(error => {
+                const li = document.createElement('li');
+                li.textContent = error;
+                errorList.appendChild(li);
+            });
+            errorModal.classList.add('active');
+        }
+
+        function showSuccessModal(message) {
+            successMessage.textContent = message;
+            successModal.classList.add('active');
+        }
+
+        function hideErrorModal() {
+            errorModal.classList.remove('active');
+        }
+
+        function hideSuccessModal() {
+            successModal.classList.remove('active');
+        }
+
+        // Modal event listeners
+        modalClose.addEventListener('click', hideErrorModal);
+        successModalClose.addEventListener('click', hideSuccessModal);
+        modalConfirm.addEventListener('click', hideErrorModal);
+        successModalConfirm.addEventListener('click', hideSuccessModal);
+
+        // Close modal when clicking outside
+        errorModal.addEventListener('click', function(e) {
+            if (e.target === errorModal) {
+                hideErrorModal();
+            }
+        });
+
+        successModal.addEventListener('click', function(e) {
+            if (e.target === successModal) {
+                hideSuccessModal();
+            }
+        });
+
+        // Form functionality
         const serviceTypeSelect = document.getElementById('{{ form.serviceType.vars.id }}');
         const serviceProviderSelect = document.getElementById('{{ form.serviceProvider.vars.id }}');
         const costInput = document.getElementById('{{ form.cost.vars.id }}');
@@ -612,14 +833,18 @@
                     `;
                     
                     if (data.errors) {
-                        // Display form errors
-                        let errorMessages = [];
+                        // Display form errors in modal
+                        const errorMessages = [];
                         for (const field in data.errors) {
-                            errorMessages.push(`${field}: ${data.errors[field]}`);
+                            // Format field names for display
+                            const fieldName = field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                            errorMessages.push(`${fieldName}: ${data.errors[field]}`);
                         }
-                        alert('Please fix the following errors:\n' + errorMessages.join('\n'));
+                        showErrorModal(errorMessages);
                     } else if (data.error) {
-                        alert(data.error);
+                        showErrorModal([data.error]);
+                    } else {
+                        showErrorModal(['An unknown error occurred. Please try again.']);
                     }
                 }
             })
@@ -635,7 +860,7 @@
                     </svg>
                     Create Maintenance & Pay
                 `;
-                alert('An error occurred. Please try again.');
+                showErrorModal(['Network error occurred. Please check your connection and try again.']);
             });
         });
     });
