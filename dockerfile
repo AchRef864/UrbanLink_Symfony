@@ -10,10 +10,11 @@ RUN apk add --no-cache \
     libpng-dev \
     libjpeg-turbo-dev \
     freetype-dev \
+    libzip-dev \
     zip \
     git \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql opcache
+    && docker-php-ext-install gd pdo pdo_mysql opcache zip
 
 # Step 4: Install Composer (PHP package manager)
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
