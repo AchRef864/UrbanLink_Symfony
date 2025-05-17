@@ -159,8 +159,8 @@ client_profile:
     controller: App\Controller\ProfileController::index
 
 client_dashboard:
-    path: /client/dashboard
-    controller: App\Controller\Client\DashboardController::index
+    path: /hello
+    controller: App\Controller\Client\HelloController::index
     
 taxiste_dashboard:
     path: /taxiste/dashboard

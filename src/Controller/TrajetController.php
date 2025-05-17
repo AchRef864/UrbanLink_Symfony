@@ -151,5 +151,5 @@ public function supprimer(
 
     $this->addFlash('success', 'Trajet supprimé avec succès!');
     return $this->redirectToRoute('trajet_affichage');
-}
+    }
 }
